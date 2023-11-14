@@ -19,8 +19,7 @@ import static com.example.playgroundmanage.validator.UserValidator.USER_PASSWORD
 @Entity
 @Table(name = "USER")
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class User implements Serializable{
     @Id
     @GeneratedValue
@@ -36,7 +35,6 @@ public class User implements Serializable{
 
     @Builder
     public User(Long userId, String username, String password, String phoneNumber, String nickname, boolean isEnable, UserRole role) {
-        validate(username, password);
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -46,12 +44,5 @@ public class User implements Serializable{
         this.role = role;
     }
 
-    private void validate(String username, String password) {
-        if(!username.matches(USER_NAME_FORMAT)) {
-            throw new FormatException();
-        }
-        if(!password.matches(USER_PASSWORD_FORMAT)) {
-            throw new FormatException();
-        }
-    }
+
 }

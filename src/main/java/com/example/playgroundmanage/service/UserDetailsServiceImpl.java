@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+import static com.example.playgroundmanage.validator.UserValidator.validateUser;
+
 @Service
 @RequiredArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -30,12 +32,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Transactional
     public void signup(UserSignupForm userSignupForm) {
+        validateUser(userSignupForm.getUsername(), userSignupForm.getPassword());
         if(userRepository.existsByUsername(userSignupForm.getUsername())) {
             throw new ExistUserException();
         }
         User user = User.builder()
                 .username(userSignupForm.getUsername())
-                .password(userSignupForm.getPassword())
+                .password(passwordEncoder.encode(userSignupForm.getPassword()))
                 .build();
         userRepository.save(user);
     }
