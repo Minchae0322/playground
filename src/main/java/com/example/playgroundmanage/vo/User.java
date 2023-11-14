@@ -3,10 +3,7 @@ package com.example.playgroundmanage.vo;
 
 
 import com.example.playgroundmanage.type.UserRole;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,6 +27,8 @@ public class User implements Serializable{
     private String phoneNumber;
     private String nickname;
     private boolean isEnable;
+
+    @Enumerated(EnumType.STRING)
     private UserRole role;
 
 

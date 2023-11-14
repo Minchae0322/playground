@@ -22,31 +22,31 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return null;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return user.getUsername();
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return user.isEnable();
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return user.isEnable();
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return user.isEnable();
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return user.isEnable();
     }
 }
