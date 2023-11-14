@@ -3,6 +3,7 @@ package com.example.playgroundmanage.service;
 import com.example.playgroundmanage.dto.UserSignupForm;
 import com.example.playgroundmanage.exception.ExistUserException;
 import com.example.playgroundmanage.repository.UserRepository;
+import com.example.playgroundmanage.type.UserRole;
 import com.example.playgroundmanage.vo.MyUserDetails;
 import com.example.playgroundmanage.vo.User;
 import jakarta.transaction.Transactional;
@@ -39,6 +40,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         User user = User.builder()
                 .username(userSignupForm.getUsername())
                 .password(passwordEncoder.encode(userSignupForm.getPassword()))
+                .role(UserRole.USER)
                 .build();
         userRepository.save(user);
     }

@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -21,6 +23,9 @@ class UserDetailsServiceImplTest {
 
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @BeforeEach
     void init() {
@@ -75,6 +80,17 @@ class UserDetailsServiceImplTest {
         assertThrows(FormatException.class, () -> userDetailsService.signup(userSignupForm));
     }
 
+    @Test
+    void loadByUsername() {
+        UserSignupForm userSignupForm = UserSignupForm.builder()
+                .username("abcde")
+                .password("asdf1234")
+                .build();
+        userDetailsService.signup(userSignupForm);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(userSignupForm.getUsername());
+        assertEquals("abcde", userDetails.getUsername());
+        assertThat(passwordEncoder.matches("asdf1234",userDetails.getPassword())).isTrue();
+    }
 
 
 }
