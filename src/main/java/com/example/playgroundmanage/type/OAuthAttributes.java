@@ -8,27 +8,37 @@ import java.util.function.Function;
 
 public enum OAuthAttributes {
 
-    WECHAT("wechat", (attribute) -> UserProfile.builder()
-                .username((String) attribute.get("sub"))
-                .provider("wechat")
-                .build()
-    );
+    WECHAT("wechat", attribute -> UserProfile.builder()
+            .username((String) attribute.get("sub"))
+            .provider("wechat")
+            .build()),
 
+    GOOGLE("google", attribute -> UserProfile.builder()
+            .username((String) attribute.get("sub"))
+            .provider("google")
+            .build());
 
+    private final String registrationId; // Service used for login (e.g., google, naver...)
+    private final Function<Map<String, Object>, UserProfile> userProfileExtractor; // Function to extract UserProfile from user attributes
 
-    private final String registrationId; // 로그인한 서비스(ex) google, naver..)
-    private final Function<Map<String, Object>, UserProfile> of; // 로그인한 사용자의 정보를 통하여 UserProfile을 가져옴
-
-    OAuthAttributes(String registrationId, Function<Map<String, Object>, UserProfile> of) {
+    OAuthAttributes(String registrationId, Function<Map<String, Object>, UserProfile> userProfileExtractor) {
         this.registrationId = registrationId;
-        this.of = of;
+        this.userProfileExtractor = userProfileExtractor;
     }
 
+    /**
+     * Extracts UserProfile based on the registrationId and user attributes.
+     *
+     * @param registrationId Service used for login (e.g., google, naver...)
+     * @param attributes     User attributes provided by the OAuth provider
+     * @return UserProfile extracted from the attributes
+     * @throws IllegalArgumentException if no matching registrationId is found
+     */
     public static UserProfile extract(String registrationId, Map<String, Object> attributes) {
         return Arrays.stream(values())
                 .filter(value -> registrationId.equals(value.registrationId))
                 .findFirst()
-                .orElseThrow(IllegalArgumentException::new)
-                .of.apply(attributes);
+                .orElseThrow(() -> new IllegalArgumentException("Unsupported registrationId: " + registrationId))
+                .userProfileExtractor.apply(attributes);
     }
 }
