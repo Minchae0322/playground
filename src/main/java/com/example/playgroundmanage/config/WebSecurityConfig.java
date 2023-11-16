@@ -8,7 +8,7 @@ import com.example.playgroundmanage.repository.UserRepository;
 import com.example.playgroundmanage.service.OAuth2Service;
 import com.example.playgroundmanage.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -39,13 +39,13 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .addFilterBefore(usernamePasswordCustomAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                //.addFilterBefore(usernamePasswordCustomAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.loginPage("/login"))
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.logoutUrl("/auth/logout")
                         .logoutSuccessUrl("/home"))
                 .csrf(AbstractHttpConfigurer::disable)
-                .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer.loginPage("/login")
-                        .defaultSuccessUrl("/")
+                .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer.loginPage("/login/oauth")
+                        .defaultSuccessUrl("/oauth/loginInfo")
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oAuth2Service))
                 )
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -63,6 +63,19 @@ public class WebSecurityConfig {
         return filter;
     }
 
+
+
+    @Bean
+    public AuthenticationManager authenticationManage() {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setUserDetailsService(new UserDetailsServiceImpl(userRepository, passwordEncoder()));
+        provider.setPasswordEncoder(passwordEncoder());
+        return new ProviderManager(provider);
+    }
+
+
+
+
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -79,13 +92,6 @@ public class WebSecurityConfig {
         return source;
     }
 
-    @Bean
-    public AuthenticationManager authenticationManage() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(new UserDetailsServiceImpl(userRepository, passwordEncoder()));
-        provider.setPasswordEncoder(passwordEncoder());
-        return new ProviderManager(provider);
-    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

@@ -28,6 +28,8 @@ public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long userId;
+    @Column(unique = true, nullable = false)
+    private String oAuth2Id;
     private String email;
     private String username;
     private String password;
@@ -40,7 +42,8 @@ public class User implements Serializable{
     private UserRole role;
 
     @Builder
-    public User(Long userId, String email, String username, String password, String phoneNumber, String provider, String nickname, boolean isEnable, UserRole role) {
+    public User(String oAuth2Id, Long userId, String email, String username, String password, String phoneNumber, String provider, String nickname, boolean isEnable, UserRole role) {
+        this.oAuth2Id = oAuth2Id;
         this.userId = userId;
         this.email = email;
         this.username = username;

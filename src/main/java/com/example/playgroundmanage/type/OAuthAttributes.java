@@ -13,12 +13,13 @@ public enum OAuthAttributes {
             .provider("wechat")
             .build()),
 
-    GOOGLE("google", attribute -> UserProfile.builder()
-            .username((String) attribute.get("sub"))
-            .provider("google")
+    NAVER("naver",  attribute -> UserProfile.builder()
+            .username((String) attribute.get("id"))
+            .provider("naver")
             .build());
 
     private final String registrationId; // Service used for login (e.g., google, naver...)
+
     private final Function<Map<String, Object>, UserProfile> userProfileExtractor; // Function to extract UserProfile from user attributes
 
     OAuthAttributes(String registrationId, Function<Map<String, Object>, UserProfile> userProfileExtractor) {

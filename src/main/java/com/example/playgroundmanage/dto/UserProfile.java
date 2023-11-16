@@ -6,7 +6,8 @@ import lombok.Getter;
 
 @Getter
 public class UserProfile {
-    private String username; // 사용자 이름
+    private String username; // 사용자 이름 또는 아이디
+
     private String provider; // 로그인한 서비스
 
     @Builder

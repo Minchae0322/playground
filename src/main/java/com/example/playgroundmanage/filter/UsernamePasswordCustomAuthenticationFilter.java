@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 import java.io.IOException;
@@ -24,6 +25,7 @@ public class UsernamePasswordCustomAuthenticationFilter extends AbstractAuthenti
                 usernamePassword.username,
                 usernamePassword.password
         );
+
         usernamePasswordAuthenticationToken.setDetails(this.authenticationDetailsSource.buildDetails(request));
         return this.getAuthenticationManager().authenticate(usernamePasswordAuthenticationToken);
     }

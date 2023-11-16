@@ -3,8 +3,10 @@ package com.example.playgroundmanage.service;
 import com.example.playgroundmanage.dto.UserEdit;
 import com.example.playgroundmanage.dto.UserProfile;
 import com.example.playgroundmanage.repository.UserRepository;
+import com.example.playgroundmanage.type.OAuthAttribute;
 import com.example.playgroundmanage.type.OAuthAttributes;
 import com.example.playgroundmanage.type.UserRole;
+import com.example.playgroundmanage.vo.MyOauth2UserDetails;
 import com.example.playgroundmanage.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -34,28 +36,15 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
         OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
+        String userNameAttributeName = userRequest.getClientRegistration()
+                .getProviderDetails().getUserInfoEndpoint()
+                .getUserNameAttributeName();
         Map<String, Object> attributes = oAuth2User.getAttributes();
+        OAuthAttribute oAuthAttribute = new OAuthAttribute(registrationId, userNameAttributeName, attributes);
+        UserProfile userProfile = oAuthAttribute.extract();
 
-        UserProfile userProfile = OAuthAttributes.extract(registrationId, attributes);
-        Map<String, Object> customAttribute = getCustomAttribute(userRequest, attributes, userProfile);
-
-        saveOrUpdateUser(userProfile);
-
-        return new DefaultOAuth2User(
-                Collections.singleton(new SimpleGrantedAuthority(UserRole.USER.getValue())),
-                customAttribute, userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName());
-    }
-
-    private Map<String, Object> getCustomAttribute(OAuth2UserRequest userRequest,
-                                                   Map<String, Object> attributes,
-                                                   UserProfile userProfile) {
-        Map<String, Object> customAttribute = new ConcurrentHashMap<>();
-
-        customAttribute.put(userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName(), attributes.get(userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName()));
-        customAttribute.put("provider", userRequest.getClientRegistration().getRegistrationId());
-        customAttribute.put("name", userProfile.getUsername());
-
-        return customAttribute;
+        User user = saveOrUpdateUser(userProfile);
+        return new MyOauth2UserDetails(saveOrUpdateUser(userProfile), attributes, Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue())));
     }
 
     private User saveOrUpdateUser(UserProfile userProfile) {
@@ -66,4 +55,5 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
                 .map(entity -> entity.update(UserEdit.builder().username(username).build()))
                 .orElseGet(() -> userRepository.save(userProfile.toEntity()));
     }
+
 }
