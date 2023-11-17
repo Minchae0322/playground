@@ -1,17 +1,16 @@
 package com.example.playgroundmanage.controller;
 
+import lombok.Getter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.net.http.HttpResponse;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/oauth")
+
 public class UserController {
     @GetMapping("/loginInfo")
     public String getJson(Authentication authentication) {
@@ -20,5 +19,10 @@ public class UserController {
         Map<String, Object> attributes = oAuth2User.getAttributes();
 
         return attributes.toString();
+    }
+
+    @GetMapping("/auth/login/oauth2/code/n2aver")
+    public String getCode(@RequestParam("code") String code, @RequestParam("state") String state) {
+        return code + state;
     }
 }

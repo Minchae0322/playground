@@ -15,7 +15,7 @@ import java.io.IOException;
 public class UsernamePasswordCustomAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
     public UsernamePasswordCustomAuthenticationFilter() {
-        super("/auth/login");
+        super("/auth/login/..");
     }
 
     @Override

@@ -44,8 +44,7 @@ public class WebSecurityConfig {
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.logoutUrl("/auth/logout")
                         .logoutSuccessUrl("/home"))
                 .csrf(AbstractHttpConfigurer::disable)
-                .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer.loginPage("/login/oauth")
-                        .defaultSuccessUrl("/oauth/loginInfo")
+                .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oAuth2Service))
                 )
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -80,7 +79,7 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:5173");
-        configuration.addAllowedOrigin("http://mememmm.com");
+        configuration.addAllowedOrigin("http://nid.naver.com");
         configuration.addAllowedOrigin("http://13.125.165.102");
         configuration.addAllowedOrigin("https://www.youtube.com");
         configuration.addAllowedHeader("*");
