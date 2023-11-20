@@ -4,6 +4,7 @@ package com.example.playgroundmanage.config;
 import com.example.playgroundmanage.filter.UsernamePasswordCustomAuthenticationFilter;
 import com.example.playgroundmanage.handler.LoginFailureHandler;
 import com.example.playgroundmanage.handler.LoginSuccessHandler;
+import com.example.playgroundmanage.handler.Oauth2LoginSuccessHandler;
 import com.example.playgroundmanage.repository.UserRepository;
 import com.example.playgroundmanage.service.OAuth2Service;
 import com.example.playgroundmanage.service.UserDetailsServiceImpl;
@@ -43,9 +44,11 @@ public class WebSecurityConfig {
                         .logoutSuccessUrl("/home"))
                 .csrf(AbstractHttpConfigurer::disable)
                 .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
+                        .defaultSuccessUrl("/loginInfo")
+                        .successHandler(new Oauth2LoginSuccessHandler())
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oAuth2Service))
                 )
-                .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                //.sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .build();
     }

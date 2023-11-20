@@ -29,9 +29,6 @@ class OAuth2ServiceTest {
     private UserRepository userRepository;
     @Autowired
     private OAuth2Service oAuth2Service;
-    private OAuth2User oAuth2GithubUser;
-
-
 
     @BeforeEach
     void before() {
@@ -44,7 +41,7 @@ class OAuth2ServiceTest {
     void signupWithOAuth2_github() {
         Map<String, Object> attributes = new HashMap<>();
         attributes.put("login", "asdf1234");
-        oAuth2GithubUser = new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(UserRole.USER.getValue())), attributes, "login");
+        OAuth2User oAuth2GithubUser = new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(UserRole.USER.getValue())), attributes, "login");
 
         OAuth2UserProfile oAuth2UserProfile = oAuth2Service.getOAuth2UserProfile("github", oAuth2GithubUser);
         assertEquals("asdf1234", oAuth2UserProfile.getUsername());
