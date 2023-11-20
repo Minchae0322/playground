@@ -9,6 +9,8 @@ spring:
             scope: name
           #- profile_image
             client-name: Naver
+
+
             authorization-grant-type: authorization_code
             redirect-uri: http://localhost:8080/login/oauth2/code/naver #코드를 받는 uri(naver 의 콜백 uri)
           github:
