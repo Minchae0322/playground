@@ -44,13 +44,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         String token = resolveToken(request);
 
-
-
             // 2. validateToken 으로 토큰 유효성 검사
             if (token != null && jwtTokenProvider.validateToken(token)) {
                 // 토큰이 유효할 경우 토큰에서 Authentication 객체를 가지고 와서 SecurityContext 에 저장
                 Authentication authentication = jwtTokenProvider.getAuthentication(token);
-
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 filterChain.doFilter(request, response);
                 return;
@@ -67,6 +64,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(bearerToken)) {
             return bearerToken;
         }
-        return null;
+        throw new IllegalArgumentException("토큰이 존재하지 않습니다.");
     }
 }

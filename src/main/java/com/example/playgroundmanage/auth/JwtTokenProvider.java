@@ -16,6 +16,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -47,12 +48,21 @@ public class JwtTokenProvider {
         long now = new Date().getTime();
         // Access Token 생성
         Date accessTokenExpiresIn = new Date(now + 604800000);
-        String accessToken = Jwts.builder()
+
+        JwtBuilder jwtBuilder = Jwts.builder()
                 .setSubject(authentication.getName())
                 .claim("auth", authorization)
                 .setExpiration(accessTokenExpiresIn)
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+                .signWith(key, SignatureAlgorithm.HS256);
+
+        // Authentication 타입에 따라 조건부로 AccessToken의 클레임 추가
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            jwtBuilder.claim("provider", "own");
+        } else if (authentication instanceof OAuth2AuthenticationToken) {
+            jwtBuilder.claim("provider", "oauth");
+        }
+
+        String accessToken = jwtBuilder.compact();
 
         // Refresh Token 생성
         String refreshToken = Jwts.builder()
