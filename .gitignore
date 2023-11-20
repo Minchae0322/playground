@@ -38,4 +38,5 @@ out/
 /gradle
 *.yml
 *.properties
+
 src/main/resources/application.yml
