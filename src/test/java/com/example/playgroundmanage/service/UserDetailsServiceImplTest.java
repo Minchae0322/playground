@@ -3,12 +3,10 @@ package com.example.playgroundmanage.service;
 import com.example.playgroundmanage.dto.UserSignupForm;
 import com.example.playgroundmanage.exception.FormatException;
 import com.example.playgroundmanage.repository.UserRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -81,7 +79,7 @@ class UserDetailsServiceImplTest {
     }
 
     @Test
-    void loadByUsername() {
+    void loadByusername() {
         UserSignupForm userSignupForm = UserSignupForm.builder()
                 .username("abcde")
                 .password("asdf1234")

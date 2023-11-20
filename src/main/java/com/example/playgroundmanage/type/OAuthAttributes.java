@@ -8,16 +8,18 @@ import java.util.function.Function;
 
 public enum OAuthAttributes {
     NAVER("naver", (attribute) -> {
-        Map<String, String> userAttribute = (Map<String, String>) attribute.get("response");
+        Map<String, Object> userAttribute = (Map<String, Object>) attribute.get("response");
         return OAuth2UserProfile.builder()
-                .userId(userAttribute.get("id"))
+                .username((String) userAttribute.get("id"))
+                .attributes(userAttribute)
                 .provider("naver")
                 .build();
     }
     ),
 
     GITHUB("github", (attribute) -> OAuth2UserProfile.builder()
-            .userId((String) attribute.get("id"))
+            .username((String) attribute.get("login"))
+            .attributes(attribute)
             .provider("github")
             .build()
     );

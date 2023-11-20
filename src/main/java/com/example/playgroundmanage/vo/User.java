@@ -22,11 +22,9 @@ public class User implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String userId;
-    private String provider;
 
     private String username;
+    private String provider;
 
     private String email;
 
@@ -42,8 +40,7 @@ public class User implements Serializable{
     private UserRole role;
 
     @Builder
-    public User(String userId, Long id, String email, String username, String password, String phoneNumber, String provider, String nickname, boolean isEnable, UserRole role) {
-        this.userId = userId;
+    public User( Long id, String email, String username, String password, String phoneNumber, String provider, String nickname, boolean isEnable, UserRole role) {
         this.id = id;
         this.email = email;
         this.username = username;

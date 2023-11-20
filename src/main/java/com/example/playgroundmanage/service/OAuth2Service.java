@@ -1,6 +1,5 @@
 package com.example.playgroundmanage.service;
 
-import com.example.playgroundmanage.dto.UserEdit;
 import com.example.playgroundmanage.dto.OAuth2UserProfile;
 import com.example.playgroundmanage.repository.UserRepository;
 import com.example.playgroundmanage.type.OAuthAttributes;
@@ -15,7 +14,6 @@ import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import java.util.Collections;
-import java.util.Map;
 
 
 @Service
@@ -26,30 +24,26 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2User oAuth2User = getOAuth2User(userRequest);
+        OAuth2UserProfile oAuth2UserProfile = getOAuth2UserProfile(userRequest.getClientRegistration().getRegistrationId(), oAuth2User);
+        User user = getUserInDatabase(oAuth2UserProfile);
+
+        return new MyOauth2UserDetails(user, oAuth2UserProfile.getAttributes(), Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue())));
+    }
+
+    private OAuth2User getOAuth2User(OAuth2UserRequest userRequest) {
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
-        OAuth2User oAuth2User = delegate.loadUser(userRequest);
-
-        String registrationId = userRequest.getClientRegistration().getRegistrationId();
-        String userNameAttributeName = userRequest.getClientRegistration()
-                .getProviderDetails().getUserInfoEndpoint()
-                .getUserNameAttributeName();
-        Map<String, Object> attributes = oAuth2User.getAttributes();
-        OAuth2UserProfile OAuth2UserProfile = OAuthAttributes.extract(registrationId, attributes);
-
-        User user = saveOrUpdateUser(OAuth2UserProfile);
-        return new MyOauth2UserDetails(user, attributes, Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue())));
+        return delegate.loadUser(userRequest);
     }
 
-    private User saveOrUpdateUser(OAuth2UserProfile oAuth2UserProfile) {
-       //if(isExistUser(oAuth2UserProfile)) {
-            return userRepository.findByUserIdAndProvider(oAuth2UserProfile.getUserId(), oAuth2UserProfile.getProvider())
-                    .orElseGet(() -> userRepository.save(oAuth2UserProfile.toEntity()));
-       //}
-       //return userRepository.save(oAuth2UserProfile.toEntity());
+    protected OAuth2UserProfile getOAuth2UserProfile(String registrationId, OAuth2User oAuth2User) {
+        return OAuthAttributes.extract(registrationId, oAuth2User.getAttributes());
     }
 
-    private boolean isExistUser(OAuth2UserProfile oAuth2UserProfile) {
-        return userRepository.existsByUserIdAndProvider(oAuth2UserProfile.getUserId(), oAuth2UserProfile.getProvider());
+    private User getUserInDatabase(OAuth2UserProfile oAuth2UserProfile) {
+        return userRepository.findByUsernameAndProvider(oAuth2UserProfile.getUsername(), oAuth2UserProfile.getProvider())
+                .orElseGet(() -> userRepository.save(oAuth2UserProfile.toEntity()));
     }
+
 
 }
