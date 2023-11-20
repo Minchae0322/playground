@@ -10,12 +10,12 @@ spring:
           #- profile_image
             client-name: Naver
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/auth/login/oauth2/code/naver #코드를 받는 uri(naver 의 콜백 uri)
+            redirect-uri: http://localhost:8080/login/oauth2/code/naver #코드를 받는 uri(naver 의 콜백 uri)
           github:
             client-id: 571f9c36c7e0975a8c28
             client-secret: 1a1315e71256402aa03a16a512fe4dbb95ee895a
             authorization-grant-type: authorization_code
-            redirect-uri: http://localhost:8080/auth/login/oauth2/code/git
+            redirect-uri: http://localhost:8080/login/oauth2/code/github
 
         provider: #네이버의 provider는 등록되어 있지 않아 사용자가 등록해야된다.
           naver:
