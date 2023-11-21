@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.auth;
 
 
+import com.example.playgroundmanage.vo.RefreshToken;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.Setter;
 @Setter
 @RequiredArgsConstructor
 public class TokenInfo {
+
     private String grantType;
     private String accessToken;
     private String refreshToken;
@@ -20,6 +22,7 @@ public class TokenInfo {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
+
 }
 
 

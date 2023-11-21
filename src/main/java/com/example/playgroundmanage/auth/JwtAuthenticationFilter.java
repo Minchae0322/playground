@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.auth;
 
+import com.example.playgroundmanage.vo.RefreshToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +13,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.List;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -42,12 +45,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
 
-        String token = resolveToken(request);
+        String accessToken = resolveToken(request);
 
             // 2. validateToken 으로 토큰 유효성 검사
-            if (token != null && jwtTokenProvider.validateToken(token)) {
+            if (accessToken != null && jwtTokenProvider.validateToken(accessToken)) {
                 // 토큰이 유효할 경우 토큰에서 Authentication 객체를 가지고 와서 SecurityContext 에 저장
-                Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+                filterChain.doFilter(request, response);
+                return;
+            }
+
+            RefreshToken refreshToken = jwtTokenProvider.getRefreshToken(accessToken);
+
+            if(accessToken != null && jwtTokenProvider.validateToken(refreshToken.getRefreshToken())) {
+                Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken.getRefreshToken());
+                String newAccessToken = jwtTokenProvider.generateAccessToken(authentication);
+                response.setContentType(APPLICATION_JSON_VALUE);
+                response.setHeader("Authorization", newAccessToken);
+                response.setStatus(HttpServletResponse.SC_OK);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
                 filterChain.doFilter(request, response);
                 return;
