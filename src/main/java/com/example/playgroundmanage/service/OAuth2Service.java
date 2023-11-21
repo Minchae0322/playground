@@ -3,17 +3,15 @@ package com.example.playgroundmanage.service;
 import com.example.playgroundmanage.dto.OAuth2UserProfile;
 import com.example.playgroundmanage.repository.UserRepository;
 import com.example.playgroundmanage.type.OAuthAttributes;
-import com.example.playgroundmanage.vo.MyOauth2UserDetails;
+import com.example.playgroundmanage.vo.MyUserDetails;
 import com.example.playgroundmanage.vo.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
-import java.util.Collections;
 
 
 @Service
@@ -28,7 +26,7 @@ public class OAuth2Service implements OAuth2UserService<OAuth2UserRequest, OAuth
         OAuth2UserProfile oAuth2UserProfile = getOAuth2UserProfile(userRequest.getClientRegistration().getRegistrationId(), oAuth2User);
         User user = getUserInDatabase(oAuth2UserProfile);
 
-        return new MyOauth2UserDetails(user, oAuth2UserProfile.getAttributes(), Collections.singleton(new SimpleGrantedAuthority(user.getRole().getValue())));
+        return new MyUserDetails(user, oAuth2UserProfile.getAttributes());
     }
 
     private OAuth2User getOAuth2User(OAuth2UserRequest userRequest) {

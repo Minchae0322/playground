@@ -17,11 +17,14 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -99,7 +102,22 @@ public class JwtTokenProvider {
 
         // UserDetails 객체를 만들어서 Authentication 리턴
         User user = userService.getUser(claims.getSubject());
-        return new UsernamePasswordAuthenticationToken(user, "", authorities);
+
+        // Check the provider information and create the appropriate Authentication object
+        if ("own".equals(claims.get("provider"))) {
+            // Own provider (UsernamePasswordAuthenticationToken)
+            return new UsernamePasswordAuthenticationToken(user, "", authorities);
+        } else if ("oauth".equals(claims.get("provider"))) {
+            // OAuth provider (OAuth2AuthenticationToken)
+            OAuth2User oauth2User = new DefaultOAuth2User(
+                    authorities,
+                    null,  // Replace with your OAuth user attributes
+                    "username"            // Replace with the username attribute key
+            );
+            return new OAuth2AuthenticationToken(oauth2User, authorities, "oauth-client");
+        } else {
+            throw new IllegalArgumentException("Unknown provider type in the token");
+        }
     }
 
     public boolean validateToken(String token) {
@@ -109,7 +127,7 @@ public class JwtTokenProvider {
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("Invalid JWT Token", e);
         } catch (ExpiredJwtException e) {
-            return false;
+            log.info("Expired JWT Token", e);
         } catch (UnsupportedJwtException e) {
             log.info("Unsupported JWT Token", e);
         } catch (IllegalArgumentException e) {

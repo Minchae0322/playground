@@ -1,6 +1,8 @@
 package com.example.playgroundmanage.config;
 
 
+import com.example.playgroundmanage.auth.JwtAuthenticationFilter;
+import com.example.playgroundmanage.auth.JwtTokenProvider;
 import com.example.playgroundmanage.filter.UsernamePasswordCustomAuthenticationFilter;
 import com.example.playgroundmanage.handler.LoginFailureHandler;
 import com.example.playgroundmanage.handler.LoginSuccessHandler;
@@ -20,7 +22,10 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -35,10 +40,12 @@ public class WebSecurityConfig {
     private final UserRepository userRepository;
     private final OAuth2Service oAuth2Service;
 
+    private final JwtTokenProvider jwtTokenProvider;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                //.addFilterBefore(usernamePasswordCustomAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), AbstractAuthenticationProcessingFilter.class)
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.loginPage("/login"))
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.logoutUrl("/auth/logout")
                         .logoutSuccessUrl("/home"))

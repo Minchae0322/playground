@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.auth;
 
+import com.example.playgroundmanage.exception.TokenNotValidException;
 import com.example.playgroundmanage.vo.RefreshToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -25,9 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         List<String> list = List.of(
-                "/auth",
-                "/home",
-                "/board/posts");
+                "/auth");
 
         /*if (request.getMethod().equals("OPTIONS")) {
             response.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
@@ -44,30 +43,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             }
         }
 
-
+        //토큰이 존재하지 않으면 403 Exception
         String accessToken = resolveToken(request);
 
-            // 2. validateToken 으로 토큰 유효성 검사
-            if (accessToken != null && jwtTokenProvider.validateToken(accessToken)) {
-                // 토큰이 유효할 경우 토큰에서 Authentication 객체를 가지고 와서 SecurityContext 에 저장
-                Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                filterChain.doFilter(request, response);
-                return;
-            }
+        if (jwtTokenProvider.validateToken(accessToken)) {
+            // 토큰이 유효할 경우 토큰에서 Authentication 객체를 가지고 와서 SecurityContext 에 저장
+            Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request, response);
+            return;
+        }
+        RefreshToken refreshToken = jwtTokenProvider.getRefreshToken(accessToken);
 
-            RefreshToken refreshToken = jwtTokenProvider.getRefreshToken(accessToken);
+        if (jwtTokenProvider.validateToken(refreshToken.getRefreshToken())) {
 
-            if(accessToken != null && jwtTokenProvider.validateToken(refreshToken.getRefreshToken())) {
-                Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken.getRefreshToken());
-                String newAccessToken = jwtTokenProvider.generateAccessToken(authentication);
-                response.setContentType(APPLICATION_JSON_VALUE);
-                response.setHeader("Authorization", newAccessToken);
-                response.setStatus(HttpServletResponse.SC_OK);
-                SecurityContextHolder.getContext().setAuthentication(authentication);
-                filterChain.doFilter(request, response);
-                return;
-            }
+            Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken.getRefreshToken());
+            String newAccessToken = jwtTokenProvider.generateAccessToken(authentication);
+            response.setContentType(APPLICATION_JSON_VALUE);
+            response.setHeader("Authorization", newAccessToken);
+            response.setStatus(HttpServletResponse.SC_OK);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            filterChain.doFilter(request, response);
+            return;
+        }
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             //response.sendRedirect("/auth/login");
 
@@ -80,6 +78,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(bearerToken)) {
             return bearerToken;
         }
-        throw new IllegalArgumentException("토큰이 존재하지 않습니다.");
+        throw new TokenNotValidException();
     }
 }
