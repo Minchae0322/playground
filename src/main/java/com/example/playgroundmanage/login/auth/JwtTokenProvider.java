@@ -32,6 +32,9 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
+    public static final Long ACCESS_TOKEN_EXPIRATION = 3600L;
+    public static final Long REFRESH_TOKEN_EXPIRATION = 864000L;
+
     private final Key key;
 
     @Autowired
@@ -57,23 +60,35 @@ public class JwtTokenProvider {
     }
 
     private Claims getTokenClaims(Authentication authentication) {
+        Claims claims = Jwts.claims().setSubject(authentication.getName());
+
         String authorization = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
-        Claims claims = Jwts.claims().setSubject(authentication.getName());
         claims.put("auth", authorization);
-        if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            claims.put("provider", "own");
-        } else if (authentication instanceof OAuth2AuthenticationToken) {
-            claims.put("provider", "oauth");
-        }
+
+        String provider = determineProvider(authentication);
+        claims.put("provider", provider);
+
         return claims;
     }
 
+    private String determineProvider(Authentication authentication) {
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            return "own";
+        }
+        if (authentication instanceof OAuth2AuthenticationToken) {
+            return "oauth";
+        }
+        log.info("unknown token");
+        throw new IllegalArgumentException();
+    }
+
+
     public TokenInfo generateToken(Authentication authentication) {
-        String accessToken = generateToken(authentication, 3600L);
-        String refreshToken = generateToken(authentication, 864000L);
+        String accessToken = generateToken(authentication, ACCESS_TOKEN_EXPIRATION);
+        String refreshToken = generateToken(authentication, REFRESH_TOKEN_EXPIRATION);
 
         return TokenInfo.builder()
                 .grantType("USER")

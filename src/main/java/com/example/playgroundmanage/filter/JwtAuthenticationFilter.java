@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+import static com.example.playgroundmanage.login.auth.JwtTokenProvider.ACCESS_TOKEN_EXPIRATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @RequiredArgsConstructor
@@ -59,7 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         if (jwtTokenProvider.validateToken(refreshToken.getRefreshToken())) {
 
             Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken.getRefreshToken());
-            String newAccessToken = jwtTokenProvider.generateAccessToken(authentication);
+            String newAccessToken = jwtTokenProvider.generateToken(authentication, ACCESS_TOKEN_EXPIRATION);
             response.setContentType(APPLICATION_JSON_VALUE);
             response.setHeader("Authorization", newAccessToken);
             response.setStatus(HttpServletResponse.SC_OK);

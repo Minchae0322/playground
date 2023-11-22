@@ -40,7 +40,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, OAuth2UserSer
         return delegate.loadUser(userRequest);
     }
 
-    protected OAuth2UserProfile getOAuth2UserProfile(String registrationId, OAuth2User oAuth2User) {
+    public OAuth2UserProfile getOAuth2UserProfile(String registrationId, OAuth2User oAuth2User) {
         return OAuthAttributes.extract(registrationId, oAuth2User.getAttributes());
     }
 
