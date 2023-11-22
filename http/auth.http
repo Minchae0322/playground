@@ -1,0 +1,92 @@
+
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+  "username": "sss",
+  "password": "ddd",
+  "email": "dkdeeeekdkek@naekke.come",
+  "phoneNumber": "92918182i3"
+}
+
+###
+
+POST http://localhost:8080/auth/login
+Content-Type: application/x-www-form-urlencoded
+
+username=dddf&password=dddf
+
+###
+
+
+# @no-redirect
+POST http://localhost:8080/auth/login
+Content-Type:application/json
+
+{
+  "username": "sss",
+  "password": "ddd"
+}
+
+###
+
+POST http://localhost:8080/board/user/writePost
+Content-Type: multipart/form-data
+
+
+{
+  "title": "dddf",
+  "content": "dddf"
+
+}
+###
+
+PATCH http://localhost:8080/board/user/12
+Content-Type: multipart/form-data
+
+
+{
+  "title": "dddf",
+  "content": "dddf"
+
+}
+
+###
+
+GET http://localhost:8080/board/posts/list?page=1&size=5
+
+###
+GET http://localhost:8080/Info
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJwZ2RMV1AxYUlzZF9WRUcwWFd6UEtGLXFOeENiQmJ2c3Jwc0RFcmhpTllrIiwiYXV0aCI6IlVTRVIiLCJwcm92aWRlciI6Im9hdXRoIiwiZXhwIjoxNzAwNjUwMDY3fQ.zxjuZBho3Yg_jsZZECxhJOPEFRVkBlzlhof5y5jDRvs
+Refreshtoken: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJNaW5jaGFlMDMyMiIsImF1dGgiOiJVU0VSIiwicHJvdmlkZXIiOiJvYXV0aCIsImV4cCI6MTcwMDY0Njc0OH0.attEm1KzpQNVgD__js2ZELMKf-eFUZXxhEkVOq4DhhA
+OriginalUrl: /Info
+###
+
+GET http://localhost:8080/board/posts/103/image
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzc3MiLCJhdXRoIjoiVVNFUiIsImV4cCI6MTY5NDMyOTE1NX0.PNo7YRAejdSR7KFTJFErXdVfbtpKCgNaJhf_NKUVVp8
+
+###
+
+GET http://localhost:8080/board/posts/218
+Authorization: eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzc3MiLCJhdXRoIjoiVVNFUiIsImV4cCI6MTY5NTExOTE0Mn0.LcTzX27_J0o00YxNIR-oJlqjUm3izXAwfkHPqcx6uwI
+
+
+###
+
+POST http://localhost:8080/auth/sendMail
+Content-Type:application/json
+
+{
+  "email": "jmcabc0322@gamil.com"
+
+}
+
+###
+POST http://localhost:8080/auth/mailVerify
+Content-Type:application/json
+
+{
+  "email": "jmcabc0322@gamil.com",
+  "verificationCode" : "735554"
+
+}

@@ -4,6 +4,7 @@ package com.example.playgroundmanage.login.auth;
 
 import com.example.playgroundmanage.login.service.TokenService;
 import com.example.playgroundmanage.login.service.UserService;
+import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.login.vo.RefreshToken;
 import com.example.playgroundmanage.login.vo.User;
 import io.jsonwebtoken.*;
@@ -32,8 +33,8 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
-    public static final Long ACCESS_TOKEN_EXPIRATION = 60 * 60L;
-    public static final Long REFRESH_TOKEN_EXPIRATION = 30 * 24 * 60 * 60L;
+    public static final Long ACCESS_TOKEN_EXPIRATION = 60 * 60 * 1000L;
+    public static final Long REFRESH_TOKEN_EXPIRATION = 30 * 24 * 60 * 60 * 1000L;
 
     private final Key key;
 
@@ -121,11 +122,8 @@ public class JwtTokenProvider {
             return new UsernamePasswordAuthenticationToken(user, "", authorities);
         } else if ("oauth".equals(claims.get("provider"))) {
             // OAuth provider (OAuth2AuthenticationToken)
-            OAuth2User oauth2User = new DefaultOAuth2User(
-                    authorities,
-                    null,  // Replace with your OAuth user attributes
-                    "username"            // Replace with the username attribute key
-            );
+            OAuth2User oauth2User = new MyUserDetails(user);      // Replace with the username attribute key
+
             return new OAuth2AuthenticationToken(oauth2User, authorities, "oauth-client");
         } else {
             throw new IllegalArgumentException("Unknown provider type in the token");

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class UserController {
-    @GetMapping("/loginInfo")
+    @GetMapping("/Info")
     public String getJson(@AuthenticationPrincipal MyUserDetails userDetails) {
 
         userDetails.getName();

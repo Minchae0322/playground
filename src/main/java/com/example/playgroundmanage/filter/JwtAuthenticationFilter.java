@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String resolveAccessToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("AccessToken");
+        String bearerToken = request.getHeader("Authorization");
         if (StringUtils.hasText(bearerToken)) {
             return bearerToken;
         }
@@ -60,8 +60,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         List<String> list = List.of(
                 "/auth"
                 , "/token/refresh"
-                , "/login"
-                , "/loginInfo");
+                , "/login");
 
         return list.stream()
                 .filter(s -> s.contains(url))
