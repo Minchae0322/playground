@@ -65,6 +65,5 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         return list.stream()
                 .filter(s -> s.contains(url))
                 .toList().size() != 0;
-
     }
 }
