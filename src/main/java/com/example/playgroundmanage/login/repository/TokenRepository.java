@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface TokenRepository extends JpaRepository<RefreshToken, Long> {
     Optional<RefreshToken> findByUsername(String username);
+
+    boolean existsRefreshTokenByUsername(String username);
 }

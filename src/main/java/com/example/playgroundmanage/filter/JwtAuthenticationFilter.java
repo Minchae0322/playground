@@ -27,59 +27,44 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        List<String> list = List.of(
-                "/auth");
 
-        /*if (request.getMethod().equals("OPTIONS")) {
-            response.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-
-            response.setHeader("Access-Control-Allow-Headers", "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers, Authorization");
+        if(skipFilter(request.getRequestURI())) {
+            filterChain.doFilter(request, response);
             return;
-        }*/
-
-        String url = String.valueOf(request.getRequestURL());
-        for (String s : list) {
-            if (url.contains(s)) {
-                filterChain.doFilter(request, response);
-                return;
-            }
         }
 
         //토큰이 존재하지 않으면 403 Exception
-        String accessToken = resolveToken(request);
+        String accessToken = resolveAccessToken(request);
 
         if (jwtTokenProvider.validateToken(accessToken)) {
-            // 토큰이 유효할 경우 토큰에서 Authentication 객체를 가지고 와서 SecurityContext 에 저장
             Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             filterChain.doFilter(request, response);
             return;
         }
-        RefreshToken refreshToken = jwtTokenProvider.getRefreshToken(accessToken);
-
-        if (jwtTokenProvider.validateToken(refreshToken.getRefreshToken())) {
-
-            Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken.getRefreshToken());
-            String newAccessToken = jwtTokenProvider.generateToken(authentication, ACCESS_TOKEN_EXPIRATION);
-            response.setContentType(APPLICATION_JSON_VALUE);
-            response.setHeader("Authorization", newAccessToken);
-            response.setStatus(HttpServletResponse.SC_OK);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
-            filterChain.doFilter(request, response);
-            return;
-        }
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            //response.sendRedirect("/auth/login");
-
-
-
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.sendRedirect("/token/refresh");
     }
 
-    private String resolveToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
+    private String resolveAccessToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("AccessToken");
         if (StringUtils.hasText(bearerToken)) {
             return bearerToken;
         }
+
         throw new TokenNotValidException();
+    }
+
+    private boolean skipFilter(String url) {
+        List<String> list = List.of(
+                "/auth"
+                , "/token/refresh"
+                , "/login"
+                , "/loginInfo");
+
+        return list.stream()
+                .filter(s -> s.contains(url))
+                .toList().size() != 0;
+
     }
 }
