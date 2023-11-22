@@ -1,10 +1,10 @@
-package com.example.playgroundmanage.service;
+package com.example.playgroundmanage.login.service;
 
-import com.example.playgroundmanage.dto.UserSignupForm;
+import com.example.playgroundmanage.login.dto.UserSignupForm;
 import com.example.playgroundmanage.exception.ExistUserException;
-import com.example.playgroundmanage.repository.UserRepository;
+import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.type.UserRole;
-import com.example.playgroundmanage.vo.User;
+import com.example.playgroundmanage.login.vo.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

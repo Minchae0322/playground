@@ -1,6 +1,6 @@
-package com.example.playgroundmanage.repository;
+package com.example.playgroundmanage.login.repository;
 
-import com.example.playgroundmanage.vo.RefreshToken;
+import com.example.playgroundmanage.login.vo.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

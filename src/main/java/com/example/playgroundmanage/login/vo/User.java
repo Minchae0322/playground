@@ -1,15 +1,12 @@
-package com.example.playgroundmanage.vo;
+package com.example.playgroundmanage.login.vo;
 
 
 
-import com.example.playgroundmanage.dto.UserEdit;
+import com.example.playgroundmanage.login.dto.UserEdit;
 import com.example.playgroundmanage.type.UserRole;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.hibernate.annotations.DynamicUpdate;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.io.Serializable;
 

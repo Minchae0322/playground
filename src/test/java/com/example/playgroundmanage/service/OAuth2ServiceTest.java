@@ -1,18 +1,17 @@
 package com.example.playgroundmanage.service;
 
-import com.example.playgroundmanage.dto.OAuth2UserProfile;
-import com.example.playgroundmanage.repository.UserRepository;
+import com.example.playgroundmanage.login.dto.OAuth2UserProfile;
+import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
+import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.type.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +27,7 @@ class OAuth2ServiceTest {
     @Autowired
     private UserRepository userRepository;
     @Autowired
-    private OAuth2Service oAuth2Service;
+    private UserDetailsServiceImpl oAuth2Service;
 
     @BeforeEach
     void before() {

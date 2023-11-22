@@ -1,15 +1,14 @@
 package com.example.playgroundmanage.config;
 
 
-import com.example.playgroundmanage.auth.JwtAuthenticationFilter;
-import com.example.playgroundmanage.auth.JwtTokenProvider;
+import com.example.playgroundmanage.filter.JwtAuthenticationFilter;
+import com.example.playgroundmanage.login.auth.JwtTokenProvider;
 import com.example.playgroundmanage.filter.UsernamePasswordCustomAuthenticationFilter;
-import com.example.playgroundmanage.handler.LoginFailureHandler;
-import com.example.playgroundmanage.handler.LoginSuccessHandler;
-import com.example.playgroundmanage.handler.Oauth2LoginSuccessHandler;
-import com.example.playgroundmanage.repository.UserRepository;
-import com.example.playgroundmanage.service.OAuth2Service;
-import com.example.playgroundmanage.service.UserDetailsServiceImpl;
+import com.example.playgroundmanage.login.handler.LoginFailureHandler;
+import com.example.playgroundmanage.login.handler.LoginSuccessHandler;
+import com.example.playgroundmanage.login.handler.Oauth2LoginSuccessHandler;
+import com.example.playgroundmanage.login.repository.UserRepository;
+import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,13 +18,10 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
@@ -38,7 +34,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 public class WebSecurityConfig {
 
     private final UserRepository userRepository;
-    private final OAuth2Service oAuth2Service;
+    private final UserDetailsServiceImpl userDetailsService;
 
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -53,7 +49,7 @@ public class WebSecurityConfig {
                 .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
                         .defaultSuccessUrl("/loginInfo")
                         .successHandler(new Oauth2LoginSuccessHandler())
-                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(oAuth2Service))
+                        .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(userDetailsService))
                 )
                 //.sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
@@ -75,7 +71,7 @@ public class WebSecurityConfig {
     @Bean
     public AuthenticationManager authenticationManage() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(new UserDetailsServiceImpl(userRepository, passwordEncoder()));
+        provider.setUserDetailsService(new UserDetailsServiceImpl(userRepository));
         provider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(provider);
     }

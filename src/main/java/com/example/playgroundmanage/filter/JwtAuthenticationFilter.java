@@ -1,7 +1,8 @@
-package com.example.playgroundmanage.auth;
+package com.example.playgroundmanage.filter;
 
+import com.example.playgroundmanage.login.auth.JwtTokenProvider;
 import com.example.playgroundmanage.exception.TokenNotValidException;
-import com.example.playgroundmanage.vo.RefreshToken;
+import com.example.playgroundmanage.login.vo.RefreshToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

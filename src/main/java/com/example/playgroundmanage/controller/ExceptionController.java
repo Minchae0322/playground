@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.exception.TokenNotValidException;
-import com.example.playgroundmanage.response.ErrorResponse;
+import com.example.playgroundmanage.login.response.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;

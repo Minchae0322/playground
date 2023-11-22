@@ -1,9 +1,8 @@
-package com.example.playgroundmanage.repository;
+package com.example.playgroundmanage.login.repository;
 
 
-import com.example.playgroundmanage.vo.User;
+import com.example.playgroundmanage.login.vo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 

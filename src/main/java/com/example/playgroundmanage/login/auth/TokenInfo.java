@@ -1,7 +1,6 @@
-package com.example.playgroundmanage.auth;
+package com.example.playgroundmanage.login.auth;
 
 
-import com.example.playgroundmanage.vo.RefreshToken;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

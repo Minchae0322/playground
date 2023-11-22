@@ -1,6 +1,5 @@
-package com.example.playgroundmanage.vo;
+package com.example.playgroundmanage.login.vo;
 
-import com.example.playgroundmanage.dto.TokenEdit;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

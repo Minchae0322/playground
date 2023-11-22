@@ -1,8 +1,10 @@
 package com.example.playgroundmanage.service;
 
-import com.example.playgroundmanage.dto.UserSignupForm;
+import com.example.playgroundmanage.login.dto.UserSignupForm;
 import com.example.playgroundmanage.exception.FormatException;
-import com.example.playgroundmanage.repository.UserRepository;
+import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
+import com.example.playgroundmanage.login.service.UserService;
+import com.example.playgroundmanage.login.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,9 @@ class UserDetailsServiceImplTest {
     private UserDetailsServiceImpl userDetailsService;
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     @BeforeEach
@@ -36,7 +41,7 @@ class UserDetailsServiceImplTest {
                 .username("abcde")
                 .password("asdf1234")
                 .build();
-        userDetailsService.signup(userSignupForm);
+        userService.signup(userSignupForm);
 
         assertEquals(1, userRepository.count());
         assertTrue(userRepository.existsByUsername("abcde"));
@@ -48,7 +53,7 @@ class UserDetailsServiceImplTest {
                 .username("abc%%de")
                 .password("!asdf1234")
                 .build();
-        assertThrows(FormatException.class, () -> userDetailsService.signup(userSignupForm));
+        assertThrows(FormatException.class, () ->  userService.signup(userSignupForm));
     }
 
     @Test
@@ -57,7 +62,7 @@ class UserDetailsServiceImplTest {
                 .username("12abcde")
                 .password("asdf1234")
                 .build();
-        assertThrows(FormatException.class, () -> userDetailsService.signup(userSignupForm));
+        assertThrows(FormatException.class, () ->  userService.signup(userSignupForm));
     }
 
     @Test
@@ -66,7 +71,7 @@ class UserDetailsServiceImplTest {
                 .username("abcde")
                 .password("asdf14")
                 .build();
-        assertThrows(FormatException.class, () -> userDetailsService.signup(userSignupForm));
+        assertThrows(FormatException.class, () ->  userService.signup(userSignupForm));
     }
 
     @Test
@@ -75,7 +80,7 @@ class UserDetailsServiceImplTest {
                 .username("abcde")
                 .password("asdf14aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
                 .build();
-        assertThrows(FormatException.class, () -> userDetailsService.signup(userSignupForm));
+        assertThrows(FormatException.class, () ->  userService.signup(userSignupForm));
     }
 
     @Test
@@ -84,7 +89,7 @@ class UserDetailsServiceImplTest {
                 .username("abcde")
                 .password("asdf1234")
                 .build();
-        userDetailsService.signup(userSignupForm);
+        userService.signup(userSignupForm);
         UserDetails userDetails = userDetailsService.loadUserByUsername(userSignupForm.getUsername());
         assertEquals("abcde", userDetails.getUsername());
         assertThat(passwordEncoder.matches("asdf1234",userDetails.getPassword())).isTrue();

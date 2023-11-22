@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.handler;
+package com.example.playgroundmanage.login.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,9 +8,9 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 import java.io.IOException;
 
-public class LoginFailureHandler implements AuthenticationFailureHandler {
+public class Oauth2LoginFailureHandler implements AuthenticationFailureHandler {
     @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-        //todo 구현
+
     }
 }

@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.handler;
+package com.example.playgroundmanage.login.handler;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

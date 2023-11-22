@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.response;
+package com.example.playgroundmanage.login.response;
 
 import lombok.Builder;
 import lombok.Getter;

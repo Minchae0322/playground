@@ -1,23 +1,18 @@
-package com.example.playgroundmanage.auth;
+package com.example.playgroundmanage.login.auth;
 
 
 
-import com.example.playgroundmanage.exception.IsExpiredToken;
-import com.example.playgroundmanage.repository.TokenRepository;
-import com.example.playgroundmanage.repository.UserRepository;
-import com.example.playgroundmanage.service.TokenService;
-import com.example.playgroundmanage.service.UserService;
-import com.example.playgroundmanage.vo.RefreshToken;
-import com.example.playgroundmanage.vo.User;
+import com.example.playgroundmanage.login.service.TokenService;
+import com.example.playgroundmanage.login.service.UserService;
+import com.example.playgroundmanage.login.vo.RefreshToken;
+import com.example.playgroundmanage.login.vo.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -51,29 +46,34 @@ public class JwtTokenProvider {
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateAccessToken(Authentication authentication) {
+    public String generateToken(Authentication authentication, Long expirationFromCreated) {
         Claims claims = getTokenClaims(authentication);
 
         return Jwts.builder()
                 .setClaims(claims)
-                .setExpiration(getTokenExpiresIn(3600))
+                .setExpiration(getTokenExpiresIn(expirationFromCreated))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    public String generateRefreshToken(Authentication authentication) {
-        Claims claims = getTokenClaims(authentication);
+    private Claims getTokenClaims(Authentication authentication) {
+        String authorization = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .collect(Collectors.joining(","));
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setExpiration(getTokenExpiresIn(864000))
-                .signWith(key, SignatureAlgorithm.HS256)
-                .compact();
+        Claims claims = Jwts.claims().setSubject(authentication.getName());
+        claims.put("auth", authorization);
+        if (authentication instanceof UsernamePasswordAuthenticationToken) {
+            claims.put("provider", "own");
+        } else if (authentication instanceof OAuth2AuthenticationToken) {
+            claims.put("provider", "oauth");
+        }
+        return claims;
     }
 
     public TokenInfo generateToken(Authentication authentication) {
-        String accessToken = generateAccessToken(authentication);
-        String refreshToken = generateRefreshToken(authentication);
+        String accessToken = generateToken(authentication, 3600L);
+        String refreshToken = generateToken(authentication, 864000L);
 
         return TokenInfo.builder()
                 .grantType("USER")
@@ -141,20 +141,7 @@ public class JwtTokenProvider {
         return new Date(now + nowToAfterSecond);
     }
 
-    private Claims getTokenClaims(Authentication authentication) {
-        String authorization = authentication.getAuthorities().stream()
-                .map(GrantedAuthority::getAuthority)
-                .collect(Collectors.joining(","));
 
-        Claims claims = Jwts.claims().setSubject(authentication.getName());
-        claims.put("auth", authorization);
-        if (authentication instanceof UsernamePasswordAuthenticationToken) {
-            claims.put("provider", "own");
-        } else if (authentication instanceof OAuth2AuthenticationToken) {
-            claims.put("provider", "oauth");
-        }
-        return claims;
-    }
     private Claims parseClaims(String accessToken) {
         try {
             return Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(accessToken).getBody();

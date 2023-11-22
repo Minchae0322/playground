@@ -1,8 +1,8 @@
-package com.example.playgroundmanage.service;
+package com.example.playgroundmanage.login.service;
 
-import com.example.playgroundmanage.dto.TokenEdit;
-import com.example.playgroundmanage.repository.TokenRepository;
-import com.example.playgroundmanage.vo.RefreshToken;
+import com.example.playgroundmanage.login.dto.TokenEdit;
+import com.example.playgroundmanage.login.repository.TokenRepository;
+import com.example.playgroundmanage.login.vo.RefreshToken;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

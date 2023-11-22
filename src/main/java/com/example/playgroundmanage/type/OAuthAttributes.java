@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.type;
 
-import com.example.playgroundmanage.dto.OAuth2UserProfile;
+import com.example.playgroundmanage.login.dto.OAuth2UserProfile;
 
 import java.util.Arrays;
 import java.util.Map;
