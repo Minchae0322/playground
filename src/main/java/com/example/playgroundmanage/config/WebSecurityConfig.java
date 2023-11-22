@@ -2,6 +2,7 @@ package com.example.playgroundmanage.config;
 
 
 import com.example.playgroundmanage.filter.JwtAuthenticationFilter;
+import com.example.playgroundmanage.filter.JwtRefreshTokenFilter;
 import com.example.playgroundmanage.login.auth.JwtTokenProvider;
 import com.example.playgroundmanage.filter.UsernamePasswordCustomAuthenticationFilter;
 import com.example.playgroundmanage.login.handler.LoginFailureHandler;
@@ -18,6 +19,7 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
@@ -40,7 +42,9 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthenticationFilter(), JwtRefreshTokenFilter.class)
+                .addFilterBefore(jwtRefreshTokenFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtRefreshTokenFilter(), OAuth2LoginAuthenticationFilter.class)
                 .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.loginPage("/login"))
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.logoutUrl("/auth/logout")
                         .logoutSuccessUrl("/home"))
@@ -53,6 +57,16 @@ public class WebSecurityConfig {
                 //.sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .build();
+    }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter(jwtTokenProvider);
+    }
+
+    @Bean
+    public JwtRefreshTokenFilter jwtRefreshTokenFilter() {
+        return new JwtRefreshTokenFilter(jwtTokenProvider);
     }
 
     @Bean

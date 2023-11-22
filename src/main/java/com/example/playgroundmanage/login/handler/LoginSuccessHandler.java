@@ -4,12 +4,9 @@ import com.example.playgroundmanage.login.auth.JwtTokenProvider;
 import com.example.playgroundmanage.login.auth.TokenInfo;
 import com.example.playgroundmanage.login.dto.TokenEdit;
 import com.example.playgroundmanage.login.service.TokenService;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.Remove;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
@@ -25,7 +22,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
-        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+        TokenInfo tokenInfo = jwtTokenProvider.generateAccessAndRefreshTokens(authentication);
 
         TokenEdit tokenEdit = TokenEdit.builder()
                 .username(authentication.getName())
@@ -36,6 +33,7 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
         response.setHeader("Authorization", tokenInfo.getAccessToken());
         response.setHeader("RefreshToken", tokenInfo.getRefreshToken());
-        response.sendRedirect("/loginInfo");
+        response.setStatus(HttpServletResponse.SC_OK);
+        //response.sendRedirect("/loginInfo");
     }
 }

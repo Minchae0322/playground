@@ -32,8 +32,8 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
 
-    public static final Long ACCESS_TOKEN_EXPIRATION = 3600L;
-    public static final Long REFRESH_TOKEN_EXPIRATION = 864000L;
+    public static final Long ACCESS_TOKEN_EXPIRATION = 60 * 60L;
+    public static final Long REFRESH_TOKEN_EXPIRATION = 30 * 24 * 60 * 60L;
 
     private final Key key;
 
@@ -50,7 +50,7 @@ public class JwtTokenProvider {
     }
 
     public String generateToken(Authentication authentication, Long expirationFromCreated) {
-        Claims claims = getTokenClaims(authentication);
+        Claims claims = generateTokenClaims(authentication);
 
         return Jwts.builder()
                 .setClaims(claims)
@@ -59,7 +59,7 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    private Claims getTokenClaims(Authentication authentication) {
+    private Claims generateTokenClaims(Authentication authentication) {
         Claims claims = Jwts.claims().setSubject(authentication.getName());
 
         String authorization = authentication.getAuthorities().stream()
@@ -86,7 +86,7 @@ public class JwtTokenProvider {
     }
 
 
-    public TokenInfo generateToken(Authentication authentication) {
+    public TokenInfo generateAccessAndRefreshTokens(Authentication authentication) {
         String accessToken = generateToken(authentication, ACCESS_TOKEN_EXPIRATION);
         String refreshToken = generateToken(authentication, REFRESH_TOKEN_EXPIRATION);
 
@@ -97,9 +97,6 @@ public class JwtTokenProvider {
                 .build();
     }
 
-    public RefreshToken getRefreshToken(String username) {
-        return tokenService.getRefreshToken(username);
-    }
 
     public Authentication getAuthentication(String accessToken) {
         // 토큰 복호화

@@ -43,6 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setHeader("OriginalUrl", request.getRequestURI());
         response.sendRedirect("/token/refresh");
     }
 
