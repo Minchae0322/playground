@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.login.vo;
+package com.example.playgroundmanage.vo;
 
 
 
@@ -9,16 +9,18 @@ import jakarta.transaction.Transactional;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
 @Getter
 @RequiredArgsConstructor
+@Builder
 public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
 
     private String username;
     private String provider;
@@ -36,18 +38,11 @@ public class User implements Serializable{
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @Builder
-    public User( Long id, String email, String username, String password, String phoneNumber, String provider, String nickname, boolean isEnable, UserRole role) {
-        this.id = id;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.phoneNumber = phoneNumber;
-        this.provider = provider;
-        this.nickname = nickname;
-        this.isEnable = isEnable;
-        this.role = role;
-    }
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Teaming> teams = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<MatchParticipant> matchParticipants;
 
     @Transactional
     public User update(UserEdit userEdit) {

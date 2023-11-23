@@ -4,7 +4,7 @@ import com.example.playgroundmanage.login.dto.TokenEdit;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.service.TokenService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
-import com.example.playgroundmanage.login.vo.User;
+import com.example.playgroundmanage.vo.User;
 import com.example.playgroundmanage.type.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -39,14 +39,12 @@ public class JwtTokenTest {
     @Autowired
     private MockMvc mockMvc;
 
-    private User testUser;
-
     private Authentication oAuth2User;
 
     @BeforeEach
     void before() {
         userRepository.deleteAll();
-        testUser = User.builder()
+        User testUser = User.builder()
                 .username("testUser")
                 .provider("own")
                 .role(UserRole.USER)

@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.login.repository;
 
 
-import com.example.playgroundmanage.login.vo.User;
+import com.example.playgroundmanage.vo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

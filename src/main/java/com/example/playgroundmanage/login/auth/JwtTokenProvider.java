@@ -2,11 +2,9 @@ package com.example.playgroundmanage.login.auth;
 
 
 
-import com.example.playgroundmanage.login.service.TokenService;
 import com.example.playgroundmanage.login.service.UserService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
-import com.example.playgroundmanage.login.vo.RefreshToken;
-import com.example.playgroundmanage.login.vo.User;
+import com.example.playgroundmanage.vo.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -19,7 +17,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
-import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
 

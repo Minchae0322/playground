@@ -4,7 +4,7 @@ import com.example.playgroundmanage.login.dto.OAuth2UserProfile;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.type.OAuthAttributes;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
-import com.example.playgroundmanage.login.vo.User;
+import com.example.playgroundmanage.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

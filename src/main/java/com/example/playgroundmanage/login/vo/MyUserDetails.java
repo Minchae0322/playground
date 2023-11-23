@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.login.vo;
 
 
+import com.example.playgroundmanage.vo.User;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
