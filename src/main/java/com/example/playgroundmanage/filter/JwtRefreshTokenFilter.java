@@ -34,6 +34,7 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
             response.setHeader("Authorization", accessToken);
             response.setHeader("redirect_url", resolveOriginalUrl(request));
             response.setStatus(HttpServletResponse.SC_OK);
+            return;
         }
         response.setStatus(HttpServletResponse.SC_FORBIDDEN);
     }
