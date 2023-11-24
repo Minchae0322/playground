@@ -35,6 +35,16 @@ public class User implements Serializable{
 
     private boolean isEnable;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<Teaming> teams = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<MatchParticipant> matchParticipants = new ArrayList<>();
+
+
     @Builder
     public User(Long id, String username, String provider, String email, String password, String phoneNumber, String nickname, boolean isEnable, UserRole role, List<Teaming> teams, List<MatchParticipant> matchParticipants) {
         this.id = id;
@@ -49,15 +59,6 @@ public class User implements Serializable{
         this.teams = teams;
         this.matchParticipants = matchParticipants;
     }
-
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Teaming> teams = new ArrayList<>();
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<MatchParticipant> matchParticipants = new ArrayList<>();
 
     @Transactional
     public User update(UserEdit userEdit) {
