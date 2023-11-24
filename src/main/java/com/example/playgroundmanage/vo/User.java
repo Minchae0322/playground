@@ -16,7 +16,6 @@ import java.util.List;
 @Entity
 @Getter
 @RequiredArgsConstructor
-@Builder
 public class User implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +34,21 @@ public class User implements Serializable{
     private String nickname;
 
     private boolean isEnable;
+
+    @Builder
+    public User(Long id, String username, String provider, String email, String password, String phoneNumber, String nickname, boolean isEnable, UserRole role, List<Teaming> teams, List<MatchParticipant> matchParticipants) {
+        this.id = id;
+        this.username = username;
+        this.provider = provider;
+        this.email = email;
+        this.password = password;
+        this.phoneNumber = phoneNumber;
+        this.nickname = nickname;
+        this.isEnable = isEnable;
+        this.role = role;
+        this.teams = teams;
+        this.matchParticipants = matchParticipants;
+    }
 
     @Enumerated(EnumType.STRING)
     private UserRole role;

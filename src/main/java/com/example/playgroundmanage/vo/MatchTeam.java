@@ -18,10 +18,10 @@ public class MatchTeam {
     @OneToOne
     private Match match;
 
-    @OneToMany(mappedBy = "match_team")
+    @OneToMany(mappedBy = "matchTeam")
     private List<MatchParticipantTeam> matchParticipantTeams;
 
-    @OneToMany(mappedBy = "match_team")
+    @OneToMany(mappedBy = "matchTeam")
     private List<MatchParticipant> matchParticipants;
 
     private MatchResult matchResult;

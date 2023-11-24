@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.login.repository;
+package com.example.playgroundmanage.repository;
 
 
 import com.example.playgroundmanage.vo.User;

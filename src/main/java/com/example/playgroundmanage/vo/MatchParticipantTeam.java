@@ -18,7 +18,7 @@ public class MatchParticipantTeam {
     private Team team;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-    private MatchTeam match;
+    private MatchTeam matchTeam;
 
 
 }

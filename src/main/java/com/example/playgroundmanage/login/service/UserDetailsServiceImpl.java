@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.login.service;
 
 import com.example.playgroundmanage.login.dto.OAuth2UserProfile;
-import com.example.playgroundmanage.login.repository.UserRepository;
+import com.example.playgroundmanage.repository.UserRepository;
 import com.example.playgroundmanage.type.OAuthAttributes;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.vo.User;

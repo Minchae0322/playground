@@ -4,7 +4,7 @@ import com.example.playgroundmanage.login.dto.UserSignupForm;
 import com.example.playgroundmanage.exception.FormatException;
 import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
 import com.example.playgroundmanage.login.service.UserService;
-import com.example.playgroundmanage.login.repository.UserRepository;
+import com.example.playgroundmanage.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

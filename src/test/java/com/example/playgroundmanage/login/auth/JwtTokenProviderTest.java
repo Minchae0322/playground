@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.login.auth;
 
-import com.example.playgroundmanage.login.repository.UserRepository;
+import com.example.playgroundmanage.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.vo.User;
 import com.example.playgroundmanage.type.UserRole;

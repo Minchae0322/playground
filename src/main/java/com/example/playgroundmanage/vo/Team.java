@@ -10,7 +10,6 @@ import java.util.List;
 
 @Entity
 @RequiredArgsConstructor
-@Builder
 public class Team {
 
     @Id
@@ -24,12 +23,19 @@ public class Team {
     @Enumerated
     private SportsEvent sportsEvent;
 
-    @OneToMany(mappedBy = "team")
-    private List<Match> matchResult;
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<MatchParticipantTeam> matchParticipantTeams = new ArrayList<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Teaming> members = new ArrayList<>();
+
+    @Builder
+    public Team(Long id, String teamName, String teamPic, SportsEvent sportsEvent, List<MatchParticipantTeam> matchParticipantTeams, List<Teaming> members) {
+        this.id = id;
+        this.teamName = teamName;
+        this.teamPic = teamPic;
+        this.sportsEvent = sportsEvent;
+        this.matchParticipantTeams = matchParticipantTeams;
+        this.members = members;
+    }
 }

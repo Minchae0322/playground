@@ -2,7 +2,7 @@ package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.login.dto.OAuth2UserProfile;
 import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
-import com.example.playgroundmanage.login.repository.UserRepository;
+import com.example.playgroundmanage.repository.UserRepository;
 import com.example.playgroundmanage.type.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
