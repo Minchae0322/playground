@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @RequiredArgsConstructor
@@ -18,8 +20,11 @@ public class Match {
     @OneToOne
     private MatchTeam awayTeam;
 
-    @OneToOne
-    private MatchResult matchResult;
+    private Integer homeScore;
+
+    private Integer awayScore;
+
+    private LocalDate matchStart;
 
     private boolean isStarted;
 

@@ -23,6 +23,7 @@ public class User implements Serializable{
     private Long id;
 
     private String username;
+
     private String provider;
 
     private String email;
@@ -42,7 +43,7 @@ public class User implements Serializable{
     private List<Teaming> teams = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<MatchParticipant> matchParticipants;
+    private List<MatchParticipant> matchParticipants = new ArrayList<>();
 
     @Transactional
     public User update(UserEdit userEdit) {

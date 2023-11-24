@@ -14,9 +14,11 @@ public class MatchParticipantTeam {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Team team;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private MatchTeam match;
+
+
 }

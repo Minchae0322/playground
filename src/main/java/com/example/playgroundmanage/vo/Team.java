@@ -25,8 +25,10 @@ public class Team {
     private SportsEvent sportsEvent;
 
     @OneToMany(mappedBy = "team")
-    private List<MatchResult> matchResult;
+    private List<Match> matchResult;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<MatchParticipantTeam> matchParticipantTeams = new ArrayList<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Teaming> members = new ArrayList<>();
