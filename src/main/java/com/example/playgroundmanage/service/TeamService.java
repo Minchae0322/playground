@@ -5,11 +5,11 @@ import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.repository.TeamRepository;
 import com.example.playgroundmanage.vo.Team;
 import com.example.playgroundmanage.vo.Teaming;
+import com.example.playgroundmanage.vo.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.Member;
 import java.util.List;
 
 @Service
@@ -37,9 +37,13 @@ public class TeamService {
         return team;
     }
 
-    public List<Teaming> getTeamMembers(Long teamId) {
+    public List<User> getTeamMembers(Long teamId) {
         Team team = teamRepository.findById(teamId).orElseThrow(TeamNotExistException::new);
-        return team.getMembers();
+        List<Teaming> teamUserRelations = teamingService.getTeamUserRelations(team);
+
+        return teamUserRelations.stream()
+                .map(Teaming::getUser)
+                .toList();
     }
 
 }

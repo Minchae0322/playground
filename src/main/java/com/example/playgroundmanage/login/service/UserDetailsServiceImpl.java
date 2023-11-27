@@ -35,14 +35,16 @@ public class UserDetailsServiceImpl implements UserDetailsService, OAuth2UserSer
         return new MyUserDetails(user, oAuth2UserProfile.getAttributes());
     }
 
+    public OAuth2UserProfile getOAuth2UserProfile(String registrationId, OAuth2User oAuth2User) {
+        return OAuthAttributes.extract(registrationId, oAuth2User.getAttributes());
+    }
+
+
     private OAuth2User getOAuth2User(OAuth2UserRequest userRequest) {
         OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
         return delegate.loadUser(userRequest);
     }
 
-    public OAuth2UserProfile getOAuth2UserProfile(String registrationId, OAuth2User oAuth2User) {
-        return OAuthAttributes.extract(registrationId, oAuth2User.getAttributes());
-    }
 
     private User getUserInDatabase(OAuth2UserProfile oAuth2UserProfile) {
         return userRepository.findByUsernameAndProvider(oAuth2UserProfile.getUsername(), oAuth2UserProfile.getProvider())

@@ -7,6 +7,8 @@ import com.example.playgroundmanage.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class TeamingService {
@@ -18,6 +20,10 @@ public class TeamingService {
                 .team(team)
                 .build();
         return teamingRepository.save(teaming);
+    }
+
+    public List<Teaming> getTeamUserRelations(Team team) {
+        return teamingRepository.findAllByTeam(team);
     }
 
 }

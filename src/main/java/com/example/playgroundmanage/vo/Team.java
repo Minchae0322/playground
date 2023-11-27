@@ -2,6 +2,7 @@ package com.example.playgroundmanage.vo;
 
 import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,6 @@ public class Team {
     private String teamPic;
 
     @OneToOne
-    @PrimaryKeyJoinColumn()
     private User leader;
 
     @Enumerated
@@ -45,6 +45,7 @@ public class Team {
         this.matchParticipantTeams = matchParticipantTeams;
         this.members = members;
     }
+
 
     public void addMember(User user) {
         Teaming teaming = Teaming.builder()
