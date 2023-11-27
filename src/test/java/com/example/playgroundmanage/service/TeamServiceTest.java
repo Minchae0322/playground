@@ -79,4 +79,18 @@ class TeamServiceTest {
 
     }
 
+    @Test
+    void getTeamLeader() {
+        TeamRegistration teamRegistration = TeamRegistration.builder()
+                .teamName("testTeam")
+                .teamPic("teamPic")
+                .sportsEvent(SportsEvent.SOCCER)
+                .leader(testUser)
+                .build();
+        Team team = teamService.generateTeam(teamRegistration);
+
+        assertEquals("test", team.getLeader().getUsername());
+
+    }
+
 }

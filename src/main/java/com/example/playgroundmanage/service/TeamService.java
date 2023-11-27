@@ -3,9 +3,12 @@ package com.example.playgroundmanage.service;
 import com.example.playgroundmanage.dto.TeamRegistration;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.repository.TeamRepository;
+import com.example.playgroundmanage.type.MatchResult;
+import com.example.playgroundmanage.vo.MatchParticipantTeam;
 import com.example.playgroundmanage.vo.Team;
 import com.example.playgroundmanage.vo.Teaming;
 import com.example.playgroundmanage.vo.User;
+import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +22,8 @@ public class TeamService {
     private final TeamRepository teamRepository;
 
     private final TeamingService teamingService;
+
+    private final MatchService matchService;
 
     @Transactional
     public Team saveTeam(TeamRegistration teamRegistration) {
@@ -44,6 +49,15 @@ public class TeamService {
         return teamUserRelations.stream()
                 .map(Teaming::getUser)
                 .toList();
+    }
+
+    public Integer getTeamMatchResultNumbers(Long teamId, MatchResult matchResult) {
+        Team team = teamRepository.findById(teamId).orElseThrow(TeamNotExistException::new);
+        List<MatchParticipantTeam> matchParticipantTeams = matchService.getTeamParticipatedMatch(team);
+
+        return matchParticipantTeams.stream()
+                .filter(m -> m.getMatchTeam().getMatchResult() == matchResult)
+                .toList().size();
     }
 
 }
