@@ -54,11 +54,11 @@ public class MatchService {
     }
 
 
-    public Match addHomeTeam(MatchTeamRegistration matchTeamRegistration) {
+    public Match addTeam(MatchTeamRegistration matchTeamRegistration) {
         Match match = matchRepository.findById(matchTeamRegistration.getMatchId())
                 .orElseThrow(MatchNotExistException::new);
         participantTeamInMatch(match.getHomeTeam(), matchTeamRegistration.getTeam());
-        participantUsersInMatch(match.getHomeTeam(), matchTeamRegistration.getUsers());
+
         return match;
     }
 
@@ -80,6 +80,10 @@ public class MatchService {
         return users.stream()
                 .map(u -> participantUserInMatch(matchTeam, u))
                 .toList();
+    }
+
+    public Match getMatch(Long matchId) {
+        return matchRepository.findById(matchId).orElseThrow(MatchNotExistException::new);
     }
 
 

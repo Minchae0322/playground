@@ -14,14 +14,13 @@ public class MatchTeamRegistration {
 
     private Long matchId;
     private Team team;
-
-    private List<User> users;
+    private User user;
 
 
     @Builder
-    public MatchTeamRegistration(Long matchId, Team team, List<User> users) {
+    public MatchTeamRegistration(Long matchId, Team team, User users) {
         this.matchId = matchId;
         this.team = team;
-        this.users = users;
+        this.user = users;
     }
 }

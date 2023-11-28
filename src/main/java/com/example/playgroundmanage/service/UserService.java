@@ -4,6 +4,7 @@ import com.example.playgroundmanage.login.dto.UserSignupForm;
 import com.example.playgroundmanage.exception.ExistUserException;
 import com.example.playgroundmanage.repository.UserRepository;
 import com.example.playgroundmanage.type.UserRole;
+import com.example.playgroundmanage.vo.Team;
 import com.example.playgroundmanage.vo.Teaming;
 import com.example.playgroundmanage.vo.User;
 import jakarta.transaction.Transactional;
@@ -19,6 +20,8 @@ import static com.example.playgroundmanage.validator.UserValidator.validateUser;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+
+    private final TeamingService teamingService;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -39,5 +42,14 @@ public class UserService {
     public User getUser(String username) {
         return userRepository.findByUsername(username).orElseThrow();
     }
+
+    public List<Team> getTeamUserBelong(User user) {
+        List<Teaming> userTeamRelations = teamingService.getTeamUserRelations(user);
+
+        return userTeamRelations.stream()
+                .map(Teaming::getTeam)
+                .toList();
+    }
+
 
 }

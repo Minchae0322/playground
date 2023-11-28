@@ -4,10 +4,7 @@ import com.example.playgroundmanage.dto.TeamRegistration;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.repository.TeamRepository;
 import com.example.playgroundmanage.type.MatchResult;
-import com.example.playgroundmanage.vo.MatchParticipantTeam;
-import com.example.playgroundmanage.vo.Team;
-import com.example.playgroundmanage.vo.Teaming;
-import com.example.playgroundmanage.vo.User;
+import com.example.playgroundmanage.vo.*;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +21,8 @@ public class TeamService {
     private final TeamingService teamingService;
 
     private final MatchService matchService;
+
+    private final UserService userService;
 
     @Transactional
     public Team saveTeam(TeamRegistration teamRegistration) {
@@ -51,6 +50,21 @@ public class TeamService {
                 .toList();
     }
 
+    public boolean isJoinTeamTheMatch(Long matchId, Long teamId, boolean isHome) {
+        Match match = matchService.getMatch(matchId);
+        if(isHome) {
+            return match.getHomeTeam().isContainTeam(teamId);
+        }
+        return match.getAwayTeam().isContainTeam(teamId);
+    }
+
+    public boolean 내가_속한팀이_이미_팀대기열에_있는지(MatchTeam matchTeam, User user) {
+        List<Team> myTeams = userService.getTeamUserBelong(user);
+        return myTeams.stream()
+                .filter(t -> matchTeam.isContainTeam(t.getId()))
+                .toList().size() != 0;
+    }
+
     public Integer getTeamMatchResultNumbers(Long teamId, MatchResult matchResult) {
         Team team = teamRepository.findById(teamId).orElseThrow(TeamNotExistException::new);
         List<MatchParticipantTeam> matchParticipantTeams = matchService.getTeamParticipatedMatch(team);
@@ -59,5 +73,7 @@ public class TeamService {
                 .filter(m -> m.getMatchTeam().getMatchResult() == matchResult)
                 .toList().size();
     }
+
+
 
 }

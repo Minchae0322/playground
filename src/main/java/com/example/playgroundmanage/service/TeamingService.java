@@ -26,4 +26,8 @@ public class TeamingService {
         return teamingRepository.findAllByTeam(team);
     }
 
+    public List<Teaming> getTeamUserRelations(User user) {
+        return teamingRepository.findAllByUser(user);
+    }
+
 }

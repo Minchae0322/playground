@@ -23,7 +23,6 @@ public class MatchTeam {
     @OneToMany(mappedBy = "matchTeam", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MatchParticipantTeam> matchParticipantTeams;
 
-
     @OneToMany(mappedBy = "matchTeam", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<MatchParticipant> matchParticipants;
 
@@ -36,5 +35,11 @@ public class MatchTeam {
         this.matchParticipantTeams = matchParticipantTeams;
         this.matchParticipants = matchParticipants;
         this.matchResult = matchResult;
+    }
+
+    public boolean isContainTeam(Long teamId) {
+        return matchParticipantTeams.stream()
+                .filter(t -> t.getTeam().getId() == teamId)
+                .toList().size() != 0;
     }
 }
