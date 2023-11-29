@@ -21,7 +21,6 @@ public class TeamService {
 
     private final TeamingService teamingService;
 
-    private final MatchService matchService;
 
     private final UserService userService;
 
@@ -56,6 +55,7 @@ public class TeamService {
     public Team findByTeamId(Long teamId) {
         return teamRepository.findById(teamId).orElseThrow(TeamNotExistException::new);
     }
+
 
 
 

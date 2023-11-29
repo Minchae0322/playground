@@ -39,6 +39,11 @@ public class SmallTeam {
     }
 
 
+    public boolean isSoloTeam() {
+        return this.isNoneTeam;
+    }
+
+
 
 
     public boolean isContainTeam(Team team) {

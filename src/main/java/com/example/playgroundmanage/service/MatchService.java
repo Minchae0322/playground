@@ -11,15 +11,15 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 @RequiredArgsConstructor
 public class MatchService {
 
     private final MatchTeamRepository matchTeamRepository;
 
-    private final MatchParticipantTeamRepository matchParticipantTeamRepository;
+    private final TeamService teamService;
+
+
 
     private final MatchRepository matchRepository;
 
@@ -28,9 +28,7 @@ public class MatchService {
 
     private final MatchParticipantRepository matchParticipantRepository;
 
-    public List<MatchParticipantTeam> getTeamParticipatedMatch(Team team) {
-        return matchParticipantTeamRepository.findAllByTeam(team);
-    }
+
 
     public Match startMatch(MatchRegistration matchRegistration) {
         Match match = Match.builder()
@@ -55,28 +53,27 @@ public class MatchService {
         return matchTeam.isContainTeam(team);
     }
 
-    @Transactional
     public Long generateSmallTeam(SmallTeamRegistration smallTeamRegistration) {
-        Match match = getMatch(smallTeamRegistration.getMatchId());
-        MatchTeam matchTeam = match.getMatchTeamBySide(smallTeamRegistration.getMatchTeamSide());
+        MatchTeam matchTeam = matchTeamRepository.findById(smallTeamRegistration.getMatchTeamId()).orElseThrow();
+        Team team = teamService.findByTeamId(smallTeamRegistration.getTeamId());
 
-        if(isTeamAlreadyInMatchTeamQueue(matchTeam, smallTeamRegistration.getTeam())) {
+        if(isTeamAlreadyInMatchTeamQueue(matchTeam, team)) {
             throw new IllegalArgumentException();
         }
 
         return smallTeamRepository.save(SmallTeam.builder()
-                .isNoneTeam(true)
+                .isNoneTeam(false)
+                .team(team)
                 .matchTeam(matchTeam)
                 .build()).getId();
     }
 
-
-    public Long teamJoinSmallTeam(Long smallTeamId, Team team) {
-        SmallTeam smallTeam = smallTeamRepository.findById(smallTeamId).orElseThrow();
-        return matchParticipantTeamRepository.save(MatchParticipantTeam.builder()
-                .team(team)
-                .smallTeam(smallTeam)
-                .build()).getId();
+    public void addSoloSmallTeam(Long matchTeamId) {
+        MatchTeam matchTeam = matchTeamRepository.findById(matchTeamId).orElseThrow();
+        smallTeamRepository.save(SmallTeam.builder()
+                .isNoneTeam(true)
+                .matchTeam(matchTeam)
+                .build());
     }
 
 
@@ -87,6 +84,16 @@ public class MatchService {
                 .smallTeam(smallTeam)
                 .build()).getId();
     }
+
+    @Transactional
+    public void joinMatchTeamAsSolo(Long matchTeamId, User user) {
+        MatchTeam matchTeam = matchTeamRepository.findById(matchTeamId).orElseThrow();
+        SmallTeam smallTeam = matchTeam.getSmallTeams().stream()
+                .filter(SmallTeam::isSoloTeam)
+                .findFirst().orElseThrow();
+        userJoinSmallTeam(smallTeam.getId(), user);
+    }
+
 
 
 

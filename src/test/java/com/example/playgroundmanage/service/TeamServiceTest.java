@@ -1,16 +1,13 @@
 package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.dto.TeamRegistration;
-import com.example.playgroundmanage.repository.MatchParticipantTeamRepository;
 import com.example.playgroundmanage.repository.TeamRepository;
 import com.example.playgroundmanage.repository.TeamingRepository;
 import com.example.playgroundmanage.repository.UserRepository;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
 import com.example.playgroundmanage.vo.Team;
-import com.example.playgroundmanage.vo.Teaming;
 import com.example.playgroundmanage.vo.User;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +31,7 @@ class TeamServiceTest {
     @Autowired
     private TeamRepository teamRepository;
 
-    @Autowired
-    private MatchParticipantTeamRepository matchParticipantTeamRepository;
+
 
     @Autowired
     private TeamingRepository teamingRepository;
@@ -44,7 +40,6 @@ class TeamServiceTest {
 
     @BeforeEach
     void before() {
-        matchParticipantTeamRepository.deleteAll();
         userRepository.deleteAll();
         teamRepository.deleteAll();
         testUser = User.builder()
