@@ -1,9 +1,9 @@
 package com.example.playgroundmanage.vo;
 
-import com.example.playgroundmanage.dto.MatchTeamRegistration;
+import com.example.playgroundmanage.exception.UserNotExistException;
+import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -46,18 +46,34 @@ public class Match {
 
 
     @Builder
-
-    public Match(Long id, User host, MatchTeam homeTeam, MatchTeam awayTeam, SportsEvent sportsEvent, int homeScore, int awayScore, LocalDate matchStart, Long runningTime, boolean isStarted, boolean isFinished) {
-        this.id = id;
+    public Match(User host, MatchTeam homeTeam, MatchTeam awayTeam, SportsEvent sportsEvent, LocalDate matchStart, Long runningTime) {
+        validate(host, runningTime);
         this.host = host;
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.sportsEvent = sportsEvent;
-        this.homeScore = homeScore;
-        this.awayScore = awayScore;
         this.matchStart = matchStart;
         this.runningTime = runningTime;
-        this.isStarted = isStarted;
-        this.isFinished = isFinished;
+        this.homeScore = 0;
+        this.awayScore = 0;
+        this.isStarted = false;
+        this.isFinished = false;
+
+    }
+
+    public MatchTeam getMatchTeamBySide(MatchTeamSide matchTeamSide) {
+        if(matchTeamSide == MatchTeamSide.HOME) {
+            return this.homeTeam;
+        }
+        return this.awayTeam;
+    }
+
+    private void validate(User host, Long runningTime) {
+        if(host == null) {
+            throw new UserNotExistException();
+        }
+        if(runningTime < 0 || runningTime > 120) {
+            throw new IllegalArgumentException("경기 소요 시간이 올바르지 않습니다.");
+        }
     }
 }

@@ -1,7 +1,5 @@
 package com.example.playgroundmanage.repository;
 
-import com.example.playgroundmanage.vo.MatchParticipant;
-import com.example.playgroundmanage.vo.MatchParticipantTeam;
 import com.example.playgroundmanage.vo.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 

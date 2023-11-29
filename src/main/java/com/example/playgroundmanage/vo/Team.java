@@ -30,28 +30,24 @@ public class Team {
     private SportsEvent sportsEvent;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<MatchParticipantTeam> matchParticipantTeams = new ArrayList<>();
+    private List<SmallTeam> smallTeams = new ArrayList<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Teaming> members = new ArrayList<>();
 
     @Builder
-    public Team(Long id, String teamName, String teamPic, User leader, SportsEvent sportsEvent, List<MatchParticipantTeam> matchParticipantTeams, List<Teaming> members) {
+    public Team(Long id, String teamName, String teamPic, User leader, SportsEvent sportsEvent, List<SmallTeam> smallTeams, List<Teaming> members) {
         this.id = id;
         this.teamName = teamName;
         this.teamPic = teamPic;
         this.leader = leader;
         this.sportsEvent = sportsEvent;
-        this.matchParticipantTeams = matchParticipantTeams;
+        this.smallTeams = smallTeams;
         this.members = members;
     }
 
-
-    public void addMember(User user) {
-        Teaming teaming = Teaming.builder()
-                .team(this)
-                .user(user)
-                .build();
+    public void addMember(Teaming teaming) {
+        this.members = new ArrayList<>();
         this.members.add(teaming);
     }
 }

@@ -1,18 +1,16 @@
 package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.dto.MatchRegistration;
-import com.example.playgroundmanage.dto.MatchTeamRegistration;
+import com.example.playgroundmanage.dto.SmallTeamRegistration;
 import com.example.playgroundmanage.exception.MatchNotExistException;
-import com.example.playgroundmanage.repository.MatchParticipantRepository;
-import com.example.playgroundmanage.repository.MatchParticipantTeamRepository;
-import com.example.playgroundmanage.repository.MatchRepository;
-import com.example.playgroundmanage.repository.MatchTeamRepository;
+import com.example.playgroundmanage.repository.*;
 import com.example.playgroundmanage.type.MatchResult;
+import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.vo.*;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +23,9 @@ public class MatchService {
 
     private final MatchRepository matchRepository;
 
+
+    private final SmallTeamRepository smallTeamRepository;
+
     private final MatchParticipantRepository matchParticipantRepository;
 
     public List<MatchParticipantTeam> getTeamParticipatedMatch(Team team) {
@@ -36,51 +37,58 @@ public class MatchService {
                 .host(matchRegistration.getHost())
                 .matchStart(matchRegistration.getMatchStart())
                 .sportsEvent(matchRegistration.getSportsEvent())
-                .homeTeam(initMatchTeam())
-                .awayTeam(initMatchTeam())
-                .homeScore(0)
-                .awayScore(0)
+                .homeTeam(initMatchTeam(MatchTeamSide.HOME))
+                .awayTeam(initMatchTeam(MatchTeamSide.AWAY))
                 .runningTime(matchRegistration.getRunningTime())
-                .isStarted(false)
-                .isFinished(false)
                 .build();
         return matchRepository.save(match);
     }
 
-    private MatchTeam initMatchTeam() {
+    private MatchTeam initMatchTeam(MatchTeamSide matchTeamSide) {
         return MatchTeam.builder()
                 .matchResult(MatchResult.NONE)
+                .matchTeamSide(matchTeamSide)
                 .build();
     }
 
-
-    public Match addTeam(MatchTeamRegistration matchTeamRegistration) {
-        Match match = matchRepository.findById(matchTeamRegistration.getMatchId())
-                .orElseThrow(MatchNotExistException::new);
-        participantTeamInMatch(match.getHomeTeam(), matchTeamRegistration.getTeam());
-
-        return match;
+    public boolean isTeamAlreadyInMatchTeamQueue(MatchTeam matchTeam, Team team) {
+        return matchTeam.isContainTeam(team);
     }
 
-    public MatchParticipantTeam participantTeamInMatch(MatchTeam matchTeam, Team team) {
+    @Transactional
+    public Long generateSmallTeam(SmallTeamRegistration smallTeamRegistration) {
+        Match match = getMatch(smallTeamRegistration.getMatchId());
+        MatchTeam matchTeam = match.getMatchTeamBySide(smallTeamRegistration.getMatchTeamSide());
+
+        if(isTeamAlreadyInMatchTeamQueue(matchTeam, smallTeamRegistration.getTeam())) {
+            throw new IllegalArgumentException();
+        }
+
+        return smallTeamRepository.save(SmallTeam.builder()
+                .isNoneTeam(true)
+                .matchTeam(matchTeam)
+                .build()).getId();
+    }
+
+
+    public Long teamJoinSmallTeam(Long smallTeamId, Team team) {
+        SmallTeam smallTeam = smallTeamRepository.findById(smallTeamId).orElseThrow();
         return matchParticipantTeamRepository.save(MatchParticipantTeam.builder()
-                .matchTeam(matchTeam)
                 .team(team)
-                .build());
+                .smallTeam(smallTeam)
+                .build()).getId();
     }
 
-    public MatchParticipant participantUserInMatch(MatchTeam matchTeam, User user) {
-       return matchParticipantRepository.save(MatchParticipant.builder()
-                .matchTeam(matchTeam)
+
+    public Long userJoinSmallTeam(Long smallTeamId, User user) {
+        SmallTeam smallTeam = smallTeamRepository.findById(smallTeamId).orElseThrow();
+        return matchParticipantRepository.save(MatchParticipant.builder()
                 .user(user)
-                .build());
+                .smallTeam(smallTeam)
+                .build()).getId();
     }
 
-    public List<MatchParticipant> participantUsersInMatch(MatchTeam matchTeam, List<User> users) {
-        return users.stream()
-                .map(u -> participantUserInMatch(matchTeam, u))
-                .toList();
-    }
+
 
     public Match getMatch(Long matchId) {
         return matchRepository.findById(matchId).orElseThrow(MatchNotExistException::new);

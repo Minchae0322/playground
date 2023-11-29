@@ -1,26 +1,28 @@
 package com.example.playgroundmanage.dto;
 
+import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.vo.Team;
 import com.example.playgroundmanage.vo.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.List;
-
 @RequiredArgsConstructor
 @Getter
-public class MatchTeamRegistration {
+public class SmallTeamRegistration {
 
     private Long matchId;
     private Team team;
     private User user;
 
+    private MatchTeamSide matchTeamSide;
+
 
     @Builder
-    public MatchTeamRegistration(Long matchId, Team team, User users) {
+    public SmallTeamRegistration(Long matchId, Team team, User user, MatchTeamSide matchTeamSide) {
         this.matchId = matchId;
         this.team = team;
-        this.user = users;
+        this.user = user;
+        this.matchTeamSide = matchTeamSide;
     }
 }
