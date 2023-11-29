@@ -7,18 +7,15 @@ import com.example.playgroundmanage.repository.*;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
-import com.example.playgroundmanage.vo.Match;
-import com.example.playgroundmanage.vo.SmallTeam;
+import com.example.playgroundmanage.vo.Game;
+import com.example.playgroundmanage.vo.SubTeam;
 import com.example.playgroundmanage.vo.Team;
 import com.example.playgroundmanage.vo.User;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -64,7 +61,7 @@ class MatchServiceTest {
         userRepository.save(testUser);
     }
 
-    public Match initMatch() {
+    public Game initMatch() {
         MatchRegistration matchRegistration = MatchRegistration.builder()
                 .matchStart(LocalDate.now())
                 .runningTime(60L)
@@ -74,9 +71,9 @@ class MatchServiceTest {
         return matchService.startMatch(matchRegistration);
     }
 
-    public SmallTeam initSmallTeam() {
+    public SubTeam initSmallTeam() {
 
-        Match match = initMatch();
+        Game game = initMatch();
 
         Long teamId = teamService.generateTeam(TeamRegistration.builder()
                 .leader(testUser)
@@ -88,7 +85,7 @@ class MatchServiceTest {
         SmallTeamRegistration smallTeamRegistration = SmallTeamRegistration.builder()
                 .teamId(team.getId())
                 .matchTeamSide(MatchTeamSide.HOME)
-                .matchTeamId(match.getHomeTeam().getId())
+                .matchTeamId(game.getHomeTeam().getId())
                 .user(testUser)
                 .build();
 
@@ -104,11 +101,11 @@ class MatchServiceTest {
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
-        Match match = matchService.startMatch(matchRegistration);
+        Game game = matchService.startMatch(matchRegistration);
         Assertions.assertEquals(1, matchRepository.count());
-        Assertions.assertEquals(2L, match.getHomeTeam().getId());
-        Assertions.assertEquals(1L, match.getAwayTeam().getId());
-        assertEquals("test", match.getHost().getUsername());
+        Assertions.assertEquals(2L, game.getHomeTeam().getId());
+        Assertions.assertEquals(1L, game.getAwayTeam().getId());
+        assertEquals("test", game.getHost().getUsername());
     }
 
 
@@ -124,22 +121,22 @@ class MatchServiceTest {
                         .sportsEvent(SportsEvent.SOCCER)
                         .build()).toList();
 
-        List<Match> matches = matchRegistrationList.stream()
+        List<Game> games = matchRegistrationList.stream()
                 .map(m -> matchService.startMatch(m))
                 .toList();
 
         Assertions.assertEquals(19, matchRepository.count());
-        Assertions.assertEquals(18L, matches.get(18).getRunningTime());
-        Assertions.assertEquals(38L, matches.get(18).getHomeTeam().getId());
-        Assertions.assertEquals(37L, matches.get(18).getAwayTeam().getId());
+        Assertions.assertEquals(18L, games.get(18).getRunningTime());
+        Assertions.assertEquals(38L, games.get(18).getHomeTeam().getId());
+        Assertions.assertEquals(37L, games.get(18).getAwayTeam().getId());
         Assertions.assertEquals(38, matchTeamRepository.count());
     }
 
     @Test
     void generate_small_team() {
         long startTime = System.currentTimeMillis();
-        SmallTeam smallTeam = initSmallTeam();
-        matchService.userJoinSmallTeam(smallTeam.getId(), testUser);
+        SubTeam subTeam = initSmallTeam();
+        matchService.userJoinSmallTeam(subTeam.getId(), testUser);
         long stopTime = System.currentTimeMillis();
         assertEquals(1, matchParticipantRepository.count());
         System.out.println(stopTime - startTime);

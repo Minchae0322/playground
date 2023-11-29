@@ -18,12 +18,12 @@ public class MatchParticipant {
     private User user;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    private SmallTeam smallTeam;
+    private SubTeam subTeam;
 
     @Builder
-    public MatchParticipant(Long id, User user, SmallTeam smallTeam) {
+    public MatchParticipant(Long id, User user, SubTeam subTeam) {
         this.id = id;
         this.user = user;
-        this.smallTeam = smallTeam;
+        this.subTeam = subTeam;
     }
 }

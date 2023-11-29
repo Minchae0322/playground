@@ -14,7 +14,7 @@ import java.time.LocalDate;
 @Entity(name = "matchUp")
 @Getter
 @RequiredArgsConstructor
-public class Match {
+public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -23,10 +23,10 @@ public class Match {
     private User host;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private MatchTeam homeTeam;
+    private CompetingTeam homeTeam;
 
     @OneToOne(cascade = CascadeType.ALL)
-    private MatchTeam awayTeam;
+    private CompetingTeam awayTeam;
 
     @Enumerated
     private SportsEvent sportsEvent;
@@ -46,7 +46,7 @@ public class Match {
 
 
     @Builder
-    public Match(User host, MatchTeam homeTeam, MatchTeam awayTeam, SportsEvent sportsEvent, LocalDate matchStart, Long runningTime) {
+    public Game(User host, CompetingTeam homeTeam, CompetingTeam awayTeam, SportsEvent sportsEvent, LocalDate matchStart, Long runningTime) {
         validate(host, runningTime);
         this.host = host;
         this.homeTeam = homeTeam;
@@ -61,7 +61,7 @@ public class Match {
 
     }
 
-    public MatchTeam getMatchTeamBySide(MatchTeamSide matchTeamSide) {
+    public CompetingTeam getMatchTeamBySide(MatchTeamSide matchTeamSide) {
         if(matchTeamSide == MatchTeamSide.HOME) {
             return this.homeTeam;
         }

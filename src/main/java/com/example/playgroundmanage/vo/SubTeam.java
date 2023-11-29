@@ -3,7 +3,6 @@ package com.example.playgroundmanage.vo;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
@@ -12,14 +11,14 @@ import java.util.List;
 @Entity
 @RequiredArgsConstructor
 @Getter
-public class SmallTeam {
+public class SubTeam {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    private MatchTeam matchTeam;
+    private CompetingTeam competingTeam;
 
     @ManyToOne
     private Team team;
@@ -30,9 +29,9 @@ public class SmallTeam {
     private boolean isNoneTeam;
 
     @Builder
-    public SmallTeam(Long id, MatchTeam matchTeam, Team team, List<MatchParticipant> matchParticipants, boolean isNoneTeam) {
+    public SubTeam(Long id, CompetingTeam competingTeam, Team team, List<MatchParticipant> matchParticipants, boolean isNoneTeam) {
         this.id = id;
-        this.matchTeam = matchTeam;
+        this.competingTeam = competingTeam;
         this.team = team;
         this.matchParticipants = matchParticipants;
         this.isNoneTeam = isNoneTeam;

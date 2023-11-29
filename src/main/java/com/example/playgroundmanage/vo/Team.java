@@ -2,7 +2,6 @@ package com.example.playgroundmanage.vo;
 
 import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -30,19 +29,19 @@ public class Team {
     private SportsEvent sportsEvent;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<SmallTeam> smallTeams = new ArrayList<>();
+    private List<SubTeam> subTeams = new ArrayList<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Teaming> members = new ArrayList<>();
 
     @Builder
-    public Team(Long id, String teamName, String teamPic, User leader, SportsEvent sportsEvent, List<SmallTeam> smallTeams, List<Teaming> members) {
+    public Team(Long id, String teamName, String teamPic, User leader, SportsEvent sportsEvent, List<SubTeam> subTeams, List<Teaming> members) {
         this.id = id;
         this.teamName = teamName;
         this.teamPic = teamPic;
         this.leader = leader;
         this.sportsEvent = sportsEvent;
-        this.smallTeams = smallTeams;
+        this.subTeams = subTeams;
         this.members = members;
     }
 

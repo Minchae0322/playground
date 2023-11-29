@@ -19,8 +19,6 @@ public class MatchService {
 
     private final TeamService teamService;
 
-
-
     private final MatchRepository matchRepository;
 
 
@@ -30,8 +28,8 @@ public class MatchService {
 
 
 
-    public Match startMatch(MatchRegistration matchRegistration) {
-        Match match = Match.builder()
+    public Game startMatch(MatchRegistration matchRegistration) {
+        Game game = Game.builder()
                 .host(matchRegistration.getHost())
                 .matchStart(matchRegistration.getMatchStart())
                 .sportsEvent(matchRegistration.getSportsEvent())
@@ -39,65 +37,65 @@ public class MatchService {
                 .awayTeam(initMatchTeam(MatchTeamSide.AWAY))
                 .runningTime(matchRegistration.getRunningTime())
                 .build();
-        return matchRepository.save(match);
+        return matchRepository.save(game);
     }
 
-    private MatchTeam initMatchTeam(MatchTeamSide matchTeamSide) {
-        return MatchTeam.builder()
+    private CompetingTeam initMatchTeam(MatchTeamSide matchTeamSide) {
+        return CompetingTeam.builder()
                 .matchResult(MatchResult.NONE)
                 .matchTeamSide(matchTeamSide)
                 .build();
     }
 
-    public boolean isTeamAlreadyInMatchTeamQueue(MatchTeam matchTeam, Team team) {
-        return matchTeam.isContainTeam(team);
+    public boolean isTeamAlreadyInMatchTeamQueue(CompetingTeam competingTeam, Team team) {
+        return competingTeam.isContainTeam(team);
     }
 
     public Long generateSmallTeam(SmallTeamRegistration smallTeamRegistration) {
-        MatchTeam matchTeam = matchTeamRepository.findById(smallTeamRegistration.getMatchTeamId()).orElseThrow();
+        CompetingTeam competingTeam = matchTeamRepository.findById(smallTeamRegistration.getMatchTeamId()).orElseThrow();
         Team team = teamService.findByTeamId(smallTeamRegistration.getTeamId());
 
-        if(isTeamAlreadyInMatchTeamQueue(matchTeam, team)) {
+        if(isTeamAlreadyInMatchTeamQueue(competingTeam, team)) {
             throw new IllegalArgumentException();
         }
 
-        return smallTeamRepository.save(SmallTeam.builder()
+        return smallTeamRepository.save(SubTeam.builder()
                 .isNoneTeam(false)
                 .team(team)
-                .matchTeam(matchTeam)
+                .competingTeam(competingTeam)
                 .build()).getId();
     }
 
     public void addSoloSmallTeam(Long matchTeamId) {
-        MatchTeam matchTeam = matchTeamRepository.findById(matchTeamId).orElseThrow();
-        smallTeamRepository.save(SmallTeam.builder()
+        CompetingTeam competingTeam = matchTeamRepository.findById(matchTeamId).orElseThrow();
+        smallTeamRepository.save(SubTeam.builder()
                 .isNoneTeam(true)
-                .matchTeam(matchTeam)
+                .competingTeam(competingTeam)
                 .build());
     }
 
 
     public Long userJoinSmallTeam(Long smallTeamId, User user) {
-        SmallTeam smallTeam = smallTeamRepository.findById(smallTeamId).orElseThrow();
+        SubTeam subTeam = smallTeamRepository.findById(smallTeamId).orElseThrow();
         return matchParticipantRepository.save(MatchParticipant.builder()
                 .user(user)
-                .smallTeam(smallTeam)
+                .subTeam(subTeam)
                 .build()).getId();
     }
 
     @Transactional
     public void joinMatchTeamAsSolo(Long matchTeamId, User user) {
-        MatchTeam matchTeam = matchTeamRepository.findById(matchTeamId).orElseThrow();
-        SmallTeam smallTeam = matchTeam.getSmallTeams().stream()
-                .filter(SmallTeam::isSoloTeam)
+        CompetingTeam competingTeam = matchTeamRepository.findById(matchTeamId).orElseThrow();
+        SubTeam subTeam = competingTeam.getSubTeams().stream()
+                .filter(SubTeam::isSoloTeam)
                 .findFirst().orElseThrow();
-        userJoinSmallTeam(smallTeam.getId(), user);
+        userJoinSmallTeam(subTeam.getId(), user);
     }
 
 
 
 
-    public Match getMatch(Long matchId) {
+    public Game getMatch(Long matchId) {
         return matchRepository.findById(matchId).orElseThrow(MatchNotExistException::new);
     }
 

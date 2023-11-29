@@ -8,40 +8,38 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Entity
 @Getter
 @RequiredArgsConstructor
-public class MatchTeam {
+public class CompetingTeam {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne(mappedBy = "homeTeam", cascade = CascadeType.MERGE)
-    private Match match;
+    private Game game;
 
     @Enumerated
     private MatchTeamSide matchTeamSide;
 
     @OneToMany(mappedBy = "matchTeam", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private final List<SmallTeam> smallTeams = new ArrayList<>();
+    private final List<SubTeam> subTeams = new ArrayList<>();
 
     @Enumerated
     private MatchResult matchResult;
 
     @Builder
-    public MatchTeam(Long id, Match match, MatchTeamSide matchTeamSide, MatchResult matchResult) {
+    public CompetingTeam(Long id, Game game, MatchTeamSide matchTeamSide, MatchResult matchResult) {
         this.id = id;
-        this.match = match;
+        this.game = game;
         this.matchTeamSide = matchTeamSide;
         this.matchResult = matchResult;
     }
 
     public boolean isContainTeam(Team team) {
-        return smallTeams.stream()
+        return subTeams.stream()
                 .filter(t -> t.isContainTeam(team))
                 .toList().size() != 0;
     }

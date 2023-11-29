@@ -1,6 +1,5 @@
 package com.example.playgroundmanage.dto;
 
-import com.example.playgroundmanage.vo.SmallTeam;
 import com.example.playgroundmanage.vo.User;
 import lombok.Builder;
 import lombok.Getter;
