@@ -23,7 +23,7 @@ public class SubTeam {
     @ManyToOne
     private Team team;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "subTeam", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<MatchParticipant> matchParticipants = new ArrayList<>();
 
     private boolean isNoneTeam;

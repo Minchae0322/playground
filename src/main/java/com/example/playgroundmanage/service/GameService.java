@@ -17,11 +17,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class GameService {
 
-    private final MatchTeamRepository matchTeamRepository;
+    private final CompetingTeamRepository competingTeamRepository;
 
     private final TeamService teamService;
 
-    private final MatchRepository matchRepository;
+    private final GameRepository gameRepository;
 
     private final MatchRequestProcess matchRequestProcess;
 
@@ -31,7 +31,7 @@ public class GameService {
 
 
 
-    public Game startMatch(MatchRegistration matchRegistration) {
+    public Long startMatch(MatchRegistration matchRegistration) {
         Game game = Game.builder()
                 .host(matchRegistration.getHost())
                 .matchStart(matchRegistration.getMatchStart())
@@ -40,7 +40,7 @@ public class GameService {
                 .awayTeam(initCompetingTeam(MatchTeamSide.AWAY))
                 .runningTime(matchRegistration.getRunningTime())
                 .build();
-        return matchRepository.save(game);
+        return gameRepository.save(game).getId();
     }
 
     private CompetingTeam initCompetingTeam(MatchTeamSide matchTeamSide) {
@@ -51,7 +51,7 @@ public class GameService {
     }
 
     public Long generateSubTeam(SubTeamRegistrationParams subTeamRegistrationParams) {
-        CompetingTeam competingTeam = matchTeamRepository.findById(subTeamRegistrationParams.getMatchTeamId()).orElseThrow();
+        CompetingTeam competingTeam = competingTeamRepository.findById(subTeamRegistrationParams.getMatchTeamId()).orElseThrow();
         Team team = teamService.findByTeamId(subTeamRegistrationParams.getTeamId());
 
         if(matchRequestProcess.isTeamAlreadyInMatchTeamQueue(competingTeam, team)) {
@@ -65,17 +65,28 @@ public class GameService {
                 .build()).getId();
     }
 
+
     @Transactional
     public void joinUserInSubTeam(UserJoinTeamParams userJoinTeamParams) {
         SubTeam subTeam = subTeamRepository.findById(userJoinTeamParams.getSubTeamId()).orElseThrow();
-        matchRequestProcess.joinSubTeam(subTeam, userJoinTeamParams.getUser());
+        matchParticipantRepository.save(matchRequestProcess.joinSubTeam(subTeam, userJoinTeamParams.getUser()));
+    }
+
+    public Long generateSoloSubTeam(CompetingTeam competingTeam) {
+        if(competingTeam.isContainSoloTeam()) {
+            throw new IllegalArgumentException("개인 팀이 이미 있습니다.");
+        }
+        return subTeamRepository.save(SubTeam.builder()
+                .isNoneTeam(true)
+                .competingTeam(competingTeam)
+                .build()).getId();
     }
 
 
 
 
     public Game getMatch(Long matchId) {
-        return matchRepository.findById(matchId).orElseThrow(MatchNotExistException::new);
+        return gameRepository.findById(matchId).orElseThrow(MatchNotExistException::new);
     }
 
 

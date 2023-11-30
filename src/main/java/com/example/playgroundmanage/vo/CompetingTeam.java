@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -24,7 +25,7 @@ public class CompetingTeam {
     @Enumerated
     private MatchTeamSide matchTeamSide;
 
-    @OneToMany(mappedBy = "matchTeam", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "competingTeam", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private final List<SubTeam> subTeams = new ArrayList<>();
 
     @Enumerated
@@ -41,6 +42,12 @@ public class CompetingTeam {
     public boolean isContainTeam(Team team) {
         return subTeams.stream()
                 .filter(t -> t.isContainTeam(team))
+                .toList().size() != 0;
+    }
+
+    public boolean isContainSoloTeam() {
+        return subTeams.stream()
+                .filter(SubTeam::isNoneTeam)
                 .toList().size() != 0;
     }
 }
