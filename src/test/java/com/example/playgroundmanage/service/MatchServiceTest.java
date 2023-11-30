@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.dto.MatchRegistration;
-import com.example.playgroundmanage.dto.SmallTeamRegistration;
+import com.example.playgroundmanage.dto.SubTeamRegistrationParams;
 import com.example.playgroundmanage.dto.TeamRegistration;
 import com.example.playgroundmanage.repository.*;
 import com.example.playgroundmanage.type.MatchTeamSide;
@@ -36,7 +36,7 @@ class MatchServiceTest {
     private  MatchParticipantRepository matchParticipantRepository;
 
     @Autowired
-    private MatchService matchService;
+    private GameService gameService;
     private User testUser;
 
     @Autowired
@@ -46,13 +46,13 @@ class MatchServiceTest {
     private TeamService teamService;
 
     @Autowired
-    private SmallTeamRepository smallTeamRepository;
+    private SubTeamRepository subTeamRepository;
 
     @BeforeEach
     void before() {
         matchRepository.deleteAll();
         matchTeamRepository.deleteAll();
-        smallTeamRepository.deleteAll();
+        subTeamRepository.deleteAll();
         testUser = User.builder()
                 .username("test")
                 .role(UserRole.USER)
@@ -68,7 +68,7 @@ class MatchServiceTest {
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
-        return matchService.startMatch(matchRegistration);
+        return gameService.startMatch(matchRegistration);
     }
 
     public SubTeam initSmallTeam() {
@@ -82,15 +82,15 @@ class MatchServiceTest {
                 .build());
         Team team = teamService.findByTeamId(teamId);
 
-        SmallTeamRegistration smallTeamRegistration = SmallTeamRegistration.builder()
+        SubTeamRegistrationParams subTeamRegistrationParams = SubTeamRegistrationParams.builder()
                 .teamId(team.getId())
                 .matchTeamSide(MatchTeamSide.HOME)
                 .matchTeamId(game.getHomeTeam().getId())
                 .user(testUser)
                 .build();
 
-        Long smallTeamId = matchService.generateSmallTeam(smallTeamRegistration);
-        return smallTeamRepository.findById(smallTeamId).orElseThrow();
+        Long smallTeamId = gameService.generateSubTeam(subTeamRegistrationParams);
+        return subTeamRepository.findById(smallTeamId).orElseThrow();
     }
 
     @Test
@@ -101,7 +101,7 @@ class MatchServiceTest {
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
-        Game game = matchService.startMatch(matchRegistration);
+        Game game = gameService.startMatch(matchRegistration);
         Assertions.assertEquals(1, matchRepository.count());
         Assertions.assertEquals(2L, game.getHomeTeam().getId());
         Assertions.assertEquals(1L, game.getAwayTeam().getId());
@@ -122,7 +122,7 @@ class MatchServiceTest {
                         .build()).toList();
 
         List<Game> games = matchRegistrationList.stream()
-                .map(m -> matchService.startMatch(m))
+                .map(m -> gameService.startMatch(m))
                 .toList();
 
         Assertions.assertEquals(19, matchRepository.count());
@@ -136,7 +136,6 @@ class MatchServiceTest {
     void generate_small_team() {
         long startTime = System.currentTimeMillis();
         SubTeam subTeam = initSmallTeam();
-        matchService.userJoinSmallTeam(subTeam.getId(), testUser);
         long stopTime = System.currentTimeMillis();
         assertEquals(1, matchParticipantRepository.count());
         System.out.println(stopTime - startTime);

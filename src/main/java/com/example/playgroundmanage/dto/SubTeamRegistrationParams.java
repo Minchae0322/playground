@@ -8,20 +8,18 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class SmallTeamRegistration {
+public class SubTeamRegistrationParams {
 
     private Long matchTeamId;
     private Long teamId;
     private User user;
 
-    private MatchTeamSide matchTeamSide;
 
 
     @Builder
-    public SmallTeamRegistration(Long matchTeamId, Long teamId, User user, MatchTeamSide matchTeamSide) {
+    public SubTeamRegistrationParams(Long matchTeamId, Long teamId, User user) {
         this.matchTeamId = matchTeamId;
         this.teamId = teamId;
         this.user = user;
-        this.matchTeamSide = matchTeamSide;
     }
 }

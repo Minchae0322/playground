@@ -11,6 +11,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Entity
@@ -69,5 +70,13 @@ public class User implements Serializable{
     public User update(UserEdit userEdit) {
         this.username = username;
         return this;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof User) {
+            return Objects.equals(((User) obj).getId(), this.id);
+        }
+        return false;
     }
 }
