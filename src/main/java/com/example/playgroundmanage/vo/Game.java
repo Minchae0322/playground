@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity(name = "matchUp")
 @Getter
@@ -35,8 +36,8 @@ public class Game {
 
     private int awayScore;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private LocalDate matchStart;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime matchStart;
 
     private Long runningTime;
 
@@ -46,7 +47,7 @@ public class Game {
 
 
     @Builder
-    public Game(User host, CompetingTeam homeTeam, CompetingTeam awayTeam, SportsEvent sportsEvent, LocalDate matchStart, Long runningTime) {
+    public Game(User host, CompetingTeam homeTeam, CompetingTeam awayTeam, SportsEvent sportsEvent, LocalDateTime matchStart, Long runningTime) {
         validate(host, runningTime);
         this.host = host;
         this.homeTeam = homeTeam;

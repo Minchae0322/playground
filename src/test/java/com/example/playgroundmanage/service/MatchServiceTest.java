@@ -4,6 +4,7 @@ import com.example.playgroundmanage.dto.MatchRegistration;
 import com.example.playgroundmanage.dto.SubTeamRegistrationParams;
 import com.example.playgroundmanage.dto.TeamRegistration;
 import com.example.playgroundmanage.dto.UserJoinTeamParams;
+import com.example.playgroundmanage.dto.response.PendingTeamResponse;
 import com.example.playgroundmanage.repository.*;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
@@ -20,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -42,6 +45,9 @@ class MatchServiceTest {
     private User testUser;
 
     private Team testTeam;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private UserRepository userRepository;
@@ -73,7 +79,7 @@ class MatchServiceTest {
 
     public Long initGame() {
         MatchRegistration matchRegistration = MatchRegistration.builder()
-                .matchStart(LocalDate.now())
+                .matchStart(LocalDateTime.now(ZoneId.of(("Asia/Seoul"))))
                 .runningTime(60L)
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
@@ -85,18 +91,56 @@ class MatchServiceTest {
     @Test
     void start_match() {
         MatchRegistration matchRegistration = MatchRegistration.builder()
-                .matchStart(LocalDate.now())
+                .matchStart(LocalDateTime.now(ZoneId.of(("Asia/Seoul"))))
                 .runningTime(60L)
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
-        Game game = gameRepository.findById(initGame()).orElseThrow();
+
+        Game game = gameRepository.findById(gameService.startMatch(matchRegistration)).orElseThrow();
 
 
         Assertions.assertEquals(1, gameRepository.count());
         Assertions.assertEquals(2L, game.getHomeTeam().getId());
         Assertions.assertEquals(1L, game.getAwayTeam().getId());
         assertEquals("test", game.getHost().getUsername());
+    }
+
+    @Test
+    void getMatchBeforeStarted() {
+        MatchRegistration matchRegistration = MatchRegistration.builder()
+                .matchStart(LocalDateTime.of(2023, 12, 2, 7, 10))
+                .runningTime(60L)
+                .host(testUser)
+                .sportsEvent(SportsEvent.SOCCER)
+                .build();
+        gameService.startMatch(matchRegistration);
+
+
+        Assertions.assertEquals(1, gameRepository.count());
+
+
+        List<Game> games = userService.getHostCreatedGamesNotStarted(testUser);
+        assertEquals(1, games.size());
+    }
+
+
+    @Test
+    void testExcludePastGames() {
+        MatchRegistration matchRegistration = MatchRegistration.builder()
+                .matchStart(LocalDateTime.of(2023, 11, 2, 7, 10))
+                .runningTime(60L)
+                .host(testUser)
+                .sportsEvent(SportsEvent.SOCCER)
+                .build();
+        gameService.startMatch(matchRegistration);
+
+
+        Assertions.assertEquals(1, gameRepository.count());
+
+
+        List<Game> games = userService.getHostCreatedGamesNotStarted(testUser);
+        assertEquals(0, games.size());
     }
 
     @Test
@@ -110,6 +154,7 @@ class MatchServiceTest {
         assertEquals(2, subTeamRepository.count());
         assertTrue(game2.getHomeTeam().isContainSoloTeam());
         assertTrue(game2.getAwayTeam().isContainSoloTeam());
+        assertTrue(game2.getHomeTeam().getSubTeams().get(0).isAccept());
 
     }
 
@@ -118,12 +163,11 @@ class MatchServiceTest {
     void start_many_match() {
         List<MatchRegistration> matchRegistrationList = IntStream.range(0,19)
                 .mapToObj(i -> MatchRegistration.builder()
-                        .matchStart(LocalDate.now())
+                        .matchStart(LocalDateTime.now())
                         .runningTime((long) i)
                         .host(testUser)
                         .sportsEvent(SportsEvent.SOCCER)
                         .build()).toList();
-
         List<Long> games = matchRegistrationList.stream()
                 .map(m -> gameService.startMatch(m))
                 .toList();
@@ -147,6 +191,47 @@ class MatchServiceTest {
 
         assertEquals(1, game2.getHomeTeam().getSubTeams().size());
         assertEquals("testTeam", game2.getHomeTeam().getSubTeams().get(0).getTeam().getTeamName());
+    }
+
+    @Test
+    void testSubTeamWithPendingApproval() {
+        MatchRegistration matchRegistration = MatchRegistration.builder()
+                .matchStart(LocalDateTime.of(2023, 12, 2, 7, 10))
+                .runningTime(60L)
+                .host(testUser)
+                .sportsEvent(SportsEvent.SOCCER)
+                .build();
+
+        Game game = gameRepository.findById(gameService.startMatch(matchRegistration)).orElseThrow();
+
+        SubTeamRegistrationParams subTeamRegistrationParams = SubTeamRegistrationParams.builder()
+                .user(testUser)
+                .matchTeamId(game.getHomeTeam().getId())
+                .teamId(testTeam.getId())
+                .build();
+        gameService.generateSubTeam(subTeamRegistrationParams);
+
+        User testUser2 = userRepository.save(User.builder()
+                .username("ttt")
+                .build());
+        Long teamId = teamRepository.save(Team.builder()
+                        .teamName("tt")
+                        .leader(testUser2)
+                .build()).getId();
+
+        SubTeamRegistrationParams subTeamRegistrationParams2 = SubTeamRegistrationParams.builder()
+                .user(testUser2)
+                .matchTeamId(game.getHomeTeam().getId())
+                .teamId(teamId)
+                .build();
+        gameService.generateSubTeam(subTeamRegistrationParams2);
+
+
+        assertEquals(2, subTeamRepository.count());
+        List<PendingTeamResponse> pendingTeamResponses = userService.getPendingTeamRequests(testUser.getId());
+        assertEquals(2, pendingTeamResponses.size());
+        assertEquals("testTeam", pendingTeamResponses.get(0).getTeamName());
+        assertEquals("tt", pendingTeamResponses.get(1).getTeamName());
     }
 
     @Test

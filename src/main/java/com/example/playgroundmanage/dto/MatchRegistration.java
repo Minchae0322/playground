@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Getter
@@ -14,14 +15,14 @@ public class MatchRegistration {
 
     private User host;
 
-    private LocalDate matchStart;
+    private LocalDateTime matchStart;
 
     private SportsEvent sportsEvent;
 
     private Long runningTime;
 
     @Builder
-    public MatchRegistration(User host, LocalDate matchStart, SportsEvent sportsEvent, Long runningTime) {
+    public MatchRegistration(User host, LocalDateTime matchStart, SportsEvent sportsEvent, Long runningTime) {
         this.host = host;
         this.matchStart = matchStart;
         this.sportsEvent = sportsEvent;

@@ -20,10 +20,13 @@ public class MatchParticipant {
     @ManyToOne(cascade = CascadeType.MERGE)
     private SubTeam subTeam;
 
+    private boolean isAccepted;
+
     @Builder
-    public MatchParticipant(Long id, User user, SubTeam subTeam) {
+    public MatchParticipant(Long id, User user, SubTeam subTeam, boolean isAccepted) {
         this.id = id;
         this.user = user;
         this.subTeam = subTeam;
+        this.isAccepted = isAccepted;
     }
 }

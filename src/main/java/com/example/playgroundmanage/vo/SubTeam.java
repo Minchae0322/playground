@@ -1,9 +1,7 @@
 package com.example.playgroundmanage.vo;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,27 +26,26 @@ public class SubTeam {
 
     private boolean isNoneTeam;
 
+    private boolean isAccept;
+
     @Builder
-    public SubTeam(Long id, CompetingTeam competingTeam, Team team, List<MatchParticipant> matchParticipants, boolean isNoneTeam) {
+    public SubTeam(Long id, CompetingTeam competingTeam, Team team, List<MatchParticipant> matchParticipants, boolean isNoneTeam, boolean isAccept) {
         this.id = id;
         this.competingTeam = competingTeam;
         this.team = team;
         this.matchParticipants = matchParticipants;
         this.isNoneTeam = isNoneTeam;
+        this.isAccept = isAccept;
     }
-
 
     public boolean isSoloTeam() {
         return this.isNoneTeam;
     }
 
-
-
-
     public boolean isContainTeam(Team team) {
         if(isNoneTeam) {
             return false;
         }
-        return team.getId() == team.getId();
+        return this.getId() == team.getId();
     }
 }

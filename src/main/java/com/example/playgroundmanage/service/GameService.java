@@ -60,10 +60,13 @@ public class GameService {
 
         return subTeamRepository.save(SubTeam.builder()
                 .isNoneTeam(false)
+                .isAccept(false)
                 .team(team)
                 .competingTeam(competingTeam)
                 .build()).getId();
     }
+
+
 
 
     @Transactional
@@ -78,6 +81,7 @@ public class GameService {
         }
         return subTeamRepository.save(SubTeam.builder()
                 .isNoneTeam(true)
+                .isAccept(true)
                 .competingTeam(competingTeam)
                 .build()).getId();
     }

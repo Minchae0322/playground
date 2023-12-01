@@ -1,17 +1,21 @@
 package com.example.playgroundmanage.service;
 
+import com.example.playgroundmanage.dto.response.PendingTeamResponse;
+import com.example.playgroundmanage.dto.response.PendingUserResponse;
+import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.login.dto.UserSignupForm;
 import com.example.playgroundmanage.exception.ExistUserException;
+import com.example.playgroundmanage.repository.GameRepository;
 import com.example.playgroundmanage.repository.UserRepository;
 import com.example.playgroundmanage.type.UserRole;
-import com.example.playgroundmanage.vo.Team;
-import com.example.playgroundmanage.vo.Teaming;
-import com.example.playgroundmanage.vo.User;
+import com.example.playgroundmanage.vo.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.playgroundmanage.validator.UserValidator.validateUser;
@@ -24,6 +28,8 @@ public class UserService {
     private final TeamingService teamingService;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final GameRepository gameRepository;
 
     @Transactional
     public void signup(UserSignupForm userSignupForm) {
@@ -50,6 +56,52 @@ public class UserService {
                 .map(Teaming::getTeam)
                 .toList();
     }
+
+
+    public List<PendingTeamResponse> getPendingTeamRequests(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
+        List<Game> games = getHostCreatedGamesNotStarted(user);
+        return getUnacceptedHomeSubTeams(games).stream()
+                .map(g -> PendingTeamResponse.builder()
+                        .teamName(g.getTeam().getTeamName())
+                        .build())
+                .toList();
+
+    }
+
+    public List<PendingUserResponse> getPendingUserRequests(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
+        List<Game> games = getHostCreatedGamesNotStarted(user);
+        List<SubTeam> subTeams = getUnacceptedHomeSubTeams(games);
+        SubTeam subTeam = subTeams.stream()
+                .filter(SubTeam::isNoneTeam)
+                .findFirst().orElseThrow();
+        subTeam.getMatchParticipants().stream().filter(p -> !p.isAccepted())
+                .toList();
+        return null;
+    }
+
+    public List<SubTeam> getUnacceptedHomeSubTeams(List<Game> games) {
+        List<SubTeam> requestTeams = new ArrayList<>();
+        for (Game game : games) {
+            requestTeams.addAll(getUnacceptedSubTeams(game.getHomeTeam()));
+            requestTeams.addAll(getUnacceptedSubTeams(game.getAwayTeam()));
+        }
+        return requestTeams;
+    }
+
+    public List<SubTeam> getUnacceptedSubTeams(CompetingTeam competingTeam) {
+        return competingTeam.getSubTeams().stream()
+                .filter(t -> !t.isAccept())
+                .toList();
+    }
+
+    public List<Game> getHostCreatedGamesNotStarted(User user) {
+        return gameRepository.findAllByHostAndMatchStartAfter(user, LocalDateTime.now());
+    }
+
+
+
 
 
 }
