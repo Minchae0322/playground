@@ -10,6 +10,7 @@ import com.example.playgroundmanage.repository.MatchParticipantRepository;
 import com.example.playgroundmanage.repository.TeamRepository;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.vo.*;
+import com.sun.jdi.LongValue;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -84,6 +85,12 @@ public class RequestService {
         }
         SubTeam subTeam = gameRequestProcess.getTeam(joinGameRequest.getGame(), joinGameRequest.getTeam(), joinGameRequest.getMatchTeamSide());
         return addUserToTeam(subTeam, joinGameRequest.getUser());
+    }
+
+    @Transactional
+    public void rejectRequest(Long joinGameRequestId) {
+        JoinGameRequest joinGameRequest = joinGameRequestRepository.findById(joinGameRequestId).orElseThrow();
+        joinGameRequestRepository.delete(joinGameRequest);
     }
 
     public Long addUserToTeam(SubTeam subTeam, User user) {

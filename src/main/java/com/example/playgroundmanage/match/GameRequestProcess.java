@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.match;
 
 import com.example.playgroundmanage.repository.MatchParticipantRepository;
+import com.example.playgroundmanage.repository.SubTeamRepository;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.vo.*;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +16,8 @@ public class GameRequestProcess {
 
     private final MatchParticipantRepository matchParticipantRepository;
 
+    private final SubTeamRepository subTeamRepository;
+
     public boolean isTeamAlreadyInMatchTeamQueue(CompetingTeam competingTeam, Team team) {
         return competingTeam.isContainTeam(team);
     }
@@ -28,11 +31,11 @@ public class GameRequestProcess {
 
     public SubTeam getTeam(Game game, Team team, MatchTeamSide matchTeamSide) {
         CompetingTeam competingTeam = game.getMatchTeamBySide(matchTeamSide);
-        return competingTeam.findSubTeam(team).orElse(SubTeam.builder()
+        return subTeamRepository.save(competingTeam.findSubTeam(team).orElse(SubTeam.builder()
                 .isNoneTeam(false)
                 .isAccept(true)
                 .competingTeam(competingTeam)
-                .build());
+                .build()));
     }
 
     public boolean isUserParticipatingInGame(Game game, User user) {
