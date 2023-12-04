@@ -31,27 +31,49 @@ public class GameService {
 
 
 
-    public Long startMatch(MatchRegistration matchRegistration) {
+    @Transactional
+    public Long createGame(MatchRegistration matchRegistration) {
+        CompetingTeam homeTeam = initCompetingTeam(MatchTeamSide.HOME);
+        CompetingTeam awayTeam = initCompetingTeam(MatchTeamSide.AWAY);
+
         Game game = Game.builder()
                 .host(matchRegistration.getHost())
                 .matchStart(matchRegistration.getMatchStart())
                 .sportsEvent(matchRegistration.getSportsEvent())
-                .homeTeam(initCompetingTeam(MatchTeamSide.HOME))
-                .awayTeam(initCompetingTeam(MatchTeamSide.AWAY))
+                .homeTeam(homeTeam)
+                .awayTeam(awayTeam)
                 .runningTime(matchRegistration.getRunningTime())
                 .build();
+
+        generateSoloSubTeam(homeTeam);
+        generateSoloSubTeam(awayTeam);
         return gameRepository.save(game).getId();
     }
 
     private CompetingTeam initCompetingTeam(MatchTeamSide matchTeamSide) {
-        return CompetingTeam.builder()
+        return competingTeamRepository.save(CompetingTeam.builder()
                 .matchResult(MatchResult.NONE)
                 .matchTeamSide(matchTeamSide)
-                .build();
+                .build());
+    }
+
+    private void generateSoloSubTeam(CompetingTeam competingTeam) {
+        if(competingTeam.isContainSoloTeam()) {
+            throw new IllegalArgumentException("개인 팀이 이미 있습니다.");
+        }
+        subTeamRepository.save(SubTeam.builder()
+                .isNoneTeam(true)
+                .isAccept(true)
+                .competingTeam(competingTeam)
+                .build());
+    }
+
+    public void createSubTeamRequest(SubTeamRegistrationParams subTeamRegistrationParams) {
+
     }
 
     public Long generateSubTeam(SubTeamRegistrationParams subTeamRegistrationParams) {
-        CompetingTeam competingTeam = competingTeamRepository.findById(subTeamRegistrationParams.getMatchTeamId()).orElseThrow();
+        CompetingTeam competingTeam = competingTeamRepository.findById(subTeamRegistrationParams.getCompetingTeamId()).orElseThrow();
         Team team = teamService.findByTeamId(subTeamRegistrationParams.getTeamId());
 
         if(matchRequestProcess.isTeamAlreadyInMatchTeamQueue(competingTeam, team)) {
@@ -75,16 +97,7 @@ public class GameService {
         matchParticipantRepository.save(matchRequestProcess.joinSubTeam(subTeam, userJoinTeamParams.getUser()));
     }
 
-    public Long generateSoloSubTeam(CompetingTeam competingTeam) {
-        if(competingTeam.isContainSoloTeam()) {
-            throw new IllegalArgumentException("개인 팀이 이미 있습니다.");
-        }
-        return subTeamRepository.save(SubTeam.builder()
-                .isNoneTeam(true)
-                .isAccept(true)
-                .competingTeam(competingTeam)
-                .build()).getId();
-    }
+
 
 
 

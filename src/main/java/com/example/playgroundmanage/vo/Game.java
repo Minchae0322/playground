@@ -12,7 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-@Entity(name = "matchUp")
+@Entity
 @Getter
 @RequiredArgsConstructor
 public class Game {
@@ -23,10 +23,10 @@ public class Game {
     @ManyToOne
     private User host;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private CompetingTeam homeTeam;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private CompetingTeam awayTeam;
 
     @Enumerated

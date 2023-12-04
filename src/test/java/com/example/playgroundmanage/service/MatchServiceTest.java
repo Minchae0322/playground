@@ -2,25 +2,20 @@ package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.dto.MatchRegistration;
 import com.example.playgroundmanage.dto.SubTeamRegistrationParams;
-import com.example.playgroundmanage.dto.TeamRegistration;
 import com.example.playgroundmanage.dto.UserJoinTeamParams;
 import com.example.playgroundmanage.dto.response.PendingTeamResponse;
 import com.example.playgroundmanage.repository.*;
-import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
 import com.example.playgroundmanage.vo.Game;
-import com.example.playgroundmanage.vo.SubTeam;
 import com.example.playgroundmanage.vo.Team;
 import com.example.playgroundmanage.vo.User;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
@@ -84,7 +79,7 @@ class MatchServiceTest {
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
-        return gameService.startMatch(matchRegistration);
+        return gameService.createGame(matchRegistration);
     }
 
 
@@ -97,24 +92,24 @@ class MatchServiceTest {
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
 
-        Game game = gameRepository.findById(gameService.startMatch(matchRegistration)).orElseThrow();
+        Game game = gameRepository.findById(gameService.createGame(matchRegistration)).orElseThrow();
 
 
         Assertions.assertEquals(1, gameRepository.count());
-        Assertions.assertEquals(2L, game.getHomeTeam().getId());
-        Assertions.assertEquals(1L, game.getAwayTeam().getId());
+        Assertions.assertEquals(1L, game.getHomeTeam().getId());
+        Assertions.assertEquals(2L, game.getAwayTeam().getId());
         assertEquals("test", game.getHost().getUsername());
     }
 
     @Test
     void getMatchBeforeStarted() {
         MatchRegistration matchRegistration = MatchRegistration.builder()
-                .matchStart(LocalDateTime.of(2023, 12, 2, 7, 10))
+                .matchStart(LocalDateTime.of(2081, 12, 2, 7, 10))
                 .runningTime(60L)
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
-        gameService.startMatch(matchRegistration);
+        gameService.createGame(matchRegistration);
 
 
         Assertions.assertEquals(1, gameRepository.count());
@@ -133,7 +128,7 @@ class MatchServiceTest {
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
-        gameService.startMatch(matchRegistration);
+        gameService.createGame(matchRegistration);
 
 
         Assertions.assertEquals(1, gameRepository.count());
@@ -146,15 +141,11 @@ class MatchServiceTest {
     @Test
     void create_solo_team() {
         Game game = gameRepository.findById(initGame()).orElseThrow();
-        gameService.generateSoloSubTeam(game.getHomeTeam());
-        gameService.generateSoloSubTeam(game.getAwayTeam());
-
-        Game game2 = gameRepository.findById(game.getId()).orElseThrow();
 
         assertEquals(2, subTeamRepository.count());
-        assertTrue(game2.getHomeTeam().isContainSoloTeam());
-        assertTrue(game2.getAwayTeam().isContainSoloTeam());
-        assertTrue(game2.getHomeTeam().getSubTeams().get(0).isAccept());
+        assertTrue(game.getHomeTeam().isContainSoloTeam());
+        assertTrue(game.getAwayTeam().isContainSoloTeam());
+        assertTrue(game.getHomeTeam().getSubTeams().get(0).isAccept());
 
     }
 
@@ -169,7 +160,7 @@ class MatchServiceTest {
                         .sportsEvent(SportsEvent.SOCCER)
                         .build()).toList();
         List<Long> games = matchRegistrationList.stream()
-                .map(m -> gameService.startMatch(m))
+                .map(m -> gameService.createGame(m))
                 .toList();
 
         Assertions.assertEquals(19, gameRepository.count());
@@ -202,7 +193,7 @@ class MatchServiceTest {
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
 
-        Game game = gameRepository.findById(gameService.startMatch(matchRegistration)).orElseThrow();
+        Game game = gameRepository.findById(gameService.createGame(matchRegistration)).orElseThrow();
 
         SubTeamRegistrationParams subTeamRegistrationParams = SubTeamRegistrationParams.builder()
                 .user(testUser)
