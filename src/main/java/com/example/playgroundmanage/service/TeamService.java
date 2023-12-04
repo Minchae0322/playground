@@ -36,6 +36,7 @@ public class TeamService {
     }
 
 
+    @Transactional
     public Long generateTeam(TeamRegistration teamRegistration) {
         Team team = saveTeam(teamRegistration);
         teamingService.joinTeam(team, teamRegistration.getLeader());

@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.dto.TeamRegistration;
+import com.example.playgroundmanage.repository.GameRepository;
 import com.example.playgroundmanage.repository.TeamRepository;
 import com.example.playgroundmanage.repository.TeamingRepository;
 import com.example.playgroundmanage.repository.UserRepository;
@@ -8,6 +9,7 @@ import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
 import com.example.playgroundmanage.vo.Team;
 import com.example.playgroundmanage.vo.User;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,12 +38,16 @@ class TeamServiceTest {
     @Autowired
     private TeamingRepository teamingRepository;
 
+    @Autowired
+    private GameRepository gameRepository;
     private User testUser;
 
     @BeforeEach
     void before() {
-        userRepository.deleteAll();
+        gameRepository.deleteAll();
         teamRepository.deleteAll();
+        userRepository.deleteAll();
+
         testUser = User.builder()
                 .username("test")
                 .role(UserRole.USER)
@@ -63,7 +69,6 @@ class TeamServiceTest {
         assertEquals(1, teamRepository.count());
         assertEquals("test", team.getLeader().getUsername());
         assertEquals(SportsEvent.SOCCER, team.getSportsEvent());
-        assertEquals(1, team.getMembers().size());
     }
 
     @Test

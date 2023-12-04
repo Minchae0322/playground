@@ -1,11 +1,13 @@
 package com.example.playgroundmanage.match;
 
 import com.example.playgroundmanage.repository.MatchParticipantRepository;
+import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.vo.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -17,20 +19,20 @@ public class GameRequestProcess {
         return competingTeam.isContainTeam(team);
     }
 
-    public MatchParticipant joinSubTeam(SubTeam subTeam, User user) {
-        if(containUserInSubTeam(subTeam, user)) {
-            throw new IllegalArgumentException("팀에 이미 참여했습니다.");
-        }
-        return MatchParticipant.builder()
-                .user(user)
-                .subTeam(subTeam)
-                .build();
+    public SubTeam getSoloTeam(Game game, MatchTeamSide matchTeamSide) {
+        CompetingTeam competingTeam = game.getMatchTeamBySide(matchTeamSide);
+        return competingTeam.getSubTeams().stream()
+                .filter(SubTeam::isSoloTeam)
+                .findFirst().orElseThrow();
     }
 
-    private boolean containUserInSubTeam(SubTeam subTeam, User user) {
-        return subTeam.getMatchParticipants().stream()
-                .filter(p -> p.getUser().equals(user))
-                .toList().size() != 0;
+    public SubTeam getTeam(Game game, Team team, MatchTeamSide matchTeamSide) {
+        CompetingTeam competingTeam = game.getMatchTeamBySide(matchTeamSide);
+        return competingTeam.findSubTeam(team).orElse(SubTeam.builder()
+                .isNoneTeam(false)
+                .isAccept(true)
+                .competingTeam(competingTeam)
+                .build());
     }
 
     public boolean isUserParticipatingInGame(Game game, User user) {

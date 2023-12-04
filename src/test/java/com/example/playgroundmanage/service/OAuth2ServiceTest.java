@@ -2,6 +2,8 @@ package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.login.dto.OAuth2UserProfile;
 import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
+import com.example.playgroundmanage.repository.GameRepository;
+import com.example.playgroundmanage.repository.TeamRepository;
 import com.example.playgroundmanage.repository.UserRepository;
 import com.example.playgroundmanage.type.UserRole;
 import org.junit.jupiter.api.BeforeEach;
@@ -26,11 +28,22 @@ class OAuth2ServiceTest {
 
     @Autowired
     private UserRepository userRepository;
+
+
     @Autowired
     private UserDetailsServiceImpl oAuth2Service;
 
+    @Autowired
+    private GameRepository gameRepository;
+
+    @Autowired
+    private TeamRepository teamRepository;
+
+
     @BeforeEach
     void before() {
+        gameRepository.deleteAll();
+        teamRepository.deleteAll();
         userRepository.deleteAll();
 
     }

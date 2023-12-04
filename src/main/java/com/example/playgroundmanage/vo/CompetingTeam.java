@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Entity
@@ -49,5 +50,14 @@ public class CompetingTeam {
         return subTeams.stream()
                 .filter(SubTeam::isNoneTeam)
                 .toList().size() != 0;
+    }
+
+    public Optional<SubTeam> findSubTeam(Team team) {
+        for(SubTeam subTeam : subTeams) {
+            if(subTeam.isContainTeam(team)) {
+                return Optional.of(subTeam);
+            }
+        }
+        return Optional.empty();
     }
 }
