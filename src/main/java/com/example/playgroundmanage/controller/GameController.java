@@ -17,17 +17,13 @@ public class GameController {
     public void userJoinTeam() {
         UserJoinTeamParams userJoinTeamParams = UserJoinTeamParams.builder()
                 .build();
-        gameService.joinUserInSubTeam(userJoinTeamParams);
+
     }
 
     @GetMapping("/game/create/subTeam")
     public void createSubTeam() {
         SubTeamRegistrationParams subTeamRegistrationParams = SubTeamRegistrationParams.builder()
                 .build();
-        Long subTeamId = gameService.generateSubTeam(subTeamRegistrationParams);
-        UserJoinTeamParams userJoinTeamParams =  UserJoinTeamParams.builder()
-                .subTeamId(subTeamId)
-                .build();
-        gameService.joinUserInSubTeam(userJoinTeamParams);
+
     }
 }

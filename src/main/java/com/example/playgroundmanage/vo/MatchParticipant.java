@@ -20,6 +20,9 @@ public class MatchParticipant {
     @ManyToOne(cascade = CascadeType.MERGE)
     private SubTeam subTeam;
 
+    @OneToOne
+    private Game game;
+
     private boolean isAccepted;
 
     @Builder

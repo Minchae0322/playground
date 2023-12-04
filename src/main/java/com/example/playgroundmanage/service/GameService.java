@@ -4,7 +4,8 @@ import com.example.playgroundmanage.dto.MatchRegistration;
 import com.example.playgroundmanage.dto.SubTeamRegistrationParams;
 import com.example.playgroundmanage.dto.UserJoinTeamParams;
 import com.example.playgroundmanage.exception.MatchNotExistException;
-import com.example.playgroundmanage.match.MatchRequestProcess;
+import com.example.playgroundmanage.exception.TeamNotExistException;
+import com.example.playgroundmanage.match.GameRequestProcess;
 import com.example.playgroundmanage.repository.*;
 import com.example.playgroundmanage.type.MatchResult;
 import com.example.playgroundmanage.type.MatchTeamSide;
@@ -23,7 +24,8 @@ public class GameService {
 
     private final GameRepository gameRepository;
 
-    private final MatchRequestProcess matchRequestProcess;
+    private final TeamRepository teamRepository;
+    private final GameRequestProcess gameRequestProcess;
 
     private final SubTeamRepository subTeamRepository;
 
@@ -67,37 +69,6 @@ public class GameService {
                 .competingTeam(competingTeam)
                 .build());
     }
-
-    public void createSubTeamRequest(SubTeamRegistrationParams subTeamRegistrationParams) {
-
-    }
-
-    public Long generateSubTeam(SubTeamRegistrationParams subTeamRegistrationParams) {
-        CompetingTeam competingTeam = competingTeamRepository.findById(subTeamRegistrationParams.getCompetingTeamId()).orElseThrow();
-        Team team = teamService.findByTeamId(subTeamRegistrationParams.getTeamId());
-
-        if(matchRequestProcess.isTeamAlreadyInMatchTeamQueue(competingTeam, team)) {
-            throw new IllegalArgumentException();
-        }
-
-        return subTeamRepository.save(SubTeam.builder()
-                .isNoneTeam(false)
-                .isAccept(false)
-                .team(team)
-                .competingTeam(competingTeam)
-                .build()).getId();
-    }
-
-
-
-
-    @Transactional
-    public void joinUserInSubTeam(UserJoinTeamParams userJoinTeamParams) {
-        SubTeam subTeam = subTeamRepository.findById(userJoinTeamParams.getSubTeamId()).orElseThrow();
-        matchParticipantRepository.save(matchRequestProcess.joinSubTeam(subTeam, userJoinTeamParams.getUser()));
-    }
-
-
 
 
 

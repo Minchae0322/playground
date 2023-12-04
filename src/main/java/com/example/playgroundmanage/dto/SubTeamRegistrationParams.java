@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.dto;
 
+import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.vo.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -9,16 +10,17 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class SubTeamRegistrationParams {
 
-    private Long competingTeamId;
+    private Long gameId;
     private Long teamId;
+
+    private MatchTeamSide matchTeamSide;
     private User user;
 
-
-
     @Builder
-    public SubTeamRegistrationParams(Long competingTeamId, Long teamId, User user) {
-        this.competingTeamId = competingTeamId;
+    public SubTeamRegistrationParams(Long gameId, Long teamId, MatchTeamSide matchTeamSide, User user) {
+        this.gameId = gameId;
         this.teamId = teamId;
+        this.matchTeamSide = matchTeamSide;
         this.user = user;
     }
 }

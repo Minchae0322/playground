@@ -22,7 +22,7 @@ public class Team {
 
     private String teamPic;
 
-    @OneToOne
+    @ManyToOne
     private User leader;
 
     @Enumerated
