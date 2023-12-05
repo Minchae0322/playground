@@ -1,12 +1,11 @@
 package com.example.playgroundmanage.dto;
 
 import com.example.playgroundmanage.type.SportsEvent;
-import com.example.playgroundmanage.vo.User;
+import com.example.playgroundmanage.game.vo.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @RequiredArgsConstructor

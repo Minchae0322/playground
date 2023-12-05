@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.login.dto;
 
 import com.example.playgroundmanage.type.UserRole;
-import com.example.playgroundmanage.vo.User;
+import com.example.playgroundmanage.game.vo.User;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

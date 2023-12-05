@@ -7,7 +7,7 @@ import com.example.playgroundmanage.login.auth.JwtTokenProvider;
 import com.example.playgroundmanage.filter.UsernamePasswordCustomAuthenticationFilter;
 import com.example.playgroundmanage.login.handler.LoginFailureHandler;
 import com.example.playgroundmanage.login.handler.LoginSuccessHandler;
-import com.example.playgroundmanage.repository.UserRepository;
+import com.example.playgroundmanage.game.repository.UserRepository;
 import com.example.playgroundmanage.login.service.TokenService;
 import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;

@@ -1,15 +1,14 @@
 package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.dto.MatchRegistration;
-import com.example.playgroundmanage.dto.SubTeamRegistrationParams;
-import com.example.playgroundmanage.dto.UserJoinTeamParams;
-import com.example.playgroundmanage.dto.response.PendingTeamResponse;
-import com.example.playgroundmanage.repository.*;
+import com.example.playgroundmanage.game.repository.*;
+import com.example.playgroundmanage.game.service.GameService;
+import com.example.playgroundmanage.game.service.UserService;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
-import com.example.playgroundmanage.vo.Game;
-import com.example.playgroundmanage.vo.Team;
-import com.example.playgroundmanage.vo.User;
+import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.game.vo.Team;
+import com.example.playgroundmanage.game.vo.User;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ class MatchServiceTest {
     private CompetingTeamRepository competingTeamRepository;
 
     @Autowired
-    private  MatchParticipantRepository matchParticipantRepository;
+    private MatchParticipantRepository matchParticipantRepository;
 
     @Autowired
     private GameService gameService;

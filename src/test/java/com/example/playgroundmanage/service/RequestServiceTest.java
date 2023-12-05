@@ -2,15 +2,18 @@ package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.dto.MatchRegistration;
 import com.example.playgroundmanage.dto.SubTeamRegistrationParams;
-import com.example.playgroundmanage.match.GameRequestProcess;
-import com.example.playgroundmanage.repository.*;
+import com.example.playgroundmanage.game.repository.*;
+import com.example.playgroundmanage.game.service.GameService;
+import com.example.playgroundmanage.game.service.RequestService;
+import com.example.playgroundmanage.game.match.GameRequestProcess;
+
 import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
-import com.example.playgroundmanage.vo.Game;
-import com.example.playgroundmanage.vo.JoinGameRequest;
-import com.example.playgroundmanage.vo.Team;
-import com.example.playgroundmanage.vo.User;
+import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.game.vo.JoinGameRequest;
+import com.example.playgroundmanage.game.vo.Team;
+import com.example.playgroundmanage.game.vo.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

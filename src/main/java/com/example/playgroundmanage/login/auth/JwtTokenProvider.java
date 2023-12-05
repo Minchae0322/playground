@@ -2,9 +2,9 @@ package com.example.playgroundmanage.login.auth;
 
 
 
-import com.example.playgroundmanage.service.UserService;
+import com.example.playgroundmanage.game.service.UserService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
-import com.example.playgroundmanage.vo.User;
+import com.example.playgroundmanage.game.vo.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
