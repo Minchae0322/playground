@@ -45,8 +45,11 @@
     <div data-orientation="horizontal" role="none" class="shrink-0 bg-gray-100 h-[1px] w-full my-8"></div>
     <div class="space-y-4">
       <hr class="margin-bottom">
-      <button class="button-margin items-center justify-center rounded-md  font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full">
-        Sign in with WeChat
+      <button class="button-margin items-center justify-center rounded-md  font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
+      @click="login_naver"
+      >
+
+        Sign in with Naver
       </button>
 
       <button class="button-margin  items-center justify-center rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full">
@@ -56,8 +59,27 @@
   </div>
 </template>
 
-<script>
+<script setup lang="js">
+import axios from "axios";
+import { ref, onMounted } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
+const apiBaseUrl = "http://localhost:8080/";
+
+const login_naver = function () {
+  try {
+    axios.get(`${apiBaseUrl}login/oauth2`)
+        .then(response => {
+          window.location.href = response.data;
+          console.log("Dddddddddddd")
+          console.log(response.data)
+        });
+  } catch (e) {
+    console.log("Dddddddddddd")
+    console.log(e.data)
+  }
+}
 
 </script>
 

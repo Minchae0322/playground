@@ -1,7 +1,6 @@
 package com.example.playgroundmanage.game.repository;
 
-import com.example.playgroundmanage.game.vo.Teaming;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.vo.*;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;

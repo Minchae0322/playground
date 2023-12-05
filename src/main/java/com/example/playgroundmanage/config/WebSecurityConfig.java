@@ -42,6 +42,7 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
+                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 //.addFilterBefore(jwtAuthenticationFilter(), OAuth2LoginAuthenticationFilter.class)
                 .addFilterBefore(jwtRefreshTokenFilter(), UsernamePasswordAuthenticationFilter.class)
@@ -52,7 +53,10 @@ public class WebSecurityConfig {
                         .logoutSuccessUrl("/home"))
                 .csrf(AbstractHttpConfigurer::disable)
                 .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
+                        .authorizationEndpoint(authorizationEndpointConfig -> authorizationEndpointConfig.baseUri("/oauth2/authorize")
+                                .authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository()))
                         .defaultSuccessUrl("/loginInfo")
+                        .redirectionEndpoint(redirectionEndpointConfig -> redirectionEndpointConfig.baseUri("/login/oauth2/code/**"))
                         .successHandler(new LoginSuccessHandler(jwtTokenProvider, tokenService))
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(userDetailsService))
                 )
@@ -64,6 +68,12 @@ public class WebSecurityConfig {
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(jwtTokenProvider);
+    }
+
+
+    @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
     }
 
     @Bean
@@ -98,7 +108,9 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:5173");
+        configuration.addAllowedOrigin("http://localhost:8080");
         configuration.addAllowedOrigin("http://nid.naver.com");
+        configuration.addAllowedOrigin("https://nid.naver.com");
         configuration.addAllowedOrigin("http://13.125.165.102");
         configuration.addAllowedOrigin("https://www.youtube.com");
         configuration.addAllowedHeader("*");

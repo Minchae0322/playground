@@ -59,8 +59,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private boolean skipFilter(String url) {
         List<String> list = List.of(
                 "/auth"
+                ,"/favicon.ico"
+                ,"/oauth2"
+                ,"/login"
                 , "/token/refresh"
-                , "/login");
+                , "/login/oauth2/code/naver");
 
         return list.stream()
                 .filter(s -> s.contains(url))
