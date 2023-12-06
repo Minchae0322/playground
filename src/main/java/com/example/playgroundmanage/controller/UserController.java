@@ -1,8 +1,11 @@
 package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.login.vo.MyUserDetails;
+import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.io.IOException;
 
 @RestController
 public class UserController {
@@ -13,14 +16,24 @@ public class UserController {
         return userDetails.getUser().getUsername();
     }
 
-    @GetMapping("/login/oauth2")
-    public String redirectToNaverAuthorization() {
+    @GetMapping("/tokenInfo")
+    public String redirectToNaverAuthorization(HttpServletResponse response) {
         // 리디렉션할 URL을 반환
-        return "https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=LvLgBDoxDkpt12w_uWf4&scope=name&state=SNolgmAQB_nWiNpuYQ4KVUFUPZDGJvXu-97cOB8Sc8A%3D&redirect_uri=http://localhost:8080/login/oauth2/code/naver";
+        response.getHeader("Authorization");
+        return "http://localhost:5173/login";
     }
 
-    @GetMapping("/auth/login/oauth2/code/n2aver")
-    public String getCode(@RequestParam("code") String code, @RequestParam("state") String state) {
-        return code + state;
+    @GetMapping("/oauth2/redirect")
+    public String handleNaverCallback() {
+        // 인가 코드 및 상태 정보 처리...
+
+        // URL 파라미터로 정보를 붙여서 리다이렉트
+
+        return "redirect:" ;
+    }
+
+    @GetMapping("/callback")
+    public void getCode(HttpServletResponse response) throws IOException {
+        response.sendRedirect("http://localhost:8080/oauth2/authorization/naver");
     }
 }

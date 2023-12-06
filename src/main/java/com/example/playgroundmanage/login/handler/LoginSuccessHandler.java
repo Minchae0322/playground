@@ -31,9 +31,10 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
                 .build();
 
         tokenService.updateRefreshToken(tokenEdit);
-
+        request.getRequestURI();
         response.setHeader("Authorization", tokenInfo.getAccessToken());
         response.setHeader("RefreshToken", tokenInfo.getRefreshToken());
+        response.sendRedirect("/tokenInfo");
         response.setStatus(HttpServletResponse.SC_OK);
         //response.sendRedirect("/loginInfo");
     }

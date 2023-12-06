@@ -68,17 +68,21 @@ const router = useRouter();
 const apiBaseUrl = "http://localhost:8080/";
 
 const login_naver = function () {
-  try {
-    axios.get(`${apiBaseUrl}login/oauth2`)
+
+    window.location.href = "http://localhost:8080/callback";
+
+  /*try {
+    axios.get(`${apiBaseUrl}oauth2/authorization/naver`,
+    )
         .then(response => {
-          window.location.href = response.data;
+          //window.location.href = response.data;
           console.log("Dddddddddddd")
           console.log(response.data)
         });
   } catch (e) {
     console.log("Dddddddddddd")
     console.log(e.data)
-  }
+  }*/
 }
 
 </script>

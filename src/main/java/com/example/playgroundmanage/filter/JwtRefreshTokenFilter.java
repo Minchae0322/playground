@@ -23,11 +23,11 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(skipFilter(request.getRequestURI())) {
+       // if(skipFilter(request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
-        }
-        String refreshToken = resolveRefreshToken(request);
+        //}
+        /*String refreshToken = resolveRefreshToken(request);
         if(jwtTokenProvider.validateToken(refreshToken)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
             String accessToken = jwtTokenProvider.generateToken(authentication, ACCESS_TOKEN_EXPIRATION);
@@ -36,7 +36,7 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
             response.setStatus(HttpServletResponse.SC_OK);
             return;
         }
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+        response.setStatus(HttpServletResponse.SC_FORBIDDEN);*/
     }
 
     private boolean skipFilter(String url) {

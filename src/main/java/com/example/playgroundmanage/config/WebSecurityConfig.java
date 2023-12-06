@@ -11,6 +11,7 @@ import com.example.playgroundmanage.game.repository.UserRepository;
 import com.example.playgroundmanage.login.service.TokenService;
 import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.security.servlet.RequestMatcherProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,9 +24,16 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.header.HeaderWriter;
+import org.springframework.security.web.header.writers.DelegatingRequestMatcherHeaderWriter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 @Configuration
@@ -48,15 +56,13 @@ public class WebSecurityConfig {
                 .addFilterBefore(jwtRefreshTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter(), JwtRefreshTokenFilter.class)
                // .addFilterBefore(jwtRefreshTokenFilter(), OAuth2LoginAuthenticationFilter.class)
-                .formLogin(httpSecurityFormLoginConfigurer -> httpSecurityFormLoginConfigurer.loginPage("/login"))
+                .formLogin(AbstractHttpConfigurer::disable)
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.logoutUrl("/auth/logout")
                         .logoutSuccessUrl("/home"))
                 .csrf(AbstractHttpConfigurer::disable)
                 .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
-                        .authorizationEndpoint(authorizationEndpointConfig -> authorizationEndpointConfig.baseUri("/oauth2/authorize")
-                                .authorizationRequestRepository(cookieOAuth2AuthorizationRequestRepository()))
-                        .defaultSuccessUrl("/loginInfo")
-                        .redirectionEndpoint(redirectionEndpointConfig -> redirectionEndpointConfig.baseUri("/login/oauth2/code/**"))
+                        .defaultSuccessUrl("/tokenInfo")
+                        .redirectionEndpoint(redirectionEndpointConfig -> redirectionEndpointConfig.baseUri("/oauth2/redirect"))
                         .successHandler(new LoginSuccessHandler(jwtTokenProvider, tokenService))
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(userDetailsService))
                 )
@@ -71,10 +77,6 @@ public class WebSecurityConfig {
     }
 
 
-    @Bean
-    public HttpCookieOAuth2AuthorizationRequestRepository cookieOAuth2AuthorizationRequestRepository() {
-        return new HttpCookieOAuth2AuthorizationRequestRepository();
-    }
 
     @Bean
     public JwtRefreshTokenFilter jwtRefreshTokenFilter() {
@@ -121,8 +123,6 @@ public class WebSecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
-
-
 
 
 }
