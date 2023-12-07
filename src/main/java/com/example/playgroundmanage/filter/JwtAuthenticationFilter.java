@@ -28,12 +28,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        //if(skipFilter(request.getRequestURI())) {
+        if(skipFilter(request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
-        //}
+        }
 
-       /* //토큰이 존재하지 않으면 403 Exception
+        //토큰이 존재하지 않으면 403 Exception
         String accessToken = resolveAccessToken(request);
 
         if (jwtTokenProvider.validateToken(accessToken)) {
@@ -42,9 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-        response.setHeader("OriginalUrl", request.getRequestURI());
-        response.sendRedirect("/token/refresh");*/
+        response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
     }
 
     private String resolveAccessToken(HttpServletRequest request) {
@@ -58,12 +56,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private boolean skipFilter(String url) {
         List<String> list = List.of(
-                "/auth"
+                "/auth/login"
                 ,"/favicon.ico"
                 ,"/oauth2"
-                ,"/login"
                 , "/token/refresh"
-                , "/login/oauth2/code/naver");
+        );
 
         return list.stream()
                 .filter(s -> s.contains(url))

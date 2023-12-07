@@ -18,7 +18,7 @@ public class ExceptionController {
     @ExceptionHandler(TokenNotValidException.class)
     public ErrorResponse isWrongIdAndPassword(TokenNotValidException e) {
         return ErrorResponse.builder()
-                .code("403")
+                .code("401")
                 .message(e.getMessage())
                 .build();
     }

@@ -8,8 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -17,9 +15,8 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+
+import static com.example.playgroundmanage.Instance.*;
 
 
 @RequiredArgsConstructor
@@ -41,7 +38,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         tokenService.updateRefreshToken(tokenEdit);
 
         response.setStatus(HttpServletResponse.SC_OK);
-        redirect(request, response,tokenInfo.getAccessToken(), tokenInfo.getRefreshToken());
+        redirect(request, response, tokenInfo.getAccessToken(), tokenInfo.getRefreshToken());
     }
 
     private void redirect(HttpServletRequest request, HttpServletResponse response,
@@ -55,14 +52,14 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private URI createURI(String accessToken, String refreshToken) {
         MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("access_token", accessToken);
-        queryParams.add("refresh_token", refreshToken);
+        queryParams.add(ACCESS_TOKEN_PARAM_NAME, accessToken);
+        queryParams.add(REFRESH_TOKEN_PARAM_NAME, refreshToken);
 
         return UriComponentsBuilder
                 .newInstance()
                 .scheme("http")
                 .host("localhost")
-                .port(5173)
+                .port(FRONT_END_PORT_NUM)
                 .path("/oauth2/redirect")
                 .queryParams(queryParams)
                 .build()
