@@ -45,16 +45,24 @@
     <div data-orientation="horizontal" role="none" class="shrink-0 bg-gray-100 h-[1px] w-full my-8"></div>
     <div class="space-y-4">
       <hr class="margin-bottom">
-      <button class="button-margin items-center justify-center rounded-md  font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full"
-      @click="login_naver"
-      >
+      <img
 
-        Sign in with Naver
-      </button>
-<a href="http://localhost:8080/oauth2/authorization/naver">치차차차</a>
-      <button class="button-margin  items-center justify-center rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 w-full">
-        Sign in with QQ
-      </button>
+          src="../assets/logo_naver.png"
+          alt="Your Image Alt Text"
+          class="image-margin"
+          width="50"
+          height="50"
+          @click="login_naver"
+      />
+
+      <img
+          src="../assets/img.png"
+          alt="Your Image Alt Text"
+          class="image-margin"
+          width="50"
+          height="50"
+          @click="login_github"
+      />
     </div>
   </div>
 </template>
@@ -66,24 +74,26 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const apiBaseUrl = "http://localhost:8080/";
+const id = ref("")
 
 const login_naver = function () {
 
-    //window.location.href = "http://localhost:8080/callback";
-
-  /*try {
-    axios.get(`${apiBaseUrl}oauth2/authorization/naver`,
-    )
-        .then(response => {
-          //window.location.href = response.data;
-          console.log("Dddddddddddd")
-          console.log(response.data)
-        });
-  } catch (e) {
-    console.log("Dddddddddddd")
-    console.log(e.data)
-  }*/
+  try {
+    window.location.href = `${apiBaseUrl}oauth2/authorization/naver`;
+  } catch (error) {
+    console.error('Error during Naver login:', error);
+    router.replace('/login'); // Redirect to /login in case of an error
+  }
 }
+
+const login_github = function () {
+  try {
+    window.location.href = `${apiBaseUrl}oauth2/authorization/github`;
+  } catch (error) {
+    console.error('Error during Github login:', error);
+    router.replace('/login'); // Redirect to /login in case of an error
+  }
+};
 
 </script>
 
@@ -131,6 +141,10 @@ body {
 .custom-input {
   height: 2.3rem; /* 높이를 원하는 값으로 조절하세요. */
 
+}
+
+.image-margin {
+  margin: 10px 10px 10px;
 }
 .button-margin {
   margin-top: 20px;

@@ -39,21 +39,15 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                 .build();
 
         tokenService.updateRefreshToken(tokenEdit);
-        request.getRequestURI();
-        response.setHeader("Authorization", tokenInfo.getAccessToken());
-        response.setHeader("RefreshToken", tokenInfo.getRefreshToken());
-        //response.sendRedirect("/tokenInfo");
+
         response.setStatus(HttpServletResponse.SC_OK);
-        //response.sendRedirect("/loginInfo");
-        redirect(request, response,"dd", new ArrayList<>());
+        redirect(request, response,tokenInfo.getAccessToken(), tokenInfo.getRefreshToken());
     }
 
     private void redirect(HttpServletRequest request, HttpServletResponse response,
-                          String username, List<String> authorities) throws IOException {
-        String accessToken = "delegateAccessToken(username, authorities);";
-        String refreshToken = "delegateRefreshToken(username);";
+                         String accessToken, String refreshToken) throws IOException {
 
-        String uri = "http://localhost:5173/login";
+        String uri = createURI(accessToken, refreshToken).toString();
         getRedirectStrategy().sendRedirect(request, response, uri);
     }
 
@@ -68,8 +62,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                 .newInstance()
                 .scheme("http")
                 .host("localhost")
-                .port(80)
-                .path("/receive-token.html")
+                .port(5173)
+                .path("/oauth2/redirect")
                 .queryParams(queryParams)
                 .build()
                 .toUri();

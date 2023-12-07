@@ -52,20 +52,22 @@ public class WebSecurityConfig {
         return http
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
-                //.addFilterBefore(jwtAuthenticationFilter(), OAuth2LoginAuthenticationFilter.class)
                 .addFilterBefore(jwtRefreshTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter(), JwtRefreshTokenFilter.class)
-               // .addFilterBefore(jwtRefreshTokenFilter(), OAuth2LoginAuthenticationFilter.class)
+
                 .formLogin(AbstractHttpConfigurer::disable)
+
                 .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.logoutUrl("/auth/logout")
                         .logoutSuccessUrl("/home"))
+
                 .csrf(AbstractHttpConfigurer::disable)
+
                 .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
-                        .defaultSuccessUrl("/tokenInfo")
-                        //.redirectionEndpoint(redirectionEndpointConfig -> redirectionEndpointConfig.baseUri("/oauth2/redirect"))
                         .successHandler(new LoginSuccessHandler(jwtTokenProvider, tokenService))
+                        .failureHandler(new LoginFailureHandler())
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(userDetailsService))
                 )
+
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .build();
