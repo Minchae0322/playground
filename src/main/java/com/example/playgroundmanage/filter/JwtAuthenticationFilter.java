@@ -16,6 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+import static com.example.playgroundmanage.Instance.ACCESS_TOKEN_HEADER_NAME;
 import static com.example.playgroundmanage.login.auth.JwtTokenProvider.ACCESS_TOKEN_EXPIRATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -46,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private String resolveAccessToken(HttpServletRequest request) {
-        String bearerToken = request.getHeader("Authorization");
+        String bearerToken = request.getHeader(ACCESS_TOKEN_HEADER_NAME);
         if (StringUtils.hasText(bearerToken)) {
             return bearerToken;
         }

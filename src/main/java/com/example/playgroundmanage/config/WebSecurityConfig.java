@@ -35,6 +35,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.example.playgroundmanage.Instance.ACCESS_TOKEN_HEADER_NAME;
+
 
 @Configuration
 @EnableWebSecurity
@@ -51,14 +53,12 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
+
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtRefreshTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter(), JwtRefreshTokenFilter.class)
 
                 .formLogin(AbstractHttpConfigurer::disable)
-
-                .logout(httpSecurityLogoutConfigurer -> httpSecurityLogoutConfigurer.logoutUrl("/auth/logout")
-                        .logoutSuccessUrl("/home"))
 
                 .csrf(AbstractHttpConfigurer::disable)
 
@@ -69,7 +69,6 @@ public class WebSecurityConfig {
                 )
 
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
                 .build();
     }
 
@@ -112,14 +111,9 @@ public class WebSecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.addAllowedOrigin("http://localhost:5173");
-        configuration.addAllowedOrigin("http://localhost:8080");
-        configuration.addAllowedOrigin("http://nid.naver.com");
-        configuration.addAllowedOrigin("https://nid.naver.com");
-        configuration.addAllowedOrigin("http://13.125.165.102");
-        configuration.addAllowedOrigin("https://www.youtube.com");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
-        configuration.addExposedHeader("Authorization");
+        configuration.addExposedHeader(ACCESS_TOKEN_HEADER_NAME);
         configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

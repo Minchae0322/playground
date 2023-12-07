@@ -3,6 +3,7 @@ package com.example.playgroundmanage.game.vo;
 
 
 import com.example.playgroundmanage.login.dto.UserEdit;
+import com.example.playgroundmanage.store.UploadFile;
 import com.example.playgroundmanage.type.UserRole;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
@@ -33,6 +34,9 @@ public class User implements Serializable{
     private String phoneNumber;
 
     private String nickname;
+
+    @OneToOne
+    private UploadFile profileImg;
 
     private boolean isEnable;
 
@@ -78,5 +82,11 @@ public class User implements Serializable{
             return Objects.equals(((User) obj).getId(), this.id);
         }
         return false;
+    }
+
+    @Transactional
+    public User updateProfile(UploadFile uploadFile) {
+        this.profileImg = uploadFile;
+        return this;
     }
 }

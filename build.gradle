@@ -40,6 +40,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation 'junit:junit:4.13.1'
     testImplementation 'junit:junit:4.13.1'
+    implementation 'org.json:json:20230227'
+    implementation 'org.apache.commons:commons-fileupload2:2.0.0-M1'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'

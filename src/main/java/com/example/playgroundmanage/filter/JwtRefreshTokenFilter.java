@@ -14,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
+import static com.example.playgroundmanage.Instance.ACCESS_TOKEN_HEADER_NAME;
 import static com.example.playgroundmanage.login.auth.JwtTokenProvider.ACCESS_TOKEN_EXPIRATION;
 
 @RequiredArgsConstructor
@@ -31,7 +32,7 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
         if(jwtTokenProvider.validateToken(refreshToken)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
             String accessToken = jwtTokenProvider.generateToken(authentication, ACCESS_TOKEN_EXPIRATION);
-            response.setHeader("Authorization", accessToken);
+            response.setHeader(ACCESS_TOKEN_HEADER_NAME, accessToken);
             response.setStatus(HttpServletResponse.SC_OK);
             return;
         }

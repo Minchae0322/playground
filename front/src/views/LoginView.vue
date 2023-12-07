@@ -14,7 +14,7 @@
           Id
         </label>
       </div>
-        <el-input class="custom-input" v-model="id" placeholder="Please input id" />
+        <el-input class="custom-input" v-model="username" placeholder="Please input id" />
 
       <div class="space-id">
         <label
@@ -29,6 +29,7 @@
       <button
           class="button-margin rounded-md text-sm font-medium ring-offset-background  fn=g focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
           type="submit"
+          @click="write"
       >
         Sign In
       </button>
@@ -74,7 +75,10 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const apiBaseUrl = "http://localhost:8080/";
-const id = ref("")
+const username = ref("")
+const password = ref("");
+
+axios.defaults.withCredentials = true; // withCredentials 전역 설정
 
 const login_naver = function () {
 
@@ -94,6 +98,23 @@ const login_github = function () {
     router.replace('/login'); // Redirect to /login in case of an error
   }
 };
+
+const write = async function () {
+  try {
+    const response = await axios.post(`${apiBaseUrl}auth/login`, {
+      username: username.value,
+      password: password.value
+    }, {
+      headers: {}
+    });
+
+    if (response.status === 200) {
+    }
+  } catch (error) {
+    console.error('에러 발생:', error);
+    alert("아이디 또는 비밀번호가 틀렸습니다.");
+  }
+}
 
 </script>
 
