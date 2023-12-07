@@ -3,12 +3,17 @@ package com.example.playgroundmanage.vo;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.store.UploadFile;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
+@Getter
 @RequiredArgsConstructor
 public class Playground {
 
@@ -25,7 +30,16 @@ public class Playground {
     @ManyToOne
     private Campus campus;
 
-    @OneToMany(mappedBy = "playground")
+    @OneToMany(mappedBy = "playground", fetch = FetchType.EAGER)
     private List<Game> games = new ArrayList<>();
+
+    public List<Game> orderedByLatest(List<Game> games) {
+        List<Game> notStartedGames = games.stream()
+                .filter(g -> g.getMatchStart().isAfter(LocalDateTime.now()))
+                .toList();
+        notStartedGames.sort(Comparator.comparing(Game::getMatchStart).reversed());
+        return notStartedGames;
+    }
+
 
 }
