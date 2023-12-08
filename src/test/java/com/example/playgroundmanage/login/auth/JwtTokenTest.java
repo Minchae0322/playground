@@ -67,7 +67,7 @@ public class JwtTokenTest {
     void accessToken_not_valid() throws Exception {
         String dummy = "dummy";
         mockMvc.perform(MockMvcRequestBuilders.get(REQUEST_URL).header("Authorization", dummy))
-                .andExpect(MockMvcResultMatchers.status().is3xxRedirection())
+                .andExpect(MockMvcResultMatchers.status().is4xxClientError())
                 .andDo(print());
     }
 

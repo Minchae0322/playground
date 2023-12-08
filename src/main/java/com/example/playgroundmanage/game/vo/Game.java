@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,6 +57,7 @@ public class Game {
 
     @Builder
     public Game(Long id, Playground playground, User host, List<JoinGameRequest> joinGameRequests, CompetingTeam homeTeam, CompetingTeam awayTeam, SportsEvent sportsEvent, int homeScore, int awayScore, LocalDateTime gameStartDateTime, Long runningTime, boolean isStarted, boolean isFinished) {
+        validate(host, runningTime, gameStartDateTime);
         this.id = id;
         this.playground = playground;
         this.host = host;
@@ -63,12 +65,12 @@ public class Game {
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.sportsEvent = sportsEvent;
-        this.homeScore = homeScore;
-        this.awayScore = awayScore;
+        this.homeScore = 0;
+        this.awayScore = 0;
         this.gameStartDateTime = gameStartDateTime;
         this.runningTime = runningTime;
-        this.isStarted = isStarted;
-        this.isFinished = isFinished;
+        this.isStarted = false;
+        this.isFinished = false;
     }
 
 
@@ -81,17 +83,25 @@ public class Game {
         return this.awayTeam;
     }
 
-    private void validate(User host, Long runningTime) {
+    private void validate(User host, Long runningTime, LocalDateTime gameStartDateTime) {
         if(host == null) {
             throw new UserNotExistException();
         }
         if(runningTime < 0 || runningTime > 120) {
             throw new IllegalArgumentException("경기 소요 시간이 올바르지 않습니다.");
         }
+        if (LocalDateTime.now().isBefore(gameStartDateTime)) {
+            throw new IllegalArgumentException("현재보다 전에 시작할 수 없습니다.");
+        }
     }
 
     public boolean gameOnGoing(LocalDateTime currentTime) {
         LocalDateTime gameEndDateTime = gameStartDateTime.plusMinutes(runningTime);
         return currentTime.isAfter(gameStartDateTime) && currentTime.isBefore(gameEndDateTime);
+    }
+
+    public boolean isDayGame(LocalDateTime day) {
+        return gameStartDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+                .equals(day.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }
 }

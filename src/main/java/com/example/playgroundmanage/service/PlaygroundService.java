@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.dto.response.GameThumbnail;
+import com.example.playgroundmanage.dto.response.GameTimeline;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.repository.PlaygroundRepository;
 import com.example.playgroundmanage.vo.Playground;
@@ -37,6 +38,22 @@ public class PlaygroundService {
         return playground.getGames().stream()
                 .filter(g -> g.gameOnGoing(currentTime))
                 .findFirst().orElseThrow();
+    }
+
+    @Transactional
+    public List<GameTimeline> getDailyGameTimelines(Long playgroundId, LocalDateTime day) {
+        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
+        List<Game> dailyGames = getDailyGames(playground.getGames(), day);
+        return dailyGames.stream().map(g -> GameTimeline.builder()
+                .start(g.getGameStartDateTime())
+                .end(g.getGameStartDateTime().plusMinutes(g.getRunningTime()))
+                .build()).toList();
+    }
+
+    public List<Game> getDailyGames(List<Game> games, LocalDateTime day) {
+        return games.stream()
+                .filter(g -> g.isDayGame(day))
+                .toList();
     }
 
 }
