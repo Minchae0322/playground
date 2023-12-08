@@ -8,7 +8,6 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
@@ -35,9 +34,9 @@ public class Playground {
 
     public List<Game> orderedByLatest(List<Game> games) {
         List<Game> notStartedGames = games.stream()
-                .filter(g -> g.getMatchStart().isAfter(LocalDateTime.now()))
+                .filter(g -> g.getGameStartDateTime().isAfter(LocalDateTime.now()))
                 .toList();
-        notStartedGames.sort(Comparator.comparing(Game::getMatchStart).reversed());
+        notStartedGames.sort(Comparator.comparing(Game::getGameStartDateTime).reversed());
         return notStartedGames;
     }
 

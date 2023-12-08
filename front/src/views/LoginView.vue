@@ -1,5 +1,10 @@
 <template>
 
+  <header>
+
+  </header>
+<main>
+
   <div class="mx-auto max-w-md space-y-6">
     <div class="space-y-2 text-center">
       <h1 class="text-3xl font-bold">Sign In</h1>
@@ -66,6 +71,7 @@
       />
     </div>
   </div>
+</main>
 </template>
 
 <script setup lang="js">
@@ -137,7 +143,7 @@ body {
 }
 
 .space-y-6 {
-  margin-top: 1.5rem;
+
   margin-bottom: 1rem;
 }
 
@@ -270,7 +276,9 @@ button {
 }
 
 
-
+.margin-top-20 {
+  margin-top: 50px;
+}
 
 
 

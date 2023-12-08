@@ -45,9 +45,10 @@ public class Game {
     private int awayScore;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime matchStart;
+    private LocalDateTime gameStartDateTime;
 
     private Long runningTime;
+
 
     private boolean isStarted;
 
@@ -55,13 +56,13 @@ public class Game {
 
 
     @Builder
-    public Game(User host, CompetingTeam homeTeam, CompetingTeam awayTeam, SportsEvent sportsEvent, LocalDateTime matchStart, Long runningTime) {
+    public Game(User host, CompetingTeam homeTeam, CompetingTeam awayTeam, SportsEvent sportsEvent, LocalDateTime gameStartDateTime, Long runningTime) {
         validate(host, runningTime);
         this.host = host;
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.sportsEvent = sportsEvent;
-        this.matchStart = matchStart;
+        this.gameStartDateTime = gameStartDateTime;
         this.runningTime = runningTime;
         this.homeScore = 0;
         this.awayScore = 0;
@@ -84,5 +85,10 @@ public class Game {
         if(runningTime < 0 || runningTime > 120) {
             throw new IllegalArgumentException("경기 소요 시간이 올바르지 않습니다.");
         }
+    }
+
+    public boolean gameOnGoing(LocalDateTime currentTime) {
+        LocalDateTime gameEndDateTime = gameStartDateTime.plusMinutes(runningTime);
+        return currentTime.isAfter(gameStartDateTime) && currentTime.isBefore(gameEndDateTime);
     }
 }

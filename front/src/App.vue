@@ -5,27 +5,31 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <template>
 
-  <body>
-  <header>
 
-  </header>
+
+
+
+
+  <body>
   <main>
-    <RouterView />
+    <div class="margin-top"></div>
+    <RouterView class="" />
   </main>
   </body>
 </template>
 
 <style scoped>
 
-header {
-  background: white;
-}
 body {
   background: white;
-  min-width: 95vw;
+  min-width: 97vw;
   display: flow;
   justify-content: center;
   align-items: center;
 
+}
+
+.margin-top {
+  padding-bottom: 50px;
 }
 </style>

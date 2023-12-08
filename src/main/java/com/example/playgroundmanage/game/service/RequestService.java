@@ -60,7 +60,7 @@ public class RequestService {
                 .game(game)
                 .team(team)
                 .matchTeamSide(matchTeamSide)
-                .expiredTime(game.getMatchStart())
+                .expiredTime(game.getGameStartDateTime())
                 .user(user)
                 .build()).update(team, matchTeamSide)).getId();
     }
@@ -70,7 +70,7 @@ public class RequestService {
         return joinGameRequestRepository.save(joinGameRequestRepository.findByGameAndUser(game, user).orElse(JoinGameRequest.builder()
                 .isSoloTeam(true)
                 .game(game)
-                .expiredTime(game.getMatchStart())
+                .expiredTime(game.getGameStartDateTime())
                 .user(user)
                 .matchTeamSide(matchTeamSide)
                 .build()).update(matchTeamSide)).getId();
