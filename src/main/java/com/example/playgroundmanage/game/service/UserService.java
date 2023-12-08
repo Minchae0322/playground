@@ -97,7 +97,7 @@ public class UserService {
     }
 
     public List<Game> getHostCreatedGamesNotStarted(User user) {
-        return gameRepository.findAllByHostAndMatchStartAfter(user, LocalDateTime.now());
+        return gameRepository.findAllByHostAndGameStartDateTimeAfter(user, LocalDateTime.now());
     }
 
 

@@ -31,9 +31,8 @@ public class PlaygroundService {
     }
 
     @Transactional
-    public Game getGameInProgress(Long playgroundId) {
+    public Game getGameInProgress(Long playgroundId, LocalDateTime currentTime) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
-        LocalDateTime currentTime = LocalDateTime.now();
 
         return playground.getGames().stream()
                 .filter(g -> g.gameOnGoing(currentTime))

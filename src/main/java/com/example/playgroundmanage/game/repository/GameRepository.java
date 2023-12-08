@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface GameRepository extends JpaRepository<Game, Long> , GameRepositoryCustom{
 
-    List<Game> findAllByHostAndMatchStartAfter(User host, LocalDateTime matchStart);
+    List<Game> findAllByHostAndGameStartDateTimeAfter(User host, LocalDateTime matchStart);
 }

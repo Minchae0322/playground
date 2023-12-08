@@ -54,22 +54,25 @@ public class Game {
 
     private boolean isFinished;
 
-
     @Builder
-    public Game(User host, CompetingTeam homeTeam, CompetingTeam awayTeam, SportsEvent sportsEvent, LocalDateTime gameStartDateTime, Long runningTime) {
-        validate(host, runningTime);
+    public Game(Long id, Playground playground, User host, List<JoinGameRequest> joinGameRequests, CompetingTeam homeTeam, CompetingTeam awayTeam, SportsEvent sportsEvent, int homeScore, int awayScore, LocalDateTime gameStartDateTime, Long runningTime, boolean isStarted, boolean isFinished) {
+        this.id = id;
+        this.playground = playground;
         this.host = host;
+        this.joinGameRequests = joinGameRequests;
         this.homeTeam = homeTeam;
         this.awayTeam = awayTeam;
         this.sportsEvent = sportsEvent;
+        this.homeScore = homeScore;
+        this.awayScore = awayScore;
         this.gameStartDateTime = gameStartDateTime;
         this.runningTime = runningTime;
-        this.homeScore = 0;
-        this.awayScore = 0;
-        this.isStarted = false;
-        this.isFinished = false;
-
+        this.isStarted = isStarted;
+        this.isFinished = isFinished;
     }
+
+
+
 
     public CompetingTeam getMatchTeamBySide(MatchTeamSide matchTeamSide) {
         if(matchTeamSide == MatchTeamSide.HOME) {
