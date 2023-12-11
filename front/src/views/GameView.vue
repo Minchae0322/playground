@@ -14,6 +14,7 @@
                 <el-date-picker
                     v-model="dateValue"
                     type="date"
+                    @change="pickDate"
                     placeholder="Pick a date"
                     :default-value="new Date(2010, 9, 1)"
                 />
@@ -113,7 +114,7 @@
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
-                  {{ occupiedSlot }}
+                  {{ occupiedSlot.start + " ~ " + occupiedSlot.end}}
                 </div>
               </div>
             </div>
@@ -123,10 +124,11 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="js">
 import { ref } from 'vue';
+import axios from "axios";
 
-const dateValue = ref('')
+const dateValue = ref(new Date())
 const timeValue = ref('')
 const isModalOpen = ref(false);
 const isTimeSlotOccupied = ref(false);
@@ -134,7 +136,7 @@ const selectedStartTime = ref(null);
 const selectedDuration = ref(null);
 const occupiedTimeSlots = ref(["10:00 AM - 11:00 AM", "03:00 PM - 03:00 PM"]); // Example occupied slots
 const num = ref(1)
-
+const apiBaseUrl = "http://localhost:8080/";
 const handleChange = (value) => {
   console.log(value);
 };
@@ -146,6 +148,21 @@ const openModal = () => {
 const closeModal = () => {
   isModalOpen.value = false;
 };
+
+const pickDate = function () {
+  const accessToken = localStorage.getItem("accessToken");
+  axios.post(`${apiBaseUrl}game/1`, {
+    year: dateValue.value.getFullYear(),
+    month: dateValue.value.getMonth(),
+    date: dateValue.value.getDate()
+  },{  headers: {
+      'Authorization': accessToken
+    }}
+  ).then(response => {
+    occupiedTimeSlots.value = response.data;
+  });
+  console.log(accessToken)
+}
 
 const selectStartTime = () => {
   // Implement logic to select start time

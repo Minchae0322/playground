@@ -130,7 +130,7 @@
 </div>
 </div>
 </template>
-<style>
+<style scoped>
 .rounded-md {
   border-radius: 0.375rem;
 }
