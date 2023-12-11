@@ -20,6 +20,11 @@ import { RouterLink, RouterView } from 'vue-router'
 
 <style scoped>
 
+@font-face {
+  font-family: 'primary-font';
+  src: url("assets/font/static/NotoSansKR-Regular.ttf");
+}
+
 body {
   background: white;
   min-width: 97vw;
@@ -31,5 +36,6 @@ body {
 
 .margin-top {
   padding-bottom: 50px;
+
 }
 </style>

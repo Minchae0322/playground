@@ -84,13 +84,13 @@ public class Game {
     }
 
     private void validate(User host, Long runningTime, LocalDateTime gameStartDateTime) {
-        if(host == null) {
+        /*if(host == null) {
             throw new UserNotExistException();
-        }
+        }*/
         if(runningTime < 0 || runningTime > 120) {
             throw new IllegalArgumentException("경기 소요 시간이 올바르지 않습니다.");
         }
-        if (LocalDateTime.now().isBefore(gameStartDateTime)) {
+        if (LocalDateTime.now().isAfter(gameStartDateTime)) {
             throw new IllegalArgumentException("현재보다 전에 시작할 수 없습니다.");
         }
     }
@@ -103,5 +103,10 @@ public class Game {
     public boolean isDayGame(LocalDateTime day) {
         return gameStartDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 .equals(day.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    }
+
+    public boolean isTimeRangeOverlapping(LocalDateTime time, Long gameRunningTime) {
+        return gameStartDateTime.withSecond(0).isAfter(time.withSecond(0).plusMinutes(gameRunningTime)) &&
+                gameStartDateTime.withSecond(0).plusMinutes(runningTime).isBefore(time.withSecond(0));
     }
 }

@@ -50,10 +50,20 @@ public class PlaygroundService {
                 .build()).toList();
     }
 
-    public List<Game> getDailyGames(List<Game> games, LocalDateTime day) {
+    private List<Game> getDailyGames(List<Game> games, LocalDateTime day) {
         return games.stream()
                 .filter(g -> g.isDayGame(day))
                 .toList();
+    }
+
+    @Transactional
+    public boolean isExistGameTime(Long playgroundId, LocalDateTime day, Long runningTime) {
+        //TODO 모든 게임을 불러오기에는 너무 많으니 그 날과 그 다음날까지만 불러오기.
+        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
+        List<Game> games = playground.getGames();
+        return games.stream()
+                .filter(g -> g.isTimeRangeOverlapping(day, runningTime))
+                .toList().size() != 0;
     }
 
 }
