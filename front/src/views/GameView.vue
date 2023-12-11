@@ -3,24 +3,29 @@
     <button @click="openModal">Open Modal</button>
 
     <div v-if="isModalOpen" class="modal-overlay">
+
       <div class="modal">
 
           <div class="justify-center item-center card " data-v0-t="card">
             <div class="padding-20">
               <a class="text-bold text-title primary-font">Time Selection</a>
               <h4 class="text-color-gray primary-font">Select the start time and duration for your participation.</h4>
+              <div class="block">
+                <el-date-picker
+                    v-model="dateValue"
+                    type="date"
+                    placeholder="Pick a date"
+                    :default-value="new Date(2010, 9, 1)"
+                />
+              </div>
             </div>
             <hr color="#e7e7e7">
             <div class="button-container">
               <div class="button-container">
-                <button
-                    class="button-style"
+                <div class="start-time-container">
+                <a
+                    class="start-time"
                     id="start-time"
-                    type="button"
-                    aria-haspopup="dialog"
-                    aria-expanded="false"
-                    aria-controls="radix-:rc:"
-                    data-state="closed"
                 >
                   <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -38,16 +43,14 @@
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
                   Choose Start Time
-                </button>
-                <button
-                    class="button-style"
-                    id="duration"
-                    type="button"
-                    aria-haspopup="dialog"
-                    aria-expanded="false"
-                    aria-controls="radix-:rd:"
-                    data-state="closed"
-                >
+                </a>
+                  <el-time-picker v-model="timeValue" placeholder="Arbitrary time" />
+                </div>
+                <div class="start-time-container">
+                  <a
+                      class="start-time"
+                      id="start-time"
+                  >
                   <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="15"
@@ -66,7 +69,9 @@
                     <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path>
                   </svg>
                   Choose Duration
-                </button>
+                </a>
+                  <el-input-number v-model="num" :min="1" :max="120" @change="handleChange" />
+              </div>
               </div>
               <div class="container-confirm-style">
                 <button class="button-cancel inline-flex items-center justify-center rounded-md text-sm font-medium  px-4 py-2"
@@ -100,7 +105,7 @@
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
-                      stroke-width="2"
+                      stroke-width="3"
                       stroke-linecap="round"
                       stroke-linejoin="round"
                       class="margin-right"
@@ -121,12 +126,18 @@
 <script setup>
 import { ref } from 'vue';
 
+const dateValue = ref('')
+const timeValue = ref('')
 const isModalOpen = ref(false);
 const isTimeSlotOccupied = ref(false);
 const selectedStartTime = ref(null);
 const selectedDuration = ref(null);
 const occupiedTimeSlots = ref(["10:00 AM - 11:00 AM", "03:00 PM - 03:00 PM"]); // Example occupied slots
+const num = ref(1)
 
+const handleChange = (value) => {
+  console.log(value);
+};
 const openModal = () => {
   isModalOpen.value = true;
   isTimeSlotOccupied.value = false; // Reset the occupied state when opening the modal
@@ -178,13 +189,13 @@ const confirmParticipation = () => {
 }
 
 .modal {
-  border: 1px #000000;/* 테두리 스타일 및 색상 지정 */
+  border: 1px #000000; /* 테두리 스타일 및 색상 지정 */
   box-shadow: 0 0 1px #bebebe;
   background: white;
   border-radius: 5px;
-  width: 30vw; /* Adjust this value as needed */
+  width: 35vw; /* Adjust this value as needed */
   overflow-x: auto; /* Add this line to enable vertical scrolling if needed */
-  height: 60vh; /* Adjust this value as needed */
+  height: 70vh; /* Adjust this value as needed */
   overflow-y: auto; /* Add this line to enable vertical scrolling if needed */
 }
 
@@ -199,6 +210,7 @@ const confirmParticipation = () => {
 .justify-center {
   justify-content: center;
 }
+
 svg {
   margin-bottom: 2px;
 }
@@ -218,13 +230,12 @@ hr {
 }
 
 .primary-font {
-  font-family: primary-font,serif
+  font-family: primary-font, serif;
 }
 
 .padding-20 {
   padding: 8px;
 }
-
 
 .button-container {
   display: flex;
@@ -233,23 +244,20 @@ hr {
 
 .button-style {
   background-color: #ffffff; /* 흰색 배경 */
-  border: 1px solid #e3e3e3; /* 연한 회색 테두리 */
   color: #333333; /* 글자색 */
   padding: 10px 10px; /* 내부 여백 설정 */
-  width: 60%;
+  width: 40%;
   border-radius: 6px;
   text-align: start;
-  margin: 10px 20px;
+  margin: 10px 10px;
   cursor: pointer; /* 포인터 모양 변경 */
   font-family: primary-font,serif;
   font-size: 14px;
   transition: background-color 0.3s, color 0.3s; /* 부드러운 전환 효과 */
 }
 
-.button-style:hover {
-  background-color: #f0f0f0; /* 마우스 오버 시 배경색 변경 */
-  color: #555555; /* 마우스 오버 시 글자색 변경 */
-}
+
+
 
 .icon-style {
   display: inline-block;
@@ -296,6 +304,11 @@ hr {
   border-radius: 5px;
 }
 
+.block {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
+
 .time-container {
   background-color: #ffffff; /* 흰색 배경 */
   border: 1px solid #e3e3e3; /* 연한 회색 테두리 */
@@ -310,5 +323,24 @@ hr {
 .margin-right {
   margin-right: 5px;
   margin-top: 3px;
+}
+
+
+
+.start-time-container {
+  display: flex;
+  background-color: #ffffff; /* 흰색 배경 */
+  color: #333333; /* 글자색 */
+  align-items: center;
+
+  padding: 10px;
+  cursor: pointer; /* 포인터 모양 변경 */
+  transition: background-color 0.3s, color 0.3s; /* 부드러운 전환 효과 */
+}
+
+.start-time {
+  text-align: center;
+  padding-top: 3px;
+  margin: 0 19px 0px 12px;
 }
 </style>
