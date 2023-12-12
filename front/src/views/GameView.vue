@@ -134,7 +134,7 @@ const isModalOpen = ref(false);
 const isTimeSlotOccupied = ref(false);
 const selectedStartTime = ref(null);
 const selectedDuration = ref(null);
-const occupiedTimeSlots = ref(["10:00 AM - 11:00 AM", "03:00 PM - 03:00 PM"]); // Example occupied slots
+const occupiedTimeSlots = ref([]); // Example occupied slots
 const num = ref(1)
 const apiBaseUrl = "http://localhost:8080/";
 const handleChange = (value) => {

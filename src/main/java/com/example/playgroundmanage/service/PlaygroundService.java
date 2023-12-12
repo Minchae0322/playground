@@ -2,13 +2,19 @@ package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.dto.response.GameTimeline;
+import com.example.playgroundmanage.dto.response.PlaygroundDto;
+import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.repository.PlaygroundRepository;
+import com.example.playgroundmanage.store.FileHandler;
+import com.example.playgroundmanage.vo.Campus;
 import com.example.playgroundmanage.vo.Playground;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -17,6 +23,25 @@ import java.util.List;
 public class PlaygroundService {
 
     private final PlaygroundRepository playgroundRepository;
+
+    private final FileHandler fileHandler;
+
+    private final CampusRepository campusRepository;
+
+
+    @Transactional
+    public MultipartFile getPlaygroundImg(Long playgroundId) throws IOException {
+        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
+        return fileHandler.extractFile(playground.getImg());
+    }
+
+    @Transactional
+    public List<PlaygroundDto> getPlaygroundByCampus(Long campusId) {
+        Campus campus = campusRepository.findById(campusId).orElseThrow();
+        return campus.getPlaygrounds().stream()
+                .map(p -> PlaygroundDto.builder().playgroundId(p.getId())
+                        .build()).toList();
+    }
 
     public List<GameThumbnail> getGamesThumbnailOrderedByLatest(Long playgroundId) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
