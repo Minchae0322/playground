@@ -19,4 +19,9 @@ public class PlaygroundController {
     public void getActiveGameInfo(@PathVariable Long playgroundId) {
         playgroundService.getGameInProgress(playgroundId, LocalDateTime.now());
     }
+
+    @GetMapping("/playground/{playgroundId}/thumbnail")
+    public void getThreeGameOrderedByStartTime(@PathVariable Long playgroundId) {
+        playgroundService.getTopThreeUpcomingGames(playgroundId);
+    }
 }

@@ -46,7 +46,7 @@ public class PlaygroundService {
 
     public List<GameThumbnail> getGamesThumbnailOrderedByLatest(Long playgroundId) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
-        List<Game> notStartedGames =  playground.orderedByLatest(playground.getGames());
+        List<Game> notStartedGames =  playground.getUpcomingGamesOrderedByStartDateTime();
         return notStartedGames.stream()
                 .map(g -> GameThumbnail.builder()
                         .hostName(g.getHost().getNickname())
@@ -70,6 +70,15 @@ public class PlaygroundService {
                 .time(game.getRunningTime())
                 .hostName(game.getHost().getNickname())
                 .build();
+    }
+
+    @Transactional
+    public List<GameThumbnail> getTopThreeUpcomingGames(Long playgroundId) {
+        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
+        List<Game> threeGame = playground.getThreeUpcomingGamesOrderedByStartDateTime();
+        return threeGame.stream()
+                .map(GameThumbnail::GameToGameThumbnail)
+                .toList();
     }
 
     @Transactional

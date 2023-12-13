@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -49,13 +50,19 @@ public class Playground {
 
 
 
-    public List<Game> orderedByLatest(List<Game> games) {
-        List<Game> notStartedGames = games.stream()
-                .filter(g -> g.getGameStartDateTime().isAfter(LocalDateTime.now()))
+    public List<Game> getUpcomingGamesOrderedByStartDateTime() {
+        return this.getGames().stream()
+                .filter(game -> game.getGameStartDateTime().isAfter(LocalDateTime.now()))
+                .sorted(Comparator.comparing(Game::getGameStartDateTime).reversed())
                 .toList();
-        notStartedGames.sort(Comparator.comparing(Game::getGameStartDateTime).reversed());
-        return notStartedGames;
     }
 
+    public List<Game> getThreeUpcomingGamesOrderedByStartDateTime() {
+        return this.getGames().stream()
+                .filter(game -> game.getGameStartDateTime().isAfter(LocalDateTime.now()))
+                .sorted(Comparator.comparing(Game::getGameStartDateTime).reversed())
+                .limit(3)
+                .toList();
+    }
 
 }

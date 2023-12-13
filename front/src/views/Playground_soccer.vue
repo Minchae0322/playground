@@ -1,11 +1,13 @@
 <template>
   <div class="game-container">
     <div class="game-image">
-      <img src="../assets/soccer.png" alt="Game Image"/>
-    </div>
-    <div class="game-header">
-      <h2>Game Title</h2>
-      <p>Game Description</p>
+      <!-- Your image goes here -->
+      <img src="../assets/soccer.png" alt="Game Image">
+      <div class="overlay">
+        <h1>Game Title</h1>
+        <p>Game Description</p>
+        <p>Start Time: 10:00 AM</p>
+      </div>
     </div>
     <div class="game-info">
       <div v-if="currentGame && currentGame.title">
@@ -71,6 +73,10 @@ const getInProgressGame = function () {
   background-color: #f9f9f9;
 }
 
+.game-image {
+  position: relative;
+  width: 100%;
+}
 /* ... other styles ... */
 
 .game-image img {
@@ -80,6 +86,16 @@ const getInProgressGame = function () {
   object-fit: cover; /* 이미지가 지정된 비율에 맞도록 조정 */
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+  color: white;
+  width: 30%;
+  padding: 10px;
+  text-align: center;
 }
 
 
@@ -146,4 +162,6 @@ const getInProgressGame = function () {
   margin-bottom: 5px;
   color: #555;
 }
+
+
 </style>
