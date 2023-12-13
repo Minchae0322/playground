@@ -7,6 +7,7 @@ import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.repository.PlaygroundRepository;
 import com.example.playgroundmanage.store.FileHandler;
+import com.example.playgroundmanage.util.Util;
 import com.example.playgroundmanage.vo.Campus;
 import com.example.playgroundmanage.vo.Playground;
 import jakarta.transaction.Transactional;
@@ -49,7 +50,7 @@ public class PlaygroundService {
         return notStartedGames.stream()
                 .map(g -> GameThumbnail.builder()
                         .hostName(g.getHost().getNickname())
-                        .gameStart(g.getGameStartDateTime())
+                        .gameStart(Util.localDateToYearMonthDateTimeString(g.getGameStartDateTime()))
                         .time(g.getRunningTime())
                         .sportsEvent(g.getSportsEvent())
                         .build())
@@ -57,12 +58,18 @@ public class PlaygroundService {
     }
 
     @Transactional
-    public Game getGameInProgress(Long playgroundId, LocalDateTime currentTime) {
+    public GameThumbnail getGameInProgress(Long playgroundId, LocalDateTime currentTime) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
-
-        return playground.getGames().stream()
+        Game game = playground.getGames().stream()
                 .filter(g -> g.gameOnGoing(currentTime))
                 .findFirst().orElseThrow();
+
+        return GameThumbnail.builder()
+                .gameId(game.getId())
+                .gameStart(Util.localDateToYearMonthDateTimeString(game.getGameStartDateTime()))
+                .time(game.getRunningTime())
+                .hostName(game.getHost().getNickname())
+                .build();
     }
 
     @Transactional

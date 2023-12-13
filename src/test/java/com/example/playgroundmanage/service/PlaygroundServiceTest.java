@@ -1,10 +1,14 @@
 package com.example.playgroundmanage.service;
 
+import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.dto.response.GameTimeline;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.repository.UserRepository;
 import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.repository.PlaygroundRepository;
+import com.example.playgroundmanage.type.UserRole;
+import com.example.playgroundmanage.util.Util;
 import com.example.playgroundmanage.vo.Playground;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -34,9 +38,15 @@ class PlaygroundServiceTest {
     private GameRepository gameRepository;
 
     private Playground testPlayground;
-
+    private User testUser;
     @BeforeEach
     void before() {
+        testUser = User.builder()
+                .username("test")
+                .role(UserRole.USER)
+                .isEnable(true)
+                .build();
+        userRepository.save(testUser);
         testPlayground = Playground.builder()
                 .name("test")
                 .build();
@@ -62,10 +72,10 @@ class PlaygroundServiceTest {
 
         //when
 
-        Game game = playgroundService.getGameInProgress(testPlayground.getId(), afterOneMinute.plusMinutes(1));
+        GameThumbnail game = playgroundService.getGameInProgress(testPlayground.getId(), afterOneMinute.plusMinutes(1));
 
         //then
-        assertEquals(afterOneMinute.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), game.getGameStartDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        assertEquals(afterOneMinute.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), game.getGameStart());
     }
 
     @Test
@@ -78,6 +88,7 @@ class PlaygroundServiceTest {
                 .mapToObj(i -> Game.builder()
                         .gameStartDateTime(now.plusMinutes(1).plusMinutes(i * 60L))
                         .runningTime(59L)
+                        .host(testUser)
                         .playground(testPlayground)
                         .build()).toList();
         gameRepository.saveAll(gameList);
@@ -90,10 +101,10 @@ class PlaygroundServiceTest {
 
         //when
 
-        Game game = playgroundService.getGameInProgress(testPlayground.getId(), after.plusMinutes(1));
+        GameThumbnail game = playgroundService.getGameInProgress(testPlayground.getId(), after.plusMinutes(1));
 
         //then
-        assertEquals(now.plusMinutes(61).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), game.getGameStartDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+        assertEquals(now.plusMinutes(61).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), game.getGameStart());
     }
 
     @Test

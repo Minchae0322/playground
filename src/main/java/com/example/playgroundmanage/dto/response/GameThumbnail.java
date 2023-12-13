@@ -11,7 +11,9 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class GameThumbnail {
 
-    private LocalDateTime gameStart;
+    private Long gameId;
+
+    private String gameStart;
 
     private Long time;
 
@@ -20,7 +22,8 @@ public class GameThumbnail {
     private String hostName;
 
     @Builder
-    public GameThumbnail(LocalDateTime gameStart, Long time, SportsEvent sportsEvent, String hostName) {
+    public GameThumbnail(Long gameId, String gameStart, Long time, SportsEvent sportsEvent, String hostName) {
+        this.gameId = gameId;
         this.gameStart = gameStart;
         this.time = time;
         this.sportsEvent = sportsEvent;
