@@ -1,5 +1,7 @@
 package com.example.playgroundmanage.game.vo;
 
+import com.example.playgroundmanage.dto.response.UserInfoDto;
+import com.nimbusds.openid.connect.sdk.claims.UserInfo;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -36,6 +38,15 @@ public class SubTeam {
         this.matchParticipants = matchParticipants;
         this.isNoneTeam = isNoneTeam;
         this.isAccept = isAccept;
+    }
+
+    public List<UserInfoDto> getParticipantsInfo() {
+        return matchParticipants.stream()
+                .map(p -> UserInfoDto.builder()
+                        .userNickname(p.getUser().getNickname())
+                        .userId(p.getUser().getId())
+                        .build())
+                .toList();
     }
 
     public boolean isSoloTeam() {

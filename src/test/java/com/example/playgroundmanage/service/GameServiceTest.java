@@ -1,9 +1,11 @@
 package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.dto.MatchRegistration;
+import com.example.playgroundmanage.dto.response.SubTeamDto;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.UserService;
+import com.example.playgroundmanage.game.vo.SubTeam;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
 import com.example.playgroundmanage.game.vo.Game;
@@ -23,7 +25,7 @@ import java.util.stream.IntStream;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-class MatchServiceTest {
+class GameServiceTest {
 
     @Autowired
     private GameRepository gameRepository;
@@ -59,6 +61,7 @@ class MatchServiceTest {
         subTeamRepository.deleteAll();
         testUser = User.builder()
                 .username("test")
+                .nickname("test")
                 .role(UserRole.USER)
                 .isEnable(true)
                 .build();
@@ -164,6 +167,27 @@ class MatchServiceTest {
 
         Assertions.assertEquals(19, gameRepository.count());
         Assertions.assertEquals(38, competingTeamRepository.count());
+    }
+
+    @Test
+    void 홈팀에_참여하는_subTeam() {
+        Long gameId = gameService.createGame(MatchRegistration.builder()
+                .matchStart(LocalDateTime.now().plusMinutes(1))
+                .runningTime((long) 60)
+                .host(testUser)
+                .sportsEvent(SportsEvent.SOCCER)
+                .build());
+
+        SubTeam subTeam = SubTeam.builder()
+                .team(testTeam)
+                .isNoneTeam(false)
+                .competingTeam(gameRepository.findById(gameId).get().getHomeTeam())
+                .build();
+        subTeamRepository.save(subTeam);
+
+        List<SubTeamDto> subTeamDtos = gameService.getHomeTeams(gameId);
+        assertEquals(1, subTeamDtos.size());
+        assertEquals("testTeam",subTeamDtos.stream().findFirst().get().getTeamName());
     }
 
 }

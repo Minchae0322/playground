@@ -4,6 +4,7 @@ import com.example.playgroundmanage.dto.GameDateDto;
 import com.example.playgroundmanage.dto.SubTeamRegistrationParams;
 import com.example.playgroundmanage.dto.UserJoinTeamParams;
 import com.example.playgroundmanage.dto.response.GameTimeline;
+import com.example.playgroundmanage.dto.response.SubTeamDto;
 import com.example.playgroundmanage.game.service.GameService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -31,5 +32,10 @@ public class GameController {
         SubTeamRegistrationParams subTeamRegistrationParams = SubTeamRegistrationParams.builder()
                 .build();
 
+    }
+
+    @GetMapping("/game/{gameId}/homeTeams")
+    public List<SubTeamDto> getHomeTeams(@PathVariable Long gameId) {
+        return gameService.getHomeTeams(gameId);
     }
 }

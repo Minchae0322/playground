@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.game.vo;
 
+import com.example.playgroundmanage.store.UploadFile;
 import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -20,7 +21,8 @@ public class Team {
 
     private String teamName;
 
-    private String teamPic;
+    @OneToOne
+    private UploadFile teamPic;
 
     @ManyToOne
     private User leader;
@@ -35,7 +37,7 @@ public class Team {
     private List<Teaming> members = new ArrayList<>();
 
     @Builder
-    public Team(Long id, String teamName, String teamPic, User leader, SportsEvent sportsEvent, List<SubTeam> subTeams, List<Teaming> members) {
+    public Team(Long id, String teamName, UploadFile teamPic, User leader, SportsEvent sportsEvent, List<SubTeam> subTeams, List<Teaming> members) {
         this.id = id;
         this.teamName = teamName;
         this.teamPic = teamPic;
@@ -44,6 +46,9 @@ public class Team {
         this.subTeams = subTeams;
         this.members = members;
     }
+
+
+
 
     public void addMember(Teaming teaming) {
         this.members = new ArrayList<>();

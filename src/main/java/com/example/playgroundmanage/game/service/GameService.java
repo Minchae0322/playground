@@ -1,17 +1,23 @@
 package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.dto.MatchRegistration;
+import com.example.playgroundmanage.dto.response.SubTeamDto;
+import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.MatchNotExistException;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.vo.CompetingTeam;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.SubTeam;
 import com.example.playgroundmanage.game.match.GameRequestProcess;
+import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.type.MatchResult;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +35,8 @@ public class GameService {
     private final SubTeamRepository subTeamRepository;
 
     private final MatchParticipantRepository matchParticipantRepository;
+
+    private final FileHandler fileHandler;
 
 
 
@@ -67,6 +75,19 @@ public class GameService {
                 .isAccept(true)
                 .competingTeam(competingTeam)
                 .build());
+    }
+
+
+    @Transactional
+    public List<SubTeamDto> getHomeTeams(Long gameId) {
+        Game game = gameRepository.findById(gameId).orElseThrow(GameNotExistException::new);
+        return game.getHomeTeam().getSubTeamsNotSoloTeam().stream()
+                .map(t -> SubTeamDto.builder()
+                        .teamId(t.getTeam().getId())
+                        .teamName(t.getTeam().getTeamName())
+                        //.teamImg(fileHandler.extractFile(t.getTeam().getTeamPic()))
+                        .users(t.getParticipantsInfo())
+                        .build()).toList();
     }
 
 

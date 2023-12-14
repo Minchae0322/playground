@@ -45,6 +45,12 @@ public class CompetingTeam {
                 .toList().size() != 0;
     }
 
+    public List<SubTeam> getSubTeamsNotSoloTeam() {
+        return subTeams.stream()
+                .filter(t -> !t.isSoloTeam())
+                .toList();
+    }
+
     public boolean isContainSoloTeam() {
         return subTeams.stream()
                 .filter(SubTeam::isNoneTeam)

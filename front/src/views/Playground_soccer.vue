@@ -10,8 +10,8 @@
       </div>
     </div>
     <div class="game-info">
-      <div v-if="currentGame && currentGame.title">
-        <div><strong>Host</strong> {{ currentGame.host }}</div>
+      <div v-if="currentGame">
+        <div><strong>Host</strong> {{ currentGame.hostName }}</div>
         <div><strong>StartTime</strong> {{ currentGame.gameStart }}</div>
         <div><strong>Running Time</strong> {{ currentGame.time }}</div>
       </div>
@@ -23,8 +23,12 @@
     <div class="upcoming-games">
       <h3>Upcoming Games</h3>
       <ul>
-        <li v-for="game in upcomingGames" :key="game.id">
-          <strong>{{ game.title }}</strong> - {{ game.startTime }}
+        <li v-for="(game,index) in upcomingGames" :key="index">
+          <div class="game-card">
+            <div><strong>Host:</strong> {{ game.hostName }}</div>
+            <div><strong>Start Time:</strong> {{ game.gameStart }}</div>
+            <div><strong>Running Time:</strong> {{ game.time }}</div>
+          </div>
         </li>
       </ul>
     </div>
@@ -37,24 +41,40 @@ import {onMounted, ref} from 'vue';
 import axios from "axios";
 
 const currentGame = ref('')
-const apiBaseUrl = "http://localhost:8080/";
+const upcomingGames = ref([])
+
 
 onMounted(() => {
   // Check if the initial page number is provided in the route query
- getInProgressGame()
+  getInProgressGame();
+  getUpcomingGames();
 });
 const getInProgressGame = function () {
+
   const accessToken = localStorage.getItem("accessToken");
   if(accessToken) {
-    axios.get(`${apiBaseUrl}playground/1/current`,
+    axios.get(`$apiBaseUrlplayground/1/current`,
         {  headers: {
             'Authorization': accessToken
           }}
     ).then(response => {
       if (response.status === 200) {
         currentGame.value = response.data;
-        return
       }
+    });
+  }
+
+};
+
+const getUpcomingGames = function () {
+  const accessToken = localStorage.getItem("accessToken");
+  if(accessToken) {
+    axios.get(`${apiBaseUrl}playground/1/upComing`,
+        {  headers: {
+            'Authorization': accessToken
+          }}
+    ).then(response => {
+      upcomingGames.value = response.data
     });
   }
 
@@ -163,5 +183,17 @@ const getInProgressGame = function () {
   color: #555;
 }
 
+.game-card {
+  border: 1px solid #ddd;
+  padding: 15px;
+  margin-bottom: 10px; /* 각 카드 간의 간격 */
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  transition: box-shadow 0.3s;
+}
 
+.game-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
 </style>

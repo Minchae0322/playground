@@ -60,7 +60,7 @@ public class Playground {
     public List<Game> getThreeUpcomingGamesOrderedByStartDateTime() {
         return this.getGames().stream()
                 .filter(game -> game.getGameStartDateTime().isAfter(LocalDateTime.now()))
-                .sorted(Comparator.comparing(Game::getGameStartDateTime).reversed())
+                .sorted(Comparator.comparing(Game::getGameStartDateTime))
                 .limit(3)
                 .toList();
     }

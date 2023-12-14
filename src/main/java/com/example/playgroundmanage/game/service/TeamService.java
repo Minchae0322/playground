@@ -27,7 +27,6 @@ public class TeamService {
     public Team saveTeam(TeamRegistration teamRegistration) {
         Team team = Team.builder()
                 .teamName(teamRegistration.getTeamName())
-                .teamPic(teamRegistration.getTeamPic())
                 .leader(teamRegistration.getLeader())
                 .sportsEvent(teamRegistration.getSportsEvent())
                 .build();

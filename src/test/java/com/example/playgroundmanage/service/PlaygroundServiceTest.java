@@ -155,6 +155,7 @@ class PlaygroundServiceTest {
         //when
         List<GameThumbnail> gameThumbnails = playgroundService.getTopThreeUpcomingGames(testPlayground.getId());
         assertEquals(3, gameThumbnails.size());
+
         assertEquals("test", gameThumbnails.get(0).getHostName());
         assertEquals(59, gameThumbnails.get(1).getTime());
 
