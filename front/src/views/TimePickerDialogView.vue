@@ -1,37 +1,25 @@
 <template>
-  <div class="game-information">
-    <h1>Game Information</h1>
-    <p>Details about the upcoming match.</p>
+  <div v-if="isModalVisible" class="modal-overlay">
+    <div class="modal-window">
+      <h2>Select Your Team</h2>
+      <p>Choose a team from the dropdown list.</p>
+      <div class="dropdown">
+        <div class="dropdown-selected" @click="toggleDropdown">{{ selectedTeam.name || 'Select a team' }}</div>
+        <div class="dropdown-content" v-show="dropdownVisible">
+          <div class="dropdown-item" v-for="team in teams" :key="team.id" @click="selectTeam(team)">
 
-    <div class="teams-container">
-      <div class="team">
-        <h2>Home</h2>
-        <div class="team-details" v-for="(team,index) in homeTeams" :key="index">
-<!--          <p>{{ team.teamId }}</p>-->
-          <p>{{ team.teamName }}</p>
-          <div class="participant" v-for="(participant, index) in team.users" :key="index">
-            <p>{{ participant.userId }}</p>
-            <p>{{ participant.userNickname }}</p>
-          </div>
-        </div>
-        <button class="add-button" @click="addParticipant()"></button>
-
-      </div>
-
-      <div class="team">
-        <h2>Away</h2>
-        <div class="team-details" v-for="team in awayTeams" :key="team.id">
-          <p>{{ team.name }}</p>
-          <p>{{ team.value }}</p>
-          <div class="participant" v-for="participant in team.participants" :key="participant.id">
-            <p>{{ participant.name }}</p>
-            <p>{{ participant.position }}</p>
+            <span class="team-name">{{ team.teamName }}</span>
+            <span class="team-description">{{ team.description }}</span>
           </div>
         </div>
       </div>
+      <div>
+        <span>Selected Team:</span>
+        <span>{{ selectedTeam.teamName }}</span>
+      </div>
+      <button @click="cancel">Cancel</button>
+      <button @click="confirm">Confirm</button>
     </div>
-
-    <!-- Button for more details -->
   </div>
 </template>
 
@@ -39,192 +27,220 @@
 import {onMounted, ref} from "vue";
 import axios from "axios";
 
+import {useRouter} from "vue-router";
 
-const homeTeams = ref([])
-const awayTeams = ref([])
-const apiBaseUrl = "http://localhost:8080/";
+const isModalVisible = ref(true);
+const selectedTeam = ref({ name: '' });
+const dropdownVisible = ref(false);
+const apiBaseUrl = "http://localhost:8080";
 
-onMounted(() => {
-  // Check if the initial page number is provided in the route query
-  getHomeTeams()
-});
-const getHomeTeams = function () {
-  const accessToken = localStorage.getItem("accessToken");
+const router = useRouter();
+const teams = ref([])
+const validateAccessToken = async function () {
+  const accessToken = getAccessToken();
+  if (!accessToken) {
+    redirectToLogin()
+    return;
+  }
+
+  try {
+    await axios.get(`${apiBaseUrl}/token/valid`, {
+      headers: {'Authorization': accessToken},
+    });
+  } catch (error) {
+    await updateAccessToken();
+  }
+};
+
+const getAccessToken = function () {
+  return localStorage.getItem("accessToken");
+};
+
+const updateAccessToken = async function () {
+  const refreshToken = localStorage.getItem("refreshToken");
+  if (!refreshToken) return redirectToLogin();
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
+      headers: { 'RefreshToken': refreshToken }
+    });
+    if (response.status === 200) {
+      const newAccessToken = response.headers['Authorization'];
+      localStorage.setItem('accessToken', newAccessToken);
+      return newAccessToken;
+    }
+  } catch (error) {
+    redirectToLogin();
+  }
+};
+
+const redirectToLogin = function () {
+  router.push("/login");
+};
+const getTeamsUserBelongTo = function () {
+  validateAccessToken()
+  const accessToken = getAccessToken()
   if(accessToken) {
-    axios.get(`${apiBaseUrl}game/34/homeTeams`,
+    axios.get(`${apiBaseUrl}/user/teams`,
         {  headers: {
             'Authorization': accessToken
           }}
     ).then(response => {
       if (response.status === 200) {
-        homeTeams.value = response.data
+        teams.value = response.data
       }
     });
   }
 };
-
-const selectedTeamId = ref(null);
-const participantType = ref('');
-
-const showSelect = () => {
-
-
-
-    selectedTeamId.value = teamId; // Show the select box
-
+const toggleDropdown = () => {
+  dropdownVisible.value = !dropdownVisible.value;
+  getTeamsUserBelongTo()
 };
 
-const handleSelection = (type, teamId) => {
-  // Handle the selection logic here
-  console.log(`Selected: ${type} for team ID: ${teamId}`);
-  // Reset after handling
-  selectedTeamId.value = null;
+const selectTeam = (team) => {
+  selectedTeam.value = team;
+  dropdownVisible.value = false;
+};
+
+const cancel = () => {
+  isModalVisible.value = false;
+  // 추가 취소 로직
+};
+
+const confirm = () => {
+  isModalVisible.value = false;
+  // 선택된 팀을 처리하는 로직
+  console.log('Confirmed team:', selectedTeam.value.name);
 };
 </script>
 
 <style scoped>
-.game-information {
-  width: 90%;
-  margin: 20px auto;
-  font-family: 'Arial', sans-serif;
-  color: #333;
-  text-align: center;
-}
-
-h1 {
-  font-size: 24px;
-  color: #444;
-}
-
-p {
-  font-size: 16px;
-  color: #666;
-}
-
-.teams-container {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 20px;
-}
-
-.team {
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  text-align: left;
-  width: calc(50% - 40px); /* Adjust for padding and spacing between teams */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  background: #fff;
-}
-
-.team h2 {
-  font-size: 26px;
-  margin-bottom: 10px;
-  font-weight: bold;
-  font-family: primary-font,sans-serif;
-  color: #000000;
-}
-
-.team-details {
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 15px;
-  margin-bottom: 20px;
-  display: flex;
-  transition: box-shadow 0.3s ease;
-}
-
-.team-details:hover {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
-
-.select-container {
-  text-align: center;
-  margin-top: 10px;
-}
-
-.select-container select {
-  padding: 10px;
-  margin-right: 5px;
-}
-
-.participant {
-  background: #f9f9f9;
-  border-radius: 4px;
-  padding: 10px;
-  margin: 10px 0;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-}
-
-.participant:hover {
-  transform: translateY(-3px);
-  background-color: #ececec;
-}
-
-.participant p {
-  margin: 0;
-  font-size: 14px;
-  color: #444;
-}
-.details-button {
-  background-color: #4e73df;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  font-size: 16px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
-  outline: none;
-  margin-top: 20px;
-}
-
-.details-button:hover,
-.details-button:focus {
-  background-color: #6c8eed;
-  outline: none;
-}
-
-/* Media query for responsiveness */
-@media (max-width: 768px) {
-  .teams-container {
-    flex-direction: column;
-  }
-
-  .team {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .game-information {
-    width: 95%;
-  }
-}
-
-.add-button {
-  padding: 15px;
-  margin-bottom: 20px;
-  background-color: rgba(70, 130, 180, 0.3); /* Semi-transparent blue color */
-  color: white;
-  border: 2px solid rgba(70, 130, 180, 0.9); /* Solid blue border for contrast */
-  border-radius: 6px; /* Makes the button round */
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 10%;
-  position: relative; /* Needed to position the pseudo-element */
+  z-index: 1000;
 }
 
-.add-button::before {
-  content: "+"; /* Adds the plus sign */
-  font-size: 24px; /* Size of the plus sign */
-  line-height: 1; /* Adjust line height to vertically center the plus sign */
+.modal-window {
+  background: white;
+  padding: 30px;
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
 }
 
-.add-button:hover {
-  background-color: rgba(70, 130, 180, 0.5); /* Darker transparent blue on hover */
+.modal-window h2 {
+  margin-bottom: 15px;
+  font-size: 1.5em;
+}
+
+.modal-window p {
+  margin-bottom: 20px;
+}
+
+.dropdown {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.dropdown-selected {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.dropdown-content {
+  display: block;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content .dropdown-item {
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.dropdown-content .dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+.team-image {
+  width: 20px;
+  height: auto;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.team-name {
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+.team-description {
+  display: block;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
+.selected-team-display {
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 0.9em;
+  font-weight: bold;
+  width: 100px; /* 버튼 너비를 고정 */
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.cancel-button {
+  background: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.confirm-button {
+  background: #000;
+  color: #fff;
+}
+
+/* 추가적으로 선택된 팀을 표시하는 요소에 대한 스타일 */
+.selected-team {
+  font-size: 1em;
+  font-weight: bold;
+  color: #333;
+  padding: 8px 16px;
+  background-color: #e9e9e9;
+  border-radius: 5px;
+  display: inline-block;
+  margin-top: 10px;
 }
 </style>

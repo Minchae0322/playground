@@ -49,10 +49,11 @@ public class UserService {
         return userRepository.findByUsername(username).orElseThrow();
     }
 
-    public List<Team> getTeamUserBelong(User user) {
-        List<Teaming> userTeamRelations = teamingService.getTeamUserRelations(user);
-
-        return userTeamRelations.stream()
+    @Transactional
+    public List<Team> getTeamsUserBelongsTo(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
+        List<Teaming> teams = user.getTeams();
+        return teams.stream()
                 .map(Teaming::getTeam)
                 .toList();
     }

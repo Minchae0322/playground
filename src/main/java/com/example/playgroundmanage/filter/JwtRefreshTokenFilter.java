@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.example.playgroundmanage.Instance.ACCESS_TOKEN_HEADER_NAME;
+import static com.example.playgroundmanage.Instance.ACCESS_TOKEN_REFRESH;
 import static com.example.playgroundmanage.login.auth.JwtTokenProvider.ACCESS_TOKEN_EXPIRATION;
 
 @RequiredArgsConstructor
@@ -41,20 +42,11 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
 
     private boolean skipFilter(String url) {
         List<String> list = List.of(
-                "/token/refresh");
+                ACCESS_TOKEN_REFRESH);
 
         return list.stream()
                 .filter(s -> s.contains(url))
                 .toList().size() == 0;
-
-    }
-
-    private String resolveOriginalUrl(HttpServletRequest request) {
-        String originalUrl = request.getHeader("OriginalUrl");
-        if (StringUtils.hasText(originalUrl)) {
-            return originalUrl;
-        }
-        throw new IllegalArgumentException();
     }
 
     private String resolveRefreshToken(HttpServletRequest request) {

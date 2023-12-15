@@ -6,4 +6,6 @@ public final class Instance {
     public final static String REFRESH_TOKEN_PARAM_NAME = "refresh_token";
 
     public final static String ACCESS_TOKEN_HEADER_NAME = "Authorization";
+
+    public final static String ACCESS_TOKEN_REFRESH = "/token/refresh";
 }

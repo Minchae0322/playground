@@ -93,6 +93,8 @@ public class GameService {
 
 
 
+
+
     public Game getMatch(Long matchId) {
         return gameRepository.findById(matchId).orElseThrow(MatchNotExistException::new);
     }

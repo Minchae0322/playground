@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.example.playgroundmanage.Instance.ACCESS_TOKEN_HEADER_NAME;
+import static com.example.playgroundmanage.Instance.ACCESS_TOKEN_REFRESH;
 import static com.example.playgroundmanage.login.auth.JwtTokenProvider.ACCESS_TOKEN_EXPIRATION;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -60,7 +61,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 "/auth/login"
                 ,"/favicon.ico"
                 ,"/oauth2"
-                , "/token/refresh"
+                , ACCESS_TOKEN_REFRESH
         );
 
         return list.stream()

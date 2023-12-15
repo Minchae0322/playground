@@ -80,7 +80,7 @@ import { ref, onMounted } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
-const apiBaseUrl = "http://localhost:8080/";
+const apiBaseUrl = "http://localhost:8080";
 const username = ref("")
 const password = ref("");
 
@@ -89,7 +89,7 @@ axios.defaults.withCredentials = true; // withCredentials 전역 설정
 const login_naver = function () {
 
   try {
-    window.location.href = `${apiBaseUrl}oauth2/authorization/naver`;
+    window.location.href = `${apiBaseUrl}/oauth2/authorization/naver`;
   } catch (error) {
     console.error('Error during Naver login:', error);
     router.replace('/login'); // Redirect to /login in case of an error
@@ -98,7 +98,7 @@ const login_naver = function () {
 
 const login_github = function () {
   try {
-    window.location.href = `${apiBaseUrl}oauth2/authorization/github`;
+    window.location.href = `${apiBaseUrl}/oauth2/authorization/github`;
   } catch (error) {
     console.error('Error during Github login:', error);
     router.replace('/login'); // Redirect to /login in case of an error
@@ -107,7 +107,7 @@ const login_github = function () {
 
 const write = async function () {
   try {
-    const response = await axios.post(`${apiBaseUrl}auth/login`, {
+    const response = await axios.post(`${apiBaseUrl}/auth/login`, {
       username: username.value,
       password: password.value
     }, {

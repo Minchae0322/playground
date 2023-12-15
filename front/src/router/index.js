@@ -6,6 +6,7 @@ import searchSchool from '../views/SerchSchoolView.vue'
 import playground_soccer from '../views/Playground_soccer.vue'
 import timePickerDialog from '../views/TimePickerDialogView.vue'
 import game from '../views/GameView.vue'
+import gameInfo from '../views/GameInfoView.vue'
 
 
 const router = createRouter({
@@ -43,6 +44,12 @@ const router = createRouter({
       path: '/game',
       name: 'game',
       component: game
+    },
+
+    {
+      path: '/gameInfo',
+      name: 'gameInfo',
+      component: gameInfo
     },
   ]
 })
