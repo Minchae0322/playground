@@ -36,6 +36,7 @@ public class UserController {
         return userService.getTeamsUserBelongsTo(userDetails.getUser().getId()).stream()
                 .map(t -> TeamInfoResponse.builder()
                         .teamName(t.getTeamName())
+                        .teamId(t.getId())
                         .build()).toList();
     }
 

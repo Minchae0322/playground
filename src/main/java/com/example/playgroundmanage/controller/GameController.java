@@ -6,7 +6,11 @@ import com.example.playgroundmanage.dto.UserJoinTeamParams;
 import com.example.playgroundmanage.dto.response.GameTimeline;
 import com.example.playgroundmanage.dto.response.SubTeamDto;
 import com.example.playgroundmanage.game.service.GameService;
+import com.example.playgroundmanage.game.service.RequestService;
+import com.example.playgroundmanage.login.vo.MyUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -18,6 +22,8 @@ public class GameController {
 
     private final GameService gameService;
 
+    private final RequestService requestService;
+
     @PostMapping("/game/{gameId}")
     public List<GameTimeline> userJoinTeam(@PathVariable("gameId") Long gameId, @RequestBody GameDateDto gameDateDto) {
         System.out.println(gameDateDto.getDate());
@@ -28,10 +34,9 @@ public class GameController {
     }
 
     @GetMapping("/game/create/subTeam")
-    public void createSubTeam() {
-        SubTeamRegistrationParams subTeamRegistrationParams = SubTeamRegistrationParams.builder()
-                .build();
-
+    public void createSubTeam(@RequestBody SubTeamRegistrationParams subTeamRegistrationParams, @AuthenticationPrincipal MyUserDetails userDetails) {
+        subTeamRegistrationParams.addUser(userDetails.getUser());
+        requestService.createGameTeamJoinRequest(subTeamRegistrationParams);
     }
 
     @GetMapping("/game/{gameId}/homeTeams")

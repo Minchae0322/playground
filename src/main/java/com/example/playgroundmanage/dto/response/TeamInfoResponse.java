@@ -8,10 +8,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class TeamInfoResponse {
 
+    private Long teamId;
     private String teamName;
 
     @Builder
-    public TeamInfoResponse(String teamName) {
+    public TeamInfoResponse(Long teamId, String teamName) {
+        this.teamId = teamId;
         this.teamName = teamName;
     }
 }

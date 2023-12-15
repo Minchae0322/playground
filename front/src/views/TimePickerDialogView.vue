@@ -30,7 +30,7 @@ import axios from "axios";
 import {useRouter} from "vue-router";
 
 const isModalVisible = ref(true);
-const selectedTeam = ref({ name: '' });
+const selectedTeam = ref("");
 const dropdownVisible = ref(false);
 const apiBaseUrl = "http://localhost:8080";
 

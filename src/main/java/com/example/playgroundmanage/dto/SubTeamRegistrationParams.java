@@ -23,4 +23,8 @@ public class SubTeamRegistrationParams {
         this.matchTeamSide = matchTeamSide;
         this.user = user;
     }
+
+    public void addUser(User user) {
+        this.user = user;
+    }
 }
