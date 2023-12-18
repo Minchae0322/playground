@@ -1,24 +1,47 @@
 <template>
-  <div v-if="isModalVisible" class="modal-overlay">
-    <div class="modal-window">
-      <h2>Select Your Team</h2>
-      <p>Choose a team from the dropdown list.</p>
-      <div class="dropdown">
-        <div class="dropdown-selected" @click="toggleDropdown">{{ selectedTeam.name || 'Select a team' }}</div>
-        <div class="dropdown-content" v-show="dropdownVisible">
-          <div class="dropdown-item" v-for="team in teams" :key="team.id" @click="selectTeam(team)">
-
-            <span class="team-name">{{ team.teamName }}</span>
-            <span class="team-description">{{ team.description }}</span>
-          </div>
-        </div>
+  <div class="team-container">
+    <div class="team-header">
+      <img src="../assets/img.png" alt="Team Logo" class="team-logo">
+      <div class="team-info">
+        <h1>The Team Name</h1>
+        <p class="team-type">Professional Sports Team</p>
       </div>
-      <div>
-        <span>Selected Team:</span>
-        <span>{{ selectedTeam.teamName }}</span>
-      </div>
-      <button @click="cancel">Cancel</button>
-      <button @click="confirm">Confirm</button>
+    </div>
+    <div class="team-history">
+      <h2>Team History</h2>
+      <p>The team was founded in 1900 and has a rich history of success and resilience. Over the years, they have won
+        numerous championships and produced many legendary players.</p>
+    </div>
+    <div class="team-players">
+      <h2>Players</h2>
+      <table>
+        <thead>
+        <tr>
+          <th>Player Name</th>
+          <th>Position</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+          <td>John Doe</td>
+          <td>Forward</td>
+        </tr>
+        <tr>
+          <td>Jane Smith</td>
+          <td>Goalkeeper</td>
+        </tr>
+        <!-- More players as needed -->
+        </tbody>
+      </table>
+    </div>
+    <div class="team-achievements">
+      <h2>Achievements</h2>
+      <ul>
+        <li>10x League Champions</li>
+        <li>5x Cup Winners</li>
+        <!-- More achievements as needed -->
+      </ul>
+      <button class="learn-more">Learn more</button>
     </div>
   </div>
 </template>
@@ -28,15 +51,26 @@ import {onMounted, ref} from "vue";
 import axios from "axios";
 
 import {useRouter} from "vue-router";
-
-const isModalVisible = ref(true);
-const selectedTeam = ref("");
-const dropdownVisible = ref(false);
+const router = useRouter();
+const team = ref([])
 const apiBaseUrl = "http://localhost:8080";
 
+const getTeamInfo = function () {
+  validateAccessToken()
+  const accessToken = getAccessToken()
+  if(accessToken) {
+    axios.get(`${apiBaseUrl}/game/34/homeTeams`,
+        {  headers: {
+            'Authorization': accessToken
+          }}
+    ).then(response => {
+      if (response.status === 200) {
+        homeTeams.value = response.data
+      }
+    });
+  }
+};
 
-const teams = ref([])
-const router = useRouter();
 const validateAccessToken = async function () {
   const accessToken = getAccessToken();
   if (!accessToken) {
@@ -66,7 +100,7 @@ const updateAccessToken = async function () {
       headers: { 'RefreshToken': refreshToken }
     });
     if (response.status === 200) {
-      const newAccessToken = response.headers['Authorization'];
+      const newAccessToken = response.headers['authorization'];
       localStorage.setItem('accessToken', newAccessToken);
       return newAccessToken;
     }
@@ -78,170 +112,129 @@ const updateAccessToken = async function () {
 const redirectToLogin = function () {
   router.push("/login");
 };
-const getTeamsUserBelongTo = function () {
-  validateAccessToken()
-  const accessToken = getAccessToken()
-  if(accessToken) {
-    axios.get(`${apiBaseUrl}/user/teams`,
-        {  headers: {
-            'Authorization': accessToken
-          }}
-    ).then(response => {
-      if (response.status === 200) {
-        teams.value = response.data
-      }
-    });
-  }
-};
-const toggleDropdown = () => {
-  dropdownVisible.value = !dropdownVisible.value;
-  getTeamsUserBelongTo()
-};
-
-const selectTeam = (team) => {
-  selectedTeam.value = team;
-  dropdownVisible.value = false;
-};
-
-const cancel = () => {
-  isModalVisible.value = false;
-  // 추가 취소 로직
-};
-
-const confirm = () => {
-  isModalVisible.value = false;
-  // 선택된 팀을 처리하는 로직
-  console.log('Confirmed team:', selectedTeam.value.name);
-};
 </script>
 
 <style scoped>
-.modal-overlay {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+.team-container {
+  width: 90%;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
 }
 
-.modal-window {
-  background: white;
-  padding: 30px;
-  width: 300px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
+.team-history {
+  background: #f9f9f9; /* Light grey background */
+  border: 1px solid #ddd; /* Light grey border */
+  border-radius: 4px; /* Rounded corners */
+  padding: 20px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
-.modal-window h2 {
-  margin-bottom: 15px;
+.team-history h2 {
   font-size: 1.5em;
-}
-
-.modal-window p {
-  margin-bottom: 20px;
-}
-
-.dropdown {
-  position: relative;
-  margin-bottom: 20px;
-}
-
-.dropdown-selected {
-  padding: 10px 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #fff;
-  cursor: pointer;
-  text-align: left;
+  color: #333; /* Darker text color for the title */
   margin-bottom: 10px;
 }
 
-.dropdown-content {
-  display: block;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  z-index: 1;
+.team-history p {
+  font-size: 1em;
+  color: #555; /* Slightly lighter text color for the paragraph */
+  line-height: 1.6; /* More readable line height */
 }
 
-.dropdown-content .dropdown-item {
-  padding: 12px 16px;
-  cursor: pointer;
+.team-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
-.dropdown-content .dropdown-item:hover {
-  background-color: #f1f1f1;
+.team-logo {
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+  background-color: #ddd;
 }
 
-.team-image {
-  width: 20px;
-  height: auto;
-  margin-right: 10px;
-  vertical-align: middle;
+.team-info h1 {
+  margin: 0;
+  font-size: 2em;
 }
 
-.team-name {
-  font-weight: bold;
-  vertical-align: middle;
+.team-type {
+  color: #666;
+  font-size: 1em;
 }
 
-.team-description {
-  display: block;
-  font-size: 0.8em;
-  margin-top: 5px;
+
+.team-achievements {
+  border-top: 2px solid #000;
+  padding-top: 20px;
+  margin-top: 20px;
 }
 
-.selected-team-display {
-  padding: 10px;
-  background-color: #f2f2f2;
-  border-radius: 5px;
-  display: inline-block;
+.team-players {
+  margin-top: 20px;
   margin-bottom: 20px;
 }
 
-button {
+.team-players h2 {
+  font-size: 1.5em;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.team-players table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px; /* Space between title and table */
+}
+
+.team-players th {
+  text-align: left;
+  font-weight: normal;
+  color: #777;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+}
+
+.team-players td {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* If you want to make the first column (Player Name) bold */
+.team-players tbody td:first-child {
+  font-weight: bold;
+}
+
+/* Add a hover effect for rows */
+.team-players tbody tr:hover {
+  background-color: #f5f5f5;
+}
+.team-achievements ul {
+  list-style: none;
+  padding: 0;
+}
+
+.team-achievements li {
+  background: #f2f2f2;
+  margin-bottom: 5px;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.learn-more {
+  background-color: #007bff;
+  color: white;
   padding: 10px 20px;
-  margin: 5px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
-  font-size: 0.9em;
-  font-weight: bold;
-  width: 100px; /* 버튼 너비를 고정 */
+  margin-top: 20px;
 }
 
-button:hover {
-  opacity: 0.8;
-}
-
-.cancel-button {
-  background: #fff;
-  color: #333;
-  border: 1px solid #ccc;
-}
-
-.confirm-button {
-  background: #000;
-  color: #fff;
-}
-
-/* 추가적으로 선택된 팀을 표시하는 요소에 대한 스타일 */
-.selected-team {
-  font-size: 1em;
-  font-weight: bold;
-  color: #333;
-  padding: 8px 16px;
-  background-color: #e9e9e9;
-  border-radius: 5px;
-  display: inline-block;
-  margin-top: 10px;
+.learn-more:hover {
+  background-color: #0056b3;
 }
 </style>

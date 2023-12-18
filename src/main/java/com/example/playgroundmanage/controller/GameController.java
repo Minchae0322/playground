@@ -14,6 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,15 +25,13 @@ public class GameController {
     private final GameService gameService;
 
 
-
-
     @GetMapping("/game/{gameId}/homeTeams")
-    public List<SubTeamDto> getHomeTeams(@PathVariable Long gameId) {
+    public List<SubTeamDto> getHomeTeams(@PathVariable Long gameId) throws IOException {
         return gameService.getTeamsBySide(gameId, MatchTeamSide.HOME);
     }
 
     @GetMapping("/game/{gameId}/awayTeams")
-    public List<SubTeamDto> getAwayTeams(@PathVariable Long gameId) {
+    public List<SubTeamDto> getAwayTeams(@PathVariable Long gameId) throws IOException {
         return gameService.getTeamsBySide(gameId, MatchTeamSide.AWAY);
     }
 }

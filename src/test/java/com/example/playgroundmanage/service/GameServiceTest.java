@@ -6,6 +6,7 @@ import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.UserService;
 import com.example.playgroundmanage.game.vo.SubTeam;
+import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
 import com.example.playgroundmanage.game.vo.Game;
@@ -180,12 +181,12 @@ class GameServiceTest {
 
         SubTeam subTeam = SubTeam.builder()
                 .team(testTeam)
-                .isNoneTeam(false)
+                .isSoloTeam(false)
                 .competingTeam(gameRepository.findById(gameId).get().getHomeTeam())
                 .build();
         subTeamRepository.save(subTeam);
 
-        List<SubTeamDto> subTeamDtos = gameService.getHomeTeams(gameId);
+        List<SubTeamDto> subTeamDtos = gameService.getTeamsBySide(gameId, MatchTeamSide.HOME);
         assertEquals(1, subTeamDtos.size());
         assertEquals("testTeam",subTeamDtos.stream().findFirst().get().getTeamName());
     }

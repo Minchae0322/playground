@@ -82,19 +82,29 @@ public class GameService {
     }
 
 
-    @Transactional
+
     public List<SubTeamDto> getTeamsBySide(Long gameId, MatchTeamSide matchTeamSide) {
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotExistException::new);
         CompetingTeam competingTeam = game.getCompetingTeamBySide(matchTeamSide);
 
         return competingTeam.getSubTeamsNotSoloTeam().stream()
-                .map(t -> SubTeamDto.builder()
-                        .teamId(t.getTeam().getId())
-                        .teamName(t.getTeam().getTeamName())
-                        .teamImg(fileHandler.extractFile(t.getTeam().getTeamPic()))
-                        .users(t.getParticipantsInfo())
-                        .build()).toList();
+                .map(t -> {
+                    try {
+                        return createSubTeamDtoFromSubTeam(t);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }).toList();
+    }
 
+    private SubTeamDto createSubTeamDtoFromSubTeam(SubTeam subTeam) throws IOException {
+        //MultipartFile teamImg = fileHandler.extractFile(subTeam.getTeam().getTeamPic());
+        return SubTeamDto.builder()
+                .teamId(subTeam.getTeam().getId())
+                .teamName(subTeam.getTeam().getTeamName())
+                //.teamImg(teamImg)
+                .users(subTeam.getParticipantsInfo())
+                .build();
     }
 
 
