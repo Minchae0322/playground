@@ -2,7 +2,6 @@ package com.example.playgroundmanage.filter;
 
 import com.example.playgroundmanage.login.auth.JwtTokenProvider;
 import com.example.playgroundmanage.exception.TokenNotValidException;
-import com.example.playgroundmanage.login.vo.RefreshToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,9 +16,7 @@ import java.io.IOException;
 import java.util.List;
 
 import static com.example.playgroundmanage.Instance.ACCESS_TOKEN_HEADER_NAME;
-import static com.example.playgroundmanage.Instance.ACCESS_TOKEN_REFRESH;
-import static com.example.playgroundmanage.login.auth.JwtTokenProvider.ACCESS_TOKEN_EXPIRATION;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static com.example.playgroundmanage.Instance.ACCESS_TOKEN_REFRESH_URL;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -29,7 +26,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-
         if(skipFilter(request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
@@ -61,7 +57,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 "/auth/login"
                 ,"/favicon.ico"
                 ,"/oauth2"
-                , ACCESS_TOKEN_REFRESH
+                /*,"/token/valid"*/
+                , ACCESS_TOKEN_REFRESH_URL
         );
 
         return list.stream()

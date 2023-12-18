@@ -12,9 +12,11 @@ import com.example.playgroundmanage.game.match.GameRequestProcess;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.type.MatchResult;
 import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.util.TeamSelector;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -37,6 +39,8 @@ public class GameService {
     private final MatchParticipantRepository matchParticipantRepository;
 
     private final FileHandler fileHandler;
+
+    private final TeamSelector teamSelector;
 
 
 
@@ -71,7 +75,7 @@ public class GameService {
             throw new IllegalArgumentException("개인 팀이 이미 있습니다.");
         }
         subTeamRepository.save(SubTeam.builder()
-                .isNoneTeam(true)
+                .isSoloTeam(true)
                 .isAccept(true)
                 .competingTeam(competingTeam)
                 .build());
@@ -79,16 +83,21 @@ public class GameService {
 
 
     @Transactional
-    public List<SubTeamDto> getHomeTeams(Long gameId) {
+    public List<SubTeamDto> getTeamsBySide(Long gameId, MatchTeamSide matchTeamSide) {
         Game game = gameRepository.findById(gameId).orElseThrow(GameNotExistException::new);
-        return game.getHomeTeam().getSubTeamsNotSoloTeam().stream()
+        CompetingTeam competingTeam = game.getCompetingTeamBySide(matchTeamSide);
+
+        return competingTeam.getSubTeamsNotSoloTeam().stream()
                 .map(t -> SubTeamDto.builder()
                         .teamId(t.getTeam().getId())
                         .teamName(t.getTeam().getTeamName())
-                        //.teamImg(fileHandler.extractFile(t.getTeam().getTeamPic()))
+                        .teamImg(fileHandler.extractFile(t.getTeam().getTeamPic()))
                         .users(t.getParticipantsInfo())
                         .build()).toList();
+
     }
+
+
 
 
 

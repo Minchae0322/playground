@@ -75,7 +75,7 @@ public class UserService {
         List<Game> games = getHostCreatedGamesNotStarted(user);
         List<SubTeam> subTeams = getUnacceptedHomeSubTeams(games);
         SubTeam subTeam = subTeams.stream()
-                .filter(SubTeam::isNoneTeam)
+                .filter(SubTeam::isSoloTeam)
                 .findFirst().orElseThrow();
         subTeam.getMatchParticipants().stream().filter(p -> !p.isAccepted())
                 .toList();

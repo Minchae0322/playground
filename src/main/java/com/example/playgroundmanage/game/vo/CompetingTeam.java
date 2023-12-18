@@ -3,6 +3,7 @@ package com.example.playgroundmanage.game.vo;
 import com.example.playgroundmanage.type.MatchResult;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -45,15 +46,16 @@ public class CompetingTeam {
                 .toList().size() != 0;
     }
 
+    @Transactional
     public List<SubTeam> getSubTeamsNotSoloTeam() {
-        return subTeams.stream()
-                .filter(t -> !t.isSoloTeam())
+        return this.getSubTeams().stream()
+                .filter(ct -> !ct.isSoloTeam())
                 .toList();
     }
 
     public boolean isContainSoloTeam() {
         return subTeams.stream()
-                .filter(SubTeam::isNoneTeam)
+                .filter(SubTeam::isSoloTeam)
                 .toList().size() != 0;
     }
 

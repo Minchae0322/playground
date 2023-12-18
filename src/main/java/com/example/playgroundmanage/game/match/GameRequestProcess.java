@@ -21,21 +21,8 @@ public class GameRequestProcess {
         return competingTeam.isContainTeam(team);
     }
 
-    public SubTeam getSoloTeam(Game game, MatchTeamSide matchTeamSide) {
-        CompetingTeam competingTeam = game.getMatchTeamBySide(matchTeamSide);
-        return competingTeam.getSubTeams().stream()
-                .filter(SubTeam::isSoloTeam)
-                .findFirst().orElseThrow();
-    }
 
-    public SubTeam getTeam(Game game, Team team, MatchTeamSide matchTeamSide) {
-        CompetingTeam competingTeam = game.getMatchTeamBySide(matchTeamSide);
-        return subTeamRepository.save(competingTeam.findSubTeam(team).orElse(SubTeam.builder()
-                .isNoneTeam(false)
-                .isAccept(true)
-                .competingTeam(competingTeam)
-                .build()));
-    }
+
 
     public boolean isUserParticipatingInGame(Game game, User user) {
         List<MatchParticipant> matchParticipantList = matchParticipantRepository.findAllByGame(game);

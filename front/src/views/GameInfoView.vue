@@ -8,30 +8,55 @@
         <h2>Home</h2>
         <div class="team-details" v-for="(team,index) in homeTeams" :key="index">
           <!--          <p>{{ team.teamId }}</p>-->
-          <p>{{ team.teamName }}</p>
+          <h2>{{ team.teamName }}</h2>
           <div class="participant" v-for="(participant, index) in team.users" :key="index">
             <p>{{ participant.userId }}</p>
             <p>{{ participant.userNickname }}</p>
           </div>
+          <button class="add-button" @click="">Add</button>
         </div>
-        <button class="add-button" @click="addParticipant()"></button>
+        <button class="add-button" @click="visibleModal"></button>
 
       </div>
 
       <div class="team">
         <h2>Away</h2>
-        <div class="team-details" v-for="team in awayTeams" :key="team.id">
-          <p>{{ team.name }}</p>
-          <p>{{ team.value }}</p>
-          <div class="participant" v-for="participant in team.participants" :key="participant.id">
-            <p>{{ participant.name }}</p>
-            <p>{{ participant.position }}</p>
+        <div class="team-details" v-for="(team,index) in awayTeams" :key="index">
+          <!--          <p>{{ team.teamId }}</p>-->
+          <h2>{{ team.teamName }}</h2>
+          <div class="participant" v-for="(participant, index) in team.users" :key="index">
+            <p>{{ participant.userId }}</p>
+            <p>{{ participant.userNickname }}</p>
           </div>
+          <button class="add-button" @click="addParticipant()">Add</button>
         </div>
       </div>
     </div>
 
     <!-- Button for more details -->
+  </div>
+
+  <div v-if="isModalVisible" class="modal-overlay">
+    <div class="modal-window">
+      <h2>Select Your Team</h2>
+      <p>Choose a team from the dropdown list.</p>
+      <div class="dropdown">
+        <div class="dropdown-selected" @click="toggleDropdown">{{ selectedTeam.name || 'Select a team' }}</div>
+        <div class="dropdown-content" v-show="dropdownVisible">
+          <div class="dropdown-item" v-for="team in teams" :key="team.id" @click="selectTeam(team)">
+
+            <span class="team-name">{{ team.teamName }}</span>
+            <span class="team-description">{{ team.description }}</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <span>Selected Team:</span>
+        <span>{{ selectedTeam.teamName }}</span>
+      </div>
+      <button @click="cancel">Cancel</button>
+      <button @click="confirm">Confirm</button>
+    </div>
   </div>
 </template>
 
@@ -45,10 +70,18 @@ const router = useRouter();
 const homeTeams = ref([])
 const awayTeams = ref([])
 const apiBaseUrl = "http://localhost:8080";
+const isModalVisible = ref(false);
+const selectedTeam = ref("");
+const dropdownVisible = ref(false);
+
+
+
+const teams = ref([])
 
 onMounted(() => {
   // Check if the initial page number is provided in the route query
   getHomeTeams()
+  getAwayTeams()
 });
 
 const validateAccessToken = async function () {
@@ -80,7 +113,7 @@ const updateAccessToken = async function () {
       headers: { 'RefreshToken': refreshToken }
     });
     if (response.status === 200) {
-      const newAccessToken = response.headers['Authorization'];
+      const newAccessToken = response.headers['authorization'];
       localStorage.setItem('accessToken', newAccessToken);
       return newAccessToken;
     }
@@ -108,13 +141,78 @@ const getHomeTeams = function () {
   }
 };
 
+const getTeamsUserBelongTo = function () {
+  validateAccessToken()
+  const accessToken = getAccessToken()
+  if(accessToken) {
+    axios.get(`${apiBaseUrl}/user/teams`,
+        {  headers: {
+            'Authorization': accessToken
+          }}
+    ).then(response => {
+      if (response.status === 200) {
+        teams.value = response.data
+      }
+    });
+  }
+};
+
+const visibleModal = function () {
+  isModalVisible.value = true;
+};
+const toggleDropdown = () => {
+  dropdownVisible.value = !dropdownVisible.value;
+  getTeamsUserBelongTo()
+};
+
+const selectTeam = (team) => {
+  selectedTeam.value = team;
+  dropdownVisible.value = false;
+};
+
+const cancel = () => {
+  isModalVisible.value = false;
+  // 추가 취소 로직
+};
+
+const confirm = () => {
+  isModalVisible.value = false;
+  // 선택된 팀을 처리하는 로직
+  validateAccessToken()
+  const accessToken = getAccessToken()
+  if(accessToken) {
+    axios.post(`${apiBaseUrl}/game/34/request/create-team`,
+        { teamId: 1 }, {
+          headers: {
+            'Authorization': accessToken,
+          }}
+    ).then(response => {
+
+    });
+  }
+};
+
+const getAwayTeams = function () {
+  validateAccessToken()
+  const accessToken = getAccessToken()
+  if(accessToken) {
+    axios.get(`${apiBaseUrl}/game/34/awayTeams`,
+        {  headers: {
+            'Authorization': accessToken
+          }}
+    ).then(response => {
+      if (response.status === 200) {
+        awayTeams.value = response.data
+      }
+    });
+  }
+};
+
+
 const selectedTeamId = ref(null);
 const participantType = ref('');
 
 const showSelect = () => {
-
-
-
   selectedTeamId.value = teamId; // Show the select box
 
 };
@@ -164,20 +262,47 @@ p {
 
 .team h2 {
   font-size: 26px;
-  margin-bottom: 10px;
   font-weight: bold;
   font-family: primary-font,sans-serif;
   color: #000000;
 }
 
 .team-details {
-  background: #ffffff;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 15px;
+  background: #F3F4F6; /* Light grey background */
+  border-radius: 8px; /* Rounded corners */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 10px;
   margin-bottom: 20px;
   display: flex;
-  transition: box-shadow 0.3s ease;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the start of the flex container */
+}
+
+.team-details h2 {
+  font-size: 20px; /* Smaller font size for team name */
+  color: #333; /* Dark grey color for text */
+  margin-bottom: 10px; /* Space below the team name */
+}
+
+.team-details p {
+  font-size: 16px; /* Smaller font size for details */
+  color: #666; /* Light grey color for text */
+  margin-bottom: 5px; /* Reduce space between details */
+}
+
+.add-button {
+  background-color: #007BFF; /* Bootstrap blue */
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px; /* Rounded corners for the button */
+  margin-top: 10px; /* Space above the button */
+  align-self: center; /* Center the button in the flex container */
+}
+
+.add-button::before {
+  content: none; /* Remove the plus sign since the button text will be 'Add Player' */
 }
 
 .team-details:hover {
@@ -247,8 +372,6 @@ p {
 }
 
 .add-button {
-  padding: 15px;
-  margin-bottom: 20px;
   background-color: rgba(70, 130, 180, 0.3); /* Semi-transparent blue color */
   color: white;
   border: 2px solid rgba(70, 130, 180, 0.9); /* Solid blue border for contrast */
@@ -258,18 +381,147 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 100%;
-  height: 10%;
+  width: 90%;
+
   position: relative; /* Needed to position the pseudo-element */
 }
 
 .add-button::before {
   content: "+"; /* Adds the plus sign */
   font-size: 24px; /* Size of the plus sign */
-  line-height: 1; /* Adjust line height to vertically center the plus sign */
+
 }
 
 .add-button:hover {
   background-color: rgba(70, 130, 180, 0.5); /* Darker transparent blue on hover */
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal-window {
+  background: white;
+  padding: 30px;
+  width: 300px;
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.modal-window h2 {
+  margin-bottom: 15px;
+  font-size: 1.5em;
+}
+
+.modal-window p {
+  margin-bottom: 20px;
+}
+
+.dropdown {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.dropdown-selected {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+  text-align: left;
+  margin-bottom: 10px;
+}
+
+.dropdown-content {
+  display: block;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content .dropdown-item {
+  padding: 12px 16px;
+  cursor: pointer;
+}
+
+.dropdown-content .dropdown-item:hover {
+  background-color: #f1f1f1;
+}
+
+.team-image {
+  width: 20px;
+  height: auto;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+.team-name {
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+.team-description {
+  display: block;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
+.selected-team-display {
+  padding: 10px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+button {
+  padding: 10px 20px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 0.9em;
+  font-weight: bold;
+  width: 100px; /* 버튼 너비를 고정 */
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+.cancel-button {
+  background: #fff;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+.confirm-button {
+  background: #000;
+  color: #fff;
+}
+
+/* 추가적으로 선택된 팀을 표시하는 요소에 대한 스타일 */
+.selected-team {
+  font-size: 1em;
+  font-weight: bold;
+  color: #333;
+  padding: 8px 16px;
+  background-color: #e9e9e9;
+  border-radius: 5px;
+  display: inline-block;
+  margin-top: 10px;
 }
 </style>

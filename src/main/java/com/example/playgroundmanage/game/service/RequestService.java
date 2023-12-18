@@ -4,13 +4,11 @@ import com.example.playgroundmanage.dto.SubTeamRegistrationParams;
 import com.example.playgroundmanage.dto.response.PendingJoinRequest;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.TeamNotExistException;
+import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.game.match.GameRequestProcess;
-import com.example.playgroundmanage.game.repository.GameRepository;
-import com.example.playgroundmanage.game.repository.JoinGameRequestRepository;
-import com.example.playgroundmanage.game.repository.MatchParticipantRepository;
-import com.example.playgroundmanage.game.repository.TeamRepository;
 import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.util.TeamSelector;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -32,8 +30,12 @@ public class RequestService {
 
     private final GameRequestProcess gameRequestProcess;
 
+    private final TeamSelector teamSelector;
+
+    private final SubTeamRepository subTeamRepository;
+
     @Transactional
-    public Long createGameTeamJoinRequest(SubTeamRegistrationParams subTeamRegistrationParams) {
+    public Long createSubTeamRequest(SubTeamRegistrationParams subTeamRegistrationParams) {
         Game game = gameRepository.findById(subTeamRegistrationParams.getGameId()).orElseThrow(GameNotExistException::new);
         Team team = teamRepository.findById(subTeamRegistrationParams.getTeamId()).orElseThrow(TeamNotExistException::new);
 
@@ -44,7 +46,7 @@ public class RequestService {
     }
 
     @Transactional
-    public Long createGameSoloJoinRequest(SubTeamRegistrationParams subTeamRegistrationParams) {
+    public Long createSoloJoinRequest(SubTeamRegistrationParams subTeamRegistrationParams) {
         Game game = gameRepository.findById(subTeamRegistrationParams.getGameId()).orElseThrow(GameNotExistException::new);
         if (gameRequestProcess.isUserParticipatingInGame(game, subTeamRegistrationParams.getUser())) {
             throw new IllegalArgumentException();
@@ -53,7 +55,6 @@ public class RequestService {
 
     }
 
-    @Transactional
     private Long saveJoinTeamRequest(Game game, User user, Team team, MatchTeamSide matchTeamSide) {
         return joinGameRequestRepository.save(joinGameRequestRepository.findByGameAndUser(game, user).orElse(JoinGameRequest.builder()
                 .isSoloTeam(false)
@@ -80,12 +81,31 @@ public class RequestService {
     public Long acceptRequest(Long joinGameRequestId) {
         JoinGameRequest joinGameRequest = joinGameRequestRepository.findById(joinGameRequestId).orElseThrow();
         if (joinGameRequest.isSoloTeam()) {
-            SubTeam soloTeam = gameRequestProcess.getSoloTeam(joinGameRequest.getGame(), joinGameRequest.getMatchTeamSide());
-            return addUserToTeam(soloTeam, joinGameRequest.getUser());
+            return acceptSoloRequest(joinGameRequest);
         }
-        SubTeam subTeam = gameRequestProcess.getTeam(joinGameRequest.getGame(), joinGameRequest.getTeam(), joinGameRequest.getMatchTeamSide());
+        return acceptTeamRequest(joinGameRequest);
+    }
+
+    private Long acceptSoloRequest(JoinGameRequest joinGameRequest) {
+        SubTeam soloTeam = teamSelector.getSoloSubTeam(joinGameRequest.getGame(), joinGameRequest.getMatchTeamSide());
+        return addUserToTeam(soloTeam, joinGameRequest.getUser());
+    }
+
+    private Long getSubTeam(JoinGameRequest joinGameRequest) {
+        CompetingTeam competingTeam = joinGameRequest.getGame().getCompetingTeamBySide(joinGameRequest.getMatchTeamSide());
+        return competingTeam.findSubTeam(joinGameRequest.getTeam()).orElse(subTeamRepository.save(SubTeam.builder()
+                .competingTeam(competingTeam)
+                .isAccept(true)
+                .isSoloTeam(false)
+                .team(joinGameRequest.getTeam())
+                .build())).getId();
+    }
+
+    private Long acceptTeamRequest(JoinGameRequest joinGameRequest) {
+        SubTeam subTeam = subTeamRepository.findById(getSubTeam(joinGameRequest)).orElseThrow();
         return addUserToTeam(subTeam, joinGameRequest.getUser());
     }
+
 
     @Transactional
     public void rejectRequest(Long joinGameRequestId) {

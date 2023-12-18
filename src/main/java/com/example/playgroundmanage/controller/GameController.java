@@ -8,6 +8,7 @@ import com.example.playgroundmanage.dto.response.SubTeamDto;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
+import com.example.playgroundmanage.type.MatchTeamSide;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,25 +23,16 @@ public class GameController {
 
     private final GameService gameService;
 
-    private final RequestService requestService;
 
-    @PostMapping("/game/{gameId}")
-    public List<GameTimeline> userJoinTeam(@PathVariable("gameId") Long gameId, @RequestBody GameDateDto gameDateDto) {
-        System.out.println(gameDateDto.getDate());
-        return List.of(GameTimeline.builder()
-                .start(LocalDateTime.now())
-                .end(LocalDateTime.now())
-                .build());
-    }
 
-    @GetMapping("/game/create/subTeam")
-    public void createSubTeam(@RequestBody SubTeamRegistrationParams subTeamRegistrationParams, @AuthenticationPrincipal MyUserDetails userDetails) {
-        subTeamRegistrationParams.addUser(userDetails.getUser());
-        requestService.createGameTeamJoinRequest(subTeamRegistrationParams);
-    }
 
     @GetMapping("/game/{gameId}/homeTeams")
     public List<SubTeamDto> getHomeTeams(@PathVariable Long gameId) {
-        return gameService.getHomeTeams(gameId);
+        return gameService.getTeamsBySide(gameId, MatchTeamSide.HOME);
+    }
+
+    @GetMapping("/game/{gameId}/awayTeams")
+    public List<SubTeamDto> getAwayTeams(@PathVariable Long gameId) {
+        return gameService.getTeamsBySide(gameId, MatchTeamSide.AWAY);
     }
 }

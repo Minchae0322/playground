@@ -7,5 +7,5 @@ public final class Instance {
 
     public final static String ACCESS_TOKEN_HEADER_NAME = "Authorization";
 
-    public final static String ACCESS_TOKEN_REFRESH = "/token/refresh";
+    public final static String ACCESS_TOKEN_REFRESH_URL = "/token/refresh";
 }

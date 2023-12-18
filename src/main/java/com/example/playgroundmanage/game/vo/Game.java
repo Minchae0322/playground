@@ -5,6 +5,7 @@ import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.vo.Playground;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -75,12 +76,11 @@ public class Game {
 
 
 
-
-    public CompetingTeam getMatchTeamBySide(MatchTeamSide matchTeamSide) {
-        if(matchTeamSide == MatchTeamSide.HOME) {
-            return this.homeTeam;
+    public CompetingTeam getCompetingTeamBySide(MatchTeamSide matchTeamSide) {
+        if (matchTeamSide.equals(MatchTeamSide.HOME)) {
+            return this.getHomeTeam();
         }
-        return this.awayTeam;
+            return this.getAwayTeam();
     }
 
     private void validate(User host, Long runningTime, LocalDateTime gameStartDateTime) {

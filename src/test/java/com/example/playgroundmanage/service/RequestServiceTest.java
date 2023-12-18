@@ -104,7 +104,7 @@ class RequestServiceTest {
                 .gameId(game.getId())
                 .build();
 
-        Long requestId = requestService.createGameTeamJoinRequest(subTeamRegistrationParams);
+        Long requestId = requestService.createSubTeamRequest(subTeamRegistrationParams);
         JoinGameRequest joinGameRequest = joinGameRequestRepository.findById(requestId).orElseThrow();
         assertEquals(1, joinGameRequestRepository.count());
         assertFalse(joinGameRequest.isSoloTeam());
@@ -121,7 +121,7 @@ class RequestServiceTest {
                 .gameId(game.getId())
                 .build();
 
-        Long requestId = requestService.createGameTeamJoinRequest(subTeamRegistrationParams);
+        Long requestId = requestService.createSubTeamRequest(subTeamRegistrationParams);
         JoinGameRequest joinGameRequest = joinGameRequestRepository.findById(requestId).orElseThrow();
         assertEquals(1, joinGameRequestRepository.count());
         assertFalse(joinGameRequest.isSoloTeam());
@@ -133,7 +133,7 @@ class RequestServiceTest {
                 .matchTeamSide(MatchTeamSide.HOME)
                 .gameId(game.getId())
                 .build();
-        Long requestId2 = requestService.createGameTeamJoinRequest(subTeamRegistrationParams2);
+        Long requestId2 = requestService.createSubTeamRequest(subTeamRegistrationParams2);
         JoinGameRequest joinGameRequest2 = joinGameRequestRepository.findById(requestId2).orElseThrow();
 
         assertEquals(1, joinGameRequestRepository.count());
@@ -150,7 +150,7 @@ class RequestServiceTest {
                 .gameId(game.getId())
                 .build();
 
-        Long requestId = requestService.createGameSoloJoinRequest(subTeamRegistrationParams);
+        Long requestId = requestService.createSoloJoinRequest(subTeamRegistrationParams);
         JoinGameRequest joinGameRequest = joinGameRequestRepository.findById(requestId).orElseThrow();
         assertEquals(1, joinGameRequestRepository.count());
         assertTrue(joinGameRequest.isSoloTeam());
@@ -166,7 +166,7 @@ class RequestServiceTest {
                 .gameId(game.getId())
                 .build();
 
-        Long requestId = requestService.createGameSoloJoinRequest(subTeamRegistrationParams);
+        Long requestId = requestService.createSoloJoinRequest(subTeamRegistrationParams);
         JoinGameRequest joinGameRequest = joinGameRequestRepository.findById(requestId).orElseThrow();
         assertEquals(1, joinGameRequestRepository.count());
         assertTrue(joinGameRequest.isSoloTeam());
@@ -178,7 +178,7 @@ class RequestServiceTest {
                 .matchTeamSide(MatchTeamSide.HOME)
                 .gameId(game.getId())
                 .build();
-        Long requestId2 = requestService.createGameSoloJoinRequest(subTeamRegistrationParams2);
+        Long requestId2 = requestService.createSoloJoinRequest(subTeamRegistrationParams2);
         JoinGameRequest joinGameRequest2 = joinGameRequestRepository.findById(requestId2).orElseThrow();
 
         assertEquals(1, joinGameRequestRepository.count());

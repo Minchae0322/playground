@@ -34,8 +34,9 @@ const selectedTeam = ref("");
 const dropdownVisible = ref(false);
 const apiBaseUrl = "http://localhost:8080";
 
-const router = useRouter();
+
 const teams = ref([])
+const router = useRouter();
 const validateAccessToken = async function () {
   const accessToken = getAccessToken();
   if (!accessToken) {
