@@ -2,6 +2,7 @@ package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.dto.response.PendingTeamResponse;
 import com.example.playgroundmanage.dto.response.PendingUserResponse;
+import com.example.playgroundmanage.dto.response.UserProfileDto;
 import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.login.dto.UserSignupForm;
@@ -68,6 +69,13 @@ public class UserService {
                         .build())
                 .toList();
 
+    }
+
+    public UserProfileDto getUserProfile(User user) {
+        return UserProfileDto.builder()
+                .userNickname(user.getNickname())
+                .userId(user.getId())
+                .build();
     }
 
     public List<PendingUserResponse> getPendingUserRequests(Long userId) {

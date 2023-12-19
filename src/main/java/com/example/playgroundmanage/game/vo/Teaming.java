@@ -21,6 +21,8 @@ public class Teaming {
     @ManyToOne(cascade = CascadeType.MERGE)
     private Team team;
 
+    private String role;
+
     private LocalDate createdTime;
 
     @Builder

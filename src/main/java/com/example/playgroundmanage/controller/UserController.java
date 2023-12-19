@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
+import com.example.playgroundmanage.dto.response.UserProfileDto;
 import com.example.playgroundmanage.game.service.UserService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import jakarta.servlet.http.HttpServletResponse;
@@ -18,11 +19,12 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/Info")
-    public String getJson(@AuthenticationPrincipal MyUserDetails userDetails) {
-        userDetails.getName();
-        return userDetails.getUser().getUsername();
+    @GetMapping("/user/profile")
+    public UserProfileDto getUserProfile(@AuthenticationPrincipal MyUserDetails userDetails) {
+        return userService.getUserProfile(userDetails.getUser());
     }
+
+
 
 
     @GetMapping("/token/valid")

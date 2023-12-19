@@ -116,7 +116,7 @@ const redirectToLogin = function () {
 
 <style scoped>
 .team-container {
-  width: 90%;
+  width: 70%;
   margin: 20px auto;
   font-family: Arial, sans-serif;
 }
@@ -190,27 +190,30 @@ const redirectToLogin = function () {
   margin-top: 20px; /* Space between title and table */
 }
 
-.team-players th {
-  text-align: left;
-  font-weight: normal;
-  color: #777;
-  border-bottom: 2px solid #eee;
-  padding-bottom: 10px;
-}
-
+.team-players th,
 .team-players td {
-  padding: 10px 0;
-  border-bottom: 1px solid #eee;
+  text-align: left;
+  padding: 12px 8px; /* Adjust the padding to match the design */
+  border-bottom: 1px solid #ddd; /* Light gray border for separation */
 }
 
-/* If you want to make the first column (Player Name) bold */
-.team-players tbody td:first-child {
+.team-players th {
   font-weight: bold;
+  background-color: #f8f8f8; /* Light gray background for headers */
+  border-bottom: 2px solid #eaeaea; /* Slightly darker border for headers */
 }
 
-/* Add a hover effect for rows */
 .team-players tbody tr:hover {
-  background-color: #f5f5f5;
+  background-color: #f2f2f2; /* Slightly darker background on hover */
+}
+
+.team-players tbody td {
+  color: #555; /* Slightly darker text color for content */
+}
+
+/* Remove the border from the last row to match the design */
+.team-players tr:last-child td {
+  border-bottom: none;
 }
 .team-achievements ul {
   list-style: none;

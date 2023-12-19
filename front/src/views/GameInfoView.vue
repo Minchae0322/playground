@@ -6,14 +6,15 @@
     <div class="teams-container">
       <div class="team">
         <h2>Home</h2>
-        <div class="team-details" v-for="(team,index) in homeTeams" :key="index">
-          <!--          <p>{{ team.teamId }}</p>-->
+        <div class="team-details" v-for="(team, index) in homeTeams" :key="index">
           <h2>{{ team.teamName }}</h2>
-          <div class="participant" v-for="(participant, index) in team.users" :key="index">
-            <p>{{ participant.userId }}</p>
-            <p>{{ participant.userNickname }}</p>
+          <div class="participants-container">
+            <div class="participant" v-for="(participant, index) in team.users" :key="index">
+              <span class="user-id">{{ participant.userId }}</span>
+              <span class="user-nickname">{{ participant.userNickname }}</span>
+            </div>
           </div>
-          <button class="add-button" @click="">Add</button>
+          <button class="add-button" @click="addParticipant(team.teamId)">Add Player</button>
         </div>
         <button class="add-button" @click="visibleModal"></button>
 
@@ -337,23 +338,45 @@ p {
   font-size: 14px;
   color: #444;
 }
-.details-button {
-  background-color: #4e73df;
-  color: white;
-  border: none;
-  padding: 12px 24px;
-  font-size: 16px;
-  border-radius: 8px;
-  transition: background-color 0.2s;
-  outline: none;
-  margin-top: 20px;
+.participants-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* Creates a gap between participant items */
+  margin-bottom: 15px;
 }
 
-.details-button:hover,
-.details-button:focus {
-  background-color: #6c8eed;
-  outline: none;
+.participant {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 8px 16px;
+  transition: background-color 0.3s ease;
 }
+
+.participant:hover {
+  background-color: #f8f8f8;
+}
+
+.user-id {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.user-nickname {
+  color: #888;
+}
+
+.add-button {
+  /* ... existing add-button styles ... */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.add-button:hover {
+  /* ... existing hover effect or create a new one ... */
+  background-color: #0056b3;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
 
 /* Media query for responsiveness */
 @media (max-width: 768px) {

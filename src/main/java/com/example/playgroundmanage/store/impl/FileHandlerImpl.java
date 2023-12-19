@@ -3,6 +3,8 @@ package com.example.playgroundmanage.store.impl;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.store.UploadFile;
+import com.example.playgroundmanage.store.UploadFileRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,7 +17,10 @@ import java.util.List;
 import java.util.UUID;
 
 @Component
+@RequiredArgsConstructor
 public class FileHandlerImpl implements FileHandler {
+
+    private final UploadFileRepository uploadFileRepository;
 
     String rootPath = System.getProperty("user.dir");
 
@@ -40,10 +45,10 @@ public class FileHandlerImpl implements FileHandler {
         // 파일을 저장하는 부분 -> 파일경로 + storeFilename 에 저장
         multipartFile.transferTo(Path.of(getFullPath(storeFilename)));
 
-        return UploadFile.builder()
+        return uploadFileRepository.save(UploadFile.builder()
                 .orgFileName(originalFilename)
                 .storeFileName(storeFilename)
-                .build();
+                .build());
     }
 
     // 파일이 여러개 들어왔을 때 처리해주는 부분

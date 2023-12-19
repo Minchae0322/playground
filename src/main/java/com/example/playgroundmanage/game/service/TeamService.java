@@ -6,10 +6,13 @@ import com.example.playgroundmanage.game.vo.Team;
 import com.example.playgroundmanage.game.vo.Teaming;
 import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.game.repository.TeamRepository;
+import com.example.playgroundmanage.store.FileHandler;
+import com.example.playgroundmanage.store.UploadFile;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -23,11 +26,16 @@ public class TeamService {
 
     private final UserService userService;
 
+    private final FileHandler fileHandler;
 
-    public Team saveTeam(TeamRegistration teamRegistration) {
+
+    public Team saveTeam(TeamRegistration teamRegistration) throws IOException {
+        UploadFile uploadFile = fileHandler.storeFile(teamRegistration.getTeamPic());
         Team team = Team.builder()
                 .teamName(teamRegistration.getTeamName())
                 .leader(teamRegistration.getLeader())
+                .teamPic(uploadFile)
+                .description(teamRegistration.getTeamDescription())
                 .sportsEvent(teamRegistration.getSportsEvent())
                 .build();
         return teamRepository.save(team);
@@ -35,7 +43,7 @@ public class TeamService {
 
 
     @Transactional
-    public Long generateTeam(TeamRegistration teamRegistration) {
+    public Long generateTeam(TeamRegistration teamRegistration) throws IOException {
         Team team = saveTeam(teamRegistration);
         teamingService.joinTeam(team, teamRegistration.getLeader());
         return team.getId();

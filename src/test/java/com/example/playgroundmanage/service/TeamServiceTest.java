@@ -15,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -57,10 +58,10 @@ class TeamServiceTest {
     }
 
     @Test
-    void generateTeam() {
+    void generateTeam() throws IOException {
         TeamRegistration teamRegistration = TeamRegistration.builder()
                 .teamName("testTeam")
-                .teamPic("teamPic")
+
                 .sportsEvent(SportsEvent.SOCCER)
                 .leader(testUser)
                 .build();
@@ -72,10 +73,10 @@ class TeamServiceTest {
     }
 
     @Test
-    void getMembers() {
+    void getMembers() throws IOException {
         TeamRegistration teamRegistration = TeamRegistration.builder()
                 .teamName("testTeam")
-                .teamPic("teamPic")
+
                 .sportsEvent(SportsEvent.SOCCER)
                 .leader(testUser)
                 .build();
@@ -87,10 +88,9 @@ class TeamServiceTest {
     }
 
     @Test
-    void getTeamLeader() {
+    void getTeamLeader() throws IOException {
         TeamRegistration teamRegistration = TeamRegistration.builder()
                 .teamName("testTeam")
-                .teamPic("teamPic")
                 .sportsEvent(SportsEvent.SOCCER)
                 .leader(testUser)
                 .build();

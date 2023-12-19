@@ -7,6 +7,7 @@ import playground_soccer from '../views/Playground_soccer.vue'
 import timePickerDialog from '../views/TimePickerDialogView.vue'
 import game from '../views/GameView.vue'
 import gameInfo from '../views/GameInfoView.vue'
+import teamBuilding from '../views/TeamBuildingView.vue'
 
 
 const router = createRouter({
@@ -50,6 +51,12 @@ const router = createRouter({
       path: '/gameInfo',
       name: 'gameInfo',
       component: gameInfo
+    },
+
+    {
+      path: '/makeTeam',
+      name: 'makeTeam',
+      component: teamBuilding
     },
   ]
 })
