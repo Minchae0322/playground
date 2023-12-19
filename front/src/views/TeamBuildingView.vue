@@ -7,18 +7,30 @@
       <div v-if="team.imagePreview" class="image-preview">
         <img :src="team.imagePreview" alt="+">
       </div>
-      <div class= "profile-container">
-        <input type="file" id="profilePicture" @change="onFileChange">
+      <h3 class="team-name">{{team.name}}</h3>
+      <div class="file-upload-wrapper">
+        <input type="file" id="profilePicture" @change="onFileChange" class="file-input" hidden>
+        <button type="button" onclick="document.getElementById('profilePicture').click()" class="file-upload-button">
+          Choose File
+        </button>
+
       </div>
-
-
-        <div class="form-group">
+      <div class="form-group">
         <label for="teamName">Team Name</label>
         <input type="text" id="teamName" v-model="team.name" placeholder="Enter team name">
       </div>
+      <div class="sports-category-container">
+        <h4 class="">Sports Type</h4>
+        <img src="../assets/soccer-ball.png" alt="" :class="{ 'selected': sportsEvent === 'Soccer' }"
+             @click="selectCategory('Soccer')">
+        <img src="../assets/baseball-ball.png" alt="" :class="{ 'selected': sportsEvent === 'Baseball' }"
+             @click="selectCategory('Baseball')">
+      </div>
+
+
       <div class="form-group">
         <label for="teamLeader">Team Leader</label>
-        <h3 type="text" id="teamLeader" >{{leader.userNickname}}</h3>
+        <h4 type="text" id="teamLeader" >{{leader.userNickname}}</h4>
       </div>
       <div class="form-group">
         <label for="teamGoals">Team Description</label>
@@ -36,12 +48,17 @@ import axios from "axios";
 
 const leader = ref("")
 const apiBaseUrl = "http://localhost:8080";
+const sportsEvent = ref("Soccer")
 
 onMounted(() => {
   // Check if the initial page number is provided in the route query
  getLeaderProfile()
 });
 
+const selectCategory = function (category) {
+  sportsEvent.value = category; // 'Soccer' 또는 'Baseball'로 설정됩니다.
+  console.log(sportsEvent.value)
+};
 
 const team = ref({
   name: '',
@@ -75,49 +92,58 @@ const onFileChange = (e) => {
   reader.readAsDataURL(file);
 };
 
-const submitForm = () => {
-  const formData = new FormData();
-  formData.append('name', team.value.name);
-  formData.append('leader', team.value.leader);
-  formData.append('members', team.value.members);
-  if (team.value.profilePicture) {
-    formData.append('profilePicture', team.value.profilePicture);
-  }
-
-  console.log('Form submitted!', formData);
-  // Send formData to your server using axios or another method
-};
 
 const frm = new FormData();
 const write = function () {
-  // const file = fileList.value[0];
-  if (team.value.name.trim() === "") {
-    alert("팀 이름은 공백일 수 없습니다.")
-    return; // Stop here and don't proceed with the API call
+  // FormData 인스턴스 생성
+  const formData = new FormData();
+
+  // 팀 정보 추가
+  formData.append("team", new Blob([JSON.stringify({
+    teamName: team.value.name,
+    teamDescription: team.value.description,
+    sportsEvent: sportsEvent.value
+  })], {
+    type: "application/json"
+  }));
+
+  // 파일이 존재하는 경우에만 파일을 FormData에 추가
+  if (team.value.profilePicture) {
+    formData.append("imageFile", team.value.profilePicture);
   }
-  // 새로운 코드: fileList.value를 사용하여 파일 가져오기
 
-  const file = team.value.profilePicture
-
-  frm.append("team", new Blob([JSON.stringify({ teamName: team.value.name, teamDescription: team.value.description})], { type: "application/json" }));
-  frm.append("imageFile", file);
-
-
-  axios
-      .post(`${apiBaseUrl}/team/build`, frm, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          'Authorization': localStorage.getItem("accessToken")
-        },
-      })
-      .then((response) => {
-        // Handle the successful write action here
+  // Axios로 POST 요청 보내기
+  axios.post(`${apiBaseUrl}/team/build`, formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      'Authorization': localStorage.getItem("accessToken")
+    },
+  })
+      .then(response => {
+        // 성공 시 처리 로직
         console.log("글 작성 완료", response);
-
-        // Redirect to /posts route
+        // TODO: 성공적으로 글을 작성한 후 필요한 로직을 여기에 추가하세요.
+        // 예: this.$router.push('/posts');
       })
-      .catch((error) => {
-        console.error('글 작성 오류:', error);});
+      .catch(error => {
+        // 에러 메시지 처리
+        const errorMessage = extractErrorMessage(error);
+        alert(errorMessage);
+      });
+};
+
+// 에러 메시지 추출 함수
+function extractErrorMessage(error) {
+  if (error.response && error.response.data) {
+    if (error.response.data.errors) {
+      // 여러 에러 메시지가 있는 경우 (예: 유효성 검사 실패)
+      return error.response.data.errors.map(e => e.message).join('\n');
+    } else if (error.response.data.message) {
+      // 단일 에러 메시지가 있는 경우
+      return error.response.data.message;
+    }
+  }
+  return '글 작성 중 문제가 발생했습니다.'; // 기본 에러 메시지
 }
 
 const validateAccessToken = async function () {
@@ -165,49 +191,108 @@ const redirectToLogin = function () {
 
 <style scoped>
 .team-building-form-container {
-  max-width: 30%;
+  max-width: 35%;
   margin:  auto;
-  padding: 20px;
+  padding: 20px 40px;
   border: 1px solid #ddd;
   border-radius: 8px;
 }
 
+.team-name {
+  text-align: center;
+  margin-bottom: 20px;
+  font-weight: bold;
+  letter-spacing: 5px;
+  font-family: primary-font,sans-serif;
+}
+
 .team-building-form-container h1 {
-  text-align: center;
+  text-align: start;
+  font-weight: bold;
 }
 
-.profile-container {
+.team-building-form-container h4 {
+  font-weight: bold;
+  font-family: primary-font,sans-serif;
+}
+
+.file-upload-wrapper {
+  position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
-  margin-bottom: 20px;
+  justify-content: center;
 }
 
+.file-input {
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  overflow: hidden;
+  position: absolute;
+  z-index: -1;
+}
+
+.file-upload-button {
+  background-color: #000000; /* Green */
+  color: white;
+
+  border: none;
+  width: 25%;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+.file-upload-button:hover {
+  background-color: rgba(35, 83, 134, 0.74);
+}
+
+.sports-category-container {
+  display: flow;
+
+}
+.selected {
+  border: 3px solid #e0c200; /* 또는 원하는 색상 코드 */
+}
+
+/* 이미지 기본 스타일 */
+
+.sports-category-container img {
+  width: 40px;
+  height: 40px;
+  margin: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: border-color 0.3s; /* 부드러운 테두리 색상 전환 효과 */
+}
 .team-building-form-container p {
-  text-align: center;
-  margin-bottom: 20px;
+  text-align: start;
+  color: #838383;
+  font-size: 12px;
+  margin-bottom: 10px;
 }
 
 .form-group {
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 5px;
+  font-weight: bold;
+  margin-bottom: 15px;
 }
 
 .form-group input[type="text"],
 .form-group textarea {
   width: 100%;
   padding: 8px;
-  border: 1px solid #ccc;
+  border: 1px solid #e3e3e3;
   border-radius: 4px;
   margin-bottom: 10px;
 }
 .image-preview {
   display: flex;
-
   justify-content: center; /* Centers the child horizontally */
   align-items: center; /* Centers the child vertically */
   margin-bottom: 15px; /* Optional: adds some space below the image preview */
@@ -215,10 +300,10 @@ const redirectToLogin = function () {
 
 .image-preview img {
   display: flex;
-  width: 100px;
+  width: 80px;
   border: 1px solid #ccc;
   border-radius: 16px;
-  height: 100px;
+  height: 80px;
   justify-content: center; /* Centers the child horizontally */
   align-items: center; /* Centers the child vertically */
   object-fit: cover;
@@ -226,6 +311,8 @@ const redirectToLogin = function () {
 .form-group input[type="text"] {
   height: 35px;
 }
+
+
 
 .form-group textarea {
   height: 80px;

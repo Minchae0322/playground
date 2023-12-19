@@ -4,6 +4,7 @@ import com.example.playgroundmanage.dto.TeamRegistration;
 import com.example.playgroundmanage.dto.TeamRegistrationRequest;
 import com.example.playgroundmanage.game.service.TeamService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
+import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -34,7 +35,13 @@ public class TeamController {
                 .teamDescription(params.getTeamDescription())
                 .teamName(params.getTeamName())
                 .leader(myUserDetails.getUser())
+                .sportsEvent(SportsEvent.fromString(params.getSportsEvent()))
                 .build();
         teamService.generateTeam(teamRegistration);
+    }
+
+    @PostMapping("/team/name/validate")
+    public void validate(@RequestBody TeamRegistrationRequest teamRegistrationRequest) {
+        teamService.validateTeamName(teamRegistrationRequest.getTeamName());
     }
 }

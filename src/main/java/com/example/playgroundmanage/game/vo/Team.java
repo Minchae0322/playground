@@ -19,6 +19,7 @@ public class Team {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
     private String teamName;
 
     @OneToOne
@@ -50,9 +51,9 @@ public class Team {
     }
 
 
-
-
-
+    public void updateTeamPic(UploadFile uploadFile) {
+        this.teamPic = uploadFile;
+    }
 
     public void addMember(Teaming teaming) {
         this.members = new ArrayList<>();

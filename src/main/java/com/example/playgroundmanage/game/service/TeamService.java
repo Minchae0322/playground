@@ -29,16 +29,26 @@ public class TeamService {
     private final FileHandler fileHandler;
 
 
+    @Transactional
     public Team saveTeam(TeamRegistration teamRegistration) throws IOException {
-        UploadFile uploadFile = fileHandler.storeFile(teamRegistration.getTeamPic());
+        validateTeamName(teamRegistration.getTeamName());
         Team team = Team.builder()
                 .teamName(teamRegistration.getTeamName())
                 .leader(teamRegistration.getLeader())
-                .teamPic(uploadFile)
                 .description(teamRegistration.getTeamDescription())
                 .sportsEvent(teamRegistration.getSportsEvent())
                 .build();
+        if (teamRegistration.getTeamPic() != null) {
+            UploadFile uploadFile = fileHandler.storeFile(teamRegistration.getTeamPic());
+            team.updateTeamPic(uploadFile);
+        }
         return teamRepository.save(team);
+    }
+
+    public void validateTeamName(String teamName) {
+        if (teamRepository.existsByTeamName(teamName)) {
+            throw new IllegalArgumentException("이미 존재하는 팀 이름 입니다.");
+        }
     }
 
 

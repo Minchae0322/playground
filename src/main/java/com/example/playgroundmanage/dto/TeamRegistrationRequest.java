@@ -10,13 +10,12 @@ import org.springframework.web.multipart.MultipartFile;
 public class TeamRegistrationRequest {
     private String teamName;
     private String teamDescription;
-
-    private MultipartFile teamPic;
+    private String sportsEvent;
 
     @Builder
-    public TeamRegistrationRequest(String teamName, String teamDescription, MultipartFile teamPic) {
+    public TeamRegistrationRequest(String teamName, String teamDescription, String sportsEvent) {
         this.teamName = teamName;
         this.teamDescription = teamDescription;
-        this.teamPic = teamPic;
+        this.sportsEvent = sportsEvent;
     }
 }

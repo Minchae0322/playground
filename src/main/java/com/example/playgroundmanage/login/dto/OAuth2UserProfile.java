@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.util.Map;
+import java.util.Random;
 
 @Getter
 @RequiredArgsConstructor
@@ -17,6 +18,7 @@ public class OAuth2UserProfile {
 
     private Map<String, Object> attributes;
 
+
     @Builder
     public OAuth2UserProfile(String username, String provider, Map<String, Object> attributes) {
         this.username = username;
@@ -24,13 +26,21 @@ public class OAuth2UserProfile {
         this.attributes = attributes;
     }
 
+
+
+
+
+
     // DTO 파일을 통하여 Entity를 생성하는 메소드
     public User toEntity() {
         //todo password 설정까지 왜냐면 비밀번호가 설정 안되있는채로 일반로그인 하면 아이디만 치고 로그인이 가능하다.
+        Random random = new Random();
+        int randomNum = random.nextInt(1000000) + 1;
         return User.builder()
                 .role(UserRole.USER)
                 .username(this.username)
                 .provider(this.provider)
+                .nickname("USER" + randomNum)
                 .build();
     }
 }

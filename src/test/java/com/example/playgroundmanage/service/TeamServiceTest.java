@@ -24,8 +24,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class TeamServiceTest {
 
-
-
     @Autowired
     private TeamService teamService;
 
@@ -61,7 +59,6 @@ class TeamServiceTest {
     void generateTeam() throws IOException {
         TeamRegistration teamRegistration = TeamRegistration.builder()
                 .teamName("testTeam")
-
                 .sportsEvent(SportsEvent.SOCCER)
                 .leader(testUser)
                 .build();
