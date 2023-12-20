@@ -6,7 +6,7 @@
 
       <div class="modal">
 
-          <div class="justify-center item-center card " data-v0-t="card">
+          <div class="justify-center item-center userInfo-container " data-v0-t="card">
             <div class="padding-20">
               <a class="text-bold text-title primary-font">Time Selection</a>
               <h4 class="text-color-gray primary-font">Select the start time and duration for your participation.</h4>
@@ -86,7 +86,7 @@
             </div>
             </div>
 
-          <div class="justify-center item-center card margin-top" data-v0-t="card">
+          <div class="justify-center item-center userInfo-container margin-top" data-v0-t="card">
             <div class="padding-20">
               <a class="text-bold text-title primary-font">Occupied Time Slots</a>
               <h4 class="text-color-gray primary-font">Select the start time and duration for your participation.</h4>
@@ -314,7 +314,7 @@ hr {
   margin-top: 20px;
 }
 
-.card {
+.userInfo-container {
   padding: 10px;
   border: 2px #919191;/* 테두리 스타일 및 색상 지정 */
   box-shadow: 0 0 2px #b2b2b2;

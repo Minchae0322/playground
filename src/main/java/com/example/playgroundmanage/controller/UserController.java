@@ -44,11 +44,6 @@ public class UserController {
 
     @GetMapping("/user/teams")
     public List<TeamInfoResponse> getTeamsUserBelongTo(@AuthenticationPrincipal MyUserDetails userDetails) {
-        return userService.getTeamsUserBelongsTo(userDetails.getUser().getId()).stream()
-                .map(t -> TeamInfoResponse.builder()
-                        .teamName(t.getTeamName())
-                        .teamId(t.getId())
-                        .build()).toList();
+        return userService.getTeamsInfoUserBelongsTo(userDetails.getUser().getId());
     }
-
 }
