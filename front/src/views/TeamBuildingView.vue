@@ -30,7 +30,10 @@
 
       <div class="form-group">
         <label for="teamLeader">Team Leader</label>
-        <h4 type="text" id="teamLeader" >{{leader.userNickname}}</h4>
+        <div class="leader-container">
+        <img class="leaderImg" :src=leader.userProfileImg >
+        <h3  id="teamLeader" >{{leader.userNickname}}</h3>
+        </div>
       </div>
       <div class="form-group">
         <label for="teamGoals">Team Description</label>
@@ -46,7 +49,10 @@ import {onMounted, ref} from 'vue';
 import defaultImage from '../assets/img.png';
 import axios from "axios";
 
-const leader = ref("")
+const leader = ref({
+  userNickname: '',
+  userProfileImg: '',
+})
 const apiBaseUrl = "http://localhost:8080";
 const sportsEvent = ref("Soccer")
 
@@ -71,12 +77,13 @@ const getLeaderProfile = function () {
   validateAccessToken()
   const accessToken = getAccessToken();
   if (accessToken) {
-    axios.get(`${apiBaseUrl}/user/profile`, {
+    axios.get(`${apiBaseUrl}/user/info`, {
       headers: {
         'Authorization': accessToken
       }
     }).then(response => {
-      leader.value = response.data
+      leader.value.userNickname = response.data.userNickname
+      leader.value.userProfileImg =  `data:image/jpeg;base64,${response.data.userProfileImg}`;
     });
   }
 };
@@ -198,6 +205,17 @@ const redirectToLogin = function () {
   border-radius: 8px;
 }
 
+.leaderImg {
+  width: 40px;
+  height: 40px;
+  margin: 10px 20px;
+
+  border-radius: 25%;
+  border: 2px solid #c2c2c2;
+  cursor: pointer;
+
+}
+
 .team-name {
   text-align: center;
   margin-bottom: 20px;
@@ -214,6 +232,12 @@ const redirectToLogin = function () {
 .team-building-form-container h4 {
   font-weight: bold;
   font-family: primary-font,sans-serif;
+}
+
+.leader-container {
+  margin-left: 10px;
+  display: flex;
+  margin-bottom: 10px;
 }
 
 .file-upload-wrapper {
@@ -280,7 +304,7 @@ const redirectToLogin = function () {
 .form-group label {
   display: block;
   font-weight: bold;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
 }
 
 .form-group input[type="text"],
@@ -322,7 +346,7 @@ const redirectToLogin = function () {
 button {
   width: 100%;
   padding: 10px;
-  background-color: rgba(35, 83, 134, 0.74);
+  background-color: black;
   color: white;
   border: none;
   border-radius: 4px;

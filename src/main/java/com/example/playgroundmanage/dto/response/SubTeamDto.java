@@ -17,10 +17,10 @@ public class SubTeamDto {
 
     private MultipartFile teamImg;
 
-    private List<UserProfileDto> users;
+    private List<UserInfoDto> users;
 
     @Builder
-    public SubTeamDto(Long teamId, String teamName, MultipartFile teamImg, List<UserProfileDto> users) {
+    public SubTeamDto(Long teamId, String teamName, MultipartFile teamImg, List<UserInfoDto> users) {
         this.teamId = teamId;
         this.teamName = teamName;
         this.teamImg = teamImg;

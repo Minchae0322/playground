@@ -2,19 +2,24 @@ package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.dto.response.PendingTeamResponse;
 import com.example.playgroundmanage.dto.response.PendingUserResponse;
-import com.example.playgroundmanage.dto.response.UserProfileDto;
+import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.login.dto.UserSignupForm;
 import com.example.playgroundmanage.exception.ExistUserException;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.repository.UserRepository;
+import com.example.playgroundmanage.store.FileHandler;
+import com.example.playgroundmanage.store.InMemoryMultipartFile;
+import com.example.playgroundmanage.store.UploadFile;
 import com.example.playgroundmanage.type.UserRole;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +34,8 @@ public class UserService {
     private final TeamingService teamingService;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final FileHandler fileHandler;
 
     private final GameRepository gameRepository;
 
@@ -59,6 +66,17 @@ public class UserService {
                 .toList();
     }
 
+    @Transactional
+    public void updateProfileImg(Long userId, MultipartFile img) throws IOException {
+        User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
+        if (user.getProfileImg() != null) {
+            fileHandler.deleteFile(user.getProfileImg());
+        }
+        UploadFile uploadFile = fileHandler.storeFile(img);
+        user.updateProfile(uploadFile);
+        userRepository.save(user);
+    }
+
 
     public List<PendingTeamResponse> getPendingTeamRequests(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
@@ -71,10 +89,21 @@ public class UserService {
 
     }
 
-    public UserProfileDto getUserProfile(User user) {
-        return UserProfileDto.builder()
+    public UserInfoDto getUserProfile(User user) {
+        return UserInfoDto.builder()
                 .userNickname(user.getNickname())
                 .userId(user.getId())
+                .build();
+    }
+
+    @Transactional
+    public UserInfoDto getUserInfo(Long userId) throws IOException {
+        User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
+        InMemoryMultipartFile userProfileImg = fileHandler.extractFile(user.getProfileImg());
+        return UserInfoDto.builder()
+                .userNickname(user.getNickname())
+                .userId(user.getId())
+                .userProfileImg(userProfileImg)
                 .build();
     }
 
