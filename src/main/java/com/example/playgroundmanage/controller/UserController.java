@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.controller;
 
+import com.example.playgroundmanage.dto.UserNicknameDto;
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.game.service.UserService;
@@ -45,5 +46,10 @@ public class UserController {
     @GetMapping("/user/teams")
     public List<TeamInfoResponse> getTeamsUserBelongTo(@AuthenticationPrincipal MyUserDetails userDetails) {
         return userService.getTeamsInfoUserBelongsTo(userDetails.getUser().getId());
+    }
+
+    @PatchMapping("/user/change-nickname")
+    public UserNicknameDto changeNickname(@RequestBody UserNicknameDto userNicknameDto, @AuthenticationPrincipal MyUserDetails userDetails) {
+        return userService.changeNickname(userDetails.getUser().getId(), userNicknameDto.getUserNickname());
     }
 }

@@ -5,11 +5,12 @@ import lombok.Getter;
 
 @Getter
 public class UserEdit {
-    private String username;
+    private String userNickname;
 
 
     @Builder
-    public UserEdit(String username) {
-        this.username = username;
+
+    public UserEdit(String userNickname) {
+        this.userNickname = userNickname;
     }
 }

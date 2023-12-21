@@ -72,7 +72,7 @@ public class User implements Serializable{
 
     @Transactional
     public User update(UserEdit userEdit) {
-        this.username = username;
+        this.nickname = userEdit.getUserNickname();
         return this;
     }
 

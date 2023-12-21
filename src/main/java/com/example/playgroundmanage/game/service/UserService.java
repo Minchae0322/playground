@@ -1,11 +1,13 @@
 package com.example.playgroundmanage.game.service;
 
+import com.example.playgroundmanage.dto.UserNicknameDto;
 import com.example.playgroundmanage.dto.response.PendingTeamResponse;
 import com.example.playgroundmanage.dto.response.PendingUserResponse;
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.game.vo.*;
+import com.example.playgroundmanage.login.dto.UserEdit;
 import com.example.playgroundmanage.login.dto.UserSignupForm;
 import com.example.playgroundmanage.exception.ExistUserException;
 import com.example.playgroundmanage.game.repository.GameRepository;
@@ -152,6 +154,23 @@ public class UserService {
 
     public List<Game> getHostCreatedGamesNotStarted(User user) {
         return gameRepository.findAllByHostAndGameStartDateTimeAfter(user, LocalDateTime.now());
+    }
+
+    @Transactional
+    public UserNicknameDto changeNickname(Long userId, String newNickname) {
+        if (isValidUserNickname(newNickname)) {
+            throw new IllegalArgumentException("이미 존재하거나 사용 할 수 없는 닉네임입니다.");
+        }
+        User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
+        userRepository.save(user.update(UserEdit.builder()
+                .userNickname(newNickname)
+                .build()));
+        return UserNicknameDto.builder().userNickname(newNickname)
+                .build();
+    }
+
+    public boolean isValidUserNickname(String nickname) {
+        return userRepository.existsByNickname(nickname);
     }
 
 

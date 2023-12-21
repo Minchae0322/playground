@@ -3,19 +3,22 @@
 
 
   <div class="userInfo-container">
+    <h1>UserInfo</h1>
     <div class="header">
       <img :src="user.userProfileImg || defaultImage" @click="triggerFileInput" class="profile-image" />
       <input type="file" ref="fileInput" @change="handleFileChange" style="display:none" />
-      <p>사진을 클릭하여 프로필을 변경하세요.</p>
+      <h4>사진을 클릭하여 프로필을 변경하세요.</h4>
 
-      <div class="nickName-edit-container" v-if="isEditing">
+      <div class="nickname-container" v-if="!isEditing">
         <h2>{{ user.userNickname }}</h2>
         <button @click="clickChangeNickname">닉네임 변경</button>
       </div>
-      <div v-else>
-        <input v-model="editableNickname" placeholder="Enter new nickname" />
-
-        <button @click="editNickname">Edit Nickname</button>
+      <div class="nickname-container" v-else>
+        <input v-model="editedNickname" placeholder="Enter new nickname" />
+        <div class="button-container">
+          <button @click="clickChangeNickname">취소</button>
+          <button @click="confirmEditNickname">확인</button>
+        </div>
       </div>
     </div>
     <p>This is a short bio about the user. It provides some general information about the user's interests, hobbies, or profession.</p>
@@ -38,10 +41,11 @@ import axios from "axios";
 import defaultImage from '../assets/img.png';
 import {useRouter} from "vue-router";
 
+
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
-
-const isEditing = ref(true); // 닉네임 편집 상태를 추적하는 반응형 변수
+const editedNickname = ref("")
+const isEditing = ref(false); // 닉네임 편집 상태를 추적하는 반응형 변수
 const userProfileImg = ref('');
 const user = ref({
   userNickname: '',
@@ -71,6 +75,39 @@ const getUserInfo = function () {
     user.value.userProfileImg = `data:image/jpeg;base64,${response.data.userProfileImg}`;
   });
 
+};
+
+const confirmEditNickname = function () {
+  validateAccessToken()
+  axios.patch(`${apiBaseUrl}/user/change-nickname`,{
+    userNickname: editedNickname.value
+      },
+      {
+        headers: {
+          'Authorization': localStorage.getItem("accessToken")
+        }
+      }
+  ).then(response => {
+    user.value.userNickname = response.data.userNickname
+    alert("닉네임이 변경되었습니다.")
+    clickChangeNickname()
+  }).catch(error => {
+    // 에러 메시지 처리
+    const errorMessage = extractErrorMessage(error);
+    alert(errorMessage);
+  });
+  function extractErrorMessage(error) {
+    if (error.response && error.response.data) {
+      if (error.response.data.errors) {
+        // 여러 에러 메시지가 있는 경우 (예: 유효성 검사 실패)
+        return error.response.data.errors.map(e => e.message).join('\n');
+      } else if (error.response.data.message) {
+        // 단일 에러 메시지가 있는 경우
+        return error.response.data.message;
+      }
+    }
+    return 'error'; // 기본 에러 메시지
+  }
 };
 const getTeams = async () => {
   validateAccessToken();
@@ -175,44 +212,11 @@ body {
   background: #f5f5f5; /* 배경색을 추가할 수도 있습니다 */
 }
 
-.nickName-edit-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-top: 20px; /* 상단 여백 추가 */
-}
 
-.nickName-edit-container h2 {
-  margin: 10px 0; /* 제목 주변 여백 */
-}
 
-.nickName-edit-container button {
-  padding: 8px 15px; /* 버튼 패딩 */
-  background-color: #4CAF50; /* 버튼 배경색 */
-  color: white; /* 버튼 텍스트 색상 */
-  font-size: 14px; /* 텍스트 크기 */
-  border: none; /* 테두리 제거 */
-  width: 20%;
-  border-radius: 4px; /* 테두리 둥글게 */
-  cursor: pointer; /* 마우스 오버시 커서 변경 */
-  transition: background-color 0.3s; /* 배경색 변화 애니메이션 */
-}
-
-.nickName-edit-container button:hover {
-  background-color: #45a049; /* 호버 시 버튼 색상 변경 */
-}
-
-/* 입력 필드 스타일링 */
-.nickName-edit-container input {
-  padding: 10px;
-  margin-bottom: 10px; /* 입력 필드와 버튼 사이 여백 */
-  border: 1px solid #ccc; /* 테두리 색상 */
-  border-radius: 4px; /* 테두리 둥글게 */
-  font-size: 14px; /* 텍스트 크기 */
-}
 
 .userInfo-container {
-  max-width: 50%;
+  max-width: 40%;
   margin: auto;
   width: 50%; /* 너비를 50%로 설정 */
   border: 1px solid #ccc;
@@ -229,20 +233,70 @@ body {
   margin-bottom: 20px;
 
 }
-
-.header p {
-  font-size: 10px;
-  color: #838383;
-}
-
-.profile-image {
-  width: 80px;
-  height: 80px;
+.header img {
+  width: 100px;
+  height: 100px;
   background-color: #eee;
   border-radius: 50%;
+  border: 2px solid #c2c2c2;
   display: inline-block;
+
+}
+.header h4 {
+  font-size: 10px;
+  color: #838383;
   margin-bottom: 10px;
 }
+
+.nickname-container {
+  display: flex; /* flexbox 레이아웃 사용 */
+  justify-content: center; /* 가운데 정렬 */
+  align-items: center; /* 세로 중앙 정렬 */
+  flex-direction: column; /* 아이템을 수직 방향으로 정렬 */
+}
+
+.nickname-container h2, .nickname-container button{
+  margin-bottom: 10px; /* 요소 간의 여백 추가 */
+}
+
+.nickname-container input {
+  width: 40%; /* 크기를 40%로 설정 */
+  padding: 10px; /* 패딩 추가 */
+  border: 1px solid #ccc; /* 테두리 스타일 */
+  border-radius: 5px; /* 둥근 테두리 */
+  margin-bottom: 10px; /* 요소 간의 여백 추가 */
+  font-size: 14px; /* 폰트 크기 */
+  background-color: #f5f5f5; /* 배경색 */
+}
+
+.nickname-container input:focus {
+  outline: none; /* 포커스 시 외곽선 제거 */
+  border-color: #4CAF50; /* 포커스 시 테두리 색상 변경 */
+  box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* 포커스 시 그림자 효과 */
+}
+.nickname-container button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  width: 40%;
+}
+.nickname-container .button-container {
+  display: flex;
+  justify-content: center;
+  width: 40%;
+}
+
+.nickname-container .button-container button {
+  flex: 1; /* 버튼의 크기를 같게 조정 */
+  margin: 5px; /* 버튼 사이의 간격 */
+}
+.nickname-container input {
+  width: 40%; /* 크기를 40%로 설정 */
+  margin-bottom: 10px; /* 요소 간의 여백 추가 */
+}
+
+
 
 h2 {
   margin: 0;

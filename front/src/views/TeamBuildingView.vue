@@ -206,6 +206,7 @@ const redirectToLogin = function () {
 }
 
 .leaderImg {
+
   width: 40px;
   height: 40px;
   margin: 10px 20px;
