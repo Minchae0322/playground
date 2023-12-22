@@ -1,10 +1,10 @@
 <template>
   <div class="team-container">
     <div class="team-header">
-      <img src="../assets/img.png" alt="Team Logo" class="team-logo">
+      <img :src= team.teamProfileImg class="team-logo">
       <div class="team-info">
-        <h1>The Team Name</h1>
-        <p class="team-type">Professional Sports Team</p>
+        <h1>{{ team.teamName }}</h1>
+        <p class="team-type">{{ team.teamSportsEvent }}</p>
       </div>
     </div>
     <div class="team-history">
@@ -51,24 +51,46 @@ import {onMounted, ref} from "vue";
 import axios from "axios";
 
 import {useRouter} from "vue-router";
+import defaultImage from "@/assets/img.png";
 const router = useRouter();
-const team = ref([])
+const team = ref({
+  teamProfileImg: ref(''),
+  teamName: '',
+  teamSportsEvent: ref(''),
+  leaderName: '',
+  leaderId: '',
+
+});
 const apiBaseUrl = "http://localhost:8080";
+
+const props = defineProps({
+  teamId: {
+    type: Number,
+    required:true,
+  }
+})
+onMounted(() => {
+  getTeamInfo()
+});
+
 
 const getTeamInfo = function () {
   validateAccessToken()
-  const accessToken = getAccessToken()
-  if(accessToken) {
-    axios.get(`${apiBaseUrl}/game/34/homeTeams`,
-        {  headers: {
-            'Authorization': accessToken
-          }}
-    ).then(response => {
-      if (response.status === 200) {
-        homeTeams.value = response.data
+  axios.get(`${apiBaseUrl}/team/${props.teamId}/info`,
+      {
+        headers: {
+          'Authorization': localStorage.getItem("accessToken")
+        }
       }
-    });
-  }
+  ).then(response => {
+
+    team.value.teamId = response.data.teamId,
+        team.value.teamName = response.data.teamName,
+        team.value.teamSportsEvent = response.data.sportsEvent,
+        team.value.teamProfileImg = response.data.teamProfileImg ? `data:image/jpeg;base64,${response.data.teamProfileImg}` : defaultImage,
+        team.value.leaderName = response.data.leaderName
+  });
+
 };
 
 const validateAccessToken = async function () {

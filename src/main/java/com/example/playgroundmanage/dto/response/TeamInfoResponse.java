@@ -21,10 +21,10 @@ public class TeamInfoResponse {
 
     private Long leaderId;
 
-    private Long leaderName;
+    private String leaderName;
 
     @Builder
-    public TeamInfoResponse(Long teamId, String teamName, InMemoryMultipartFile teamProfileImg, String sportsEvent, Long leaderId, Long leaderName) {
+    public TeamInfoResponse(Long teamId, String teamName, InMemoryMultipartFile teamProfileImg, String sportsEvent, Long leaderId, String leaderName) {
         this.teamId = teamId;
         this.teamName = teamName;
         if (teamProfileImg != null) {

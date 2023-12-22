@@ -4,17 +4,12 @@
     <p>Create your dream team. Complete the form below and hit submit when you're ready.</p>
 
     <form @submit.prevent="submitForm">
-      <div v-if="team.imagePreview" class="image-preview">
-        <img :src="team.imagePreview" alt="+">
-      </div>
-      <h3 class="team-name">{{team.name}}</h3>
-      <div class="file-upload-wrapper">
-        <input type="file" id="profilePicture" @change="onFileChange" class="file-input" hidden>
-        <button type="button" onclick="document.getElementById('profilePicture').click()" class="file-upload-button">
-          Choose File
-        </button>
+    <div class="image-preview">
+      <img :src="team.imagePreview || defaultImage" @click="triggerFileInput" class="profile-image" />
+      <input type="file" ref="fileInput" @change="handleFileChange" style="display:none" />
+      <h4>사진을 클릭하여 프로필을 변경하세요.</h4>
+    </div>
 
-      </div>
       <div class="form-group">
         <label for="teamName">Team Name</label>
         <input type="text" id="teamName" v-model="team.name" placeholder="Enter team name">
@@ -48,6 +43,7 @@
 import {onMounted, ref} from 'vue';
 import defaultImage from '../assets/img.png';
 import axios from "axios";
+import router from "@/router";
 
 const leader = ref({
   userNickname: '',
@@ -55,7 +51,7 @@ const leader = ref({
 })
 const apiBaseUrl = "http://localhost:8080";
 const sportsEvent = ref("Soccer")
-
+const fileInput = ref(null);
 onMounted(() => {
   // Check if the initial page number is provided in the route query
  getLeaderProfile()
@@ -88,7 +84,11 @@ const getLeaderProfile = function () {
   }
 };
 
-const onFileChange = (e) => {
+const triggerFileInput = () => {
+  fileInput.value.click();
+};
+
+const handleFileChange = (e) => {
   const file = e.target.files[0];
   team.value.profilePicture = file;
 
@@ -99,8 +99,6 @@ const onFileChange = (e) => {
   reader.readAsDataURL(file);
 };
 
-
-const frm = new FormData();
 const write = function () {
   // FormData 인스턴스 생성
   const formData = new FormData();
@@ -127,10 +125,10 @@ const write = function () {
     },
   })
       .then(response => {
+        const teamId = response.data.teamId
         // 성공 시 처리 로직
-        console.log("글 작성 완료", response);
-        // TODO: 성공적으로 글을 작성한 후 필요한 로직을 여기에 추가하세요.
-        // 예: this.$router.push('/posts');
+       alert("팀 생성에 성공하였습니다.")
+           router.replace({name: 'timePicker', params: {teamId: teamId}})
       })
       .catch(error => {
         // 에러 메시지 처리
@@ -317,26 +315,32 @@ const redirectToLogin = function () {
   margin-bottom: 10px;
 }
 .image-preview {
-  display: flex;
+  display: flow;
+  text-align: center;
   justify-content: center; /* Centers the child horizontally */
   align-items: center; /* Centers the child vertically */
   margin-bottom: 15px; /* Optional: adds some space below the image preview */
 }
 
-.image-preview img {
-  display: flex;
-  width: 80px;
-  border: 1px solid #ccc;
-  border-radius: 16px;
-  height: 80px;
-  justify-content: center; /* Centers the child horizontally */
-  align-items: center; /* Centers the child vertically */
-  object-fit: cover;
-}
+
 .form-group input[type="text"] {
   height: 35px;
 }
 
+.image-preview img {
+  width: 100px;
+  height: 100px;
+  background-color: #eee;
+  border-radius: 50%;
+  border: 2px solid #c2c2c2;
+  display: inline-block;
+
+}
+.image-preview h4 {
+  font-size: 10px;
+  color: #838383;
+  margin-bottom: 10px;
+}
 
 
 .form-group textarea {

@@ -1,12 +1,14 @@
 package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.dto.TeamRegistration;
+import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.vo.Team;
 import com.example.playgroundmanage.game.vo.Teaming;
 import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.game.repository.TeamRepository;
 import com.example.playgroundmanage.store.FileHandler;
+import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.store.UploadFile;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -71,6 +73,20 @@ public class TeamService {
 
     public Team findByTeamId(Long teamId) {
         return teamRepository.findById(teamId).orElseThrow(TeamNotExistException::new);
+    }
+
+
+    @Transactional
+    public TeamInfoResponse getTeamInfo(Long teamId) throws IOException {
+        Team team = teamRepository.findById(teamId).orElseThrow(TeamNotExistException::new);
+        InMemoryMultipartFile teamProfileImg = fileHandler.extractFile(team.getTeamPic());
+        return TeamInfoResponse.builder()
+                .teamName(team.getTeamName())
+                .teamProfileImg(teamProfileImg)
+                .sportsEvent(team.getSportsEvent().getValue())
+                .leaderId(team.getLeader().getId())
+                .leaderName(team.getLeader().getNickname())
+                .build();
     }
 
 

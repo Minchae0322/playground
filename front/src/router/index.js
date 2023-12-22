@@ -37,9 +37,10 @@ const router = createRouter({
       component: playground_soccer
     },
     {
-      path: '/timePicker',
+      path: '/timePicker/:teamId',
       name: 'timePicker',
-      component: timePickerDialog
+      component: timePickerDialog,
+      props: true
     },
 
     {

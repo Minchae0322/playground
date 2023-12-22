@@ -21,17 +21,18 @@
         </div>
       </div>
     </div>
-    <p>This is a short bio about the user. It provides some general information about the user's interests, hobbies, or profession.</p>
-    <button>Edit Profile</button>
-    <button>View Public Profile</button>
+
     <div class="teams">
       <h3>Teams</h3>
-      <li v-for="(team, index) in teams" :key="index" class="team-item">
-        <img :src="team.teamProfileImg || defaultImage" class="team-image" />
-        <p class="team-name">{{ team.teamName }}</p>
-      </li>
+      <div v-for="team in teams" :key="team.teamId" class="team-item">
+        <router-link class="team-container" :to="{ name:'timePicker', params: { teamId: team.teamId } }">
+          <img :src="team.teamProfileImg || defaultImage" class="team-image"/>
+          <h2 class="team-name">{{ team.teamName }}</h2>
+          <h2 class="team-sportsEvent">종목: {{ team.teamSportsEvent }}</h2>
+        </router-link>
+      </div>
+      </div>
     </div>
-  </div>
   </body>
 </template>
 
@@ -46,15 +47,17 @@ const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
 const editedNickname = ref("")
 const isEditing = ref(false); // 닉네임 편집 상태를 추적하는 반응형 변수
-const userProfileImg = ref('');
 const user = ref({
   userNickname: '',
   userProfileImg: ref('')
 })
 
 const teams = ref([{
+  teamId: '1',
   teamName: '',
-  teamProfileImg: ref('')
+  teamProfileImg: ref(''),
+  teamSportsEvent: '',
+
 }]);
 
 onMounted(() => {
@@ -109,21 +112,23 @@ const confirmEditNickname = function () {
     return 'error'; // 기본 에러 메시지
   }
 };
-const getTeams = async () => {
+const getTeams =  () => {
   validateAccessToken();
-  try {
-    const response = await axios.get(`${apiBaseUrl}/user/teams`, {
-      headers: {
-        'Authorization': localStorage.getItem("accessToken")
-      }
-    });
+  axios.get(`${apiBaseUrl}/user/teams`, {
+    headers: {
+      'Authorization': localStorage.getItem("accessToken")
+    }
+  }).then(response => {
     teams.value = response.data.map(team => ({
+      teamId: team.teamId,
       teamName: team.teamName,
-      teamProfileImg: team.teamProfileImg ? `data:image/jpeg;base64,${team.teamProfileImg}` : ''
+      teamSportsEvent: team.sportsEvent,
+      teamProfileImg: team.teamProfileImg ? `data:image/jpeg;base64,${team.teamProfileImg}` : defaultImage
     }));
-  } catch (error) {
+    console.log(teams.value[0].teamId)
+  }).catch(error => {
     console.error('팀 정보를 가져오는데 실패했습니다.', error);
-  }
+  });
 };
 
 const fileInput = ref(null);
@@ -302,6 +307,19 @@ h2 {
   margin: 0;
 }
 
+.team-container {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.team-container img {
+  width: 50px; /* 적절한 크기 설정 */
+  height: 50px; /* 적절한 크기 설정 */
+  border-radius: 25%;
+  margin: 0 30px 0 10px;
+}
+
 .verified {
   background: green;
   color: white;
@@ -350,17 +368,17 @@ button:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.team-image {
-  width: 50px; /* 적절한 크기 설정 */
-  height: 50px; /* 적절한 크기 설정 */
-  border-radius: 50%;
-  margin-bottom: 10px;
-}
+
 
 .team-name {
   font-size: 14px; /* 적절한 크기 설정 */
   color: #333;
-  margin-top: 5px;
+
+}
+
+.team-sportsEvent {
+  margin: 0 20px;
+  font-size: 14px; /* 적절한 크기 설정 */
 }
 
 /* 추가적으로 반응형 디자인을 고려할 수 있습니다. */
