@@ -2,6 +2,7 @@ package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.dto.TeamRegistration;
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
+import com.example.playgroundmanage.dto.response.TeamMemberDto;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.vo.Team;
 import com.example.playgroundmanage.game.vo.Teaming;
@@ -62,13 +63,29 @@ public class TeamService {
     }
 
     @Transactional
-    public List<User> getTeamMembers(Long teamId) {
+    public List<TeamMemberDto> getTeamMembers(Long teamId) {
         Team team = teamRepository.findById(teamId).orElseThrow(TeamNotExistException::new);
         List<Teaming> teamUserRelations = team.getMembers();
 
         return teamUserRelations.stream()
-                .map(Teaming::getUser)
+                .map(t -> TeamMemberDto.builder()
+                        .userProfileImg(getUserProfileImg(t.getUser().getProfileImg()))
+                        .userNickname(t.getUser().getNickname())
+                        .role(t.getRole())
+                        .userId(t.getUser().getId())
+                        .build())
                 .toList();
+    }
+
+    public InMemoryMultipartFile getUserProfileImg(UploadFile uploadFile) {
+        if (uploadFile != null) {
+            try {
+                return fileHandler.extractFile(uploadFile);
+            } catch (IOException e) {
+                throw new RuntimeException("사진을 가져 올 수 없습니다.");
+            }
+        }
+        return null;
     }
 
     public Team findByTeamId(Long teamId) {

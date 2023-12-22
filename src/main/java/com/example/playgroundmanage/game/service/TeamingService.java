@@ -18,6 +18,7 @@ public class TeamingService {
         Teaming teaming = Teaming.builder()
                 .user(user)
                 .team(team)
+                .role("Leader")
                 .build();
         return teamingRepository.save(teaming);
     }

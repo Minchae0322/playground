@@ -26,10 +26,11 @@ public class Teaming {
     private LocalDate createdTime;
 
     @Builder
-    public Teaming(Long id, User user, Team team) {
+    public Teaming(Long id, User user, Team team, String role, LocalDate createdTime) {
         this.id = id;
         this.user = user;
         this.team = team;
-        this.createdTime = LocalDate.now();
+        this.role = role;
+        this.createdTime = createdTime;
     }
 }

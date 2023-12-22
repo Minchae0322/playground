@@ -3,6 +3,7 @@ package com.example.playgroundmanage.controller;
 import com.example.playgroundmanage.dto.TeamRegistration;
 import com.example.playgroundmanage.dto.TeamRegistrationRequest;
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
+import com.example.playgroundmanage.dto.response.TeamMemberDto;
 import com.example.playgroundmanage.game.service.TeamService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.type.SportsEvent;
@@ -30,7 +31,6 @@ public class TeamController {
     }
 
 
-
     @PostMapping(value = "/team/build", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public TeamInfoResponse generateTeam(@AuthenticationPrincipal MyUserDetails myUserDetails, @RequestPart("team") TeamRegistrationRequest params, @RequestPart(value = "imageFile", required = false) MultipartFile multipartFile) throws IOException {
         TeamRegistration teamRegistration = TeamRegistration.builder()
@@ -50,5 +50,8 @@ public class TeamController {
         teamService.validateTeamName(teamRegistrationRequest.getTeamName());
     }
 
-
+    @GetMapping("/team/{teamId}/members")
+    public List<TeamMemberDto> getTeamMembers(@PathVariable Long teamId) {
+        return teamService.getTeamMembers(teamId);
+    }
 }

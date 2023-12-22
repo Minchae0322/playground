@@ -14,25 +14,26 @@
     </div>
     <div class="team-players">
       <h2>Players</h2>
+      <div v-for="user in teamMembers" :key="user.userId" class="team-item">
       <table>
         <thead>
         <tr>
+          <th>Player Profile</th>
           <th>Player Name</th>
           <th>Position</th>
         </tr>
         </thead>
         <tbody>
         <tr>
-          <td>John Doe</td>
-          <td>Forward</td>
-        </tr>
-        <tr>
-          <td>Jane Smith</td>
-          <td>Goalkeeper</td>
+          <img :src="user.userProfileImg || defaultImage" class=""/>
+          <td>{{ user.userNickname }}</td>
+          <td>{{user.userRole}}</td>
         </tr>
         <!-- More players as needed -->
         </tbody>
       </table>
+      </div>
+
     </div>
     <div class="team-achievements">
       <h2>Achievements</h2>
@@ -61,6 +62,14 @@ const team = ref({
   leaderId: '',
 
 });
+
+const teamMembers = ref([{
+  userProfileImg: ref(''),
+  userNickname: '',
+  userRole: '',
+  userId: '',
+
+}])
 const apiBaseUrl = "http://localhost:8080";
 
 const props = defineProps({
@@ -71,9 +80,26 @@ const props = defineProps({
 })
 onMounted(() => {
   getTeamInfo()
+  getTeamMembers()
 });
 
-
+const getTeamMembers = function () {
+  validateAccessToken()
+  axios.get(`${apiBaseUrl}/team/${props.teamId}/members`,
+      {
+        headers: {
+          'Authorization': localStorage.getItem("accessToken")
+        }
+      }
+  ).then(response => {
+    teamMembers.value = response.data.map(user => ({
+      userId: user.userId,
+      userNickname: user.userNickname,
+      userRole: user.userRole,
+      userProfileImg: user.userProfileImg ? `data:image/jpeg;base64,${ user.userProfileImg}` : defaultImage
+    }));
+  });
+};
 const getTeamInfo = function () {
   validateAccessToken()
   axios.get(`${apiBaseUrl}/team/${props.teamId}/info`,
@@ -218,7 +244,15 @@ const redirectToLogin = function () {
   padding: 12px 8px; /* Adjust the padding to match the design */
   border-bottom: 1px solid #ddd; /* Light gray border for separation */
 }
-
+.team-players img {
+  margin-left: 20px;
+  width: 50px;
+  height: 50px;
+  margin-top: 10px; /* Space between title and table */
+  background-color: #eee;
+  border-radius: 50%;
+  border: 2px solid #c2c2c2;
+}
 .team-players th {
   font-weight: bold;
   background-color: #f8f8f8; /* Light gray background for headers */
