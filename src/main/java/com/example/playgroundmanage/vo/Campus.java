@@ -17,6 +17,8 @@ public class Campus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String campusName;
+
     @ManyToOne
     private School school;
 

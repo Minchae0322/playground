@@ -32,14 +32,18 @@
         </li>
       </ul>
     </div>
-    <button class="join-button">Join Game</button>
+    <button class="join-button" @click="openGameBuilder">Join Game</button>
+    <GameBuilderModal v-if="isGameBuilderModalOpen" :some-data="data" @close="isGameBuilderModalOpen = false"></GameBuilderModal>
   </div>
 </template>
 
 <script setup>
 import {onMounted, ref} from 'vue';
 import axios from "axios";
+import GameBuilderModal from './GameBuilderView.vue';
 
+const data = ref('이것은 부모로부터 온 데이터입니다.');
+const isGameBuilderModalOpen = ref(false);
 const currentGame = ref('')
 const upcomingGames = ref([])
 const apiBaseUrl = "http://localhost:8080";
@@ -49,6 +53,10 @@ onMounted(() => {
   getInProgressGame();
   getUpcomingGames();
 });
+
+const openGameBuilder = function () {
+  isGameBuilderModalOpen.value = !isGameBuilderModalOpen.value;
+};
 const getInProgressGame = function () {
 
   const accessToken = localStorage.getItem("accessToken");

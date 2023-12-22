@@ -3,6 +3,7 @@ package com.example.playgroundmanage.service;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.dto.response.GameTimeline;
 import com.example.playgroundmanage.dto.response.PlaygroundDto;
+import com.example.playgroundmanage.dto.response.PlaygroundInfoDto;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.repository.PlaygroundRepository;
@@ -28,6 +29,18 @@ public class PlaygroundService {
     private final FileHandler fileHandler;
 
     private final CampusRepository campusRepository;
+
+
+    @Transactional
+    public PlaygroundInfoDto getPlaygroundInfo(Long playgroundId) {
+        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
+        return PlaygroundInfoDto.builder()
+                .campusName(playground.getCampus().getCampusName())
+                .schoolName(playground.getCampus().getSchool().getSchoolName())
+                .sportsEvent(playground.getSportsEvent().getValue())
+                .playgroundName(playground.getName())
+                .build();
+    }
 
 
     @Transactional

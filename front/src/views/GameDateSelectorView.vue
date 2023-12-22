@@ -79,7 +79,8 @@
                         @click="closeModal">
                   Cancel
                 </button>
-                <button class="button-confirm inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2 ">
+                <button class="button-confirm inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2"
+                @click="confirm">
                   Confirm
                 </button>
               </div>
@@ -127,16 +128,29 @@
 <script setup lang="js">
 import { ref } from 'vue';
 import axios from "axios";
+import { defineEmits } from 'vue';
 
 const dateValue = ref(new Date())
 const timeValue = ref('')
-const isModalOpen = ref(false);
+const isModalOpen = ref(true);
 const isTimeSlotOccupied = ref(false);
 const selectedStartTime = ref(null);
 const selectedDuration = ref(null);
 const occupiedTimeSlots = ref([]); // Example occupied slots
 const num = ref(1)
 const apiBaseUrl = "http://localhost:8080/";
+
+const emit = defineEmits(['updateValue', 'close']);
+
+const confirm = () => {
+  // 'updateValue' 이벤트를 사용하여 부모 컴포넌트에 값을 전달합니다.
+  emit('updateValue', dateValue.value);
+  // 모달을 닫습니다.
+  emit('close');
+  isModalOpen.value = false;
+};
+
+
 const handleChange = (value) => {
   console.log(value);
 };
