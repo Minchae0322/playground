@@ -1,13 +1,9 @@
 <template>
 
-  <header>
 
-  </header>
-<main>
-
-  <div class="mx-auto max-w-md space-y-6">
+  <div class="mx-auto max-w-md space-y-6 ">
     <div class="space-y-2 text-center">
-      <h1 class="text-3xl font-bold">Sign In</h1>
+      <h1 class="login-container text-3xl font-bold">Sign In</h1>
       <p class="text-gray-500 dark:text-gray-400">Enter your email and password to sign in</p>
     </div>
     <div class="space-y-4">
@@ -71,7 +67,7 @@
       />
     </div>
   </div>
-</main>
+
 </template>
 
 <script setup lang="js">
@@ -127,9 +123,13 @@ const write = async function () {
 <style>
 /* General Styles */
 body {
+
   font-family: 'Arial', sans-serif;
   background-color: #f5f5f5;
   color: #333;
+}
+.login-container {
+  margin-top: 50px;
 }
 
 /* Container Styles */
@@ -229,7 +229,7 @@ body {
 
 
 button {
-  background: black;
+  background: #000000;
   color: white;
 }
 

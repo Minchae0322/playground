@@ -3,12 +3,13 @@
 
 
   <div class="userInfo-container">
-    <h1>UserInfo</h1>
+    <h1>내 정보</h1>
     <div class="header">
-      <img :src="user.userProfileImg || defaultImage" @click="triggerFileInput" class="profile-image" />
-      <input type="file" ref="fileInput" @change="handleFileChange" style="display:none" />
+      <div class="userProfile-container">
+        <img :src="user.userProfileImg || defaultImage" @click="triggerFileInput" class="profile-image" />
+        <input type="file" ref="fileInput" @change="handleFileChange" style="display:none" />
       <h4>사진을 클릭하여 프로필을 변경하세요.</h4>
-
+      </div>
       <div class="nickname-container" v-if="!isEditing">
         <h2>{{ user.userNickname }}</h2>
         <button @click="clickChangeNickname">닉네임 변경</button>
@@ -23,12 +24,16 @@
     </div>
 
     <div class="teams">
-      <h3>Teams</h3>
+      <div class="teams-title">
+        <h3>Teams</h3>
+      </div>
       <div v-for="team in teams" :key="team.teamId" class="team-item">
-        <router-link class="team-container" :to="{ name:'timePicker', params: { teamId: team.teamId } }">
+        <router-link class="team-container" :to="{ name:'teamInfo', params: { teamId: team.teamId } }">
           <img :src="team.teamProfileImg || defaultImage" class="team-image"/>
-          <h2 class="team-name">{{ team.teamName }}</h2>
-          <h2 class="team-sportsEvent">종목: {{ team.teamSportsEvent }}</h2>
+          <div class="teams-info">
+            <h2 class=" team-name">{{ team.teamName }}</h2>
+            <h2 class="team-sportsEvent">종목: {{ team.teamSportsEvent }}</h2>
+          </div>
         </router-link>
       </div>
       </div>
@@ -214,39 +219,38 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #f5f5f5; /* 배경색을 추가할 수도 있습니다 */
+
+  background: #f9fbfc; /* 배경색을 추가할 수도 있습니다 */
 }
 
-
-
-
 .userInfo-container {
-  max-width: 40%;
+  max-width: 50%;
   margin: auto;
   width: 50%; /* 너비를 50%로 설정 */
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  box-shadow: 5px 1px 8px 0 rgba(0,0,0,.06);
+  border-left: 1px solid rgba(0,0,0,.08);;
   font-family: 'Arial', sans-serif;
   background: #fff; /* 카드의 배경색 */
   overflow: auto; /* 내용이 넘칠 때 스크롤바를 보여줌 */
 }
 
-.header {
-  text-align: center;
-  margin-bottom: 20px;
-
-}
-.header img {
+.userProfile-container img {
   width: 100px;
   height: 100px;
   background-color: #eee;
   border-radius: 50%;
-  border: 2px solid #c2c2c2;
   display: inline-block;
+  box-shadow: 0 3px 6px 0 rgba(29,34,53,.08);
+}
+.header {
+  text-align: center;
+  margin-bottom: 30px;
 
 }
+
 .header h4 {
   font-size: 10px;
   color: #838383;
@@ -260,8 +264,12 @@ body {
   flex-direction: column; /* 아이템을 수직 방향으로 정렬 */
 }
 
-.nickname-container h2, .nickname-container button{
+.nickname-container h2 {
   margin-bottom: 10px; /* 요소 간의 여백 추가 */
+  font-weight: 700;
+  line-height: 32px;
+  word-break: break-all;
+  font-family: primary-font,sans-serif;
 }
 
 .nickname-container input {
@@ -283,8 +291,12 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  color: black;
-  width: 40%;
+  background: #064183;
+  width: 20%;
+  color: white;
+  font-family: gothic-bold,serif;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 .nickname-container .button-container {
   display: flex;
@@ -302,9 +314,13 @@ body {
 }
 
 
-
-h2 {
-  margin: 0;
+.teams {
+  height: 100%;
+  background: #f9fbfc; /* 배경색을 추가할 수도 있습니다 */
+}
+.router-link h2 {
+  font-family: gothic-bold;
+  text-decoration: none;
 }
 
 .team-container {
@@ -320,13 +336,10 @@ h2 {
   margin: 0 30px 0 10px;
 }
 
-.verified {
-  background: green;
-  color: white;
-  padding: 2px 6px;
-  border-radius: 5px;
-  display: inline-block;
-  margin-top: 10px;
+.teams-info {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
 }
 
 button {
@@ -345,8 +358,11 @@ button:hover {
 }
 
 .teams h3 {
-  margin-top: 20px;
-  text-align: center;
+  display: flex;
+  margin-left: 10px;
+  margin-top: 10px;
+  text-align: start;
+  align-items: center;
 }
 
 .teams ul {
@@ -359,11 +375,12 @@ button:hover {
 }
 
 .team-item {
-  background-color: #f5f5f5;
+  background-color: #ffffff;
   padding: 10px;
   margin: 5px;
   border-radius: 5px;
   text-align: center;
+
   flex-basis: calc(33.333% - 10px); /* 3개의 아이템을 한 줄에 나타내고 싶을 때 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -376,11 +393,20 @@ button:hover {
 
 }
 
+.teams-title {
+  display: flex;
+  align-items: center;
+  border-radius: 12px 12px 0 0;
+  background: linear-gradient(to right, #2c9bce,#064183);
+  color: white;
+  padding: 0 5px 10px;
+}
 .team-sportsEvent {
-  margin: 0 20px;
   font-size: 14px; /* 적절한 크기 설정 */
 }
-
 /* 추가적으로 반응형 디자인을 고려할 수 있습니다. */
-
+a {
+  text-decoration: none;
+  font-family: gothic-bold;
+}
 </style>

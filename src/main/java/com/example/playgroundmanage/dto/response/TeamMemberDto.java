@@ -23,10 +23,12 @@ public class TeamMemberDto {
     public TeamMemberDto(Long userId, String userNickname, InMemoryMultipartFile userProfileImg, String role) {
         this.userId = userId;
         this.userNickname = userNickname;
-        try {
-            this.userProfileImg = Base64.getEncoder().encodeToString(userProfileImg.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException("이미지 변환 실패", e);
+        if (userProfileImg != null) {
+            try {
+                this.userProfileImg = Base64.getEncoder().encodeToString(userProfileImg.getBytes());
+            } catch (IOException e) {
+                throw new RuntimeException("이미지 변환 실패", e);
+            }
         }
         this.role = role;
     }

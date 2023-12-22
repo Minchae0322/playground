@@ -351,14 +351,21 @@ const redirectToLogin = function () {
 button {
   width: 100%;
   padding: 10px;
-  background-color: black;
+  background-color: #064183;
   color: white;
   border: none;
+  font-family: gothic-bold,sans-serif;
   border-radius: 4px;
   cursor: pointer;
 }
 
 button:hover {
   background-color: #0056b3;
+}
+
+.leader-container h3 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

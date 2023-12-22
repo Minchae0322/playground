@@ -261,16 +261,21 @@ const redirectToLogin = function () {
 
 .team-players tbody tr:hover {
   background-color: #f2f2f2; /* Slightly darker background on hover */
+  font-family: gothic-bold,sans-serif;
 }
 
 .team-players tbody td {
+
   color: #555; /* Slightly darker text color for content */
 }
 
 /* Remove the border from the last row to match the design */
 .team-players tr:last-child td {
   border-bottom: none;
+
 }
+
+
 .team-achievements ul {
   list-style: none;
   padding: 0;

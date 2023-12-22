@@ -9,7 +9,7 @@ import game from '../views/GameView.vue'
 import gameInfo from '../views/GameInfoView.vue'
 import teamBuilding from '../views/TeamBuildingView.vue'
 import userInfo from '../views/UserInfoView.vue'
-
+import teamInfo from '../views/TeamInfoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,10 +37,10 @@ const router = createRouter({
       component: playground_soccer
     },
     {
-      path: '/timePicker/:teamId',
+      path: '/timePicker',
       name: 'timePicker',
       component: timePickerDialog,
-      props: true
+
     },
 
     {
@@ -65,6 +65,12 @@ const router = createRouter({
       path: '/userInfo',
       name: 'userInfo',
       component: userInfo
+    },
+    {
+      path: '/teamInfo/:teamId',
+      name: 'teamInfo',
+      component: teamInfo,
+      props: true
     },
   ]
 })

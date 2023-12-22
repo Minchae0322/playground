@@ -42,7 +42,7 @@ import axios from "axios";
 
 const currentGame = ref('')
 const upcomingGames = ref([])
-
+const apiBaseUrl = "http://localhost:8080";
 
 onMounted(() => {
   // Check if the initial page number is provided in the route query
@@ -53,7 +53,7 @@ const getInProgressGame = function () {
 
   const accessToken = localStorage.getItem("accessToken");
   if(accessToken) {
-    axios.get(`$apiBaseUrlplayground/1/current`,
+    axios.get(`${apiBaseUrl}/playground/1/current`,
         {  headers: {
             'Authorization': accessToken
           }}
