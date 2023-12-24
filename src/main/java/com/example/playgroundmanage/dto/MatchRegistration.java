@@ -14,6 +14,8 @@ public class MatchRegistration {
 
     private User host;
 
+    private String gameName;
+
     private LocalDateTime matchStart;
 
     private SportsEvent sportsEvent;
@@ -21,8 +23,9 @@ public class MatchRegistration {
     private Long runningTime;
 
     @Builder
-    public MatchRegistration(User host, LocalDateTime matchStart, SportsEvent sportsEvent, Long runningTime) {
+    public MatchRegistration(User host, String gameName, LocalDateTime matchStart, SportsEvent sportsEvent, Long runningTime) {
         this.host = host;
+        this.gameName = gameName;
         this.matchStart = matchStart;
         this.sportsEvent = sportsEvent;
         this.runningTime = runningTime;

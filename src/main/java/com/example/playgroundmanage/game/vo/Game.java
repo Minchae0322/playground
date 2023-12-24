@@ -24,6 +24,8 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String gameName;
+
     @ManyToOne(cascade = CascadeType.MERGE)
     private Playground playground;
 
@@ -57,9 +59,10 @@ public class Game {
     private boolean isFinished;
 
     @Builder
-    public Game(Long id, Playground playground, User host, List<JoinGameRequest> joinGameRequests, CompetingTeam homeTeam, CompetingTeam awayTeam, SportsEvent sportsEvent, int homeScore, int awayScore, LocalDateTime gameStartDateTime, Long runningTime, boolean isStarted, boolean isFinished) {
+    public Game(Long id, String gameName, Playground playground, User host, List<JoinGameRequest> joinGameRequests, CompetingTeam homeTeam, CompetingTeam awayTeam, SportsEvent sportsEvent, int homeScore, int awayScore, LocalDateTime gameStartDateTime, Long runningTime, boolean isStarted, boolean isFinished) {
         validate(host, runningTime, gameStartDateTime);
         this.id = id;
+        this.gameName = gameName;
         this.playground = playground;
         this.host = host;
         this.joinGameRequests = joinGameRequests;

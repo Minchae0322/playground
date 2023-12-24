@@ -50,6 +50,7 @@ public class GameService {
         CompetingTeam awayTeam = initCompetingTeam(MatchTeamSide.AWAY);
 
         Game game = Game.builder()
+                .gameName(matchRegistration.getGameName())
                 .host(matchRegistration.getHost())
                 .gameStartDateTime(matchRegistration.getMatchStart())
                 .sportsEvent(matchRegistration.getSportsEvent())
