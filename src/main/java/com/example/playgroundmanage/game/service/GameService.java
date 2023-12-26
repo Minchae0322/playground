@@ -51,7 +51,7 @@ public class GameService {
         Game game = Game.builder()
                 .gameName(gameRegistration.getGameName())
                 .host(gameRegistration.getHost())
-                .gameStartDateTime(gameRegistration.getMatchStart())
+                .gameStartDateTime(gameRegistration.getMyDateTime().getLocalDateTime())
                 .sportsEvent(gameRegistration.getSportsEvent())
                 .homeTeam(homeTeam)
                 .awayTeam(awayTeam)

@@ -88,7 +88,7 @@ const formattedStartTime = computed(() => {
 const generateGame = () => {
   validateAccessToken()
   console.log(startTime.value)
-  axios.post(`${apiBaseUrl}/game/make`, {
+  axios.post(`${apiBaseUrl}/game/generate`, {
         gameName: "game",
         playgroundId: 2,
         gameStartDateTime: startTime.value,
