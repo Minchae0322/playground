@@ -34,11 +34,23 @@ public class PlaygroundService {
     private final CampusRepository campusRepository;
 
     @Transactional
+    public boolean isValidGameStartTime(Long playgroundId, GameDateDto gameDateDto) {
+        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
+        GameFinder gameFinder = new GameFinder(playground.getGames());
+
+        List<Game> gamesOnSelectedDate = gameFinder.getGamesForSelectedDate(gameDateDto.getMyDateTime());
+
+        return gamesOnSelectedDate.stream()
+                .filter(g -> g.isTimeRangeOverlapping(gameDateDto.getMyDateTime().getLocalDateTime(), gameDateDto.getRunningTime()))
+                .toList().size() < 1;
+    }
+
+    @Transactional
     public List<OccupiedTime> getPlaygroundOccupiedTimeLines(Long playgroundId, GameDateDto gameDateDto) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
 
         GameFinder gameFinder = new GameFinder(playground.getGames());
-        List<Game> gamesOnSelectedDate = gameFinder.getGamesForSelectedDate(gameDateDto);
+        List<Game> gamesOnSelectedDate = gameFinder.getGamesForSelectedDate(gameDateDto.getMyDateTime());
 
         return gamesOnSelectedDate.stream()
                 .map(g -> OccupiedTime.builder()
@@ -128,7 +140,7 @@ public class PlaygroundService {
     }
 
     @Transactional
-    public boolean isExistGameTime(Long playgroundId, LocalDateTime day, Long runningTime) {
+    public boolean isExistGameTime(Long playgroundId, LocalDateTime day,Integer runningTime) {
         //TODO 모든 게임을 불러오기에는 너무 많으니 그 날과 그 다음날까지만 불러오기.
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
         List<Game> games = playground.getGames();

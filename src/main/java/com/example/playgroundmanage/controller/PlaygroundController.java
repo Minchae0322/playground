@@ -36,4 +36,9 @@ public class PlaygroundController {
     public List<OccupiedTime> getOccupiedTimeLines(@PathVariable Long playgroundId, @RequestBody GameDateDto gameDateDto) {
         return playgroundService.getPlaygroundOccupiedTimeLines(playgroundId, gameDateDto);
     }
+
+    @PostMapping("/playground/{playgroundId}/valid-start")
+    public boolean validateGameStartTime(@PathVariable Long playgroundId, @RequestBody GameDateDto gameDateDto) {
+        return playgroundService.isValidGameStartTime(playgroundId, gameDateDto);
+    }
 }

@@ -1,11 +1,12 @@
 package com.example.playgroundmanage.util;
 
+import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.dto.GameDateDto;
 import com.example.playgroundmanage.game.vo.Game;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -13,8 +14,8 @@ import java.util.List;
 public class GameFinder {
     private final List<Game> games;
 
-    public List<Game> getGamesForSelectedDate(GameDateDto gameDateDto) {
-        return games.stream().filter(g -> g.isGameDay(gameDateDto.toLocalDateYYMMDD()))
+    public List<Game> getGamesForSelectedDate(MyDateTime myDateTime) {
+        return games.stream().filter(g -> g.isGameDay(myDateTime.getLocalDateTime()))
                 .toList();
     }
 }

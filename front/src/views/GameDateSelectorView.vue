@@ -28,7 +28,7 @@
                   Choose Start Time
                 </a>
                   <div class="time-picker-container">
-                   <el-time-picker size="large" format="HH:mm" value-format="HH:mm" v-model="timeValue" placeholder="Select Time" />
+                   <el-time-picker size="large" format="HH:mm" value-format="HH:mm" v-model="timeValue" @change="changeTime" placeholder="Select Time" />
                   </div>
                 </div>
                 <div class="start-time-container">
@@ -129,10 +129,6 @@ const confirm = async () => {
   const isValid = await validateStartTime(); // 비동기 함수를 기다립니다.
 
   if(isValid) {
-    const [hours, minutes] = timeValue.value.split(':').map(Number);
-    dateValue.value.setHours(hours);
-    dateValue.value.setMinutes(minutes);
-
     emit('runningTime', runningTime.value);
     emit('dateTimeValue', dateValue.value);
     emit('close');
@@ -141,6 +137,13 @@ const confirm = async () => {
   }
 };
 
+
+const changeTime = () => {
+  const [hours, minutes] = timeValue.value.split(':').map(Number);
+  dateValue.value.setHours(hours);
+  dateValue.value.setMinutes(minutes);
+  console.log(dateValue.value)
+};
 
 const handleChange = (value) => {
   console.log(value);
@@ -154,7 +157,7 @@ const validateStartTime = async function () {
   await validateAccessToken()
   try {
     const response = await axios.post(`${apiBaseUrl}/playground/2/valid-start`, {
-          startDateTime: dateValue.value,
+          gameStartDateTime: dateValue.value,
           runningTime: runningTime.value
         },{  headers: {
             'Authorization': getAccessToken()
@@ -171,9 +174,7 @@ const pickDate = function () {
   validateAccessToken()
 
   axios.post(`${apiBaseUrl}/playground/2/occupiedTime`, {
-    year: dateValue.value.getFullYear(),
-    month: dateValue.value.getMonth() + 1,
-    date: dateValue.value.getDate()
+    gameStartDateTime: dateValue.value
   },{  headers: {
       'Authorization': getAccessToken()
     }}

@@ -1,31 +1,29 @@
 package com.example.playgroundmanage.dto;
 
-import jakarta.persistence.Entity;
+import com.example.playgroundmanage.date.MyDateTime;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 
 @Getter
 @RequiredArgsConstructor
 public class GameDateDto {
 
-    private Long gameId;
-    private String year;
-    private String month;
-    private String date;
+    private ZonedDateTime gameStartDateTime;
+
+    private Integer runningTime;
 
     @Builder
-    public GameDateDto(Long gameId, String year, String month, String date) {
-        this.gameId = gameId;
-        this.year = year;
-        this.month = month;
-        this.date = date;
+    public GameDateDto(ZonedDateTime gameStartDateTime, Integer runningTime) {
+        this.gameStartDateTime = gameStartDateTime;
+        this.runningTime = runningTime;
     }
 
-    public LocalDateTime toLocalDateYYMMDD() {
-        return LocalDateTime.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(date),0 ,0);
+    public MyDateTime getMyDateTime() {
+        return new MyDateTime(gameStartDateTime);
     }
 }

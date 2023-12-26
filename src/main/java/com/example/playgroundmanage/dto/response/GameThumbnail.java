@@ -17,14 +17,14 @@ public class GameThumbnail {
 
     private String gameStart;
 
-    private Long time;
+    private Integer time;
 
     private SportsEvent sportsEvent;
 
     private String hostName;
 
     @Builder
-    public GameThumbnail(Long gameId, String gameStart, Long time, SportsEvent sportsEvent, String hostName) {
+    public GameThumbnail(Long gameId, String gameStart, Integer time, SportsEvent sportsEvent, String hostName) {
         this.gameId = gameId;
         this.gameStart = gameStart;
         this.time = time;

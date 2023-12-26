@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 @RequiredArgsConstructor
 @Getter
-public class MatchRegistration {
+public class GameRegistration {
 
     private User host;
 
@@ -20,10 +20,10 @@ public class MatchRegistration {
 
     private SportsEvent sportsEvent;
 
-    private Long runningTime;
+    private Integer runningTime;
 
     @Builder
-    public MatchRegistration(User host, String gameName, LocalDateTime matchStart, SportsEvent sportsEvent, Long runningTime) {
+    public GameRegistration(User host, String gameName, LocalDateTime matchStart, SportsEvent sportsEvent, Integer runningTime) {
         this.host = host;
         this.gameName = gameName;
         this.matchStart = matchStart;

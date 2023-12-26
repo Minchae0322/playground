@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.game.vo;
 
+import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.vo.Playground;
@@ -13,6 +14,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.playgroundmanage.util.DateFormat.dateFormatWith0Second;
+import static com.example.playgroundmanage.util.DateFormat.dateFormatYYYYMMDD;
 
 @Entity
 @Getter
@@ -49,7 +53,7 @@ public class Game {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime gameStartDateTime;
 
-    private Long runningTime;
+    private Integer runningTime;
 
 
     private boolean isStarted;
@@ -57,7 +61,7 @@ public class Game {
     private boolean isFinished;
 
     @Builder
-    public Game(Long id, String gameName, Playground playground, User host, List<JoinGameRequest> joinGameRequests, CompetingTeam homeTeam, CompetingTeam awayTeam, SportsEvent sportsEvent, int homeScore, int awayScore, LocalDateTime gameStartDateTime, Long runningTime, boolean isStarted, boolean isFinished) {
+    public Game(Long id, String gameName, Playground playground, User host, List<JoinGameRequest> joinGameRequests, CompetingTeam homeTeam, CompetingTeam awayTeam, SportsEvent sportsEvent, int homeScore, int awayScore, LocalDateTime gameStartDateTime, Integer runningTime, boolean isStarted, boolean isFinished) {
         validate(host, runningTime, gameStartDateTime);
         this.id = id;
         this.gameName = gameName;
@@ -84,7 +88,7 @@ public class Game {
             return this.getAwayTeam();
     }
 
-    private void validate(User host, Long runningTime, LocalDateTime gameStartDateTime) {
+    private void validate(User host, Integer runningTime, LocalDateTime gameStartDateTime) {
         /*if(host == null) {
             throw new UserNotExistException();
         }*/
@@ -105,13 +109,19 @@ public class Game {
         return currentTime.isAfter(gameStartDateTime) && currentTime.isBefore(gameEndDateTime);
     }
 
-    public boolean isGameDay(LocalDateTime day) {
-        return gameStartDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                .equals(day.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+    public boolean isGameDay(LocalDateTime dateTime) {
+        String gameStartFormat = dateFormatYYYYMMDD(gameStartDateTime);
+        String dateTimeFormat = dateFormatYYYYMMDD(dateTime);
+        return gameStartFormat.equals(dateTimeFormat);
     }
 
-    public boolean isTimeRangeOverlapping(LocalDateTime time, Long gameRunningTime) {
-        return gameStartDateTime.withSecond(0).isAfter(time.withSecond(0).plusMinutes(gameRunningTime)) &&
-                gameStartDateTime.withSecond(0).plusMinutes(runningTime).isBefore(time.withSecond(0));
+    public boolean isTimeRangeOverlapping(LocalDateTime time, Integer gameRunningTime) {
+        LocalDateTime startTimeNormalized = dateFormatWith0Second(time);
+        LocalDateTime endTimeNormalized = dateFormatWith0Second(time).plusMinutes(gameRunningTime);
+
+        LocalDateTime gameStartTimeNormalized = dateFormatWith0Second(gameStartDateTime);
+        LocalDateTime gameEndTimeNormalized = dateFormatWith0Second(gameStartDateTime).plusMinutes(runningTime);
+
+        return !(gameEndTimeNormalized.isBefore(startTimeNormalized) || gameStartTimeNormalized.isAfter(endTimeNormalized));
     }
 }

@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.game.service;
 
-import com.example.playgroundmanage.dto.MatchRegistration;
+import com.example.playgroundmanage.dto.GameRegistration;
 import com.example.playgroundmanage.dto.response.SubTeamDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.MatchNotExistException;
@@ -16,7 +16,6 @@ import com.example.playgroundmanage.util.TeamSelector;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
@@ -45,18 +44,18 @@ public class GameService {
 
 
     @Transactional
-    public Long createGame(MatchRegistration matchRegistration) {
+    public Long createGame(GameRegistration gameRegistration) {
         CompetingTeam homeTeam = initCompetingTeam(MatchTeamSide.HOME);
         CompetingTeam awayTeam = initCompetingTeam(MatchTeamSide.AWAY);
 
         Game game = Game.builder()
-                .gameName(matchRegistration.getGameName())
-                .host(matchRegistration.getHost())
-                .gameStartDateTime(matchRegistration.getMatchStart())
-                .sportsEvent(matchRegistration.getSportsEvent())
+                .gameName(gameRegistration.getGameName())
+                .host(gameRegistration.getHost())
+                .gameStartDateTime(gameRegistration.getMatchStart())
+                .sportsEvent(gameRegistration.getSportsEvent())
                 .homeTeam(homeTeam)
                 .awayTeam(awayTeam)
-                .runningTime(matchRegistration.getRunningTime())
+                .runningTime(gameRegistration.getRunningTime())
                 .build();
 
         generateSoloSubTeam(homeTeam);
