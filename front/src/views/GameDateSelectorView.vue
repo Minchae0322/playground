@@ -1,57 +1,38 @@
 <template>
   <div>
-    <button @click="openModal">Open Modal</button>
 
-    <div v-if="isModalOpen" class="modal-overlay">
+    <div class="modal-overlay">
 
       <div class="modal">
 
           <div class="justify-center item-center userInfo-container " data-v0-t="card">
+
             <div class="padding-20">
               <a class="text-bold text-title primary-font">Time Selection</a>
               <h4 class="text-color-gray primary-font">Select the start time and duration for your participation.</h4>
               <div class="block">
-                <el-date-picker
-                    v-model="dateValue"
-                    type="date"
-                    @change="pickDate"
-                    placeholder="Pick a date"
-                    :default-value="new Date(2010, 9, 1)"
-                />
+                <el-date-picker :disabled-date="disabledDate" v-model="dateValue" type="date" @change="pickDate" placeholder="Pick a date" :default-value="new Date()"/>
               </div>
             </div>
+
             <hr color="#e7e7e7">
             <div class="button-container">
               <div class="button-container">
                 <div class="start-time-container">
-                <a
-                    class="start-time"
-                    id="start-time"
-                >
-                  <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2.2"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="icon-style"
-                  >
+                <a class="start-time" id="start-time">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
+                       stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="icon-style">
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
                   Choose Start Time
                 </a>
-                  <el-time-picker v-model="timeValue" placeholder="Arbitrary time" />
+                  <div class="time-picker-container">
+                   <el-time-picker  size="large" format="HH:mm" value-format="HH:mm" v-model="timeValue" placeholder="Select Time" />
+                  </div>
                 </div>
                 <div class="start-time-container">
-                  <a
-                      class="start-time"
-                      id="start-time"
-                  >
+                  <a class="start-time" id="start-time">
                   <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="15"
@@ -126,41 +107,36 @@
 </template>
 
 <script setup lang="js">
-import { ref } from 'vue';
+import {computed, defineProps, ref} from 'vue';
 import axios from "axios";
 import { defineEmits } from 'vue';
 
 const dateValue = ref(new Date())
 const timeValue = ref('')
-const isModalOpen = ref(true);
 const isTimeSlotOccupied = ref(false);
-const selectedStartTime = ref(null);
-const selectedDuration = ref(null);
+const isStartTimeSelected = ref(null);
+const isDurationSelected = ref(null);
 const occupiedTimeSlots = ref([]); // Example occupied slots
 const num = ref(1)
 const apiBaseUrl = "http://localhost:8080/";
-
+const duration = ref('');
 const emit = defineEmits(['updateValue', 'close']);
 
 const confirm = () => {
-  // 'updateValue' 이벤트를 사용하여 부모 컴포넌트에 값을 전달합니다.
+  const [hours, minutes] = timeValue.value.split(':').map(Number);
+  dateValue.value.setHours(hours)
+  dateValue.value.setMinutes(minutes)
   emit('updateValue', dateValue.value);
-  // 모달을 닫습니다.
   emit('close');
-  isModalOpen.value = false;
-};
 
+};
 
 const handleChange = (value) => {
   console.log(value);
 };
-const openModal = () => {
-  isModalOpen.value = true;
-  isTimeSlotOccupied.value = false; // Reset the occupied state when opening the modal
-};
 
 const closeModal = () => {
-  isModalOpen.value = false;
+  emit('close');
 };
 
 const pickDate = function () {
@@ -181,24 +157,27 @@ const pickDate = function () {
 const selectStartTime = () => {
   // Implement logic to select start time
   // For example, show a time picker or use a library like Pikaday
-  selectedStartTime.value = "Selected start time";
+  isStartTimeSelected.value = "Selected start time";
   isTimeSlotOccupied.value = false; // Reset the occupied state when changing the start time
 };
 
 const selectDuration = () => {
   // Implement logic to select duration
   // For example, show a duration picker or use a custom input
-  selectedDuration.value = "Selected duration";
+  isDurationSelected.value = "Selected duration";
+};
+const disabledDate = (time) => {
+  return time.getTime() < Date.now() - 8.64e7; // 8.64e7 is the number of milliseconds in one day
 };
 
 const confirmParticipation = () => {
   // Implement logic to confirm participation
   // Check if the selected time is occupied
-  if (occupiedTimeSlots.value.includes(selectedStartTime.value)) {
+  if (occupiedTimeSlots.value.includes(isStartTimeSelected.value)) {
     isTimeSlotOccupied.value = true;
   } else {
     // Perform the action when participation is confirmed
-    console.log("Participation confirmed:", selectedStartTime.value, selectedDuration.value);
+    console.log("Participation confirmed:", isStartTimeSelected.value, isDurationSelected.value);
     closeModal();
   }
 };
@@ -289,7 +268,6 @@ hr {
 
 
 
-
 .icon-style {
   display: inline-block;
   vertical-align: middle;
@@ -355,7 +333,6 @@ hr {
   margin-right: 5px;
   margin-top: 3px;
 }
-
 
 
 .start-time-container {

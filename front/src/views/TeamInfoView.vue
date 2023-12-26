@@ -245,13 +245,15 @@ const redirectToLogin = function () {
   border-bottom: 1px solid #ddd; /* Light gray border for separation */
 }
 .team-players img {
-  margin-left: 20px;
+  margin: 10px 0 10px 20px;
   width: 50px;
   height: 50px;
-  margin-top: 10px; /* Space between title and table */
   background-color: #eee;
   border-radius: 50%;
-  border: 2px solid #c2c2c2;
+  display: flex;
+  align-items: end;
+  justify-content: end;
+  box-shadow: 0 3px 6px 0 rgba(29,34,53,.08);
 }
 .team-players th {
   font-weight: bold;

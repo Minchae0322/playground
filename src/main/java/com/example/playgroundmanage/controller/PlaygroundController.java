@@ -1,13 +1,12 @@
 package com.example.playgroundmanage.controller;
 
+import com.example.playgroundmanage.dto.GameDateDto;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
+import com.example.playgroundmanage.dto.response.OccupiedTime;
 import com.example.playgroundmanage.dto.response.PlaygroundInfoDto;
 import com.example.playgroundmanage.service.PlaygroundService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -31,5 +30,10 @@ public class PlaygroundController {
     @GetMapping("/playground/{playgroundId}/info")
     public PlaygroundInfoDto getPlaygroundInfo(@PathVariable Long playgroundId) {
         return playgroundService.getPlaygroundInfo(playgroundId);
+    }
+
+    @PostMapping("/playground/{playgroundId}/occupiedTime")
+    public List<OccupiedTime> getOccupiedTimeLines(@PathVariable Long playgroundId, @RequestBody GameDateDto gameDateDto) {
+        return playgroundService.getPlaygroundOccupiedTimeLines(playgroundId, gameDateDto);
     }
 }

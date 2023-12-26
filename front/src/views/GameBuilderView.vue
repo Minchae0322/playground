@@ -6,18 +6,27 @@
 
       <div class="form-container">
         <div class="form-group">
-          <label for="eventName">Event Name</label>
+          <label for="eventName">Game Name</label>
           <input type="text" id="eventName" name="eventName" placeholder="Name of the event">
         </div>
 
         <div class="form-group">
-          <label for="venue">Venue</label>d
+          <label for="venue">Venue</label>
           <h2>{{playgroundInfo.sportsEvent}}</h2>
         </div>
 
-        <div class="form-group">
+        <div class="max-people-container">
           <label for="maxMatches">Maximum Number of Matches</label>
-          <input type="number" id="maxMatches" name="maxMatches" placeholder="Enter the number">
+          <input type="number" id="maxMatches" name="maxMatches" placeholder="max">
+        </div>
+
+        <div class="form-group">
+          <a>Event Date</a>
+          <button type="button" id="eventDate" class="date-button" @click="clickSelectDate">
+            {{ isStartTimeSelected ? formattedStartTime : 'Select a date' }}</button>
+
+          <ModalComponent v-if="isModalOpen" @close="isModalOpen = false"  @updateValue="handleUpdateStartTime">
+          </ModalComponent>
         </div>
 
         <div class="form-group checkbox-container">
@@ -25,29 +34,24 @@
           <label for="friendlyMatch">Friendly Match</label>
         </div>
 
-        <div class="form-group">
-          <label for="eventDate">Event Date</label>
-          <button type="button" id="eventDate" class="date-button" @click="clickSelectDate">Select a date</button>
-          <ModalComponent v-if="isModalOpen" @close="isModalOpen = false"  @updateValue="handleUpdateValue">
-          </ModalComponent>
-        </div>
 
-        <div class="form-actions">
-          <button type="button" class="cancel-button">Cancel</button>
-          <button type="submit" class="save-button">Save</button>
+
+        <div class="action-container">
+          <button type="button" class="button-cancel inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2">Cancel</button>
+          <button type="submit" class="button-confirm inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2">Save</button>
         </div>
       </div>
     </div>
   </div>
   <div>
     <button id="eventDate" @click="clickSelectDate">select date</button>
-    <ModalComponent v-if="isModalOpen" @close="isModalOpen = false"  @updateValue="handleUpdateValue">
+    <ModalComponent v-if="isModalOpen" @close="isModalOpen = false"  @updateValue="handleUpdateStartTime">
     </ModalComponent>
   </div>
 
 </template>
 <script setup>
-import {onMounted, ref} from 'vue';
+import {computed, onMounted, ref} from 'vue';
 import axios from "axios";
 import ModalComponent from './GameDateSelectorView.vue';
 import { defineProps, defineEmits } from 'vue';
@@ -56,7 +60,8 @@ const dateValue = ref(new Date())
 const timeValue = ref('')
 const isModalOpen = ref(false);
 const isTimeSlotOccupied = ref(false);
-const selectedStartTime = ref(null);
+const isStartTimeSelected = ref(false);
+const startTime = ref(new Date())
 const selectedDuration = ref(null);
 const occupiedTimeSlots = ref([]); // Example occupied slots
 const num = ref(1)
@@ -67,6 +72,18 @@ onMounted(() => {
  getPlaygroundInfo()
 });
 
+const formattedStartTime = computed(() => {
+  if (isStartTimeSelected) {
+    const year = startTime.value.getFullYear();
+    const month = startTime.value.getMonth() + 1; // getMonth()는 0부터 시작하므로 1을 더해줍니다.
+    const day = startTime.value.getDate();
+    const hour = startTime.value.getHours();
+    const minutes = startTime.value.getMinutes();
+
+    return `${year} 年 ${month.toString().padStart(2, '0')} 月 ${day.toString().padStart(2, '0')} 日 ${hour.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+  }
+  return false
+});
 
 const props = defineProps({
   playgroundId: String
@@ -82,7 +99,7 @@ const playgroundInfo = ref({
 
 const getPlaygroundInfo = function () {
   validateAccessToken()
-  axios.get(`${apiBaseUrl}/playground/${props.playgroundId}/info`,  {
+  axios.get(`${apiBaseUrl}/playground/2/info`,  {
         headers: {
           'Authorization': localStorage.getItem("accessToken")
         }
@@ -91,20 +108,17 @@ const getPlaygroundInfo = function () {
     playgroundInfo.value = response.data;
   });
 };
-const handleUpdateValue = (value) => {
-  receivedValue.value = value;
-  isModalOpen.value = false;
-  console.log('Received value from ModalComponent:', receivedValue.value);
+const handleUpdateStartTime = (value) => {
+  isStartTimeSelected.value = true;
+  startTime.value = value;
+  console.log('Received value from ModalComponent:', startTime.value);
 };
-const receivedValue = ref('');
+
 const clickSelectDate = () => {
   isModalOpen.value = true;
   isTimeSlotOccupied.value = false; // Reset the occupied state when opening the modal
 };
 
-const closeModal = () => {
-  isModalOpen.value = false;
-};
 
 const pickDate = function () {
   const accessToken = localStorage.getItem("accessToken");
@@ -121,30 +135,7 @@ const pickDate = function () {
   console.log(accessToken)
 }
 
-const selectStartTime = () => {
-  // Implement logic to select start time
-  // For example, show a time picker or use a library like Pikaday
-  selectedStartTime.value = "Selected start time";
-  isTimeSlotOccupied.value = false; // Reset the occupied state when changing the start time
-};
 
-const selectDuration = () => {
-  // Implement logic to select duration
-  // For example, show a duration picker or use a custom input
-  selectedDuration.value = "Selected duration";
-};
-
-const confirmParticipation = () => {
-  // Implement logic to confirm participation
-  // Check if the selected time is occupied
-  if (occupiedTimeSlots.value.includes(selectedStartTime.value)) {
-    isTimeSlotOccupied.value = true;
-  } else {
-    // Perform the action when participation is confirmed
-    console.log("Participation confirmed:", selectedStartTime.value, selectedDuration.value);
-    closeModal();
-  }
-};
 
 const validateAccessToken = async function () {
   const accessToken = getAccessToken();
@@ -188,8 +179,13 @@ const redirectToLogin = function () {
   router.push("/login");
 };
 </script>
+
+
+
 <style scoped>
-/* Add your modal styles here */
+body {
+  font-family: gothic, sans-serif;
+}
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -204,25 +200,26 @@ const redirectToLogin = function () {
 }
 
 .event-details-container {
-  width: 50%;
-  margin: 0 auto;
-  padding: 20px;
+  max-width: 50%;
+  margin: auto;
+  width: 50%; /* 너비를 50%로 설정 */
   border: 1px solid #ccc;
-  border-radius: 5px;
-
-  background: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 40px;
+  box-shadow: 5px 1px 8px 0 rgba(0,0,0,.06);
+  border-left: 1px solid rgba(0,0,0,.08);;
+  font-family: 'Arial', sans-serif;
+  background: #fff; /* 카드의 배경색 */
+  overflow: auto; /* 내용이 넘칠 때 스크롤바를 보여줌 */
 
 }
 
 .event-details-container h1 {
   font-size: 24px;
   font-family: gothic-bold,sans-serif;
-  text-align: center;
 }
 
 .event-details-container h3 {
-  text-align: center;
   color: #949494;
   font-family: gothic,sans-serif;
   font-size: 12px;
@@ -231,22 +228,35 @@ const redirectToLogin = function () {
 .form-container {
   display: flex;
   flex-direction: column;
-  gap: 16px; /* Adds space between form groups */
+  gap: 16px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
+  margin-bottom: 20px; /* 각 폼 그룹 사이의 간격 */
+}
+
+.max-people-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.max-people-container input {
+  width: 20%;
+  padding: 12px; /* Adjust padding to match the image */
+  border: 1px solid #ccc; /* Adjust border color to match the image */
+  border-radius: 4px; /* Rounded corners for inputs and button */
+  font-size: 14px; /* Match input font size to the image */
 }
 
 .form-group label {
-  margin-bottom: 4px; /* Adjust label spacing */
-  font-size: 14px; /* Match label font size to the image */
-  color: #000; /* Label text color */
+  font-size: 14px; /* 레이블 글꼴 크기 */
+  color: #333; /* 레이블 글꼴 색상 */
+  margin-bottom: 5px; /* 레이블과 입력 필드 사이의 간격 */
 }
 
 .form-group input[type="text"],
-.form-group input[type="number"],
 .date-button {
   padding: 12px; /* Adjust padding to match the image */
   border: 1px solid #ccc; /* Adjust border color to match the image */
@@ -255,6 +265,7 @@ const redirectToLogin = function () {
 }
 
 .date-button {
+  width: 40%;
   background-color: #f5f5f5; /* Background color for the date button */
   text-align: left; /* Align text to the left */
   color: #000; /* Text color for the date button */
@@ -274,23 +285,43 @@ const redirectToLogin = function () {
   margin-right: 8px; /* Space between checkbox and label */
 }
 
-.form-actions {
-  /* Previous styles remain the same */
-  gap: 10px; /* Adds space between buttons */
+
+
+.action-container {
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-between;
 }
 
-.cancel-button,
-.save-button {
-  width: calc(50% - 5px); /* Adjust width to split between two buttons */
+.button-confirm {
+  margin: 0px 20px;
 }
 
-.save-button {
-  background: #064183;
-  color: white;
+.button-cancel {
+  background-color: white;
+  color: black;
+  margin: 0px 20px;
+  border: white;
 }
 
-button:hover {
-  opacity: 0.8;
+.button-cancel:hover {
+  background-color: #f3f3f3; /* 마우스 오버 시 배경색 변경 */
+  color: #000000; /* 마우스 오버 시 글자색 변경 */
 }
 
+.button-confirm:hover {
+  background-color: rgba(0, 0, 0, 0.85); /* 마우스 오버 시 배경색 변경 */
+  color: #ffffff; /* 마우스 오버 시 글자색 변경 */
+}
+/* 날짜 선택 필드에 대한 특별한 스타일 */
+input[type="date"]:valid {
+  background-color: #e8f0fe;
+}
+
+/* 선택된 날짜의 스타일 */
+input[type="date"]:valid::after {
+  content: '✓';
+  padding-left: 10px;
+  color: #4CAF50;
+}
 </style>

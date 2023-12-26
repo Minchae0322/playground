@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
+
 
 @Getter
 @RequiredArgsConstructor
@@ -21,5 +23,9 @@ public class GameDateDto {
         this.year = year;
         this.month = month;
         this.date = date;
+    }
+
+    public LocalDateTime toLocalDateYYMMDD() {
+        return LocalDateTime.of(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(date),0 ,0);
     }
 }

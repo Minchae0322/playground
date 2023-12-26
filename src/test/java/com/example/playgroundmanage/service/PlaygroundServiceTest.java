@@ -1,14 +1,13 @@
 package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.dto.response.GameThumbnail;
-import com.example.playgroundmanage.dto.response.GameTimeline;
+import com.example.playgroundmanage.dto.response.OccupiedTime;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.repository.UserRepository;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.repository.PlaygroundRepository;
 import com.example.playgroundmanage.type.UserRole;
-import com.example.playgroundmanage.util.Util;
 import com.example.playgroundmanage.vo.Playground;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -125,10 +124,10 @@ class PlaygroundServiceTest {
         assertEquals(10, gameRepository.count());
 
         //when
-        List<GameTimeline> gameTimelines = playgroundService.getDailyGameTimelines(testPlayground.getId(), now);
+        List<OccupiedTime> occupiedTimes = playgroundService.getDailyGameTimelines(testPlayground.getId(), now);
 
-        for (GameTimeline gameTimeline : gameTimelines) {
-            System.out.println(gameTimeline.getStart() +" " + gameTimeline.getEnd());
+        for (OccupiedTime occupiedTime : occupiedTimes) {
+            System.out.println(occupiedTime.getStart() +" " + occupiedTime.getEnd());
         }
 
         //then

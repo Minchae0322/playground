@@ -96,13 +96,15 @@ public class TeamService {
     @Transactional
     public TeamInfoResponse getTeamInfo(Long teamId) throws IOException {
         Team team = teamRepository.findById(teamId).orElseThrow(TeamNotExistException::new);
+        InMemoryMultipartFile teamProfileImg = null;
         if(team.getTeamPic() != null) {
-            InMemoryMultipartFile teamProfileImg = fileHandler.extractFile(team.getTeamPic());
+            teamProfileImg = fileHandler.extractFile(team.getTeamPic());
         }
         return TeamInfoResponse.builder()
                 .teamName(team.getTeamName())
                 .sportsEvent(team.getSportsEvent().getValue())
                 .leaderId(team.getLeader().getId())
+                .teamProfileImg(teamProfileImg)
                 .leaderName(team.getLeader().getNickname())
                 .build();
     }

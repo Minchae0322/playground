@@ -1,13 +1,16 @@
 package com.example.playgroundmanage.service;
 
+import com.example.playgroundmanage.dto.GameDateDto;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
-import com.example.playgroundmanage.dto.response.GameTimeline;
+import com.example.playgroundmanage.dto.response.OccupiedTime;
 import com.example.playgroundmanage.dto.response.PlaygroundDto;
 import com.example.playgroundmanage.dto.response.PlaygroundInfoDto;
+import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.repository.PlaygroundRepository;
 import com.example.playgroundmanage.store.FileHandler;
+import com.example.playgroundmanage.util.GameFinder;
 import com.example.playgroundmanage.util.Util;
 import com.example.playgroundmanage.vo.Campus;
 import com.example.playgroundmanage.vo.Playground;
@@ -30,6 +33,20 @@ public class PlaygroundService {
 
     private final CampusRepository campusRepository;
 
+    @Transactional
+    public List<OccupiedTime> getPlaygroundOccupiedTimeLines(Long playgroundId, GameDateDto gameDateDto) {
+        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
+
+        GameFinder gameFinder = new GameFinder(playground.getGames());
+        List<Game> gamesOnSelectedDate = gameFinder.getGamesForSelectedDate(gameDateDto);
+
+        return gamesOnSelectedDate.stream()
+                .map(g -> OccupiedTime.builder()
+                        .start(g.getGameStartDateTime())
+                        .end(g.getGameEndDateTime())
+                        .build())
+                .toList();
+    }
 
     @Transactional
     public PlaygroundInfoDto getPlaygroundInfo(Long playgroundId) {
@@ -95,10 +112,10 @@ public class PlaygroundService {
     }
 
     @Transactional
-    public List<GameTimeline> getDailyGameTimelines(Long playgroundId, LocalDateTime day) {
+    public List<OccupiedTime> getDailyGameTimelines(Long playgroundId, LocalDateTime day) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
         List<Game> dailyGames = getDailyGames(playground.getGames(), day);
-        return dailyGames.stream().map(g -> GameTimeline.builder()
+        return dailyGames.stream().map(g -> OccupiedTime.builder()
                 .start(g.getGameStartDateTime())
                 .end(g.getGameStartDateTime().plusMinutes(g.getRunningTime()))
                 .build()).toList();
@@ -106,7 +123,7 @@ public class PlaygroundService {
 
     private List<Game> getDailyGames(List<Game> games, LocalDateTime day) {
         return games.stream()
-                .filter(g -> g.isDayGame(day))
+                .filter(g -> g.isGameDay(day))
                 .toList();
     }
 

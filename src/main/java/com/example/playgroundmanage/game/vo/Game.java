@@ -1,11 +1,9 @@
 package com.example.playgroundmanage.game.vo;
 
-import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.vo.Playground;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -98,12 +96,16 @@ public class Game {
         }
     }
 
+    public LocalDateTime getGameEndDateTime() {
+        return this.gameStartDateTime.plusMinutes(runningTime);
+    }
+
     public boolean gameOnGoing(LocalDateTime currentTime) {
         LocalDateTime gameEndDateTime = gameStartDateTime.plusMinutes(runningTime);
         return currentTime.isAfter(gameStartDateTime) && currentTime.isBefore(gameEndDateTime);
     }
 
-    public boolean isDayGame(LocalDateTime day) {
+    public boolean isGameDay(LocalDateTime day) {
         return gameStartDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
                 .equals(day.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
     }

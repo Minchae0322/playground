@@ -1,18 +1,13 @@
 package com.example.playgroundmanage.controller;
 
-import com.example.playgroundmanage.dto.GameDateDto;
 import com.example.playgroundmanage.dto.SubTeamRegistrationParams;
 import com.example.playgroundmanage.dto.SubTeamRequest;
-import com.example.playgroundmanage.dto.response.GameTimeline;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-
-import java.time.LocalDateTime;
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
