@@ -37,7 +37,7 @@
 
 
         <div class="action-container">
-          <button type="button" class="button-cancel inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2">Cancel</button>
+          <button type="button" @click="close" class="button-cancel inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2">Cancel</button>
           <button type="submit" @click="generateGame" class="button-confirm inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2">Save</button>
         </div>
       </div>
@@ -64,7 +64,7 @@ const startTime = ref(new Date())
 const runningTime = ref(1)
 const selectedDuration = ref(null);
 const occupiedTimeSlots = ref([]); // Example occupied slots
-
+const emit = defineEmits(['close',]);
 const apiBaseUrl = "http://localhost:8080";
 
 onMounted(() => {
@@ -84,6 +84,10 @@ const formattedStartTime = computed(() => {
   }
   return false
 });
+
+const close = () => {
+  emit('closeGameBuilder');
+};
 
 const generateGame = () => {
   validateAccessToken()

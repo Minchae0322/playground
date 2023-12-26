@@ -33,7 +33,7 @@
       </ul>
     </div>
     <button class="join-button" @click="openGameBuilder">Join Game</button>
-    <GameBuilderModal v-if="isGameBuilderModalOpen" :some-data="data" @close="isGameBuilderModalOpen = false"></GameBuilderModal>
+    <GameBuilderModal v-if="isGameBuilderModalOpen" :some-data="data" @closeGameBuilder="isGameBuilderModalOpen = false"></GameBuilderModal>
   </div>
 </template>
 
