@@ -1,5 +1,7 @@
 package com.example.playgroundmanage.controller;
 
+import com.example.playgroundmanage.Test;
+import com.example.playgroundmanage.TestRepository;
 import com.example.playgroundmanage.dto.UserNicknameDto;
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
@@ -13,13 +15,18 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
+
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
+
+    private final TestRepository testRepository;
 
     @GetMapping("/user/profile")
     public UserInfoDto getUserProfile(@AuthenticationPrincipal MyUserDetails userDetails) {
@@ -34,6 +41,9 @@ public class UserController {
 
     @GetMapping("/user/info")
     public UserInfoDto getUserInfo(@AuthenticationPrincipal MyUserDetails userDetails) throws IOException {
+        testRepository.save(Test.builder()
+                .zonedDateTime(ZonedDateTime.now())
+                .build());
         return userService.getUserInfo(userDetails.getUser().getId());
     }
 

@@ -28,7 +28,7 @@
                   Choose Start Time
                 </a>
                   <div class="time-picker-container">
-                   <el-time-picker  size="large" format="HH:mm" value-format="HH:mm" v-model="timeValue" placeholder="Select Time" />
+                   <el-time-picker size="large" format="HH:mm" value-format="HH:mm" v-model="timeValue" placeholder="Select Time" />
                   </div>
                 </div>
                 <div class="start-time-container">
@@ -52,7 +52,7 @@
                   </svg>
                   Choose Duration
                 </a>
-                  <el-input-number v-model="num" :min="1" :max="120" @change="handleChange" />
+                  <el-input-number v-model="runningTime" :min="1" :max="120" @change="handleChange" />
               </div>
               </div>
               <div class="container-confirm-style">
@@ -107,29 +107,40 @@
 </template>
 
 <script setup lang="js">
-import {computed, defineProps, ref} from 'vue';
+import {computed, defineProps, onMounted, ref} from 'vue';
 import axios from "axios";
 import { defineEmits } from 'vue';
 
 const dateValue = ref(new Date())
 const timeValue = ref('')
-const isTimeSlotOccupied = ref(false);
-const isStartTimeSelected = ref(null);
-const isDurationSelected = ref(null);
+
 const occupiedTimeSlots = ref([]); // Example occupied slots
-const num = ref(1)
-const apiBaseUrl = "http://localhost:8080/";
-const duration = ref('');
-const emit = defineEmits(['updateValue', 'close']);
 
-const confirm = () => {
-  const [hours, minutes] = timeValue.value.split(':').map(Number);
-  dateValue.value.setHours(hours)
-  dateValue.value.setMinutes(minutes)
-  emit('updateValue', dateValue.value);
-  emit('close');
+const apiBaseUrl = "http://localhost:8080";
+const runningTime = ref(1);
+const emit = defineEmits(['dateTimeValue', 'close', 'runningTime']);
 
+
+onMounted(() => {
+  pickDate()
+});
+
+const confirm = async () => {
+  const isValid = await validateStartTime(); // 비동기 함수를 기다립니다.
+
+  if(isValid) {
+    const [hours, minutes] = timeValue.value.split(':').map(Number);
+    dateValue.value.setHours(hours);
+    dateValue.value.setMinutes(minutes);
+
+    emit('runningTime', runningTime.value);
+    emit('dateTimeValue', dateValue.value);
+    emit('close');
+  } else {
+    alert("선택한 시간에 이미 게임이 존재합니다.");
+  }
 };
+
 
 const handleChange = (value) => {
   console.log(value);
@@ -139,47 +150,84 @@ const closeModal = () => {
   emit('close');
 };
 
+const validateStartTime = async function () {
+  await validateAccessToken()
+  try {
+    const response = await axios.post(`${apiBaseUrl}/playground/2/valid-start`, {
+          startDateTime: dateValue.value,
+          runningTime: runningTime.value
+        },{  headers: {
+            'Authorization': getAccessToken()
+          }}
+    );
+    return response.data; // boolean 값을 반환
+  } catch (error) {
+    console.error('Error validating start time:', error);
+    return false; // 오류가 발생했다면, 유효하지 않음으로 처리
+  }
+};
+
 const pickDate = function () {
-  const accessToken = localStorage.getItem("accessToken");
-  axios.post(`${apiBaseUrl}game/1`, {
+  validateAccessToken()
+
+  axios.post(`${apiBaseUrl}/playground/2/occupiedTime`, {
     year: dateValue.value.getFullYear(),
-    month: dateValue.value.getMonth(),
+    month: dateValue.value.getMonth() + 1,
     date: dateValue.value.getDate()
   },{  headers: {
-      'Authorization': accessToken
+      'Authorization': getAccessToken()
     }}
   ).then(response => {
     occupiedTimeSlots.value = response.data;
   });
-  console.log(accessToken)
 }
 
-const selectStartTime = () => {
-  // Implement logic to select start time
-  // For example, show a time picker or use a library like Pikaday
-  isStartTimeSelected.value = "Selected start time";
-  isTimeSlotOccupied.value = false; // Reset the occupied state when changing the start time
-};
 
-const selectDuration = () => {
-  // Implement logic to select duration
-  // For example, show a duration picker or use a custom input
-  isDurationSelected.value = "Selected duration";
-};
 const disabledDate = (time) => {
   return time.getTime() < Date.now() - 8.64e7; // 8.64e7 is the number of milliseconds in one day
 };
 
-const confirmParticipation = () => {
-  // Implement logic to confirm participation
-  // Check if the selected time is occupied
-  if (occupiedTimeSlots.value.includes(isStartTimeSelected.value)) {
-    isTimeSlotOccupied.value = true;
-  } else {
-    // Perform the action when participation is confirmed
-    console.log("Participation confirmed:", isStartTimeSelected.value, isDurationSelected.value);
-    closeModal();
+
+const validateAccessToken = async function () {
+  const accessToken = getAccessToken();
+  if (!accessToken) {
+    redirectToLogin()
+    return;
   }
+
+  try {
+    await axios.get(`${apiBaseUrl}/token/valid`, {
+      headers: {'Authorization': accessToken},
+    });
+  } catch (error) {
+    await updateAccessToken();
+  }
+};
+
+const getAccessToken = function () {
+  return localStorage.getItem("accessToken");
+};
+
+const updateAccessToken = async function () {
+  const refreshToken = localStorage.getItem("refreshToken");
+  if (!refreshToken) return redirectToLogin();
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
+      headers: { 'RefreshToken': refreshToken }
+    });
+    if (response.status === 200) {
+      const newAccessToken = response.headers['authorization'];
+      localStorage.setItem('accessToken', newAccessToken);
+      return newAccessToken;
+    }
+  } catch (error) {
+    redirectToLogin();
+  }
+};
+
+const redirectToLogin = function () {
+  router.push("/login");
 };
 </script>
 

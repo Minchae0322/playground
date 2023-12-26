@@ -38,14 +38,14 @@
 
         <div class="action-container">
           <button type="button" class="button-cancel inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2">Cancel</button>
-          <button type="submit" class="button-confirm inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2">Save</button>
+          <button type="submit" @click="generateGame" class="button-confirm inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2">Save</button>
         </div>
       </div>
     </div>
   </div>
   <div>
     <button id="eventDate" @click="clickSelectDate">select date</button>
-    <ModalComponent v-if="isModalOpen" @close="isModalOpen = false"  @updateValue="handleUpdateStartTime">
+    <ModalComponent v-if="isModalOpen" @close="isModalOpen = false"  @dateTimeValue="handleUpdateStartTime" @runningTime="handleUpdateRunningTime">
     </ModalComponent>
   </div>
 
@@ -56,15 +56,15 @@ import axios from "axios";
 import ModalComponent from './GameDateSelectorView.vue';
 import { defineProps, defineEmits } from 'vue';
 
-const dateValue = ref(new Date())
 const timeValue = ref('')
 const isModalOpen = ref(false);
 const isTimeSlotOccupied = ref(false);
 const isStartTimeSelected = ref(false);
 const startTime = ref(new Date())
+const runningTime = ref(1)
 const selectedDuration = ref(null);
 const occupiedTimeSlots = ref([]); // Example occupied slots
-const num = ref(1)
+
 const apiBaseUrl = "http://localhost:8080";
 
 onMounted(() => {
@@ -84,6 +84,25 @@ const formattedStartTime = computed(() => {
   }
   return false
 });
+
+const generateGame = () => {
+  validateAccessToken()
+  console.log(startTime.value)
+  axios.post(`${apiBaseUrl}/game/make`, {
+        gameName: "game",
+        playgroundId: 2,
+        gameStartDateTime: startTime.value,
+        runningTime: runningTime.value,
+
+      }, {
+        headers: {
+          'Authorization': getAccessToken()
+        }
+      }
+  ).then(response => {
+    playgroundInfo.value = response.data;
+  });
+};
 
 const props = defineProps({
   playgroundId: String
@@ -114,26 +133,17 @@ const handleUpdateStartTime = (value) => {
   console.log('Received value from ModalComponent:', startTime.value);
 };
 
+const handleUpdateRunningTime = (value) => {
+  runningTime.value = value;
+};
+
 const clickSelectDate = () => {
   isModalOpen.value = true;
   isTimeSlotOccupied.value = false; // Reset the occupied state when opening the modal
 };
 
 
-const pickDate = function () {
-  const accessToken = localStorage.getItem("accessToken");
-  axios.post(`${apiBaseUrl}game/1`, {
-        year: dateValue.value.getFullYear(),
-        month: dateValue.value.getMonth(),
-        date: dateValue.value.getDate()
-      },{  headers: {
-          'Authorization': accessToken
-        }}
-  ).then(response => {
-    occupiedTimeSlots.value = response.data;
-  });
-  console.log(accessToken)
-}
+
 
 
 

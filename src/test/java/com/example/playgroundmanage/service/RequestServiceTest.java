@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.service;
 
-import com.example.playgroundmanage.dto.MatchRegistration;
+import com.example.playgroundmanage.dto.GameRegistration;
 import com.example.playgroundmanage.dto.SubTeamRegistrationParams;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameService;
@@ -85,13 +85,13 @@ class RequestServiceTest {
     }
 
     public Long initGame() {
-        MatchRegistration matchRegistration = MatchRegistration.builder()
+        GameRegistration gameRegistration = GameRegistration.builder()
                 .matchStart(LocalDateTime.now(ZoneId.of(("Asia/Seoul"))))
                 .runningTime(60L)
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
-        return gameService.createGame(matchRegistration);
+        return gameService.createGame(gameRegistration);
     }
 
     @Test

@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.service;
 
-import com.example.playgroundmanage.dto.MatchRegistration;
+import com.example.playgroundmanage.dto.GameRegistration;
 import com.example.playgroundmanage.dto.response.SubTeamDto;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameService;
@@ -76,26 +76,26 @@ class GameServiceTest {
     }
 
     public Long initGame() {
-        MatchRegistration matchRegistration = MatchRegistration.builder()
+        GameRegistration gameRegistration = GameRegistration.builder()
                 .matchStart(LocalDateTime.now(ZoneId.of(("Asia/Seoul"))))
                 .runningTime(60L)
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
-        return gameService.createGame(matchRegistration);
+        return gameService.createGame(gameRegistration);
     }
 
 
     @Test
     void start_match() {
-        MatchRegistration matchRegistration = MatchRegistration.builder()
+        GameRegistration gameRegistration = GameRegistration.builder()
                 .matchStart(LocalDateTime.now(ZoneId.of(("Asia/Seoul"))))
                 .runningTime(60L)
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
 
-        Game game = gameRepository.findById(gameService.createGame(matchRegistration)).orElseThrow();
+        Game game = gameRepository.findById(gameService.createGame(gameRegistration)).orElseThrow();
 
 
         Assertions.assertEquals(1, gameRepository.count());
@@ -106,13 +106,13 @@ class GameServiceTest {
 
     @Test
     void getMatchBeforeStarted() {
-        MatchRegistration matchRegistration = MatchRegistration.builder()
+        GameRegistration gameRegistration = GameRegistration.builder()
                 .matchStart(LocalDateTime.of(2081, 12, 2, 7, 10))
                 .runningTime(60L)
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
-        gameService.createGame(matchRegistration);
+        gameService.createGame(gameRegistration);
 
 
         Assertions.assertEquals(1, gameRepository.count());
@@ -125,13 +125,13 @@ class GameServiceTest {
 
     @Test
     void testExcludePastGames() {
-        MatchRegistration matchRegistration = MatchRegistration.builder()
+        GameRegistration gameRegistration = GameRegistration.builder()
                 .matchStart(LocalDateTime.of(2023, 11, 2, 7, 10))
                 .runningTime(60L)
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
-        gameService.createGame(matchRegistration);
+        gameService.createGame(gameRegistration);
 
 
         Assertions.assertEquals(1, gameRepository.count());
@@ -155,14 +155,14 @@ class GameServiceTest {
 
     @Test
     void start_many_match() {
-        List<MatchRegistration> matchRegistrationList = IntStream.range(0,19)
-                .mapToObj(i -> MatchRegistration.builder()
+        List<GameRegistration> gameRegistrationList = IntStream.range(0,19)
+                .mapToObj(i -> GameRegistration.builder()
                         .matchStart(LocalDateTime.now())
                         .runningTime((long) i)
                         .host(testUser)
                         .sportsEvent(SportsEvent.SOCCER)
                         .build()).toList();
-        List<Long> games = matchRegistrationList.stream()
+        List<Long> games = gameRegistrationList.stream()
                 .map(m -> gameService.createGame(m))
                 .toList();
 
@@ -172,7 +172,7 @@ class GameServiceTest {
 
     @Test
     void 홈팀에_참여하는_subTeam() {
-        Long gameId = gameService.createGame(MatchRegistration.builder()
+        Long gameId = gameService.createGame(GameRegistration.builder()
                 .matchStart(LocalDateTime.now().plusMinutes(1))
                 .runningTime((long) 60)
                 .host(testUser)
