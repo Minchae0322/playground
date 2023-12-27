@@ -42,11 +42,11 @@ public class PlaygroundService {
     }
 
     @Transactional
-    public List<OccupiedTime> getPlaygroundOccupiedTimeLines(Long playgroundId, GameTimeInfo gameTimeInfo) {
+    public List<OccupiedTime> getPlaygroundOccupiedTimeLines(Long playgroundId, GameTimeDto gameTimeDto) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
 
         GameFinder gameFinder = new GameFinder(playground.getGames());
-        List<Game> gamesOnSelectedDate = gameFinder.getGamesForSelectedDate(gameTimeInfo.getMyDateTime());
+        List<Game> gamesOnSelectedDate = gameFinder.getGamesForSelectedDate(gameTimeDto.getMyDateTime());
 
         return gamesOnSelectedDate.stream()
                 .map(g -> OccupiedTime.builder()

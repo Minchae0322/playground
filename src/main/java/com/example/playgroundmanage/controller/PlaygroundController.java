@@ -35,12 +35,15 @@ public class PlaygroundController {
 
     @PostMapping("/playground/{playgroundId}/occupiedTime")
     public List<OccupiedTime> getOccupiedTimeLines(@PathVariable Long playgroundId, @RequestBody GameTimeInfo gameTimeInfo) {
-        return playgroundService.getPlaygroundOccupiedTimeLines(playgroundId, gameTimeInfo);
+        GameTimeDto gameTimeDto = gameTimeInfo.toGameTimeDto();
+
+        return playgroundService.getPlaygroundOccupiedTimeLines(playgroundId, gameTimeDto);
     }
 
     @PostMapping("/playground/{playgroundId}/valid-start")
     public boolean validateGameStartTime(@PathVariable Long playgroundId, @RequestBody GameTimeInfo gameTimeInfo) {
         GameTimeDto gameTimeDto = gameTimeInfo.toGameTimeDto();
+
         return playgroundService.isValidGameStartTime(playgroundId, gameTimeDto);
     }
 
