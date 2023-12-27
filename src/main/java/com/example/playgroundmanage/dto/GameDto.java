@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class GameRegistration {
+public class GameDto {
 
     private User host;
 
@@ -22,11 +22,12 @@ public class GameRegistration {
     private Integer runningTime;
 
     @Builder
-    public GameRegistration(User host, String gameName, MyDateTime myDateTime, SportsEvent sportsEvent, Integer runningTime) {
+    public GameDto(User host, String gameName, MyDateTime myDateTime, SportsEvent sportsEvent, Integer runningTime) {
         this.host = host;
         this.gameName = gameName;
         this.myDateTime = myDateTime;
         this.sportsEvent = sportsEvent;
         this.runningTime = runningTime;
     }
+
 }

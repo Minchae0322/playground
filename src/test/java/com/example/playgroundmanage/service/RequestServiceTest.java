@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.service;
 
-import com.example.playgroundmanage.dto.GameRegistration;
+import com.example.playgroundmanage.dto.reqeust.GameRegistration;
 import com.example.playgroundmanage.dto.SubTeamRegistrationParams;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameService;
@@ -91,7 +91,7 @@ class RequestServiceTest {
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
-        return gameService.createGame(gameRegistration);
+        return gameService.generateGame(gameRegistration);
     }
 
     @Test

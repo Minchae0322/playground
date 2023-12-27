@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.game.vo;
 
 import com.example.playgroundmanage.date.MyDateTime;
+import com.example.playgroundmanage.type.MatchResult;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.vo.Playground;
@@ -61,15 +62,13 @@ public class Game {
     private boolean isFinished;
 
     @Builder
-    public Game(Long id, String gameName, Playground playground, User host, List<JoinGameRequest> joinGameRequests, CompetingTeam homeTeam, CompetingTeam awayTeam, SportsEvent sportsEvent, int homeScore, int awayScore, LocalDateTime gameStartDateTime, Integer runningTime, boolean isStarted, boolean isFinished) {
+    public Game(String gameName, Playground playground, User host, SportsEvent sportsEvent, LocalDateTime gameStartDateTime, Integer runningTime) {
         validate(host, runningTime, gameStartDateTime);
-        this.id = id;
         this.gameName = gameName;
         this.playground = playground;
         this.host = host;
-        this.joinGameRequests = joinGameRequests;
-        this.homeTeam = homeTeam;
-        this.awayTeam = awayTeam;
+        this.homeTeam = initCompetingTeam(MatchTeamSide.HOME);
+        this.awayTeam = initCompetingTeam(MatchTeamSide.AWAY);
         this.sportsEvent = sportsEvent;
         this.homeScore = 0;
         this.awayScore = 0;
@@ -86,6 +85,13 @@ public class Game {
             return this.getHomeTeam();
         }
             return this.getAwayTeam();
+    }
+
+    private CompetingTeam initCompetingTeam(MatchTeamSide matchTeamSide) {
+        return CompetingTeam.builder()
+                .matchResult(MatchResult.NONE)
+                .matchTeamSide(matchTeamSide)
+                .build();
     }
 
     private void validate(User host, Integer runningTime, LocalDateTime gameStartDateTime) {
