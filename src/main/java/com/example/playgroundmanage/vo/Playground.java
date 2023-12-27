@@ -23,7 +23,6 @@ public class Playground {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
     private String name;
 
     @OneToOne
@@ -37,6 +36,7 @@ public class Playground {
     @OneToMany(mappedBy = "playground", fetch = FetchType.EAGER)
     private List<Game> games = new ArrayList<>();
 
+
     @Builder
     public Playground(Long id, String name, UploadFile img, Campus campus, SportsEvent sportsEvent, List<Game> games) {
         this.id = id;
@@ -46,6 +46,9 @@ public class Playground {
         this.sportsEvent = sportsEvent;
         this.games = games;
     }
+
+
+
 
 
 

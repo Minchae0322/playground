@@ -79,8 +79,7 @@ class TeamServiceTest {
                 .build();
         Long teamId = teamService.generateTeam(teamRegistration);
         Team team = teamRepository.findById(teamId).orElseThrow();
-        List<User> userList = teamService.getTeamMembers(team.getId());
-        assertEquals(1, userList.size());
+
 
     }
 

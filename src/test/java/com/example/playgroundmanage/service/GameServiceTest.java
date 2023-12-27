@@ -8,17 +8,20 @@ import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.UserService;
 import com.example.playgroundmanage.game.vo.SubTeam;
+import com.example.playgroundmanage.repository.PlaygroundRepository;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.Team;
 import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.vo.Playground;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -35,6 +38,9 @@ class GameServiceTest {
     private GameRepository gameRepository;
 
     @Autowired
+    private PlaygroundRepository playgroundRepository;
+
+    @Autowired
     private CompetingTeamRepository competingTeamRepository;
 
     @Autowired
@@ -45,6 +51,8 @@ class GameServiceTest {
     private User testUser;
 
     private Team testTeam;
+
+    private Playground testPlayground;
 
     @Autowired
     private UserService userService;
@@ -58,11 +66,9 @@ class GameServiceTest {
     @Autowired
     private SubTeamRepository subTeamRepository;
 
+
     @BeforeEach
     void before() {
-        gameRepository.deleteAll();
-        competingTeamRepository.deleteAll();
-        subTeamRepository.deleteAll();
         testUser = User.builder()
                 .username("test")
                 .nickname("test")
@@ -76,9 +82,15 @@ class GameServiceTest {
                 .teamName("testTeam")
                 .build();
         teamRepository.save(testTeam);
+        testPlayground = Playground.builder()
+                .name("test")
+                .id(1L)
+                .build();
+        playgroundRepository.save(testPlayground);
     }
 
-   /* public Long initGame() {
+/*
+   public Long initGame() {
         GameDto gameRegistration = GameDto.builder()
                 .myDateTime(MyDateTime.getMyDateTime(ZonedDateTime.now()))
                 .runningTime(60)
@@ -87,18 +99,18 @@ class GameServiceTest {
                 .build();
         return gameService.generateGame(gameRegistration);
     }
-
+*/
 
     @Test
     void start_match() {
         GameDto gameRegistration = GameDto.builder()
-                .myDateTime(MyDateTime.getMyDateTime(gameRegistration.getGameStartDateTime()))
-                .runningTime(60L)
+                .myDateTime(MyDateTime.getMyDateTime(ZonedDateTime.now().plusMinutes(10)))
+                .runningTime(60)
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
 
-        Game game = gameRepository.findById(gameService.generateGame(gameRegistration)).orElseThrow();
+        Game game = gameRepository.findById(gameService.generateGame(testPlayground.getId(), gameRegistration)).orElseThrow();
 
 
         Assertions.assertEquals(1, gameRepository.count());
@@ -106,6 +118,7 @@ class GameServiceTest {
         Assertions.assertEquals(2L, game.getAwayTeam().getId());
         assertEquals("test", game.getHost().getUsername());
     }
+ /*
 
     @Test
     void getMatchBeforeStarted() {

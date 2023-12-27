@@ -104,7 +104,8 @@ const generateGame = () => {
         }
       }
   ).then(response => {
-    playgroundInfo.value = response.data;
+  }).catch(error => {
+    alert(error.response.data.message)
   });
 };
 

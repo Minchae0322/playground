@@ -63,7 +63,7 @@ class PlaygroundServiceTest {
         List<Game> gameList = IntStream.range(0, 10)
                 .mapToObj(i -> Game.builder()
                         .gameStartDateTime(afterOneMinute.plusMinutes(i * 60L))
-                        .runningTime(59L)
+                        .runningTime(59)
                         .playground(testPlayground)
                         .build()).toList();
         gameRepository.saveAll(gameList);
@@ -87,7 +87,7 @@ class PlaygroundServiceTest {
         List<Game> gameList = IntStream.range(0, 10)
                 .mapToObj(i -> Game.builder()
                         .gameStartDateTime(now.plusMinutes(1).plusMinutes(i * 60L))
-                        .runningTime(59L)
+                        .runningTime(59)
                         .host(testUser)
                         .playground(testPlayground)
                         .build()).toList();
@@ -116,7 +116,7 @@ class PlaygroundServiceTest {
         List<Game> gameList = IntStream.range(0, 10)
                 .mapToObj(i -> Game.builder()
                         .gameStartDateTime(after.plusMinutes(i * 60L))
-                        .runningTime(59L)
+                        .runningTime(59)
                         .playground(testPlayground)
                         .build()).toList();
         gameRepository.saveAll(gameList);
@@ -143,7 +143,7 @@ class PlaygroundServiceTest {
         List<Game> gameList = IntStream.range(0, 10)
                 .mapToObj(i -> Game.builder()
                         .gameStartDateTime(after.plusMinutes(i * 60L))
-                        .runningTime(59L)
+                        .runningTime(59)
                         .host(testUser)
                         .playground(testPlayground)
                         .build()).toList();
@@ -171,7 +171,7 @@ class PlaygroundServiceTest {
         List<Game> gameList = IntStream.range(0, 2)
                 .mapToObj(i -> Game.builder()
                         .gameStartDateTime(after.plusMinutes(i * 60L))
-                        .runningTime(59L)
+                        .runningTime(59)
                         .host(testUser)
                         .playground(testPlayground)
                         .build()).toList();

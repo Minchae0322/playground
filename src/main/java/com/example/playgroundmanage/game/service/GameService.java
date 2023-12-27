@@ -14,6 +14,7 @@ import com.example.playgroundmanage.game.match.GameRequestProcess;
 import com.example.playgroundmanage.repository.PlaygroundRepository;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.util.GameValidation;
 import com.example.playgroundmanage.util.TeamSelector;
 import com.example.playgroundmanage.vo.Playground;
 import jakarta.transaction.Transactional;
@@ -22,6 +23,8 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+
+import static com.example.playgroundmanage.util.GameValidation.validateGameStartTime;
 
 @Service
 @RequiredArgsConstructor
@@ -39,6 +42,8 @@ public class GameService {
     public Long generateGame(Long playgroundId, GameDto gameDto) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
 
+        validateGameStartTime(playground,  gameDto.toGameDateDto());
+
         Game game = Game.builder()
                 .gameName(gameDto.getGameName())
                 .host(gameDto.getHost())
@@ -50,11 +55,6 @@ public class GameService {
 
         return gameRepository.save(game).getId();
     }
-
-
-
-
-
 
 
     public List<SubTeamDto> getTeamsBySide(Long gameId, MatchTeamSide matchTeamSide) {

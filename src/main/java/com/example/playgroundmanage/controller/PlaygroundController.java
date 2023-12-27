@@ -1,7 +1,8 @@
 package com.example.playgroundmanage.controller;
 
-import com.example.playgroundmanage.dto.GameDateDto;
+import com.example.playgroundmanage.dto.GameTimeInfo;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
+import com.example.playgroundmanage.dto.response.GameTimeDto;
 import com.example.playgroundmanage.dto.response.OccupiedTime;
 import com.example.playgroundmanage.dto.response.PlaygroundInfoDto;
 import com.example.playgroundmanage.service.PlaygroundService;
@@ -33,12 +34,14 @@ public class PlaygroundController {
     }
 
     @PostMapping("/playground/{playgroundId}/occupiedTime")
-    public List<OccupiedTime> getOccupiedTimeLines(@PathVariable Long playgroundId, @RequestBody GameDateDto gameDateDto) {
-        return playgroundService.getPlaygroundOccupiedTimeLines(playgroundId, gameDateDto);
+    public List<OccupiedTime> getOccupiedTimeLines(@PathVariable Long playgroundId, @RequestBody GameTimeInfo gameTimeInfo) {
+        return playgroundService.getPlaygroundOccupiedTimeLines(playgroundId, gameTimeInfo);
     }
 
     @PostMapping("/playground/{playgroundId}/valid-start")
-    public boolean validateGameStartTime(@PathVariable Long playgroundId, @RequestBody GameDateDto gameDateDto) {
-        return playgroundService.isValidGameStartTime(playgroundId, gameDateDto);
+    public boolean validateGameStartTime(@PathVariable Long playgroundId, @RequestBody GameTimeInfo gameTimeInfo) {
+        GameTimeDto gameTimeDto = gameTimeInfo.toGameTimeDto();
+        return playgroundService.isValidGameStartTime(playgroundId, gameTimeDto);
     }
+
 }

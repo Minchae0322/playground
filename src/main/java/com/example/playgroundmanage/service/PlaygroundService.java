@@ -1,10 +1,7 @@
 package com.example.playgroundmanage.service;
 
-import com.example.playgroundmanage.dto.GameDateDto;
-import com.example.playgroundmanage.dto.response.GameThumbnail;
-import com.example.playgroundmanage.dto.response.OccupiedTime;
-import com.example.playgroundmanage.dto.response.PlaygroundDto;
-import com.example.playgroundmanage.dto.response.PlaygroundInfoDto;
+import com.example.playgroundmanage.dto.GameTimeInfo;
+import com.example.playgroundmanage.dto.response.*;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.vo.Game;
@@ -23,6 +20,8 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import static com.example.playgroundmanage.util.GameValidation.validateGameStartTime;
+
 @Service
 @RequiredArgsConstructor
 public class PlaygroundService {
@@ -34,23 +33,20 @@ public class PlaygroundService {
     private final CampusRepository campusRepository;
 
     @Transactional
-    public boolean isValidGameStartTime(Long playgroundId, GameDateDto gameDateDto) {
+    public boolean isValidGameStartTime(Long playgroundId, GameTimeDto gameTimeDto) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
-        GameFinder gameFinder = new GameFinder(playground.getGames());
 
-        List<Game> gamesOnSelectedDate = gameFinder.getGamesForSelectedDate(gameDateDto.getMyDateTime());
+        validateGameStartTime(playground, gameTimeDto);
 
-        return gamesOnSelectedDate.stream()
-                .filter(g -> g.isTimeRangeOverlapping(gameDateDto.getMyDateTime().getLocalDateTime(), gameDateDto.getRunningTime()))
-                .toList().size() < 1;
+        return true;
     }
 
     @Transactional
-    public List<OccupiedTime> getPlaygroundOccupiedTimeLines(Long playgroundId, GameDateDto gameDateDto) {
+    public List<OccupiedTime> getPlaygroundOccupiedTimeLines(Long playgroundId, GameTimeInfo gameTimeInfo) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
 
         GameFinder gameFinder = new GameFinder(playground.getGames());
-        List<Game> gamesOnSelectedDate = gameFinder.getGamesForSelectedDate(gameDateDto.getMyDateTime());
+        List<Game> gamesOnSelectedDate = gameFinder.getGamesForSelectedDate(gameTimeInfo.getMyDateTime());
 
         return gamesOnSelectedDate.stream()
                 .map(g -> OccupiedTime.builder()

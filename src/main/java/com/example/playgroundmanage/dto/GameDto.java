@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.dto;
 
 import com.example.playgroundmanage.date.MyDateTime;
+import com.example.playgroundmanage.dto.response.GameTimeDto;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.game.vo.User;
 import lombok.Builder;
@@ -28,6 +29,13 @@ public class GameDto {
         this.myDateTime = myDateTime;
         this.sportsEvent = sportsEvent;
         this.runningTime = runningTime;
+    }
+
+    public GameTimeDto toGameDateDto() {
+        return GameTimeDto.builder()
+                .runningTime(runningTime)
+                .myDateTime(myDateTime)
+                .build();
     }
 
 }
