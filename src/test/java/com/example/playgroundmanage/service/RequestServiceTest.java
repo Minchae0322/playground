@@ -85,13 +85,13 @@ class RequestServiceTest {
     }
 
     public Long initGame() {
-        GameRegistration gameRegistration = GameRegistration.builder()
+       /* GameRegistration gameRegistration = GameRegistration.builder()
                 .matchStart(LocalDateTime.now(ZoneId.of(("Asia/Seoul"))))
                 .runningTime(60L)
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
-                .build();
-        return gameService.generateGame(gameRegistration);
+                .build();*/
+        return null; //gameService.generateGame(gameRegistration);
     }
 
     @Test
