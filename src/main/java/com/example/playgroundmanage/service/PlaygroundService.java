@@ -90,14 +90,14 @@ public class PlaygroundService {
                 .map(g -> GameThumbnail.builder()
                         .hostName(g.getHost().getNickname())
                         .gameStart(Util.localDateToYearMonthDateTimeString(g.getGameStartDateTime()))
-                        .time(g.getRunningTime())
+                        .runningTime(g.getRunningTime())
                         .sportsEvent(g.getSportsEvent())
                         .build())
                 .toList();
     }
 
     @Transactional
-    public GameDto getGameInProgress(Long playgroundId) {
+    public GameDto getOngoingGame(Long playgroundId) {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
 
@@ -107,11 +107,14 @@ public class PlaygroundService {
     }
 
     @Transactional
-    public List<GameThumbnail> getTopThreeUpcomingGames(Long playgroundId) {
-        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
-        List<Game> threeGame = playground.getThreeUpcomingGamesOrderedByStartDateTime();
-        return threeGame.stream()
-                .map(GameThumbnail::GameToGameThumbnail)
+    public List<GameDto> getUpcomingGames(Long playgroundId, Integer numberOfGame) {
+        Playground playground = playgroundRepository.findById(playgroundId)
+                .orElseThrow(PlaygroundNotExistException::new);
+
+        List<Game> upcomingGames = GameFinder.getUpcomingGames(playground.getGames(), numberOfGame, MyDateTime.initMyDateTime(ZonedDateTime.now()));
+
+        return upcomingGames.stream()
+                .map(Game::toGameDto)
                 .toList();
     }
 

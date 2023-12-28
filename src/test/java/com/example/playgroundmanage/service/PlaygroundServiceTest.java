@@ -72,7 +72,7 @@ class PlaygroundServiceTest {
 
         //when
 
-        GameThumbnail game = playgroundService.getGameInProgress(testPlayground.getId(), afterOneMinute.plusMinutes(1));
+        GameThumbnail game = playgroundService.getOngoingGame(testPlayground.getId(), afterOneMinute.plusMinutes(1));
 
         //then
         assertEquals(afterOneMinute.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), game.getGameStart());
@@ -101,7 +101,7 @@ class PlaygroundServiceTest {
 
         //when
 
-        GameThumbnail game = playgroundService.getGameInProgress(testPlayground.getId(), after.plusMinutes(1));
+        GameThumbnail game = playgroundService.getOngoingGame(testPlayground.getId(), after.plusMinutes(1));
 
         //then
         assertEquals(now.plusMinutes(61).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")), game.getGameStart());
@@ -152,7 +152,7 @@ class PlaygroundServiceTest {
         assertEquals(10, gameRepository.count());
 
         //when
-        List<GameThumbnail> gameThumbnails = playgroundService.getTopThreeUpcomingGames(testPlayground.getId());
+        List<GameThumbnail> gameThumbnails = playgroundService.getUpcomingGames(testPlayground.getId());
         assertEquals(3, gameThumbnails.size());
 
         assertEquals("test", gameThumbnails.get(0).getHostName());
@@ -180,7 +180,7 @@ class PlaygroundServiceTest {
         assertEquals(2, gameRepository.count());
 
         //when
-        List<GameThumbnail> gameThumbnails = playgroundService.getTopThreeUpcomingGames(testPlayground.getId());
+        List<GameThumbnail> gameThumbnails = playgroundService.getUpcomingGames(testPlayground.getId());
         assertEquals(2, gameThumbnails.size());
         assertEquals("test", gameThumbnails.get(0).getHostName());
         assertEquals(59, gameThumbnails.get(1).getRunningTime());
@@ -190,7 +190,7 @@ class PlaygroundServiceTest {
 
     @Test
     void 가장빠른_3경기_가져오기_경기가없음() {
-        List<GameThumbnail> gameThumbnails = playgroundService.getTopThreeUpcomingGames(testPlayground.getId());
+        List<GameThumbnail> gameThumbnails = playgroundService.getUpcomingGames(testPlayground.getId());
         assertEquals(0, gameThumbnails.size());
     }
 }

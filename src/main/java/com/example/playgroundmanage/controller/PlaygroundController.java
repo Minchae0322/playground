@@ -10,7 +10,6 @@ import com.example.playgroundmanage.service.PlaygroundService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -21,14 +20,18 @@ public class PlaygroundController {
 
     @GetMapping("/playground/{playgroundId}/current")
     public GameThumbnail getActiveGameInfo(@PathVariable Long playgroundId) {
-        GameDto gameDto =  playgroundService.getGameInProgress(playgroundId);
+        GameDto gameDto =  playgroundService.getOngoingGame(playgroundId);
 
         return gameDto.toGameThumbnail();
     }
 
     @GetMapping("/playground/{playgroundId}/upComing")
     public List<GameThumbnail> getThreeGameOrderedByStartTime(@PathVariable Long playgroundId) {
-        return playgroundService.getTopThreeUpcomingGames(playgroundId);
+        List<GameDto> upcomingThreeGames = playgroundService.getUpcomingGames(playgroundId, 3);
+
+        return upcomingThreeGames.stream()
+                .map(GameDto::toGameThumbnail)
+                .toList();
     }
 
     @GetMapping("/playground/{playgroundId}/info")

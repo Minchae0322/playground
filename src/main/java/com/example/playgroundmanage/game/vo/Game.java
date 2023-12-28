@@ -121,7 +121,7 @@ public class Game {
         return this.gameStartDateTime.plusMinutes(runningTime);
     }
 
-    public boolean isGameOnGoing(LocalDateTime currentTime) {
+    public boolean isGameOngoing(LocalDateTime currentTime) {
         LocalDateTime gameEndDateTime = gameStartDateTime.plusMinutes(runningTime);
         return currentTime.isAfter(gameStartDateTime) && currentTime.isBefore(gameEndDateTime);
     }

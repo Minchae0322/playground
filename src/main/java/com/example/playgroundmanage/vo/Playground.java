@@ -47,12 +47,6 @@ public class Playground {
         this.games = games;
     }
 
-
-
-
-
-
-
     public List<Game> getUpcomingGamesOrderedByStartDateTime() {
         return this.getGames().stream()
                 .filter(game -> game.getGameStartDateTime().isAfter(LocalDateTime.now()))
@@ -60,12 +54,6 @@ public class Playground {
                 .toList();
     }
 
-    public List<Game> getThreeUpcomingGamesOrderedByStartDateTime() {
-        return this.getGames().stream()
-                .filter(game -> game.getGameStartDateTime().isAfter(LocalDateTime.now()))
-                .sorted(Comparator.comparing(Game::getGameStartDateTime))
-                .limit(3)
-                .toList();
-    }
+
 
 }
