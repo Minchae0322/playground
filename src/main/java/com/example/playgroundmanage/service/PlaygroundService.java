@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.service;
 
-import com.example.playgroundmanage.dto.GameTimeInfo;
+import com.example.playgroundmanage.date.MyDateTime;
+import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.dto.response.*;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
@@ -18,9 +19,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
-import static com.example.playgroundmanage.util.GameValidation.validateGameStartTime;
+import static com.example.playgroundmanage.util.GameValidation.validateOverlappingGames;
 
 @Service
 @RequiredArgsConstructor
@@ -36,7 +38,7 @@ public class PlaygroundService {
     public boolean isValidGameStartTime(Long playgroundId, GameTimeDto gameTimeDto) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
 
-        validateGameStartTime(playground, gameTimeDto);
+        validateOverlappingGames(playground, gameTimeDto);
 
         return true;
     }
@@ -45,8 +47,7 @@ public class PlaygroundService {
     public List<OccupiedTime> getPlaygroundOccupiedTimeLines(Long playgroundId, GameTimeDto gameTimeDto) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
 
-        GameFinder gameFinder = new GameFinder(playground.getGames());
-        List<Game> gamesOnSelectedDate = gameFinder.getGamesForSelectedDate(gameTimeDto.getMyDateTime());
+        List<Game> gamesOnSelectedDate = GameFinder.getGamesForSelectedDate(playground.getGames(), gameTimeDto.getStartDateTime());
 
         return gamesOnSelectedDate.stream()
                 .map(g -> OccupiedTime.builder()
@@ -96,18 +97,13 @@ public class PlaygroundService {
     }
 
     @Transactional
-    public GameThumbnail getGameInProgress(Long playgroundId, LocalDateTime currentTime) {
-        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
-        Game game = playground.getGames().stream()
-                .filter(g -> g.gameOnGoing(currentTime))
-                .findFirst().orElseThrow();
+    public GameDto getGameInProgress(Long playgroundId) {
+        Playground playground = playgroundRepository.findById(playgroundId)
+                .orElseThrow(PlaygroundNotExistException::new);
 
-        return GameThumbnail.builder()
-                .gameId(game.getId())
-                .gameStart(Util.localDateToYearMonthDateTimeString(game.getGameStartDateTime()))
-                .time(game.getRunningTime())
-                .hostName(game.getHost().getNickname())
-                .build();
+        Game onGoingGame = GameFinder.findOngoingGame(playground.getGames(), MyDateTime.initMyDateTime(ZonedDateTime.now()));
+
+        return onGoingGame.toGameDto();
     }
 
     @Transactional

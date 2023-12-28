@@ -23,14 +23,15 @@ public class GameRegistration {
 
     private Integer runningTime;
 
+    private boolean isFriendly;
+
     @Builder
-    public GameRegistration(Long playgroundId, String gameName, ZonedDateTime gameStartDateTime, SportsEvent sportsEvent, Integer runningTime) {
+    public GameRegistration(Long playgroundId, String gameName, ZonedDateTime gameStartDateTime, SportsEvent sportsEvent, Integer runningTime, boolean isFriendly) {
         this.playgroundId = playgroundId;
         this.gameName = gameName;
         this.gameStartDateTime = gameStartDateTime;
         this.sportsEvent = sportsEvent;
         this.runningTime = runningTime;
+        this.isFriendly = isFriendly;
     }
-
-
 }

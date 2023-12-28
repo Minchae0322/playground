@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.time.ZonedDateTime;
 
-import static com.example.playgroundmanage.date.MyDateTime.getMyDateTime;
+
 
 
 @Getter
@@ -28,7 +28,7 @@ public class GameTimeInfo {
 
     public GameTimeDto toGameTimeDto() {
         return GameTimeDto.builder()
-                .myDateTime(getMyDateTime(gameStartDateTime))
+                .startDateTime(MyDateTime.initMyDateTime(gameStartDateTime))
                 .runningTime(runningTime)
                 .build();
     }

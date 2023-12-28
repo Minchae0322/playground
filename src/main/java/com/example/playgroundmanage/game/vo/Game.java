@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.game.vo;
 
-import com.example.playgroundmanage.date.MyDateTime;
+import com.example.playgroundmanage.date.MyDateTimeLocal;
+import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.type.MatchResult;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
@@ -9,10 +10,10 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import static com.example.playgroundmanage.util.DateFormat.dateFormatWith0Second
 import static com.example.playgroundmanage.util.DateFormat.dateFormatYYYYMMDD;
 
 @Entity
+@Setter
 @Getter
 @RequiredArgsConstructor
 public class Game {
@@ -47,6 +49,8 @@ public class Game {
     @Enumerated
     private SportsEvent sportsEvent;
 
+    private boolean isFriendly;
+
     private int homeScore;
 
     private int awayScore;
@@ -57,13 +61,11 @@ public class Game {
     private Integer runningTime;
 
 
-    private boolean isStarted;
-
-    private boolean isFinished;
 
     @Builder
-    public Game(String gameName, Playground playground, User host, SportsEvent sportsEvent, LocalDateTime gameStartDateTime, Integer runningTime) {
+    public Game(Long id, String gameName, Playground playground, User host, SportsEvent sportsEvent, LocalDateTime gameStartDateTime, Integer runningTime, boolean isFriendly) {
         validate(host, runningTime, gameStartDateTime);
+        this.id = id;
         this.gameName = gameName;
         this.playground = playground;
         this.host = host;
@@ -72,13 +74,22 @@ public class Game {
         this.sportsEvent = sportsEvent;
         this.homeScore = 0;
         this.awayScore = 0;
+        this.isFriendly = isFriendly;
         this.gameStartDateTime = gameStartDateTime;
         this.runningTime = runningTime;
-        this.isStarted = false;
-        this.isFinished = false;
     }
 
-
+    public GameDto toGameDto() {
+        return GameDto.builder()
+                .host(host)
+                .gameName(gameName)
+                .gameId(id)
+                .startDateTime(MyDateTimeLocal.initMyDateTime(gameStartDateTime))
+                .isFriendly(isFriendly)
+                .runningTime(runningTime)
+                .sportsEvent(sportsEvent)
+                .build();
+    }
 
     public CompetingTeam getCompetingTeamBySide(MatchTeamSide matchTeamSide) {
         if (matchTeamSide.equals(MatchTeamSide.HOME)) {
@@ -110,7 +121,7 @@ public class Game {
         return this.gameStartDateTime.plusMinutes(runningTime);
     }
 
-    public boolean gameOnGoing(LocalDateTime currentTime) {
+    public boolean isGameOnGoing(LocalDateTime currentTime) {
         LocalDateTime gameEndDateTime = gameStartDateTime.plusMinutes(runningTime);
         return currentTime.isAfter(gameStartDateTime) && currentTime.isBefore(gameEndDateTime);
     }

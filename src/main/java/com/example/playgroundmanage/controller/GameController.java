@@ -42,7 +42,7 @@ public class GameController {
     @PostMapping("/game/generate")
     public ResponseEntity<Long> generateGame(@RequestBody GameRegistration gameRegistration, @AuthenticationPrincipal MyUserDetails userDetails) {
         GameDto gameDto = GameDto.builder()
-                .myDateTime(MyDateTime.getMyDateTime(gameRegistration.getGameStartDateTime()))
+                .startDateTime(MyDateTime.initMyDateTime(gameRegistration.getGameStartDateTime()))
                 .host(userDetails.getUser())
                 .gameName(gameRegistration.getGameName())
                 .runningTime(gameRegistration.getRunningTime())

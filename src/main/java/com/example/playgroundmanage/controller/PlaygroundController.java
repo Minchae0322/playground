@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.controller;
 
+import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.dto.GameTimeInfo;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.dto.response.GameTimeDto;
@@ -20,7 +21,9 @@ public class PlaygroundController {
 
     @GetMapping("/playground/{playgroundId}/current")
     public GameThumbnail getActiveGameInfo(@PathVariable Long playgroundId) {
-        return playgroundService.getGameInProgress(playgroundId, LocalDateTime.now());
+        GameDto gameDto =  playgroundService.getGameInProgress(playgroundId);
+
+        return gameDto.toGameThumbnail();
     }
 
     @GetMapping("/playground/{playgroundId}/upComing")

@@ -22,15 +22,19 @@ public class SubTeamService {
     public void generateSoloSubTeamBothCompetingTeam(Long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow(MatchNotExistException::new);
 
-        if (game.getHomeTeam().isContainSoloTeam() || game.getAwayTeam().isContainSoloTeam()) {
-            throw new IllegalArgumentException("개인 팀이 이미 있습니다.");
-        }
+        validateTeamsBeforeGeneratingSubTeams(game);
 
-        subTeamRepository.save(generateSoloSubTeam(game.getHomeTeam()));
-        subTeamRepository.save(generateSoloSubTeam(game.getAwayTeam()));
+        subTeamRepository.save(buildSoloSubTeam(game.getHomeTeam()));
+        subTeamRepository.save(buildSoloSubTeam(game.getAwayTeam()));
     }
 
-    private SubTeam generateSoloSubTeam(CompetingTeam competingTeam) {
+    private void validateTeamsBeforeGeneratingSubTeams(Game game) {
+        if (game.getHomeTeam().isContainSoloTeam() || game.getAwayTeam().isContainSoloTeam()) {
+            throw new IllegalArgumentException("개인 팀이 이미 존재합니다.");
+        }
+    }
+
+    private SubTeam buildSoloSubTeam(CompetingTeam competingTeam) {
         return SubTeam.builder()
                 .isSoloTeam(true)
                 .isAccept(true)

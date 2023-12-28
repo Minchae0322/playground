@@ -156,7 +156,7 @@ class PlaygroundServiceTest {
         assertEquals(3, gameThumbnails.size());
 
         assertEquals("test", gameThumbnails.get(0).getHostName());
-        assertEquals(59, gameThumbnails.get(1).getTime());
+        assertEquals(59, gameThumbnails.get(1).getRunningTime());
 
         //then
     }
@@ -183,7 +183,7 @@ class PlaygroundServiceTest {
         List<GameThumbnail> gameThumbnails = playgroundService.getTopThreeUpcomingGames(testPlayground.getId());
         assertEquals(2, gameThumbnails.size());
         assertEquals("test", gameThumbnails.get(0).getHostName());
-        assertEquals(59, gameThumbnails.get(1).getTime());
+        assertEquals(59, gameThumbnails.get(1).getRunningTime());
 
         //then
     }

@@ -1,9 +1,11 @@
 package com.example.playgroundmanage.dto;
 
-import com.example.playgroundmanage.date.MyDateTime;
+import com.example.playgroundmanage.date.DateTime;
+import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.dto.response.GameTimeDto;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.util.Util;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -12,30 +14,49 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class GameDto {
 
+
+    private Long gameId;
+
     private User host;
 
     private String gameName;
 
-    private MyDateTime myDateTime;
+    private DateTime startDateTime;
 
     private SportsEvent sportsEvent;
 
     private Integer runningTime;
 
+    private boolean isFriendly;
+
+
     @Builder
-    public GameDto(User host, String gameName, MyDateTime myDateTime, SportsEvent sportsEvent, Integer runningTime) {
+    public GameDto(Long gameId, User host, String gameName, DateTime startDateTime, SportsEvent sportsEvent, Integer runningTime, boolean isFriendly) {
+        this.gameId = gameId;
         this.host = host;
         this.gameName = gameName;
-        this.myDateTime = myDateTime;
+        this.startDateTime = startDateTime;
         this.sportsEvent = sportsEvent;
         this.runningTime = runningTime;
+        this.isFriendly = isFriendly;
+    }
+
+    public GameThumbnail toGameThumbnail() {
+        return GameThumbnail.builder()
+                .gameStart(Util.localDateToYearMonthDateTimeString(startDateTime.getLocalDateTime()))
+                .hostName(host.getNickname())
+                .runningTime(runningTime)
+                .sportsEvent(sportsEvent)
+                .gameId(gameId)
+                .build();
     }
 
     public GameTimeDto toGameDateDto() {
         return GameTimeDto.builder()
                 .runningTime(runningTime)
-                .myDateTime(myDateTime)
+                .startDateTime(startDateTime)
                 .build();
     }
+
 
 }

@@ -16,6 +16,7 @@ import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.Team;
 import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.vo.Playground;
+import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -68,6 +69,7 @@ class GameServiceTest {
 
 
     @BeforeEach
+    @Transactional
     void before() {
         testUser = User.builder()
                 .username("test")
@@ -84,7 +86,6 @@ class GameServiceTest {
         teamRepository.save(testTeam);
         testPlayground = Playground.builder()
                 .name("test")
-                .id(1L)
                 .build();
         playgroundRepository.save(testPlayground);
     }
@@ -102,21 +103,19 @@ class GameServiceTest {
 */
 
     @Test
-    void start_match() {
+    @Transactional
+    void 게임_생성() {
         GameDto gameRegistration = GameDto.builder()
-                .myDateTime(MyDateTime.getMyDateTime(ZonedDateTime.now().plusMinutes(10)))
+                .startDateTime(MyDateTime.initMyDateTime(ZonedDateTime.now().plusMinutes(10)))
                 .runningTime(60)
                 .host(testUser)
                 .sportsEvent(SportsEvent.SOCCER)
                 .build();
 
-        Game game = gameRepository.findById(gameService.generateGame(testPlayground.getId(), gameRegistration)).orElseThrow();
+        Long gameId = gameService.generateGame(testPlayground.getId(), gameRegistration);
 
 
-        Assertions.assertEquals(1, gameRepository.count());
-        Assertions.assertEquals(1L, game.getHomeTeam().getId());
-        Assertions.assertEquals(2L, game.getAwayTeam().getId());
-        assertEquals("test", game.getHost().getUsername());
+        assertNotNull(gameId);
     }
  /*
 

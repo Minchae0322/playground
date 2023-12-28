@@ -1,23 +1,20 @@
 package com.example.playgroundmanage.dto.response;
 
-import com.example.playgroundmanage.date.MyDateTime;
+import com.example.playgroundmanage.date.DateTime;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
-import java.time.ZonedDateTime;
-
 @Data
 @RequiredArgsConstructor
 public class GameTimeDto {
-    private MyDateTime myDateTime;
+    private DateTime startDateTime;
 
     private Integer runningTime;
 
-
     @Builder
-    public GameTimeDto(MyDateTime myDateTime, Integer runningTime) {
-        this.myDateTime = myDateTime;
+    public GameTimeDto(DateTime startDateTime, Integer runningTime) {
+        this.startDateTime = startDateTime;
         this.runningTime = runningTime;
     }
 }
