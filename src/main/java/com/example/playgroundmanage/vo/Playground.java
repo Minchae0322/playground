@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.vo;
 
+import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.store.UploadFile;
 import com.example.playgroundmanage.type.SportsEvent;
@@ -12,7 +13,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -52,6 +52,16 @@ public class Playground {
                 .filter(game -> game.getGameStartDateTime().isAfter(LocalDateTime.now()))
                 .sorted(Comparator.comparing(Game::getGameStartDateTime).reversed())
                 .toList();
+    }
+
+    public PlaygroundDto toPlaygroundDto() {
+        return PlaygroundDto.builder()
+                .playgroundId(id)
+                .campusName(campus.getCampusName())
+                .playgroundName(name)
+                .schoolName(campus.getSchool().getSchoolName())
+                .sportsEvent(sportsEvent)
+                .build();
     }
 
 

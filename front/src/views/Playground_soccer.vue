@@ -61,7 +61,7 @@ const getInProgressGame = function () {
 
   const accessToken = localStorage.getItem("accessToken");
   if(accessToken) {
-    axios.get(`${apiBaseUrl}/playground/1/current`,
+    axios.get(`${apiBaseUrl}/playground/2/current`,
         {  headers: {
             'Authorization': accessToken
           }}
@@ -77,7 +77,7 @@ const getInProgressGame = function () {
 const getUpcomingGames = function () {
   const accessToken = localStorage.getItem("accessToken");
   if(accessToken) {
-    axios.get(`${apiBaseUrl}playground/2/upComing`,
+    axios.get(`${apiBaseUrl}/playground/2/upComing`,
         {  headers: {
             'Authorization': accessToken
           }}

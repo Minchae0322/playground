@@ -2,12 +2,14 @@ package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.dto.GameDto;
+import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.dto.response.*;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.repository.PlaygroundRepository;
 import com.example.playgroundmanage.store.FileHandler;
+import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.util.GameFinder;
 import com.example.playgroundmanage.util.Util;
 import com.example.playgroundmanage.vo.Campus;
@@ -23,6 +25,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.example.playgroundmanage.util.GameValidation.validateOverlappingGames;
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -45,7 +48,8 @@ public class PlaygroundService {
 
     @Transactional
     public List<OccupiedTime> getPlaygroundOccupiedTimeLines(Long playgroundId, GameTimeDto gameTimeDto) {
-        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
+        Playground playground = playgroundRepository.findById(playgroundId)
+                .orElseThrow(PlaygroundNotExistException::new);
 
         List<Game> gamesOnSelectedDate = GameFinder.getGamesForSelectedDate(playground.getGames(), gameTimeDto.getStartDateTime());
 
@@ -57,44 +61,7 @@ public class PlaygroundService {
                 .toList();
     }
 
-    @Transactional
-    public PlaygroundInfoDto getPlaygroundInfo(Long playgroundId) {
-        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
-        return PlaygroundInfoDto.builder()
-                .campusName(playground.getCampus().getCampusName())
-                .schoolName(playground.getCampus().getSchool().getSchoolName())
-                .sportsEvent(playground.getSportsEvent().getValue())
-                .playgroundName(playground.getName())
-                .build();
-    }
 
-
-    @Transactional
-    public MultipartFile getPlaygroundImg(Long playgroundId) throws IOException {
-        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
-        return fileHandler.extractFile(playground.getImg());
-    }
-
-    @Transactional
-    public List<PlaygroundDto> getPlaygroundByCampus(Long campusId) {
-        Campus campus = campusRepository.findById(campusId).orElseThrow();
-        return campus.getPlaygrounds().stream()
-                .map(p -> PlaygroundDto.builder().playgroundId(p.getId())
-                        .build()).toList();
-    }
-
-    public List<GameThumbnail> getGamesThumbnailOrderedByLatest(Long playgroundId) {
-        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
-        List<Game> notStartedGames =  playground.getUpcomingGamesOrderedByStartDateTime();
-        return notStartedGames.stream()
-                .map(g -> GameThumbnail.builder()
-                        .hostName(g.getHost().getNickname())
-                        .gameStart(Util.localDateToYearMonthDateTimeString(g.getGameStartDateTime()))
-                        .runningTime(g.getRunningTime())
-                        .sportsEvent(g.getSportsEvent())
-                        .build())
-                .toList();
-    }
 
     @Transactional
     public GameDto getOngoingGame(Long playgroundId) {
@@ -119,20 +86,43 @@ public class PlaygroundService {
     }
 
     @Transactional
-    public List<OccupiedTime> getDailyGameTimelines(Long playgroundId, LocalDateTime day) {
-        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
-        List<Game> dailyGames = getDailyGames(playground.getGames(), day);
-        return dailyGames.stream().map(g -> OccupiedTime.builder()
-                .start(g.getGameStartDateTime())
-                .end(g.getGameStartDateTime().plusMinutes(g.getRunningTime()))
-                .build()).toList();
+    public PlaygroundDto getPlaygroundInfo(Long playgroundId) {
+        Playground playground = playgroundRepository.findById(playgroundId)
+                .orElseThrow(PlaygroundNotExistException::new);
+
+        return playground.toPlaygroundDto();
     }
 
-    private List<Game> getDailyGames(List<Game> games, LocalDateTime day) {
-        return games.stream()
-                .filter(g -> g.isGameDay(day))
+
+    @Transactional
+    public InMemoryMultipartFile getPlaygroundImg(Long playgroundId) throws IOException {
+        Playground playground = playgroundRepository.findById(playgroundId)
+                .orElseThrow(PlaygroundNotExistException::new);
+
+        return fileHandler.extractFile(playground.getImg());
+    }
+
+    @Transactional
+    public List<PlaygroundDto> getPlaygroundByCampus(Long campusId) {
+        Campus campus = campusRepository.findById(campusId).orElseThrow();
+        return campus.getPlaygrounds().stream()
+                .map(Playground::toPlaygroundDto)
+        .toList();
+    }
+
+    public List<GameThumbnail> getGamesThumbnailOrderedByLatest(Long playgroundId) {
+        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
+        List<Game> notStartedGames =  playground.getUpcomingGamesOrderedByStartDateTime();
+        return notStartedGames.stream()
+                .map(g -> GameThumbnail.builder()
+                        .hostName(g.getHost().getNickname())
+                        .gameStart(Util.localDateToYearMonthDateTimeString(g.getGameStartDateTime()))
+                        .runningTime(g.getRunningTime())
+                        .sportsEvent(g.getSportsEvent())
+                        .build())
                 .toList();
     }
+
 
     @Transactional
     public boolean isExistGameTime(Long playgroundId, LocalDateTime day,Integer runningTime) {

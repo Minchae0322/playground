@@ -5,11 +5,15 @@ import com.example.playgroundmanage.dto.GameTimeInfo;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.dto.response.GameTimeDto;
 import com.example.playgroundmanage.dto.response.OccupiedTime;
-import com.example.playgroundmanage.dto.response.PlaygroundInfoDto;
+import com.example.playgroundmanage.dto.PlaygroundDto;
+import com.example.playgroundmanage.dto.response.PlaygroundInfo;
 import com.example.playgroundmanage.service.PlaygroundService;
+import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -18,11 +22,12 @@ public class PlaygroundController {
 
     private final PlaygroundService playgroundService;
 
+
     @GetMapping("/playground/{playgroundId}/current")
-    public GameThumbnail getActiveGameInfo(@PathVariable Long playgroundId) {
+    public ResponseEntity<GameThumbnail> getOngoingGame(@PathVariable Long playgroundId) {
         GameDto gameDto =  playgroundService.getOngoingGame(playgroundId);
 
-        return gameDto.toGameThumbnail();
+        return ResponseEntity.ok(gameDto.toGameThumbnail());
     }
 
     @GetMapping("/playground/{playgroundId}/upComing")
@@ -35,8 +40,17 @@ public class PlaygroundController {
     }
 
     @GetMapping("/playground/{playgroundId}/info")
-    public PlaygroundInfoDto getPlaygroundInfo(@PathVariable Long playgroundId) {
-        return playgroundService.getPlaygroundInfo(playgroundId);
+    public PlaygroundInfo getPlaygroundInfo(@PathVariable Long playgroundId) throws IOException {
+        PlaygroundDto playgroundDto = playgroundService.getPlaygroundInfo(playgroundId);
+        InMemoryMultipartFile playgroundImg = playgroundService.getPlaygroundImg(playgroundId);
+
+        return PlaygroundInfo.builder()
+                .playgroundName(playgroundDto.getPlaygroundName())
+                .playgroundImg(playgroundImg)
+                .campusName(playgroundDto.getCampusName())
+                .schoolName(playgroundDto.getSchoolName())
+                .sportsEvent(playgroundDto.getSportsEvent())
+                .build();
     }
 
     @PostMapping("/playground/{playgroundId}/occupiedTime")

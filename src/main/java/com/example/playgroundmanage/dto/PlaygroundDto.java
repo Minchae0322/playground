@@ -1,5 +1,6 @@
-package com.example.playgroundmanage.dto.response;
+package com.example.playgroundmanage.dto;
 
+import com.example.playgroundmanage.type.SportsEvent;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -7,17 +8,22 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class PlaygroundInfoDto {
+public class PlaygroundDto {
+
+    private Long playgroundId;
+
+
     private String schoolName;
 
     private String campusName;
 
     private String playgroundName;
 
-    private String sportsEvent;
+    private SportsEvent sportsEvent;
 
     @Builder
-    public PlaygroundInfoDto(String schoolName, String campusName, String playgroundName, String sportsEvent) {
+    public PlaygroundDto(Long playgroundId, String schoolName, String campusName, String playgroundName, SportsEvent sportsEvent) {
+        this.playgroundId = playgroundId;
         this.schoolName = schoolName;
         this.campusName = campusName;
         this.playgroundName = playgroundName;
