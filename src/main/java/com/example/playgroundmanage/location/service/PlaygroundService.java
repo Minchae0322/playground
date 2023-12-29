@@ -40,7 +40,7 @@ public class PlaygroundService {
     public boolean isValidGameStartTime(Long playgroundId, GameTimeDto gameTimeDto) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
 
-        validateOverlappingGames(playground, gameTimeDto);
+        validateOverlappingGames(playground.getGames(), gameTimeDto);
 
         return true;
     }

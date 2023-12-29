@@ -38,7 +38,7 @@ public class Game {
     private User host;
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<JoinGameRequest> joinGameRequests = new ArrayList<>();
+    private List<GameJoinRequest> gameJoinRequests = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private CompetingTeam homeTeam;

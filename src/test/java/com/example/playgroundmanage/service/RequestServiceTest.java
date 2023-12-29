@@ -1,23 +1,16 @@
 package com.example.playgroundmanage.service;
 
-import com.example.playgroundmanage.dto.SubTeamRegistrationParams;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.impl.SoloGameJoinRequestService;
 
-import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
-import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.game.vo.JoinGameRequest;
 import com.example.playgroundmanage.game.vo.Team;
 import com.example.playgroundmanage.game.vo.User;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class RequestServiceTest {
@@ -37,7 +30,7 @@ class RequestServiceTest {
     private GameService gameService;
 
     @Autowired
-    private JoinGameRequestRepository joinGameRequestRepository;
+    private GameJoinRequestRepository gameJoinRequestRepository;
 
 
 
@@ -54,7 +47,7 @@ class RequestServiceTest {
 
     @BeforeEach
     void before() {
-        joinGameRequestRepository.deleteAll();
+        gameJoinRequestRepository.deleteAll();
         teamRepository.deleteAll();
         userRepository.deleteAll();
         testUser = User.builder()
