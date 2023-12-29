@@ -1,8 +1,8 @@
 package com.example.playgroundmanage.util;
 
-import com.example.playgroundmanage.dto.response.GameTimeDto;
+import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.vo.Playground;
+import com.example.playgroundmanage.location.vo.Playground;
 
 import java.util.Collections;
 import java.util.Optional;

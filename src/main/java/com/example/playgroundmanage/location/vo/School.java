@@ -1,5 +1,4 @@
-package com.example.playgroundmanage.vo;
-
+package com.example.playgroundmanage.location.vo;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -11,19 +10,17 @@ import java.util.List;
 @Entity
 @Getter
 @RequiredArgsConstructor
-public class Campus {
+public class School {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String campusName;
+    private String schoolName;
 
-    @ManyToOne
-    private School school;
+    private String schoolImg;
 
-    @OneToMany(mappedBy = "campus")
-    private List<Playground> playgrounds = new ArrayList<>();
-
+    @OneToMany(mappedBy = "school")
+    private List<Campus> campus = new ArrayList<>();
 
 }

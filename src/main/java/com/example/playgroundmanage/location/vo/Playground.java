@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.vo;
+package com.example.playgroundmanage.location.vo;
 
 import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.game.vo.Game;

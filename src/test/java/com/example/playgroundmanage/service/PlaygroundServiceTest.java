@@ -1,25 +1,15 @@
 package com.example.playgroundmanage.service;
 
-import com.example.playgroundmanage.dto.response.GameThumbnail;
-import com.example.playgroundmanage.dto.response.OccupiedTime;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.repository.UserRepository;
-import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.User;
-import com.example.playgroundmanage.repository.PlaygroundRepository;
+import com.example.playgroundmanage.location.repository.PlaygroundRepository;
+import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.type.UserRole;
-import com.example.playgroundmanage.vo.Playground;
+import com.example.playgroundmanage.location.vo.Playground;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.List;
-import java.util.stream.IntStream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 class PlaygroundServiceTest {

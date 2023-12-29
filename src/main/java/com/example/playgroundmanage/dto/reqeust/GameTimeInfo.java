@@ -1,7 +1,7 @@
-package com.example.playgroundmanage.dto;
+package com.example.playgroundmanage.dto.reqeust;
 
 import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.dto.response.GameTimeDto;
+import com.example.playgroundmanage.dto.GameTimeDto;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

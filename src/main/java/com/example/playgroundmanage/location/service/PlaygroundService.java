@@ -1,23 +1,23 @@
-package com.example.playgroundmanage.service;
+package com.example.playgroundmanage.location.service;
 
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.dto.GameDto;
+import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.dto.response.*;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.repository.PlaygroundRepository;
+import com.example.playgroundmanage.location.repository.PlaygroundRepository;
+import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.util.GameFinder;
 import com.example.playgroundmanage.util.Util;
-import com.example.playgroundmanage.vo.Campus;
-import com.example.playgroundmanage.vo.Playground;
+import com.example.playgroundmanage.location.vo.Campus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -25,7 +25,6 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.example.playgroundmanage.util.GameValidation.validateOverlappingGames;
-import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor

@@ -2,7 +2,6 @@ package com.example.playgroundmanage.dto;
 
 import com.example.playgroundmanage.date.DateTime;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
-import com.example.playgroundmanage.dto.response.GameTimeDto;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.util.Util;

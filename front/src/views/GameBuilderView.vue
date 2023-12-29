@@ -91,7 +91,6 @@ const close = () => {
 
 const generateGame = () => {
   validateAccessToken()
-  console.log(startTime.value)
   axios.post(`${apiBaseUrl}/game/generate`, {
         gameName: "game",
         playgroundId: 2,
@@ -104,9 +103,11 @@ const generateGame = () => {
         }
       }
   ).then(response => {
+    emit('closeGameBuilder');
   }).catch(error => {
     alert(error.response.data.message)
   });
+
 };
 
 const props = defineProps({

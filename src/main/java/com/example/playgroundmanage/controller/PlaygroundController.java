@@ -1,13 +1,13 @@
 package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.dto.GameDto;
-import com.example.playgroundmanage.dto.GameTimeInfo;
+import com.example.playgroundmanage.dto.reqeust.GameTimeInfo;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
-import com.example.playgroundmanage.dto.response.GameTimeDto;
+import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.response.OccupiedTime;
 import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.dto.response.PlaygroundInfo;
-import com.example.playgroundmanage.service.PlaygroundService;
+import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -2,33 +2,22 @@ package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.dto.GameDto;
-import com.example.playgroundmanage.dto.reqeust.GameRegistration;
-import com.example.playgroundmanage.dto.response.SubTeamDto;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.UserService;
-import com.example.playgroundmanage.game.vo.SubTeam;
-import com.example.playgroundmanage.repository.PlaygroundRepository;
-import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
-import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.Team;
 import com.example.playgroundmanage.game.vo.User;
-import com.example.playgroundmanage.vo.Playground;
+import com.example.playgroundmanage.location.vo.Playground;
 import jakarta.transaction.Transactional;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Rollback;
 
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
