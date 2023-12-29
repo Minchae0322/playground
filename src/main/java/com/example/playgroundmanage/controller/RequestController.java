@@ -1,9 +1,11 @@
 package com.example.playgroundmanage.controller;
 
+import com.example.playgroundmanage.dto.JoinGameRequestDto;
 import com.example.playgroundmanage.dto.SubTeamRegistrationParams;
 import com.example.playgroundmanage.dto.SubTeamRequest;
-import com.example.playgroundmanage.game.service.GameService;
+import com.example.playgroundmanage.dto.reqeust.UserJoinGameParams;
 import com.example.playgroundmanage.game.service.RequestService;
+import com.example.playgroundmanage.game.service.RequestServiceFinder;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -12,18 +14,16 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 public class RequestController {
-    private final GameService gameService;
 
-    private final RequestService requestService;
+    private final RequestServiceFinder requestServiceFinder;
 
-    @PostMapping("/game/{gameId}/request/solo")
-    public void userJoinSoloTeam(@RequestBody SubTeamRequest subTeamRequest, @AuthenticationPrincipal MyUserDetails userDetails, @PathVariable Long gameId) {
-        SubTeamRegistrationParams subTeamRegistrationParams = SubTeamRegistrationParams.builder()
-                .gameId(gameId)
-                .teamId(subTeamRequest.getTeamId())
-                .user(userDetails.getUser())
-                .build();
-        requestService.createSoloJoinRequest(subTeamRegistrationParams);
+    @PostMapping("/game/{gameId}/join/{request-type}")
+    public void generateJoinGameRequest(@RequestBody UserJoinGameParams userJoinGameParams, @AuthenticationPrincipal MyUserDetails userDetails, @PathVariable Long gameId, @PathVariable("request-type") String type) {
+        RequestService requestService = requestServiceFinder.find(type);
+
+        JoinGameRequestDto joinGameRequestDto = userJoinGameParams.toJoinGameRequestDto(userDetails.getUser());
+
+        requestService.generateJoinRequest(gameId, joinGameRequestDto);
     }
 
     @PostMapping("/game/{gameId}/request/create-team")
@@ -33,6 +33,6 @@ public class RequestController {
                 .teamId(subTeamRequest.getTeamId())
                 .user(userDetails.getUser())
                 .build();
-        requestService.createSubTeamRequest(subTeamRegistrationParams);
+        //soloJoinGameRequestService.createSubTeamRequest(subTeamRegistrationParams);
     }
 }

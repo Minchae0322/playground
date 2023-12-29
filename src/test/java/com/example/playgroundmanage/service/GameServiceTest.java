@@ -34,7 +34,7 @@ class GameServiceTest {
     private CompetingTeamRepository competingTeamRepository;
 
     @Autowired
-    private MatchParticipantRepository matchParticipantRepository;
+    private GameParticipantRepository gameParticipantRepository;
 
     @Autowired
     private GameService gameService;

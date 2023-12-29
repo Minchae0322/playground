@@ -36,9 +36,10 @@ public class GameService {
 
     @Transactional
     public Long generateGame(Long playgroundId, GameDto gameDto) {
-        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
+        Playground playground = playgroundRepository.findById(playgroundId)
+                .orElseThrow(PlaygroundNotExistException::new);
 
-        validateOverlappingGames(playground, gameDto.toGameDateDto());
+        validateOverlappingGames(playground.getGames(), gameDto.toGameDateDto());
 
         Game game = Game.builder()
                 .gameName(gameDto.getGameName())

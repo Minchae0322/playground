@@ -5,67 +5,45 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Inheritance(strategy = InheritanceType.JOINED) // 상속 전략 설정
+@DiscriminatorColumn(name = "type") // 상속받는 클래스를 구분하는 컬럼
 @RequiredArgsConstructor
-public class JoinGameRequest {
+public abstract class JoinGameRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean isSoloTeam;
-
     @ManyToOne
     private Game game;
 
     @ManyToOne
-    private Team team;
-
-    @ManyToOne
     private User user;
 
-    private MatchTeamSide matchTeamSide;
+    protected MatchTeamSide matchTeamSide;
 
-    private LocalDateTime expiredTime;
+    protected LocalDateTime expiredTime;
 
-    private LocalDateTime requestTime;
+    protected LocalDateTime requestTime;
 
-    @Builder
-    public JoinGameRequest(Long id, boolean isSoloTeam, Game game, Team team, User user, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
+
+    public JoinGameRequest(Long id, Game game, User user, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
         this.id = id;
-        this.isSoloTeam = isSoloTeam;
         this.game = game;
-        this.team = team;
         this.user = user;
         this.matchTeamSide = matchTeamSide;
         this.expiredTime = expiredTime;
         this.requestTime = requestTime;
     }
 
-
-
-
-    public JoinGameRequest update(Team team, MatchTeamSide matchTeamSide) {
-        this.team = team;
-        this.matchTeamSide = matchTeamSide;
+    public JoinGameRequest update() {
         this.requestTime = LocalDateTime.now();
         return this;
-    }
-
-    public JoinGameRequest update(MatchTeamSide matchTeamSide) {
-        this.requestTime = LocalDateTime.now();
-        this.matchTeamSide = matchTeamSide;
-        return this;
-    }
-
-    public String getTeamNameOrSoloTeam() {
-        if (team == null) {
-            return "SOLO";
-        }
-        return team.getTeamName();
     }
 }

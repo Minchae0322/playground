@@ -133,7 +133,7 @@ public class UserService {
         SubTeam subTeam = subTeams.stream()
                 .filter(SubTeam::isSoloTeam)
                 .findFirst().orElseThrow();
-        subTeam.getMatchParticipants().stream().filter(p -> !p.isAccepted())
+        subTeam.getGameParticipants().stream().filter(p -> !p.isAccepted())
                 .toList();
         return null;
     }

@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 @Entity
 @Getter
 @RequiredArgsConstructor
-public class MatchParticipant {
+public class GameParticipant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,10 +26,12 @@ public class MatchParticipant {
     private boolean isAccepted;
 
     @Builder
-    public MatchParticipant(Long id, User user, SubTeam subTeam, boolean isAccepted) {
+    public GameParticipant(Long id, User user, SubTeam subTeam, boolean isAccepted) {
         this.id = id;
         this.user = user;
         this.subTeam = subTeam;
         this.isAccepted = isAccepted;
     }
+
+
 }

@@ -23,24 +23,24 @@ public class SubTeam {
     private Team team;
 
     @OneToMany(mappedBy = "subTeam", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<MatchParticipant> matchParticipants = new ArrayList<>();
+    private List<GameParticipant> gameParticipants = new ArrayList<>();
 
     private boolean isSoloTeam;
 
     private boolean isAccept;
 
     @Builder
-    public SubTeam(Long id, CompetingTeam competingTeam, Team team, List<MatchParticipant> matchParticipants, boolean isSoloTeam, boolean isAccept) {
+    public SubTeam(Long id, CompetingTeam competingTeam, Team team, List<GameParticipant> gameParticipants, boolean isSoloTeam, boolean isAccept) {
         this.id = id;
         this.competingTeam = competingTeam;
         this.team = team;
-        this.matchParticipants = matchParticipants;
+        this.gameParticipants = gameParticipants;
         this.isSoloTeam = isSoloTeam;
         this.isAccept = isAccept;
     }
 
     public List<UserInfoDto> getParticipantsInfo() {
-        return matchParticipants.stream()
+        return gameParticipants.stream()
                 .map(p -> UserInfoDto.builder()
                         .userNickname(p.getUser().getNickname())
                         .userId(p.getUser().getId())

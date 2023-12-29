@@ -50,11 +50,11 @@ public class User implements Serializable{
     private List<Teaming> teams = new ArrayList<>();
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<MatchParticipant> matchParticipants = new ArrayList<>();
+    private List<GameParticipant> gameParticipants = new ArrayList<>();
 
 
     @Builder
-    public User(Long id, String username, String provider, String email, String password, String phoneNumber, String nickname, boolean isEnable, UserRole role, List<Teaming> teams, List<MatchParticipant> matchParticipants) {
+    public User(Long id, String username, String provider, String email, String password, String phoneNumber, String nickname, boolean isEnable, UserRole role, List<Teaming> teams, List<GameParticipant> gameParticipants) {
         this.id = id;
         this.username = username;
         this.provider = provider;
@@ -65,7 +65,7 @@ public class User implements Serializable{
         this.isEnable = isEnable;
         this.role = role;
         this.teams = teams;
-        this.matchParticipants = matchParticipants;
+        this.gameParticipants = gameParticipants;
     }
 
 
