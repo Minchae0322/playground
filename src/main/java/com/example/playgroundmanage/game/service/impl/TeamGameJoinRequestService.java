@@ -41,7 +41,7 @@ public class TeamGameJoinRequestService implements RequestService {
 
     @Transactional
     private Long saveJoinRequest(Game game, JoinGameRequestDto joinGameRequestDto) {
-
+        //todo 결국 리퀘스트를 다시 보내면 전에는 솔로로 보냈을 수 도 있기 때문에 update 가 아닌 삭제하고 다시 save 해야한다.
         //TeamGameJoinRequest teamGameJoinRequest = (TeamGameJoinRequest) gameJoinRequestRepository.findByGameAndUser(game, joinGameRequestDto.getUser()).orElseThrow().update(team);
         return null;
     }

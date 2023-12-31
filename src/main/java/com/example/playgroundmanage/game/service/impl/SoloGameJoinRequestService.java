@@ -44,23 +44,28 @@ public class SoloGameJoinRequestService implements RequestService {
 
         List<GameParticipant> gameParticipants = findGameParticipantsInGame(game);
         GameValidation.validateExistUserInGame(gameParticipants, joinGameRequestDto.getUser());
+        deletePreviousRequest(game, joinGameRequestDto.getUser());
 
         return saveJoinRequest(game, joinGameRequestDto);
 
     }
 
 
+    private void deletePreviousRequest(Game game, User user) {
+        gameJoinRequestRepository.findByGameAndUser(game, user)
+                .ifPresent(gameJoinRequestRepository::delete);
+    }
+
+
     @Transactional
     private Long saveJoinRequest(Game game, JoinGameRequestDto joinGameRequestDto) {
-        return gameJoinRequestRepository.save(gameJoinRequestRepository.findByGameAndUser(game, joinGameRequestDto.getUser())
-                .orElse(SoloGameJoinRequest.builder()
+        return gameJoinRequestRepository.save(SoloGameJoinRequest.builder()
                         .game(game)
                         .expiredTime(game.getGameStartDateTime())
                         .user(joinGameRequestDto.getUser())
                         .expiredTime(game.getGameStartDateTime().plusMinutes(game.getRunningTime()))
                         .matchTeamSide(joinGameRequestDto.getMatchTeamSide())
                         .build())
-                .update())
                 .getId();
     }
 
