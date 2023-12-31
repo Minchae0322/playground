@@ -43,7 +43,7 @@ public class SoloGameJoinRequestService implements RequestService {
                 .orElseThrow(GameNotExistException::new);
 
         List<GameParticipant> gameParticipants = findGameParticipantsInGame(game);
-        GameValidation.validateExistUserInGame(gameParticipants, joinGameRequestDto.getUser());
+        GameValidation.validateDuplicateUserInGame(gameParticipants, joinGameRequestDto.getUser());
         deletePreviousRequest(game, joinGameRequestDto.getUser());
 
         return saveJoinRequest(game, joinGameRequestDto);

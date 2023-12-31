@@ -12,6 +12,8 @@ public class JoinGameRequestDto {
 
     private Long gameId;
 
+    private Long subTeamId;
+
     private User user;
 
     private Long teamId;
@@ -21,8 +23,9 @@ public class JoinGameRequestDto {
     private LocalDateTime requestTime;
 
     @Builder
-    public JoinGameRequestDto(Long gameId, User user, Long teamId, MatchTeamSide matchTeamSide, LocalDateTime requestTime) {
+    public JoinGameRequestDto(Long gameId, Long subTeamId, User user, Long teamId, MatchTeamSide matchTeamSide, LocalDateTime requestTime) {
         this.gameId = gameId;
+        this.subTeamId = subTeamId;
         this.user = user;
         this.teamId = teamId;
         this.matchTeamSide = matchTeamSide;

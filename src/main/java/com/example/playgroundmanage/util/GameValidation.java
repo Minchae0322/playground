@@ -4,11 +4,8 @@ import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.game.vo.User;
-import com.example.playgroundmanage.location.vo.Playground;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
 
 public final class GameValidation {
 
@@ -22,7 +19,7 @@ public final class GameValidation {
         }
     }
 
-    public static void validateExistUserInGame(List<GameParticipant> gameParticipants, User user) {
+    public static void validateDuplicateUserInGame(List<GameParticipant> gameParticipants, User user) {
         boolean isAlreadyParticipant = gameParticipants.stream()
                 .anyMatch(gp -> gp.getUser().equals(user));
 
@@ -30,4 +27,6 @@ public final class GameValidation {
             throw new IllegalArgumentException("이미 게임에 참여하고 있는 사용자입니다: " + user);
         }
     }
+
+
 }

@@ -1,10 +1,7 @@
 package com.example.playgroundmanage.game.vo.impl;
 
 
-import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.game.vo.GameJoinRequest;
-import com.example.playgroundmanage.game.vo.Team;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -18,12 +15,12 @@ import java.time.LocalDateTime;
 public class TeamGameJoinRequest extends GameJoinRequest {
 
     @ManyToOne
-    private Team team;
+    private SubTeam subTeam;
 
     @Builder
-    public TeamGameJoinRequest(Long id, Game game, User user, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, Team team) {
+    public TeamGameJoinRequest(Long id, Game game, User user, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, SubTeam team) {
         super(id, game, user, matchTeamSide, expiredTime, requestTime);
-        this.team = team;
+        this.subTeam = team;
     }
 
 }
