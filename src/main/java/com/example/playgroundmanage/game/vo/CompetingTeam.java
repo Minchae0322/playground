@@ -40,6 +40,13 @@ public class CompetingTeam {
         this.matchResult = matchResult;
     }
 
+    public SubTeam getSoloTeam() {
+        return subTeams.stream()
+                .filter(SubTeam::isSoloTeam)
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
+    }
+
     public boolean isContainTeam(Team team) {
         return subTeams.stream()
                 .filter(t -> t.isContainTeam(team))

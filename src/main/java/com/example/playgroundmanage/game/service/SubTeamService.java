@@ -22,13 +22,13 @@ public class SubTeamService {
     public void generateSoloSubTeamBothCompetingTeam(Long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow(MatchNotExistException::new);
 
-        validateTeamsBeforeGeneratingSubTeams(game);
+        validateSoloTeamAlreadyExist(game);
 
         subTeamRepository.save(buildSoloSubTeam(game.getHomeTeam()));
         subTeamRepository.save(buildSoloSubTeam(game.getAwayTeam()));
     }
 
-    private void validateTeamsBeforeGeneratingSubTeams(Game game) {
+    private void validateSoloTeamAlreadyExist(Game game) {
         if (game.getHomeTeam().isContainSoloTeam() || game.getAwayTeam().isContainSoloTeam()) {
             throw new IllegalArgumentException("개인 팀이 이미 존재합니다.");
         }

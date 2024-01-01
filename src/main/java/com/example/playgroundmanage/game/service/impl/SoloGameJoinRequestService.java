@@ -8,6 +8,7 @@ import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.game.vo.impl.SoloGameJoinRequest;
+import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.util.TeamSelector;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +40,11 @@ public class SoloGameJoinRequestService implements RequestService {
 
     private final GameManagementService gameManagementService;
 
+    @Override
+    public String getRequestType() {
+        return "SoloGameJoin";
+    }
+
     @Transactional
     @Override
     public Long generateRequest(Long gameId, JoinGameRequestDto joinGameRequestDto) {
@@ -64,14 +70,27 @@ public class SoloGameJoinRequestService implements RequestService {
                 .getId();
     }
 
-    @Override
-    public String getRequestType() {
-        return "SoloGameJoin";
-    }
+
 
     @Override
+    @Transactional
     public Long acceptRequest(Long requestId) {
-        return null;
+        SoloGameJoinRequest soloGameJoinRequest = (SoloGameJoinRequest) gameRequestRepository.findById(requestId)
+                .orElseThrow();
+
+        SubTeam soloTeam = getSoloTeam(soloGameJoinRequest.getGame(), soloGameJoinRequest.getMatchTeamSide());
+
+        return gameParticipantRepository.save(GameParticipant.builder()
+                .isAccepted(true)
+                .subTeam(soloTeam)
+                .user(soloGameJoinRequest.getUser())
+                .build()).getId();
+    }
+
+
+    private SubTeam getSoloTeam(Game game, MatchTeamSide matchTeamSide) {
+        CompetingTeam competingTeam = game.getCompetingTeamBySide(matchTeamSide);
+        return competingTeam.getSoloTeam();
     }
 
 
