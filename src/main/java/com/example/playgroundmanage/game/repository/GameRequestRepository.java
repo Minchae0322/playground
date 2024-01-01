@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface GameJoinRequestRepository extends JpaRepository<GameRequest, Long> {
+public interface GameRequestRepository extends JpaRepository<GameRequest, Long> {
 
     Optional<GameRequest> findByGameAndUser(Game game, User user);
 

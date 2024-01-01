@@ -15,10 +15,10 @@ import java.time.LocalDateTime;
 @Entity
 @RequiredArgsConstructor
 @Getter
-public class SoloGameRequest extends GameRequest {
+public class SoloGameJoinRequest extends GameRequest {
 
     @Builder
-    public SoloGameRequest(Long id, Game game, User user, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
+    public SoloGameJoinRequest(Long id, Game game, User user, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
         super(id, game, user, matchTeamSide, expiredTime, requestTime);
     }
 }

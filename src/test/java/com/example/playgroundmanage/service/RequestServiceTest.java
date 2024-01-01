@@ -30,7 +30,7 @@ class RequestServiceTest {
     private GameService gameService;
 
     @Autowired
-    private GameJoinRequestRepository gameJoinRequestRepository;
+    private GameRequestRepository gameRequestRepository;
 
 
 
@@ -47,7 +47,7 @@ class RequestServiceTest {
 
     @BeforeEach
     void before() {
-        gameJoinRequestRepository.deleteAll();
+        gameRequestRepository.deleteAll();
         teamRepository.deleteAll();
         userRepository.deleteAll();
         testUser = User.builder()

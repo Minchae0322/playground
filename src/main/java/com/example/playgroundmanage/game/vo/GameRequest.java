@@ -18,7 +18,7 @@ public abstract class GameRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Game game;
 
     @ManyToOne

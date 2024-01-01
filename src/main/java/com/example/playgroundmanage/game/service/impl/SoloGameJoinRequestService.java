@@ -4,11 +4,10 @@ import com.example.playgroundmanage.dto.JoinGameRequestDto;
 import com.example.playgroundmanage.dto.response.PendingJoinRequest;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.game.repository.*;
-import com.example.playgroundmanage.game.service.GameRequestManagementService;
+import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
-import com.example.playgroundmanage.game.vo.impl.SoloGameRequest;
-import com.example.playgroundmanage.util.GameValidation;
+import com.example.playgroundmanage.game.vo.impl.SoloGameJoinRequest;
 import com.example.playgroundmanage.util.TeamSelector;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +28,7 @@ public class SoloGameJoinRequestService implements RequestService {
 
     private final GameParticipantRepository gameParticipantRepository;
 
-    private final GameJoinRequestRepository gameJoinRequestRepository;
+    private final GameRequestRepository gameRequestRepository;
 
 
 
@@ -38,7 +37,7 @@ public class SoloGameJoinRequestService implements RequestService {
     private final SubTeamRepository subTeamRepository;
 
 
-    private final GameRequestManagementService gameRequestManagementService;
+    private final GameManagementService gameManagementService;
 
     @Transactional
     @Override
@@ -46,9 +45,8 @@ public class SoloGameJoinRequestService implements RequestService {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
 
-
-        validateDuplicateUserInGame(gameRequestManagementService.findGameParticipantsInGame(game), joinGameRequestDto.getUser());
-        gameRequestManagementService.deletePreviousRequest(game, joinGameRequestDto.getUser());
+        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(game), joinGameRequestDto.getUser());
+        gameManagementService.deletePreviousRequest(game, joinGameRequestDto.getUser());
 
         return saveJoinRequest(game, joinGameRequestDto);
 
@@ -56,7 +54,7 @@ public class SoloGameJoinRequestService implements RequestService {
 
     @Transactional
     private Long saveJoinRequest(Game game, JoinGameRequestDto joinGameRequestDto) {
-        return gameJoinRequestRepository.save(SoloGameRequest.builder()
+        return gameRequestRepository.save(SoloGameJoinRequest.builder()
                         .game(game)
                         .expiredTime(game.getGameStartDateTime())
                         .user(joinGameRequestDto.getUser())
@@ -71,9 +69,14 @@ public class SoloGameJoinRequestService implements RequestService {
         return "SoloGameJoin";
     }
 
+    @Override
+    public Long acceptRequest(Long requestId) {
+        return null;
+    }
+
 
     public List<PendingJoinRequest> getPendingJoinRequest(User user) {
-        List<GameRequest> gameRequests = gameJoinRequestRepository.findAllByUserAndExpiredTimeAfter(user, LocalDateTime.now());
+        List<GameRequest> gameRequests = gameRequestRepository.findAllByUserAndExpiredTimeAfter(user, LocalDateTime.now());
         return gameRequests.stream()
                 .map(request -> PendingJoinRequest.builder()
                         .requestId(request.getId())

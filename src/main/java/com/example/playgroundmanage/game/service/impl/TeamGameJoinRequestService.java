@@ -3,16 +3,14 @@ package com.example.playgroundmanage.game.service.impl;
 import com.example.playgroundmanage.dto.JoinGameRequestDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.game.repository.*;
-import com.example.playgroundmanage.game.service.GameRequestManagementService;
+import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
-import com.example.playgroundmanage.game.vo.impl.TeamGameRequest;
+import com.example.playgroundmanage.game.vo.impl.TeamGameJoinRequest;
 import com.example.playgroundmanage.util.TeamSelector;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static com.example.playgroundmanage.util.GameValidation.validateDuplicateUserInGame;
 
@@ -28,19 +26,19 @@ public class TeamGameJoinRequestService implements RequestService {
 
     private final TeamSelector teamSelector;
 
-    private final GameRequestManagementService gameRequestManagementService;
+    private final GameManagementService gameManagementService;
 
 
     private final SubTeamRepository subTeamRepository;
 
-    private final GameJoinRequestRepository gameJoinRequestRepository;
+    private final GameRequestRepository gameRequestRepository;
     @Override
     public Long generateRequest(Long gameId, JoinGameRequestDto joinGameRequestDto) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
 
-        validateDuplicateUserInGame(gameRequestManagementService.findGameParticipantsInGame(game), joinGameRequestDto.getUser());
-        gameRequestManagementService.deletePreviousRequest(game, joinGameRequestDto.getUser());
+        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(game), joinGameRequestDto.getUser());
+        gameManagementService.deletePreviousRequest(game, joinGameRequestDto.getUser());
 
         return saveJoinRequest(game, joinGameRequestDto);
     }
@@ -50,9 +48,9 @@ public class TeamGameJoinRequestService implements RequestService {
         SubTeam subTeam = subTeamRepository.findById(joinGameRequestDto.getSubTeamId())
                 .orElseThrow();
 
-        return gameJoinRequestRepository.save(TeamGameRequest.builder()
+        return gameRequestRepository.save(TeamGameJoinRequest.builder()
                         .game(game)
-                        .team(subTeam)
+                        .subTeam(subTeam)
                         .user(joinGameRequestDto.getUser())
                         .expiredTime(game.getGameStartDateTime().plusMinutes(game.getRunningTime()))
                         .matchTeamSide(joinGameRequestDto.getMatchTeamSide())
@@ -66,10 +64,10 @@ public class TeamGameJoinRequestService implements RequestService {
         return "teamGameJoin";
     }
 
-
-
-
-
+    @Override
+    public Long acceptRequest(Long requestId) {
+        return null;
+    }
 
 
 }

@@ -12,15 +12,15 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @RequiredArgsConstructor
-public class TeamGameRequest extends GameRequest {
+public class TeamGameJoinRequest extends GameRequest {
 
     @ManyToOne
     private SubTeam subTeam;
 
     @Builder
-    public TeamGameRequest(Long id, Game game, User user, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, SubTeam team) {
+    public TeamGameJoinRequest(Long id, Game game, User user, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, SubTeam subTeam) {
         super(id, game, user, matchTeamSide, expiredTime, requestTime);
-        this.subTeam = team;
+        this.subTeam = subTeam;
     }
 
 }

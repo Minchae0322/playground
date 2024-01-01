@@ -9,6 +9,6 @@ public interface RequestService {
 
     String getRequestType();
 
-
+    Long acceptRequest(Long requestId);
 
 }
