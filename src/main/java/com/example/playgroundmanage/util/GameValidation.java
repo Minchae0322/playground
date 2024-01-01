@@ -4,8 +4,10 @@ import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.game.vo.User;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
+
 
 public final class GameValidation {
 

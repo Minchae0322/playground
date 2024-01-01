@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.JOINED) // 상속 전략 설정
 @DiscriminatorColumn(name = "type") // 상속받는 클래스를 구분하는 컬럼
 @RequiredArgsConstructor
-public abstract class GameJoinRequest {
+public abstract class GameRequest {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,14 +24,16 @@ public abstract class GameJoinRequest {
     @ManyToOne
     private User user;
 
+
     protected MatchTeamSide matchTeamSide;
 
     protected LocalDateTime expiredTime;
 
+
     protected LocalDateTime requestTime;
 
 
-    public GameJoinRequest(Long id, Game game, User user, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
+    public GameRequest(Long id, Game game, User user, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
         this.id = id;
         this.game = game;
         this.user = user;
@@ -40,7 +42,7 @@ public abstract class GameJoinRequest {
         this.requestTime = requestTime;
     }
 
-    public GameJoinRequest update() {
+    public GameRequest update() {
         this.requestTime = LocalDateTime.now();
         return this;
     }

@@ -23,7 +23,7 @@ public class RequestController {
 
         JoinGameRequestDto joinGameRequestDto = userJoinGameParams.toJoinGameRequestDto(userDetails.getUser());
 
-        requestService.generateJoinRequest(gameId, joinGameRequestDto);
+        requestService.generateRequest(gameId, joinGameRequestDto);
     }
 
     @PostMapping("/game/{gameId}/request/create-team")
