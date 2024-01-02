@@ -25,6 +25,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 
 import static com.example.playgroundmanage.util.GameValidation.validateOverlappingGames;
+import static com.example.playgroundmanage.util.GameValidation.validateStartBeforePresent;
 
 @Service
 @RequiredArgsConstructor
@@ -40,6 +41,7 @@ public class PlaygroundService {
     public boolean isValidGameStartTime(Long playgroundId, GameTimeDto gameTimeDto) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
 
+        validateStartBeforePresent(gameTimeDto);
         validateOverlappingGames(playground.getGames(), gameTimeDto);
 
         return true;

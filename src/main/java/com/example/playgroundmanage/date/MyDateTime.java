@@ -10,6 +10,8 @@ import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 
+import static com.example.playgroundmanage.util.Util.localDateToYearMonthDateTimeString;
+
 
 @Getter
 public class MyDateTime implements DateTime {
@@ -29,5 +31,11 @@ public class MyDateTime implements DateTime {
     public LocalDateTime getLocalDateTime() {
         ZonedDateTime localTime = zonedDateTime.withZoneSameInstant(DEFAULT_ZONE_ID);
         return localTime.toLocalDateTime().withSecond(0).withNano(0);
+    }
+
+    @Override
+    public String toStringValue() {
+        ZonedDateTime localTime = zonedDateTime.withZoneSameInstant(DEFAULT_ZONE_ID);
+        return localDateToYearMonthDateTimeString(localTime.toLocalDateTime());
     }
 }

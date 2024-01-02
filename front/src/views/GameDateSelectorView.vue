@@ -133,7 +133,7 @@ const confirm = async () => {
     emit('dateTimeValue', dateValue.value);
     emit('close');
   } else {
-    alert("선택한 시간에 이미 게임이 존재합니다.");
+
   }
 };
 
@@ -165,7 +165,7 @@ const validateStartTime = async function () {
     );
     return response.data; // boolean 값을 반환
   } catch (error) {
-    console.error('Error validating start time:', error);
+    await alert(error.response.data.message)
     return false; // 오류가 발생했다면, 유효하지 않음으로 처리
   }
 };

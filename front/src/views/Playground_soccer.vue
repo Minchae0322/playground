@@ -24,16 +24,18 @@
       <h3>Upcoming Games</h3>
       <ul>
         <li v-for="(game,index) in upcomingGames" :key="index">
-          <div class="game-card">
-            <div><strong>Host:</strong> {{ game.hostName }}</div>
-            <div><strong>Start Time:</strong> {{ game.gameStart }}</div>
-            <div><strong>Running Time:</strong> {{ game.time }}</div>
-          </div>
+          <router-link :to="{ name:'gameInfo', params: { gameId: game.gameId } }">
+            <div  class="game-card">
+            <h3>Host: {{ game.hostName }}</h3>
+            <h3>Time: {{ game.gameStart }}</h3>
+            <h3>Running Time: {{ game.runningTime }}</h3>
+            </div>
+          </router-link>
         </li>
       </ul>
     </div>
     <button class="join-button" @click="openGameBuilder">Join Game</button>
-    <GameBuilderModal v-if="isGameBuilderModalOpen" :some-data="data" @closeGameBuilder="isGameBuilderModalOpen = false"></GameBuilderModal>
+    <GameBuilderModal v-if="isGameBuilderModalOpen" :some-data="data" @closeGameBuilder=closeModal></GameBuilderModal>
   </div>
 </template>
 
@@ -41,12 +43,14 @@
 import {onMounted, ref} from 'vue';
 import axios from "axios";
 import GameBuilderModal from './GameBuilderView.vue';
+import {useRouter} from "vue-router";
 
 const data = ref('이것은 부모로부터 온 데이터입니다.');
 const isGameBuilderModalOpen = ref(false);
 const currentGame = ref('')
 const upcomingGames = ref([])
 const apiBaseUrl = "http://localhost:8080";
+const router = useRouter();
 
 onMounted(() => {
   // Check if the initial page number is provided in the route query
@@ -56,6 +60,12 @@ onMounted(() => {
 
 const openGameBuilder = function () {
   isGameBuilderModalOpen.value = !isGameBuilderModalOpen.value;
+};
+
+
+const closeModal = () => {
+  isGameBuilderModalOpen.value = false;
+  router.go(0);
 };
 const getInProgressGame = function () {
 
@@ -203,5 +213,10 @@ const getUpcomingGames = function () {
 
 .game-card:hover {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+a {
+  font-family: gothic-bold;
+  text-decoration: none;
 }
 </style>

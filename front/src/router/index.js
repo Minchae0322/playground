@@ -50,9 +50,10 @@ const router = createRouter({
     },
 
     {
-      path: '/gameInfo',
+      path: '/gameInfo/:gameId',
       name: 'gameInfo',
-      component: gameInfo
+      component: gameInfo,
+      props: true
     },
 
     {
