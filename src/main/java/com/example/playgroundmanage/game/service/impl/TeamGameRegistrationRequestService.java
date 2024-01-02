@@ -7,6 +7,7 @@ import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
+import com.example.playgroundmanage.game.vo.impl.TeamGameJoinRequest;
 import com.example.playgroundmanage.game.vo.impl.TeamGameRegistrationRequest;
 import com.example.playgroundmanage.util.TeamSelector;
 import jakarta.transaction.Transactional;
@@ -28,6 +29,8 @@ public class TeamGameRegistrationRequestService implements RequestService {
     private final TeamSelector teamSelector;
 
     private final SubTeamRepository subTeamRepository;
+
+    private final GameParticipantRepository gameParticipantRepository;
 
     private final GameRequestRepository gameRequestRepository;
 
@@ -69,7 +72,31 @@ public class TeamGameRegistrationRequestService implements RequestService {
     }
 
     @Override
+    @Transactional
     public Long acceptRequest(Long requestId) {
-        return null;
+        TeamGameRegistrationRequest teamGameRegistrationRequest = (TeamGameRegistrationRequest) gameRequestRepository.findById(requestId)
+                .orElseThrow();
+
+        SubTeam subTeam = createSubTeam(teamGameRegistrationRequest.getTeam(), teamGameRegistrationRequest.getGame().getCompetingTeamBySide(teamGameRegistrationRequest.getMatchTeamSide()));
+
+        return gameParticipantRepository.save(GameParticipant.builder()
+                .isAccepted(true)
+                .subTeam(subTeam)
+                .user(teamGameRegistrationRequest.getUser())
+                .build()).getId();
+    }
+
+    private SubTeam createSubTeam(Team team, CompetingTeam competingTeam) {
+        return SubTeam.builder()
+                .isAccept(true)
+                .isSoloTeam(false)
+                .competingTeam(competingTeam)
+                .team(team)
+                .build();
+    }
+
+    @Override
+    public void declineRequest(Long requestId) {
+        gameManagementService.deleteRequest(requestId);
     }
 }

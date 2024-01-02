@@ -4,6 +4,7 @@ import com.example.playgroundmanage.game.repository.GameRequestRepository;
 import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
+import com.example.playgroundmanage.game.vo.GameRequest;
 import com.example.playgroundmanage.game.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,10 @@ public class GameManagementService {
 
     public List<GameParticipant> findGameParticipantsInGame(Game game) {
         return gameParticipantRepository.findAllByGame(game);
+    }
+
+    public void deleteRequest(Long requestId) {
+        gameRequestRepository.findById(requestId)
+                .ifPresent(gameRequestRepository::delete);
     }
 }

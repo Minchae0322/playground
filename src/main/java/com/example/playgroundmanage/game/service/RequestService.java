@@ -11,4 +11,5 @@ public interface RequestService {
 
     Long acceptRequest(Long requestId);
 
+    void declineRequest(Long requestId);
 }

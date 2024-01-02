@@ -87,6 +87,11 @@ public class SoloGameJoinRequestService implements RequestService {
                 .build()).getId();
     }
 
+    @Override
+    public void declineRequest(Long requestId) {
+        gameManagementService.deleteRequest(requestId);
+    }
+
 
     private SubTeam getSoloTeam(Game game, MatchTeamSide matchTeamSide) {
         CompetingTeam competingTeam = game.getCompetingTeamBySide(matchTeamSide);

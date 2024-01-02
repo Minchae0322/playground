@@ -6,6 +6,7 @@ import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
+import com.example.playgroundmanage.game.vo.impl.SoloGameJoinRequest;
 import com.example.playgroundmanage.game.vo.impl.TeamGameJoinRequest;
 import com.example.playgroundmanage.util.TeamSelector;
 import jakarta.transaction.Transactional;
@@ -32,6 +33,13 @@ public class TeamGameJoinRequestService implements RequestService {
     private final SubTeamRepository subTeamRepository;
 
     private final GameRequestRepository gameRequestRepository;
+
+
+    @Override
+    public String getRequestType() {
+        return "teamGameJoin";
+    }
+
     @Override
     public Long generateRequest(Long gameId, JoinGameRequestDto joinGameRequestDto) {
         Game game = gameRepository.findById(gameId)
@@ -59,14 +67,26 @@ public class TeamGameJoinRequestService implements RequestService {
     }
 
 
+
+
     @Override
-    public String getRequestType() {
-        return "teamGameJoin";
+    @Transactional
+    public Long acceptRequest(Long requestId) {
+        TeamGameJoinRequest teamGameJoinRequest = (TeamGameJoinRequest) gameRequestRepository.findById(requestId)
+                .orElseThrow();
+
+        SubTeam subTeam = teamGameJoinRequest.getSubTeam();
+
+        return gameParticipantRepository.save(GameParticipant.builder()
+                .isAccepted(true)
+                .subTeam(subTeam)
+                .user(teamGameJoinRequest.getUser())
+                .build()).getId();
     }
 
     @Override
-    public Long acceptRequest(Long requestId) {
-        return null;
+    public void declineRequest(Long requestId) {
+        gameManagementService.deleteRequest(requestId);
     }
 
 
