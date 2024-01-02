@@ -34,6 +34,20 @@ onMounted(() => {
 
 });
 
+const joinGameSolo = () => {
+  validateAccessToken()
+  axios.post(`${apiBaseUrl}/game/${props.gameId}/join/SoloGameJoin`,{
+        matchTeamSide: "HOME"
+  },
+        {  headers: {
+            'Authorization': getAccessToken()
+          }}
+    ).then(response => {
+      if (response.status === 200) {
+      }
+    });
+};
+
 const clickTeamRegistration = () => {
   isTeamRegistrationModalVisible.value = true;
 };
@@ -103,7 +117,7 @@ const getHomeTeams = function () {
   validateAccessToken()
   const accessToken = getAccessToken()
   if(accessToken) {
-    axios.get(`${apiBaseUrl}/game/${props.teamId}/homeTeams`,
+    axios.get(`${apiBaseUrl}/game/${props.gameId}/homeTeams`,
         {  headers: {
             'Authorization': accessToken
           }}
@@ -170,7 +184,7 @@ const getAwayTeams = function () {
   validateAccessToken()
   const accessToken = getAccessToken()
   if(accessToken) {
-    axios.get(`${apiBaseUrl}/game/${props.teamId}/awayTeams`,
+    axios.get(`${apiBaseUrl}/game/${props.gameId}/awayTeams`,
         {  headers: {
             'Authorization': accessToken
           }}
@@ -264,7 +278,7 @@ const handleSelection = (type, teamId) => {
                 +
               </button>
               <div v-if="menuVisible" class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                <a  class="menu-item" role="menuitem">개인으로 참가하기</a>
+                <a  @click="joinGameSolo" class="menu-item" role="menuitem">개인으로 참가하기</a>
                 <a @click="clickTeamRegistration"  class="menu-item" role="menuitem">팀으로 참가하기</a>
               </div>
             </div>

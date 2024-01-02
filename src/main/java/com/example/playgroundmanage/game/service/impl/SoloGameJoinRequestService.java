@@ -32,7 +32,7 @@ public class SoloGameJoinRequestService implements RequestService {
     private final GameRequestRepository gameRequestRepository;
 
 
-
+    private final SoloGameJoinRequestRepository soloGameJoinRequestRepository;
     private final TeamSelector teamSelector;
 
     private final SubTeamRepository subTeamRepository;

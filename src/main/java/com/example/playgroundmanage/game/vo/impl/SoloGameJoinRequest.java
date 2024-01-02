@@ -6,14 +6,15 @@ import com.example.playgroundmanage.game.vo.GameRequest;
 import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.Entity;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class SoloGameJoinRequest extends GameRequest {
 
