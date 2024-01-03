@@ -116,9 +116,19 @@ public class UserService {
     }
 
     @Transactional
+    public InMemoryMultipartFile getUserProfileImg(User user)  {
+        try {
+            return fileHandler.extractFile(user.getProfileImg());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Transactional
     public UserInfoDto getUserInfo(Long userId) throws IOException {
         User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
         InMemoryMultipartFile userProfileImg = fileHandler.extractFile(user.getProfileImg());
+
         return UserInfoDto.builder()
                 .userNickname(user.getNickname())
                 .userId(user.getId())

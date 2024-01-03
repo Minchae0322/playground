@@ -64,8 +64,8 @@ public class Game {
 
     @Builder
     public Game(String gameName, Playground playground, User host, SportsEvent sportsEvent, LocalDateTime gameStartDateTime, Integer runningTime, boolean isFriendly) {
-        validate(gameName, runningTime, gameStartDateTime);
-        this.gameName = gameName;
+        validate(runningTime, gameStartDateTime);
+        this.gameName = (gameName == null || gameName.trim().isEmpty()) ? host.getNickname() + "의 게임" : gameName;
         this.playground = playground;
         this.host = host;
         this.homeTeam = initCompetingTeam(MatchTeamSide.HOME);
@@ -105,10 +105,7 @@ public class Game {
                 .build();
     }
 
-    private void validate(String gameName, Integer runningTime, LocalDateTime gameStartDateTime) {
-        if (gameName.equals("")) {
-            throw new IllegalArgumentException("게임 이름이 없습니다.");
-        }
+    private void validate( Integer runningTime, LocalDateTime gameStartDateTime) {
         if(runningTime < 0 || runningTime > 120) {
             throw new IllegalArgumentException("경기 소요 시간이 올바르지 않습니다.");
         }

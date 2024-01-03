@@ -111,18 +111,6 @@ public class PlaygroundService {
         .toList();
     }
 
-    public List<GameThumbnail> getGamesThumbnailOrderedByLatest(Long playgroundId) {
-        Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
-        List<Game> notStartedGames =  playground.getUpcomingGamesOrderedByStartDateTime();
-        return notStartedGames.stream()
-                .map(g -> GameThumbnail.builder()
-                        .hostName(g.getHost().getNickname())
-                        .gameStart(Util.localDateToYearMonthDateTimeString(g.getGameStartDateTime()))
-                        .runningTime(g.getRunningTime())
-                        .sportsEvent(g.getSportsEvent())
-                        .build())
-                .toList();
-    }
 
 
     @Transactional

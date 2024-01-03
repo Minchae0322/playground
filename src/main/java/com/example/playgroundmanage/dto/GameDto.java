@@ -2,6 +2,7 @@ package com.example.playgroundmanage.dto;
 
 import com.example.playgroundmanage.date.DateTime;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
+import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.util.Util;
@@ -46,6 +47,18 @@ public class GameDto {
                 .hostName(host.getNickname())
                 .runningTime(runningTime)
                 .gameName(gameName)
+                .sportsEvent(sportsEvent)
+                .gameId(gameId)
+                .build();
+    }
+
+    public GameThumbnail toGameThumbnail(InMemoryMultipartFile hostProfileImg) {
+        return GameThumbnail.builder()
+                .gameStart(Util.localDateToYearMonthDateTimeString(startDateTime.getLocalDateTime()))
+                .hostName(host.getNickname())
+                .runningTime(runningTime)
+                .gameName(gameName)
+                .hostProfileImg(hostProfileImg)
                 .sportsEvent(sportsEvent)
                 .gameId(gameId)
                 .build();

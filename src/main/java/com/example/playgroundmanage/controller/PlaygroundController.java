@@ -7,6 +7,7 @@ import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.response.OccupiedTime;
 import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.dto.response.PlaygroundInfo;
+import com.example.playgroundmanage.game.service.UserService;
 import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,8 @@ public class PlaygroundController {
 
     private final PlaygroundService playgroundService;
 
+    private final UserService userService;
+
 
     @GetMapping("/playground/{playgroundId}/current")
     public ResponseEntity<GameThumbnail> getOngoingGame(@PathVariable Long playgroundId) {
@@ -31,11 +34,12 @@ public class PlaygroundController {
     }
 
     @GetMapping("/playground/{playgroundId}/upComing")
+
     public List<GameThumbnail> getUpcomingGames(@PathVariable Long playgroundId) {
         List<GameDto> upcomingThreeGames = playgroundService.getUpcomingGames(playgroundId, 3);
 
         return upcomingThreeGames.stream()
-                .map(GameDto::toGameThumbnail)
+                .map(gameDto -> gameDto.toGameThumbnail(userService.getUserProfileImg(gameDto.getHost())))
                 .toList();
     }
 

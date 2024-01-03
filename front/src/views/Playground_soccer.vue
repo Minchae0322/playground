@@ -53,7 +53,14 @@ import defaultImage from '../assets/img.png';
 const data = ref('이것은 부모로부터 온 데이터입니다.');
 const isGameBuilderModalOpen = ref(false);
 const currentGame = ref('')
-const upcomingGames = ref([])
+const upcomingGames = ref([{
+  gameId: 0,
+  gameName: '',
+  hostName: '',
+  hostProfileImg: '',
+  gameStart: '',
+  runningTime: '',
+}]);
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
 
@@ -97,10 +104,16 @@ const getUpcomingGames = function () {
             'Authorization': accessToken
           }}
     ).then(response => {
-      upcomingGames.value = response.data
+      upcomingGames.value = response.data.map(game => ({
+        gameId: game.gameId,
+        gameName: game.gameName,
+        hostName: game.hostName,
+        gameStart: game.gameStart,
+        runningTime: game.runningTime,
+        hostProfileImg: game.hostProfileImg ? `data:image/jpeg;base64,${game.hostProfileImg}` : defaultImage
+      }));
     });
   }
-
 };
 
 </script>
