@@ -14,6 +14,8 @@ public class GameThumbnail {
 
     private Long gameId;
 
+    private String gameName;
+
     private String gameStart;
 
     private Integer runningTime;
@@ -23,12 +25,12 @@ public class GameThumbnail {
     private String hostName;
 
     @Builder
-    public GameThumbnail(Long gameId, String gameStart, Integer runningTime, SportsEvent sportsEvent, String hostName) {
+    public GameThumbnail(Long gameId, String gameName, String gameStart, Integer runningTime, SportsEvent sportsEvent, String hostName) {
         this.gameId = gameId;
+        this.gameName = gameName;
         this.gameStart = gameStart;
         this.runningTime = runningTime;
         this.sportsEvent = sportsEvent;
         this.hostName = hostName;
     }
-
 }

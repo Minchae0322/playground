@@ -7,10 +7,7 @@ import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.location.vo.Playground;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -23,7 +20,7 @@ import static com.example.playgroundmanage.util.DateFormat.dateFormatYYYYMMDD;
 @Entity
 @Setter
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Game {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,9 +63,8 @@ public class Game {
 
 
     @Builder
-    public Game(Long id, String gameName, Playground playground, User host, SportsEvent sportsEvent, LocalDateTime gameStartDateTime, Integer runningTime, boolean isFriendly) {
-        validate(host, runningTime, gameStartDateTime);
-        this.id = id;
+    public Game(String gameName, Playground playground, User host, SportsEvent sportsEvent, LocalDateTime gameStartDateTime, Integer runningTime, boolean isFriendly) {
+        validate(gameName, runningTime, gameStartDateTime);
         this.gameName = gameName;
         this.playground = playground;
         this.host = host;
@@ -81,6 +77,7 @@ public class Game {
         this.gameStartDateTime = gameStartDateTime;
         this.runningTime = runningTime;
     }
+
 
     public GameDto toGameDto() {
         return GameDto.builder()
@@ -108,10 +105,10 @@ public class Game {
                 .build();
     }
 
-    private void validate(User host, Integer runningTime, LocalDateTime gameStartDateTime) {
-        /*if(host == null) {
-            throw new UserNotExistException();
-        }*/
+    private void validate(String gameName, Integer runningTime, LocalDateTime gameStartDateTime) {
+        if (gameName.equals("")) {
+            throw new IllegalArgumentException("게임 이름이 없습니다.");
+        }
         if(runningTime < 0 || runningTime > 120) {
             throw new IllegalArgumentException("경기 소요 시간이 올바르지 않습니다.");
         }

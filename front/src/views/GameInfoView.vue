@@ -3,22 +3,29 @@ import {onMounted, ref} from "vue";
 import axios from "axios";
 
 import {useRouter} from "vue-router";
+import defaultImage from "@/assets/img.png";
 
+const apiBaseUrl = "http://localhost:8080";
 
 const router = useRouter();
 const homeTeams = ref([])
 const awayTeams = ref([])
-const homeAndAwayTeam = ref([]);
+const homeAndAwayTeams = ref([]);
 const homeAndAwayTeamParams = ref({
-      homeAndAwayTeamTitle: "Home"
+  matchTeamSide: "HOME",
     }
-)
-const apiBaseUrl = "http://localhost:8080";
+);
+
 const isTeamRegistrationModalVisible = ref(false);
-const selectedTeam = ref("");
+const teamsUserBelongTo = ref([{
+  teamId: '',
+  teamProfileImg: '',
+  teamName: '',
+}])
+const selectedTeam = ref({});
 const dropdownVisible = ref(false);
+
 const menuVisible = ref(false)
-const teams = ref([])
 const activeName = ref('first')
 const props = defineProps({
   gameId: {
@@ -28,16 +35,48 @@ const props = defineProps({
 })
 
 onMounted(() => {
-  // Check if the initial page number is provided in the route query
   getHomeTeams()
   getAwayTeams()
-
 });
 
-const joinGameSolo = () => {
+
+const getHomeTeams = function () {
+  validateAccessToken();
+
+  axios.get(`${apiBaseUrl}/game/${props.gameId}/homeTeams`,
+      {
+        headers: {
+          'Authorization': getAccessToken()
+        }
+      }
+  ).then(response => {
+    if (response.status === 200) {
+      homeTeams.value = response.data
+    }
+  });
+
+};
+
+const getAwayTeams = function () {
   validateAccessToken()
-  axios.post(`${apiBaseUrl}/game/${props.gameId}/join/SoloGameJoin`,{
-        matchTeamSide: "HOME"
+
+  axios.get(`${apiBaseUrl}/game/${props.gameId}/awayTeams`,
+      {
+        headers: {
+          'Authorization': getAccessToken()
+        }
+      }
+  ).then(response => {
+    if (response.status === 200) {
+      awayTeams.value = response.data
+    }
+  });
+};
+
+const sendSoloGameJoinRequest = () => {
+  validateAccessToken()
+  axios.post(`${apiBaseUrl}/game/${props.gameId}/join/soloGameJoin`,{
+        matchTeamSide: homeAndAwayTeamParams.value.matchTeamSide,
   },
         {  headers: {
             'Authorization': getAccessToken()
@@ -48,21 +87,74 @@ const joinGameSolo = () => {
     });
 };
 
+const sendTeamRegistrationRequest = () => {
+  isTeamRegistrationModalVisible.value = false;
+  // 선택된 팀을 처리하는 로직
+  validateAccessToken()
+  axios.post(`${apiBaseUrl}/game/${props.gameId}/join/teamGameRegistration`,
+      {
+        teamId: selectedTeam.value.teamId,
+        matchTeamSide: homeAndAwayTeamParams.value.matchTeamSide
+      }, {
+        headers: {
+          'Authorization': getAccessToken()
+        }
+      }
+  ).then(response => {
+
+  });
+}
+
 const clickTeamRegistration = () => {
   isTeamRegistrationModalVisible.value = true;
 };
 
 const clickHomeTeam = () => {
   activeName.value = 'first'
-  homeAndAwayTeam.value = homeTeams.value;
-  homeAndAwayTeamParams.value.homeAndAwayTeamTitle = "Home"
+  homeAndAwayTeams.value = homeTeams.value;
+  homeAndAwayTeamParams.value.matchTeamSide = "HOME"
 };
 
 const clickAwayTeam = () => {
   activeName.value = 'second'
-  homeAndAwayTeam.value = awayTeams.value;
-  homeAndAwayTeamParams.value.homeAndAwayTeamTitle = "Away"
+  homeAndAwayTeams.value = awayTeams.value;
+  homeAndAwayTeamParams.value.matchTeamSide = "AWAY"
 };
+
+const toggleJoinMenu = function () {
+  menuVisible.value = !menuVisible.value;
+};
+
+const toggleUserTeamDropdown = () => {
+  dropdownVisible.value = !dropdownVisible.value;
+  getTeamsUserBelongTo()
+};
+
+const selectTeam = (team) => {
+  selectedTeam.value = team;
+  dropdownVisible.value = false;
+};
+
+const cancel = () => {
+  isTeamRegistrationModalVisible.value = false;
+  // 추가 취소 로직
+};
+const getTeamsUserBelongTo = function () {
+  validateAccessToken();
+  axios.get(`${apiBaseUrl}/user/teams`,
+      {  headers: {
+          'Authorization': getAccessToken()
+        }}
+  ).then(response => {
+    teamsUserBelongTo.value = response.data.map(team => ({
+      teamName: team.teamName,
+      teamSportsEvent: team.sportsEvent,
+      teamId: team.teamId,
+      teamProfileImg: team.teamProfileImg ? `data:image/jpeg;base64,${team.teamProfileImg}` : defaultImage
+    }));
+  });
+};
+
 const validateAccessToken = async function () {
   const accessToken = getAccessToken();
   if (!accessToken) {
@@ -101,100 +193,19 @@ const updateAccessToken = async function () {
   }
 };
 
-const handleClick = (tab, event) => {
-  console.log(tab.name)
-  console.log(event.value)
-  if(tab.name === 'first') {
-    clickHomeTeam();
-  } else if(tab.name === 'second') {
-    clickAwayTeam();
-  }
-};
+
 const redirectToLogin = function () {
   router.push("/login");
 };
-const getHomeTeams = function () {
-  validateAccessToken()
-  const accessToken = getAccessToken()
-  if(accessToken) {
-    axios.get(`${apiBaseUrl}/game/${props.gameId}/homeTeams`,
-        {  headers: {
-            'Authorization': accessToken
-          }}
-    ).then(response => {
-      if (response.status === 200) {
-        homeTeams.value = response.data
-      }
-    });
-  }
-};
 
-const getTeamsUserBelongTo = function () {
-  validateAccessToken()
-  const accessToken = getAccessToken()
-  if(accessToken) {
-    axios.get(`${apiBaseUrl}/user/teams`,
-        {  headers: {
-            'Authorization': accessToken
-          }}
-    ).then(response => {
-      if (response.status === 200) {
-        teams.value = response.data
-      }
-    });
-  }
-};
 
-const toggleMenu = function () {
-  menuVisible.value = !menuVisible.value;
-};
-const toggleDropdown = () => {
-  dropdownVisible.value = !dropdownVisible.value;
-  getTeamsUserBelongTo()
-};
 
-const selectTeam = (team) => {
-  selectedTeam.value = team;
-  dropdownVisible.value = false;
-};
 
-const cancel = () => {
-  isTeamRegistrationModalVisible.value = false;
-  // 추가 취소 로직
-};
 
-const confirm = () => {
-  isTeamRegistrationModalVisible.value = false;
-  // 선택된 팀을 처리하는 로직
-  validateAccessToken()
-  const accessToken = getAccessToken()
-  if(accessToken) {
-    axios.post(`${apiBaseUrl}/game/34/request/create-team`,
-        { teamId: 1 }, {
-          headers: {
-            'Authorization': accessToken,
-          }}
-    ).then(response => {
 
-    });
-  }
-};
 
-const getAwayTeams = function () {
-  validateAccessToken()
-  const accessToken = getAccessToken()
-  if(accessToken) {
-    axios.get(`${apiBaseUrl}/game/${props.gameId}/awayTeams`,
-        {  headers: {
-            'Authorization': accessToken
-          }}
-    ).then(response => {
-      if (response.status === 200) {
-        awayTeams.value = response.data
-      }
-    });
-  }
-};
+
+
 
 
 const selectedTeamId = ref(null);
@@ -255,8 +266,8 @@ const handleSelection = (type, teamId) => {
 
     <div class="teams-container">
       <div class="team">
-        <h2>{{ homeAndAwayTeamParams.homeAndAwayTeamTitle }}</h2>
-        <div class="team-details" v-for="(team, index) in homeAndAwayTeam" :key="index">
+        <h2>{{ homeAndAwayTeamParams.matchTeamSide }}</h2>
+        <div class="team-details" v-for="(team, index) in homeAndAwayTeams" :key="index">
           <h2>{{ team.teamName }}</h2>
           <div class="participants-container">
             <div class="participant" v-for="(participant, index) in team.users" :key="index">
@@ -271,14 +282,14 @@ const handleSelection = (type, teamId) => {
             <div class="relative">
               <button
                   class="styled-button"
-                  @click="toggleMenu"
+                  @click="toggleJoinMenu"
                   aria-haspopup="menu"
                   :aria-expanded="menuVisible.toString()"
               >
                 +
               </button>
               <div v-if="menuVisible" class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                <a  @click="joinGameSolo" class="menu-item" role="menuitem">개인으로 참가하기</a>
+                <a  @click="sendSoloGameJoinRequest" class="menu-item" role="menuitem">개인으로 참가하기</a>
                 <a @click="clickTeamRegistration"  class="menu-item" role="menuitem">팀으로 참가하기</a>
               </div>
             </div>
@@ -294,30 +305,56 @@ const handleSelection = (type, teamId) => {
 
   <div v-if="isTeamRegistrationModalVisible" class="modal-overlay">
     <div class="modal-window">
-      <h2>Select Your Team</h2>
-      <p>Choose a team from the dropdown list.</p>
+      <h2>팀 만들기</h2>
+      <p>경기에 참여 할 팀을 만들고 참여합니다.</p>
       <div class="dropdown">
-        <div class="dropdown-selected" @click="toggleDropdown">{{ selectedTeam.name || 'Select a team' }}</div>
+        <div class="dropdown-selected" @click="toggleUserTeamDropdown">{{ selectedTeam.name || 'Select a team' }}</div>
         <div class="dropdown-content" v-show="dropdownVisible">
-          <div class="dropdown-item" v-for="team in teams" :key="team.id" @click="selectTeam(team)">
-
-            <span class="team-name">{{ team.teamName }}</span>
-            <span class="team-description">{{ team.description }}</span>
+          <div class="dropdown-item" v-for="team in teamsUserBelongTo" :key="team.id" @click="selectTeam(team)">
+            <img :src="team.teamProfileImg || defaultImage" class="team-image">
+            <a class="team-name">{{ team.teamName }}</a>
+            <a class="team-description">{{ team.description }}</a>
           </div>
         </div>
       </div>
-      <div>
-        <span>Selected Team:</span>
-        <span>{{ selectedTeam.teamName }}</span>
+      <div class="selected-team-container">
+        <a>선택한 팀:</a>
+        <img :src="selectedTeam.teamProfileImg || defaultImage" class="team-image">
+        <a>{{ selectedTeam.teamName }}</a>
       </div>
-      <button @click="cancel">Cancel</button>
-      <button @click="confirm">Confirm</button>
+      <div class="container-confirm-style">
+      <button @click="cancel" class="button-cancel inline-flex items-center justify-center rounded-md text-sm font-medium  px-4 py-2">Cancel</button>
+      <button @click="sendTeamRegistrationRequest" class="button-confirm inline-flex items-center justify-center rounded-md text-sm font-medium  px-4 py-2">Confirm</button>
+      </div>
     </div>
   </div>
 </template>
 
 
 <style scoped>
+h1 {
+  font-size: 24px;
+  color: #838383;
+}
+
+p {
+  font-size: 11px;
+  color: #838383;
+}
+
+h2 {
+  font-family: gothic-bold;
+}
+
+button:hover {
+  opacity: 0.8;
+}
+
+a {
+  font-family: gothic-bold;
+  font-size: 17px;
+}
+
 .game-information {
   width: 90%;
   font-family: 'Arial', sans-serif;
@@ -383,15 +420,7 @@ const handleSelection = (type, teamId) => {
   opacity: 0.5;
 }
 
-h1 {
-  font-size: 24px;
-  color: #444;
-}
 
-p {
-  font-size: 16px;
-  color: #666;
-}
 
 .teams-container {
   display: flex;
@@ -561,20 +590,7 @@ p {
 
 
 /* Media query for responsiveness */
-@media (max-width: 768px) {
-  .teams-container {
-    flex-direction: column;
-  }
 
-  .team {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .game-information {
-    width: 95%;
-  }
-}
 
 .add-button {
   background-color: rgba(70, 130, 180, 0.3); /* Semi-transparent blue color */
@@ -592,22 +608,6 @@ p {
 }
 
 
-
-
-.styled-select {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90%; /* 셀렉트 너비 설정 */
-  height: 40px; /* 셀렉트 높이 설정 */
-  padding: 5px 10px; /* 내부 여백 설정 */
-  font-size: 16px; /* 글자 크기 설정 */
-  border: 2px solid #ddd; /* 테두리 설정 */
-  border-radius: 5px; /* 테두리 둥글기 설정 */
-  appearance: none; /* 기본 브라우저 스타일 제거 */
-  background-color: #fff; /* 배경색 설정 */
-  cursor: pointer; /* 커서 모양 설정 */
-}
 
 /* 화살표 대신 사용할 배경 이미지 설정 */
 
@@ -628,7 +628,7 @@ p {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.6); /* 약간 더 어둡게 조정 */
   display: flex;
   justify-content: center;
   align-items: center;
@@ -637,25 +637,55 @@ p {
 
 .modal-window {
   background: white;
-  padding: 30px;
-  width: 300px;
-  border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
+  padding: 20px; /* 패딩 조정 */
+  border-radius: 5px; /* 모서리 둥글기 조정 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 그림자를 더 부드럽게 조정 */
+  width: 40%; /* 너비를 내용물에 맞게 자동으로 조정 */
+  max-width: 50%; /* 최대 너비 설정 */
 }
 
 .modal-window h2 {
-  margin-bottom: 15px;
-  font-size: 1.5em;
+  color: #333; /* 텍스트 색상 */
+  font-size: 1.25rem; /* 제목 글자 크기 */
+  margin-top: 0; /* 상단 여백 제거 */
+  margin-bottom: 0.5rem; /* 하단 여백 조정 */
 }
 
 .modal-window p {
-  margin-bottom: 20px;
+  color: #838383; /* 텍스트 색상 */
+  font-size: 0.8rem; /* 본문 글자 크기 */
+  margin-top: 0; /* 상단 여백 제거 */
+  margin-bottom: 1.5rem; /* 하단 여백 조정 */
+}
+
+
+.styled-select select {
+  width: 100%;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 0.25rem;
+  height: 2.5rem; /* 드롭다운 높이 조정 */
+  -webkit-appearance: none; /* 기본 디자인 제거 */
+  -moz-appearance: none;
+  appearance: none;
+  background-color: #fff;
+  padding-right: 2.5rem; /* 오른쪽 화살표 공간 확보 */
+}
+
+.styled-select::after {
+  content: "▼";
+  position: absolute;
+  top: 50%;
+  right: 1rem;
+  transform: translateY(-50%);
+  pointer-events: none; /* 클릭 이벤트가 드롭다운을 통과하도록 설정 */
 }
 
 .dropdown {
   position: relative;
   margin-bottom: 20px;
+
 }
 
 .dropdown-selected {
@@ -666,6 +696,11 @@ p {
   cursor: pointer;
   text-align: left;
   margin-bottom: 10px;
+
+}
+
+.dropdown-content .dropdown-item img {
+  float: left; /* 이미지를 왼쪽으로 정렬합니다. */
 }
 
 .dropdown-content {
@@ -675,27 +710,50 @@ p {
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   z-index: 1;
+
 }
 
 .dropdown-content .dropdown-item {
+  display: flex; /* Flex container로 설정 */
+  align-items: center; /* 세로축 중앙 정렬 */
   padding: 12px 16px;
   cursor: pointer;
 }
 
+/* Team Image Style */
+.team-image {
+  width: 20px; /* 이미지 크기 조절 */
+  height: 20px;
+  margin-right: 10px; /* 오른쪽에 여백 추가 */
+  border-radius: 50%; /* 이미지를 원형으로 */
+}
+
+/* Team Name Style */
+.team-name {
+  font-weight: bold;
+  margin-left: 10px; /* 이름과 이미지 사이 여백 */
+}
+
+
+
 .dropdown-content .dropdown-item:hover {
   background-color: #f1f1f1;
+
 }
 
 .team-image {
+
   width: 20px;
-  height: auto;
+  height: 20px;
   margin-right: 10px;
+  border-radius: 50%;
   vertical-align: middle;
+
 }
 
 .team-name {
   font-weight: bold;
-  vertical-align: middle;
+
 }
 
 .team-description {
@@ -704,44 +762,67 @@ p {
   margin-top: 5px;
 }
 
-.selected-team-display {
-  padding: 10px;
-  background-color: #f2f2f2;
-  border-radius: 5px;
-  display: inline-block;
-  margin-bottom: 20px;
+.selected-team-container {
+  display: flex;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.selected-team-container img {
+  width: 30px;
+  height: 30px;
+}
+
+.selected-team-container a {
+  margin-right: 10px;
 }
 
 
 
-button:hover {
-  opacity: 0.8;
+
+
+.container-confirm-style {
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-between;
 }
 
-.cancel-button {
-  background: #fff;
-  color: #333;
-  border: 1px solid #ccc;
+.button-confirm {
+  margin: 0px 20px;
 }
 
-.confirm-button {
-  background: #000;
-  color: #fff;
+.button-cancel {
+  background-color: white;
+  color: black;
+  margin: 0px 20px;
+  border: white;
 }
 
-/* 추가적으로 선택된 팀을 표시하는 요소에 대한 스타일 */
-.selected-team {
-  font-size: 1em;
-  font-weight: bold;
-  color: #333;
-  padding: 8px 16px;
-  background-color: #e9e9e9;
-  border-radius: 5px;
-  display: inline-block;
-  margin-top: 10px;
+.button-cancel:hover {
+  background-color: #f3f3f3; /* 마우스 오버 시 배경색 변경 */
+  color: #000000; /* 마우스 오버 시 글자색 변경 */
 }
 
-a {
-  font-family: gothic-bold;
+.button-confirm:hover {
+  background-color: rgba(0, 0, 0, 0.85); /* 마우스 오버 시 배경색 변경 */
+  color: #ffffff; /* 마우스 오버 시 글자색 변경 */
+}
+
+
+
+
+@media (max-width: 768px) {
+  .teams-container {
+    flex-direction: column;
+  }
+
+  .team {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .game-information {
+    width: 95%;
+  }
 }
 </style>

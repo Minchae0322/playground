@@ -333,7 +333,7 @@ body {
   width: 50px; /* 적절한 크기 설정 */
   height: 50px; /* 적절한 크기 설정 */
   border-radius: 25%;
-  margin: 0 30px 0 10px;
+  margin-right: 20px;
 }
 
 .teams-info {

@@ -7,7 +7,7 @@
       <div class="form-container">
         <div class="form-group">
           <label for="eventName">Game Name</label>
-          <input type="text" id="eventName" name="eventName" placeholder="Name of the event">
+          <input type="text" v-model="gameRegistration.gameName" id="eventName" name="eventName" placeholder="Name of the event">
         </div>
 
         <div class="form-group">
@@ -62,6 +62,10 @@ const isTimeSlotOccupied = ref(false);
 const isStartTimeSelected = ref(false);
 const startTime = ref(new Date())
 const runningTime = ref(1)
+const gameRegistration = ref({
+  gameName: '',
+
+});
 const selectedDuration = ref(null);
 const occupiedTimeSlots = ref([]); // Example occupied slots
 const emit = defineEmits(['close',]);
@@ -92,7 +96,7 @@ const close = () => {
 const generateGame = () => {
   validateAccessToken()
   axios.post(`${apiBaseUrl}/game/generate`, {
-        gameName: "game",
+        gameName: gameRegistration.value.gameName,
         playgroundId: 2,
         gameStartDateTime: startTime.value,
         runningTime: runningTime.value,

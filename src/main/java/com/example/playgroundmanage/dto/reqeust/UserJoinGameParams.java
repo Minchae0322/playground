@@ -13,26 +13,31 @@ import java.time.ZonedDateTime;
 @Data
 public class UserJoinGameParams {
 
-    private Long gameId;
+
+    private Long subTeamId;
+
     private Long teamId;
 
     private String matchTeamSide;
 
-
     @Builder
-    public UserJoinGameParams(Long gameId, Long teamId, String matchTeamSide) {
-        this.gameId = gameId;
+    public UserJoinGameParams(Long subTeamId, Long teamId, String matchTeamSide) {
+        this.subTeamId = subTeamId;
         this.teamId = teamId;
         this.matchTeamSide = matchTeamSide;
-
     }
+
+
+
 
     public JoinGameRequestDto toJoinGameRequestDto(User user) {
         return JoinGameRequestDto.builder()
-                .gameId(gameId)
                 .user(user)
+                .teamId(teamId)
+                .subTeamId(subTeamId)
                 .requestTime(MyDateTime.initMyDateTime(ZonedDateTime.now()).getLocalDateTime())
                 .matchTeamSide(MatchTeamSide.valueOf(matchTeamSide))
                 .build();
     }
+
 }

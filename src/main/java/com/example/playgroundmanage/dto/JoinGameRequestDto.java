@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 public class JoinGameRequestDto {
 
-    private Long gameId;
+
 
     private Long subTeamId;
 
@@ -23,8 +23,7 @@ public class JoinGameRequestDto {
     private LocalDateTime requestTime;
 
     @Builder
-    public JoinGameRequestDto(Long gameId, Long subTeamId, User user, Long teamId, MatchTeamSide matchTeamSide, LocalDateTime requestTime) {
-        this.gameId = gameId;
+    public JoinGameRequestDto( Long subTeamId, User user, Long teamId, MatchTeamSide matchTeamSide, LocalDateTime requestTime) {
         this.subTeamId = subTeamId;
         this.user = user;
         this.teamId = teamId;

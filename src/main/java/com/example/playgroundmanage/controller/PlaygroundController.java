@@ -31,7 +31,7 @@ public class PlaygroundController {
     }
 
     @GetMapping("/playground/{playgroundId}/upComing")
-    public List<GameThumbnail> getThreeGameOrderedByStartTime(@PathVariable Long playgroundId) {
+    public List<GameThumbnail> getUpcomingGames(@PathVariable Long playgroundId) {
         List<GameDto> upcomingThreeGames = playgroundService.getUpcomingGames(playgroundId, 3);
 
         return upcomingThreeGames.stream()

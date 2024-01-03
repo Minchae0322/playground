@@ -1,15 +1,13 @@
 package com.example.playgroundmanage.dto.response;
 
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.io.IOException;
 import java.util.Base64;
 
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TeamInfoResponse {
 
     private Long teamId;

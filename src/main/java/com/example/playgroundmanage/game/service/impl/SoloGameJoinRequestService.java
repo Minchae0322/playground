@@ -42,7 +42,7 @@ public class SoloGameJoinRequestService implements RequestService {
 
     @Override
     public String getRequestType() {
-        return "SoloGameJoin";
+        return "soloGameJoin";
     }
 
     @Transactional

@@ -26,9 +26,13 @@
         <li v-for="(game,index) in upcomingGames" :key="index">
           <router-link :to="{ name:'gameInfo', params: { gameId: game.gameId } }">
             <div  class="game-card">
-            <h3>Host: {{ game.hostName }}</h3>
-            <h3>Time: {{ game.gameStart }}</h3>
-            <h3>Running Time: {{ game.runningTime }}</h3>
+              <h2>{{ game.gameName }}</h2>
+              <div class="host-info">
+                <img :src="game.hostProfileImg || defaultImage">
+                <h3>Host: {{ game.hostName }}</h3>
+              </div>
+              <p class="game-time">Time: {{ game.gameStart }}</p>
+              <p class="running-time">Running Time: {{ game.runningTime }}</p>
             </div>
           </router-link>
         </li>
@@ -44,6 +48,7 @@ import {onMounted, ref} from 'vue';
 import axios from "axios";
 import GameBuilderModal from './GameBuilderView.vue';
 import {useRouter} from "vue-router";
+import defaultImage from '../assets/img.png';
 
 const data = ref('이것은 부모로부터 온 데이터입니다.');
 const isGameBuilderModalOpen = ref(false);
@@ -137,16 +142,7 @@ const getUpcomingGames = function () {
 }
 
 
-.game-header h2 {
-  margin: 0;
-  color: #333;
-  font-size: 24px;
-}
 
-.game-header p {
-  color: #666;
-  font-size: 16px;
-}
 
 .game-info {
   border: 1px solid #ddd; /* Add a border */
@@ -181,7 +177,7 @@ const getUpcomingGames = function () {
 .upcoming-games {
   margin-top: 20px;
   padding: 15px;
-  background-color: #f0f0f0;
+  background-color: #fff; /* 배경색을 흰색으로 설정 */
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
@@ -189,6 +185,7 @@ const getUpcomingGames = function () {
 .upcoming-games h3 {
   margin: 0 0 10px 0;
   color: #333;
+  font-size: 1.25rem; /* 크기를 조정하여 가독성을 높임 */
 }
 
 .upcoming-games ul {
@@ -197,26 +194,97 @@ const getUpcomingGames = function () {
 }
 
 .upcoming-games li {
-  margin-bottom: 5px;
+  margin-bottom: 15px; /* 각 게임 카드 사이의 간격을 늘림 */
   color: #555;
 }
 
+
+
+.host-info {
+  display: flex; /* Flexbox를 이용한 가로 정렬 */
+  align-items: center; /* 세로축 중앙 정렬 */
+  margin-bottom: 0.5rem; /* 아래쪽 여백 */
+}
+
+.host-info img {
+  border-radius: 50%;
+  background-color: #ddd; /* 아이콘 배경색 설정 */
+  display: inline-block;
+  width: 25px; /* 아이콘 크기 */
+  height: 25px;
+  margin-right: 10px; /* 아이콘과 텍스트 사이의 간격 */
+}
+
+.host-info h3 {
+  font-size: 1rem; /* 호스트 이름의 글씨 크기 */
+  color: #333; /* 호스트 이름의 글씨 색상 */
+  margin: 0; /* 여백 초기화 */
+}
 .game-card {
   border: 1px solid #ddd;
   padding: 15px;
-  margin-bottom: 10px; /* 각 카드 간의 간격 */
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 그림자를 더 부드럽게 조정 */
   border-radius: 8px;
   transition: box-shadow 0.3s;
 }
 
 .game-card:hover {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 강조 */
+}
+
+.game-card h2 {
+  color: #000;
+  font-size: 24px;
+  text-decoration: none;
+  margin-bottom: 10px;
+  font-family: "MS UI Gothic";
+}
+
+
+.game-card h3 {
+  font-size: 1rem;
+  color: #000;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+
+}
+
+.game-card p {
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif
+}
+
+/* 아이콘 스타일링 */
+.game-card img {
+  border-radius: 50%;
+  background-color: #ddd; /* 아이콘 배경색 설정 */
+  display: inline-block;
+  width: 40px; /* 아이콘 크기 조정 */
+  height: 40px;
+  margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 조정 */
+  vertical-align: middle; /* 수직 정렬 */
+}
+
+/* 시간과 실행 시간 정보 스타일링 */
+.game-card .game-time {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.game-card .running-time {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.25rem;
+}
+
+/* 링크 스타일링 제거 */
+.game-card a {
+  text-decoration: none;
+  color: inherit;
 }
 
 a {
-  font-family: gothic-bold;
+
   text-decoration: none;
 }
 </style>

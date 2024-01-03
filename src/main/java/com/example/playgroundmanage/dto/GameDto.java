@@ -45,6 +45,7 @@ public class GameDto {
                 .gameStart(Util.localDateToYearMonthDateTimeString(startDateTime.getLocalDateTime()))
                 .hostName(host.getNickname())
                 .runningTime(runningTime)
+                .gameName(gameName)
                 .sportsEvent(sportsEvent)
                 .gameId(gameId)
                 .build();
