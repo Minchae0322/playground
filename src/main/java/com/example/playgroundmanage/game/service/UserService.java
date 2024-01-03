@@ -95,16 +95,6 @@ public class UserService {
     }
 
 
-    public List<PendingTeamResponse> getPendingTeamRequests(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
-        List<Game> games = getHostCreatedGamesNotStarted(user);
-        return getUnacceptedHomeSubTeams(games).stream()
-                .map(g -> PendingTeamResponse.builder()
-                        .teamName(g.getTeam().getTeamName())
-                        .build())
-                .toList();
-
-    }
 
     public UserInfoDto getUserProfile(User user) {
         return UserInfoDto.builder()
@@ -134,17 +124,7 @@ public class UserService {
                 .build();
     }
 
-    public List<PendingUserResponse> getPendingUserRequests(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
-        List<Game> games = getHostCreatedGamesNotStarted(user);
-        List<SubTeam> subTeams = getUnacceptedHomeSubTeams(games);
-        SubTeam subTeam = subTeams.stream()
-                .filter(SubTeam::isSoloTeam)
-                .findFirst().orElseThrow();
-        subTeam.getGameParticipants().stream().filter(p -> !p.isAccepted())
-                .toList();
-        return null;
-    }
+
 
     public List<SubTeam> getUnacceptedHomeSubTeams(List<Game> games) {
         List<SubTeam> requestTeams = new ArrayList<>();
