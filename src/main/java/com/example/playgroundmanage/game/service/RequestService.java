@@ -1,11 +1,10 @@
 package com.example.playgroundmanage.game.service;
 
-import com.example.playgroundmanage.dto.JoinGameRequestDto;
-import lombok.RequiredArgsConstructor;
+import com.example.playgroundmanage.dto.GameRequestDto;
 
 public interface RequestService {
 
-    Long generateRequest(Long gameId, JoinGameRequestDto joinGameRequestDto);
+    Long generateRequest(Long gameId, GameRequestDto gameRequestDto);
 
     String getRequestType();
 

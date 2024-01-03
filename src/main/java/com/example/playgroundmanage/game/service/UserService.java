@@ -1,8 +1,6 @@
 package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.dto.UserNicknameDto;
-import com.example.playgroundmanage.dto.response.PendingTeamResponse;
-import com.example.playgroundmanage.dto.response.PendingUserResponse;
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.exception.UserNotExistException;

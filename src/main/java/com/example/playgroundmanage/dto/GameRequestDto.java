@@ -8,9 +8,9 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class JoinGameRequestDto {
+public class GameRequestDto {
 
-
+    private String requestType;
 
     private Long subTeamId;
 
@@ -21,9 +21,10 @@ public class JoinGameRequestDto {
     private MatchTeamSide matchTeamSide;
 
     private LocalDateTime requestTime;
-
+    //todo gameRequestDto 를 분리해야 하는데 subTeamId 와 teamId 가 null 일 수 있다.
     @Builder
-    public JoinGameRequestDto( Long subTeamId, User user, Long teamId, MatchTeamSide matchTeamSide, LocalDateTime requestTime) {
+    public GameRequestDto(String requestType, Long subTeamId, User user, Long teamId, MatchTeamSide matchTeamSide, LocalDateTime requestTime) {
+        this.requestType = requestType;
         this.subTeamId = subTeamId;
         this.user = user;
         this.teamId = teamId;

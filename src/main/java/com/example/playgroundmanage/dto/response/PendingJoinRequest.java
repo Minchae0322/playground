@@ -35,16 +35,12 @@ public class PendingJoinRequest {
         this.username = username;
         this.requestTime = requestTime;
         this.isSoloTeam = isSoloTeam;
-        setSoloTeam(isSoloTeam, teamName);
+
     }
 
 
 
 
-    private void setSoloTeam(boolean isSoloTeam, String teamName) {
-        if (isSoloTeam || teamName == null) {
-            this.teamName = "SOLO";
-        }
-    }
+
 
 }

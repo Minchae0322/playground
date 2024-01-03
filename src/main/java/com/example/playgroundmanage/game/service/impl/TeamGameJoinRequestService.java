@@ -1,12 +1,11 @@
 package com.example.playgroundmanage.game.service.impl;
 
-import com.example.playgroundmanage.dto.JoinGameRequestDto;
+import com.example.playgroundmanage.dto.GameRequestDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
-import com.example.playgroundmanage.game.vo.impl.SoloGameJoinRequest;
 import com.example.playgroundmanage.game.vo.impl.TeamGameJoinRequest;
 import com.example.playgroundmanage.util.TeamSelector;
 import jakarta.transaction.Transactional;
@@ -41,27 +40,27 @@ public class TeamGameJoinRequestService implements RequestService {
     }
 
     @Override
-    public Long generateRequest(Long gameId, JoinGameRequestDto joinGameRequestDto) {
+    public Long generateRequest(Long gameId, GameRequestDto gameRequestDto) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
 
-        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(game), joinGameRequestDto.getUser());
-        gameManagementService.deletePreviousRequest(game, joinGameRequestDto.getUser());
+        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(game), gameRequestDto.getUser());
+        gameManagementService.deletePreviousRequest(game, gameRequestDto.getUser());
 
-        return saveJoinRequest(game, joinGameRequestDto);
+        return saveJoinRequest(game, gameRequestDto);
     }
 
     @Transactional
-    private Long saveJoinRequest(Game game, JoinGameRequestDto joinGameRequestDto) {
-        SubTeam subTeam = subTeamRepository.findById(joinGameRequestDto.getSubTeamId())
+    private Long saveJoinRequest(Game game, GameRequestDto gameRequestDto) {
+        SubTeam subTeam = subTeamRepository.findById(gameRequestDto.getSubTeamId())
                 .orElseThrow();
 
         return gameRequestRepository.save(TeamGameJoinRequest.builder()
                         .game(game)
                         .subTeam(subTeam)
-                        .user(joinGameRequestDto.getUser())
+                        .user(gameRequestDto.getUser())
                         .expiredTime(game.getGameStartDateTime().plusMinutes(game.getRunningTime()))
-                        .matchTeamSide(joinGameRequestDto.getMatchTeamSide())
+                        .matchTeamSide(gameRequestDto.getMatchTeamSide())
                         .build())
                 .getId();
     }

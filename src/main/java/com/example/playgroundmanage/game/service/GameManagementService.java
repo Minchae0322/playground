@@ -6,9 +6,11 @@ import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.game.vo.GameRequest;
 import com.example.playgroundmanage.game.vo.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -33,5 +35,11 @@ public class GameManagementService {
     public void deleteRequest(Long requestId) {
         gameRequestRepository.findById(requestId)
                 .ifPresent(gameRequestRepository::delete);
+    }
+
+    @Transactional
+    public void getPendingGameRequests(User user) {
+        List<GameRequest> pendingRequests = gameRequestRepository.findAllByUserAndExpiredTimeAfter(user, LocalDateTime.now());
+
     }
 }

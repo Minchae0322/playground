@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.game.service.impl;
 
-import com.example.playgroundmanage.dto.JoinGameRequestDto;
+import com.example.playgroundmanage.dto.GameRequestDto;
 import com.example.playgroundmanage.dto.response.PendingJoinRequest;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.game.repository.*;
@@ -47,25 +47,25 @@ public class SoloGameJoinRequestService implements RequestService {
 
     @Transactional
     @Override
-    public Long generateRequest(Long gameId, JoinGameRequestDto joinGameRequestDto) {
+    public Long generateRequest(Long gameId, GameRequestDto gameRequestDto) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
 
-        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(game), joinGameRequestDto.getUser());
-        gameManagementService.deletePreviousRequest(game, joinGameRequestDto.getUser());
+        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(game), gameRequestDto.getUser());
+        gameManagementService.deletePreviousRequest(game, gameRequestDto.getUser());
 
-        return saveJoinRequest(game, joinGameRequestDto);
+        return saveJoinRequest(game, gameRequestDto);
 
     }
 
     @Transactional
-    private Long saveJoinRequest(Game game, JoinGameRequestDto joinGameRequestDto) {
+    private Long saveJoinRequest(Game game, GameRequestDto gameRequestDto) {
         return gameRequestRepository.save(SoloGameJoinRequest.builder()
                         .game(game)
                         .expiredTime(game.getGameStartDateTime())
-                        .user(joinGameRequestDto.getUser())
+                        .user(gameRequestDto.getUser())
                         .expiredTime(game.getGameStartDateTime().plusMinutes(game.getRunningTime()))
-                        .matchTeamSide(joinGameRequestDto.getMatchTeamSide())
+                        .matchTeamSide(gameRequestDto.getMatchTeamSide())
                         .build())
                 .getId();
     }

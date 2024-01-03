@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.dto.reqeust;
 
 import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.dto.JoinGameRequestDto;
+import com.example.playgroundmanage.dto.GameRequestDto;
 import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import lombok.Builder;
@@ -30,8 +30,8 @@ public class UserJoinGameParams {
 
 
 
-    public JoinGameRequestDto toJoinGameRequestDto(User user) {
-        return JoinGameRequestDto.builder()
+    public GameRequestDto toJoinGameRequestDto(User user) {
+        return GameRequestDto.builder()
                 .user(user)
                 .teamId(teamId)
                 .subTeamId(subTeamId)

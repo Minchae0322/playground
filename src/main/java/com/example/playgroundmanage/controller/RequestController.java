@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.controller;
 
-import com.example.playgroundmanage.dto.JoinGameRequestDto;
+import com.example.playgroundmanage.dto.GameRequestDto;
 import com.example.playgroundmanage.dto.reqeust.UserJoinGameParams;
 import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.game.service.RequestServiceFinder;
@@ -19,9 +19,9 @@ public class RequestController {
     public void generateJoinGameRequest(@RequestBody UserJoinGameParams userJoinGameParams, @AuthenticationPrincipal MyUserDetails userDetails, @PathVariable Long gameId, @PathVariable("requestType") String type) {
         RequestService requestService = requestServiceFinder.find(type);
 
-        JoinGameRequestDto joinGameRequestDto = userJoinGameParams.toJoinGameRequestDto(userDetails.getUser());
+        GameRequestDto gameRequestDto = userJoinGameParams.toJoinGameRequestDto(userDetails.getUser());
 
-        requestService.generateRequest(gameId, joinGameRequestDto);
+        requestService.generateRequest(gameId, gameRequestDto);
     }
 
     @GetMapping("/game/accept/{requestId}/{requestType}")

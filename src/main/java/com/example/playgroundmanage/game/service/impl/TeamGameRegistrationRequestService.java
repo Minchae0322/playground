@@ -1,13 +1,12 @@
 package com.example.playgroundmanage.game.service.impl;
 
-import com.example.playgroundmanage.dto.JoinGameRequestDto;
+import com.example.playgroundmanage.dto.GameRequestDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
-import com.example.playgroundmanage.game.vo.impl.TeamGameJoinRequest;
 import com.example.playgroundmanage.game.vo.impl.TeamGameRegistrationRequest;
 import com.example.playgroundmanage.util.TeamSelector;
 import jakarta.transaction.Transactional;
@@ -36,28 +35,28 @@ public class TeamGameRegistrationRequestService implements RequestService {
 
     @Override
     @Transactional
-    public Long generateRequest(Long gameId, JoinGameRequestDto joinGameRequestDto) {
+    public Long generateRequest(Long gameId, GameRequestDto gameRequestDto) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
 
-        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(game), joinGameRequestDto.getUser());
-        gameManagementService.deletePreviousRequest(game, joinGameRequestDto.getUser());
+        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(game), gameRequestDto.getUser());
+        gameManagementService.deletePreviousRequest(game, gameRequestDto.getUser());
 
-        return saveJoinRequest(game, joinGameRequestDto);
+        return saveJoinRequest(game, gameRequestDto);
     }
 
 
     @Transactional
-    private Long saveJoinRequest(Game game, JoinGameRequestDto joinGameRequestDto) {
-        Team team = teamRepository.findById(joinGameRequestDto.getTeamId())
+    private Long saveJoinRequest(Game game, GameRequestDto gameRequestDto) {
+        Team team = teamRepository.findById(gameRequestDto.getTeamId())
                 .orElseThrow(TeamNotExistException::new);
 
         return gameRequestRepository.save(TeamGameRegistrationRequest.builder()
                         .game(game)
                         .team(team)
-                        .user(joinGameRequestDto.getUser())
+                        .user(gameRequestDto.getUser())
                         .expiredTime(game.getGameStartDateTime().plusMinutes(game.getRunningTime()))
-                        .matchTeamSide(joinGameRequestDto.getMatchTeamSide())
+                        .matchTeamSide(gameRequestDto.getMatchTeamSide())
                         .build())
                 .getId();
     }
