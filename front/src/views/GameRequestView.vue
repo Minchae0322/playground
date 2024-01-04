@@ -21,13 +21,15 @@
             :class="{'solo-game': request.requestType === 'soloGameJoin',
                'team-game': request.requestType === 'teamGameJoin',
                'registration-game': request.requestType === 'teamGameRegistration'}">
-          <td>{{ request.gameName }}</td>
+          <router-link :to="{ name:'gameInfo', params: { gameId: request.gameId } }">
+            <td>{{ request.gameName }}</td>
+          </router-link>
           <td>{{ request.username }}</td>
           <td>{{ request.requestType }}</td>
           <td>{{ request.requestTime }}</td>
           <td class="action-buttons">
             <button class="action-button action-button-reject">Reject</button>
-            <button class="action-button action-button-accept">Accept</button>
+            <button class="action-button action-button-accept" @click="acceptRequest(request.requestId, request.requestType)">Accept</button>
           </td>
         </tr>
         </tbody>
@@ -40,6 +42,7 @@
 import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import {useRouter} from "vue-router";
+import router from "@/router";
 
 
 const apiBaseUrl = "http://localhost:8080";
@@ -68,7 +71,26 @@ const fetchPendingRequests = async () => {
   }
 };
 
-
+const acceptRequest = async (requestId, requestType) => {
+  await validateAccessToken();
+  try {
+    const response = await axios.patch(`${apiBaseUrl}/game/accept/${requestId}/${requestType}`, {}, {
+      headers: {
+        'Authorization': getAccessToken()
+      }
+    });
+    if (response.status === 200) {
+      // 성공적인 요청 후 처리. 예를 들어, 요청 목록을 갱신하거나 사용자에게 알림을 표시할 수 있습니다.
+      // 예: pendingRequests.value = pendingRequests.value.filter(request => request.requestId !== requestId);
+      alert('Request accepted successfully.');
+      router.go(0)
+    }
+  } catch (error) {
+    console.error("There was an error accepting the request: ", error);
+    // 사용자에게 실패를 알리는 메시지를 표시합니다.
+    alert('Failed to accept the request.');
+  }
+};
 
 
 const validateAccessToken = async function () {
@@ -116,12 +138,18 @@ const redirectToLogin = function () {
 </script>
 
 <style scoped>
+
+a{
+  text-decoration: none;
+}
 .main-container {
   width: 80%;
   padding: 16px;
   margin: auto;
   box-sizing: border-box;
 }
+
+
 
 
 /* Different background colors for each request type */
@@ -183,70 +211,48 @@ const redirectToLogin = function () {
 /* 테이블 헤더 스타일 */
 .table thead th {
   background-color: #f9f9f9;
-
   padding: 12px;
-  color: #838383;
+  color:black;
+  font-weight: bold;
+  padding-left: 24px; /* 기존 padding 값에 더하여 내용을 오른쪽으로 이동 */
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 2px solid #eee; /* 테두리를 좀 더 두껍게 조정 */
   text-align: left;
 }
 
 /* 테이블 바디 스타일 */
 .table tbody td {
-  padding: 12px;
-  border-bottom: 1px solid #eee;
-  text-overflow: ellipsis; /* 넘치는 텍스트를 말줄임표로 표시 */
+  padding: 16px; /* 패딩을 더 크게 조정 */
+  border-bottom: 1px solid #eee; /* 테두리 색상을 조정 */
+  text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-}
-
-/* 테이블 행 호버 스타일 */
-.table tbody tr:hover {
-  background-color: #f1f1f1;
-}
-
-/* 상태 라벨 스타일 */
-.status-pending,
-.status-approved,
-.status-declined {
-  text-align: center;
-  padding: 4px 8px;
-  border-radius: 4px;
-  color: white;
-  font-weight: bold;
+  font-size: 14px; /* 글자 크기 조정 */
+  color: #333; /* 글자 색상 조정 */
 }
 
 
-
-.status-approved {
-  background-color: #28a745; /* 승인 상태의 배경색 */
-}
-
-.status-declined {
-  background-color: #dc3545; /* 거절 상태의 배경색 */
-}
 
 /* 액션 버튼 스타일 */
-.action-buttons {
-  display: flex;
-  justify-content: start;
-  gap: 8px;
-}
-
-.action-button {
-  padding: 6px 12px;
-  border: none;
-  border-radius: 4px;
+.action-buttons button {
+  padding: 8px 16px; /* 버튼 패딩 조정 */
+  margin-right: 8px; /* 버튼 사이 간격 조정 */
+  border: none; /* 테두리 제거 */
+  border-radius: 4px; /* 둥근 모서리 */
+  color: white; /* 텍스트 색상 흰색 */
+  font-size: 14px; /* 글자 크기 조정 */
+  font-weight: 500; /* 글자 무게 조정 */
   cursor: pointer;
-  font-weight: bold;
-}
-
-.action-button-accept {
-  background-color: #28a745; /* 승인 버튼의 배경색 */
+  outline: none; /* 외곽선 제거 */
+  box-shadow: none; /* 그림자 제거 */
 }
 
 .action-button-reject {
-  background-color: #dc3545; /* 거절 버튼의 배경색 */
+  background-color: #F87171; /* 빨간색 배경 */
+}
+
+.action-button-accept {
+  background-color: #34D399; /* 녹색 배경 */
 }
 
 .action-button:hover {

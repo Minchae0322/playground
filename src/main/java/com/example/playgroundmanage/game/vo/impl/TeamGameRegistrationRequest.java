@@ -32,7 +32,7 @@ public class TeamGameRegistrationRequest extends GameRequest {
         return GameRequestInfoDto.builder()
                 .game(getGame())
                 .requestId(getId())
-                .requestType("teamGameJoin")
+                .requestType("teamGameRegistration")
                 .user(getUser())
                 .team(team)
                 .matchTeamSide(getMatchTeamSide())

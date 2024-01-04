@@ -9,6 +9,7 @@ import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.game.service.RequestServiceFinder;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +32,8 @@ public class RequestController {
         requestService.generateRequest(gameId, gameRequestDto);
     }
 
-    @GetMapping("/game/accept/{requestId}/{requestType}")
+    @PreAuthorize("hasPermission(#requestId,'requestAccept','UPDATE')")
+    @PatchMapping("/game/accept/{requestId}/{requestType}")
     public void acceptGameRequest(@PathVariable Long requestId, @PathVariable("requestType") String type) {
         RequestService requestService = requestServiceFinder.find(type);
 

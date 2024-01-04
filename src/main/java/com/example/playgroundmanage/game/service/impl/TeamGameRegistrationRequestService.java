@@ -82,6 +82,8 @@ public class TeamGameRegistrationRequestService implements RequestService {
 
         SubTeam subTeam = createSubTeam(teamGameRegistrationRequest.getTeam(), teamGameRegistrationRequest.getGame().getCompetingTeamBySide(teamGameRegistrationRequest.getMatchTeamSide()));
 
+        gameManagementService.deleteRequest(teamGameRegistrationRequest.getId());
+
         return gameParticipantRepository.save(GameParticipant.builder()
                 .isAccepted(true)
                 .subTeam(subTeam)
@@ -89,13 +91,14 @@ public class TeamGameRegistrationRequestService implements RequestService {
                 .build()).getId();
     }
 
+    @Transactional
     private SubTeam createSubTeam(Team team, CompetingTeam competingTeam) {
-        return SubTeam.builder()
+        return subTeamRepository.save(SubTeam.builder()
                 .isAccept(true)
                 .isSoloTeam(false)
                 .competingTeam(competingTeam)
                 .team(team)
-                .build();
+                .build());
     }
 
     @Override

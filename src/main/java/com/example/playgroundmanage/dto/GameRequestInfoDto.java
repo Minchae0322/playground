@@ -48,6 +48,7 @@ public class GameRequestInfoDto {
                 .teamId(team == null ? null : team.getId())
                 .gameName(game.getGameName())
                 .gameId(game.getId())
+                .requestId(requestId)
                 .requestTime(DateFormat.dateFormatYYYYMMDDHHMM(requestTime))
                 .requestType(requestType)
                 .username(user.getNickname())
