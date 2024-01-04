@@ -35,7 +35,7 @@ public class UserJoinGameParams {
                 .user(user)
                 .teamId(teamId)
                 .subTeamId(subTeamId)
-                .requestTime(MyDateTime.initMyDateTime(ZonedDateTime.now()).getLocalDateTime())
+                .requestTime(MyDateTime.initMyDateTime(ZonedDateTime.now()))
                 .matchTeamSide(MatchTeamSide.valueOf(matchTeamSide))
                 .build();
     }

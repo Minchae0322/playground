@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.game.vo;
 
 import com.example.playgroundmanage.dto.GameRequestDto;
+import com.example.playgroundmanage.dto.GameRequestInfoDto;
 import com.example.playgroundmanage.game.vo.impl.SoloGameJoinRequest;
 import com.example.playgroundmanage.game.vo.impl.TeamGameJoinRequest;
 import com.example.playgroundmanage.game.vo.impl.TeamGameRegistrationRequest;
@@ -48,11 +49,15 @@ public abstract class GameRequest {
         this.requestTime = requestTime;
     }
 
-    public GameRequestDto toGameRequestDto() {
+    public abstract GameRequestInfoDto toGameRequestDto();
+
+    /*public GameRequestDto toGameRequestDto() {
         GameRequestDto gameRequestDto = GameRequestDto.builder()
                 .matchTeamSide(matchTeamSide)
                 .requestTime(requestTime)
+                .requestId(id)
                 .user(user)
+                .game(game)
                 .build();
 
         if (this instanceof SoloGameJoinRequest) {
@@ -62,20 +67,15 @@ public abstract class GameRequest {
         if (this instanceof TeamGameJoinRequest) {
             TeamGameJoinRequest teamRequest = (TeamGameJoinRequest) this;
             gameRequestDto.setRequestType("teamGameJoin");
-            gameRequestDto.setSubTeamId(teamRequest.getSubTeam().getId());
+            gameRequestDto.setSubTeam(teamRequest.getSubTeam());
         }
 
         if (this instanceof TeamGameRegistrationRequest) {
             TeamGameRegistrationRequest  teamGameRegistrationRequest = (TeamGameRegistrationRequest) this;
             gameRequestDto.setRequestType("teamGameRegistration");
-            gameRequestDto.setTeamId(teamGameRegistrationRequest.getTeam().getId());
+            gameRequestDto.setTeam(teamGameRegistrationRequest.getTeam());
         }
 
         return gameRequestDto;
-    }
-
-    public GameRequest update() {
-        this.requestTime = LocalDateTime.now();
-        return this;
-    }
+    }*/
 }

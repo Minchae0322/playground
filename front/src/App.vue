@@ -16,7 +16,6 @@ const user = ref({
 onMounted(() => {
   // Check if the initial page number is provided in the route query
   getUserInfo()
-
 });
 
 const clickUserInfo = function () {

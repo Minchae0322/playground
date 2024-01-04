@@ -1,12 +1,6 @@
 <template>
   <main class="main-container">
-    <div class="search-and-sort">
-      <!-- Search input -->
-      <input class="search-input" type="search" placeholder="Search requests...">
-
-      <!-- Sort button -->
-      <button class="sort-button">Sort by</button>
-    </div>
+    <!-- ...other components... -->
 
     <!-- Table container -->
     <div class="table-container">
@@ -23,24 +17,100 @@
         </thead>
         <!-- Table Body -->
         <tbody>
-        <!-- Replace with dynamic rows from your backend -->
-        <tr>
-          <td>John Doe</td>
-          <td>January 3, 2024, 10:30 AM</td>
-          <td>Team Request</td>
-          <td>...</td>
-
+        <tr v-for="request in pendingRequests" :key="request.requestId">
+          <td>{{ request.username }}</td>
+          <td>{{ request.requestTime }}</td>
+          <td>{{ request.requestType }}</td>
+          <td>{{ request.gameName }}</td> <!-- Assuming purpose is represented by gameName -->
           <td class="action-buttons">
             <button class="action-button action-button-reject">Reject</button>
             <button class="action-button action-button-accept">Accept</button>
           </td>
         </tr>
-        <!-- More rows... -->
         </tbody>
       </table>
     </div>
   </main>
 </template>
+
+<script setup>
+import { onMounted, ref } from 'vue';
+import axios from 'axios';
+import {useRouter} from "vue-router";
+
+
+const apiBaseUrl = "http://localhost:8080";
+
+// Ref for reactive data
+const pendingRequests = ref([]);
+
+onMounted(() => {
+  fetchPendingRequests()
+})
+
+
+// Fetch data from server
+const fetchPendingRequests = async () => {
+  await validateAccessToken()
+  try {
+    const response = await axios.get(`${apiBaseUrl}/user/pending/request`, {
+      headers: {
+        'Authorization': getAccessToken()
+      }
+    });
+    pendingRequests.value = response.data; // Assuming the data is directly the list of requests
+  } catch (error) {
+    console.error("There was an error fetching the pending requests: ", error);
+    // Handle error appropriately
+  }
+};
+
+
+
+
+const validateAccessToken = async function () {
+  const accessToken = getAccessToken();
+  if (!accessToken) {
+    redirectToLogin()
+    return;
+  }
+
+  try {
+    await axios.get(`${apiBaseUrl}/token/valid`, {
+      headers: {'Authorization': accessToken},
+    });
+  } catch (error) {
+    await updateAccessToken();
+  }
+};
+
+const getAccessToken = function () {
+  return localStorage.getItem("accessToken");
+};
+
+const updateAccessToken = async function () {
+  const refreshToken = localStorage.getItem("refreshToken");
+  if (!refreshToken) return redirectToLogin();
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
+      headers: { 'RefreshToken': refreshToken }
+    });
+    if (response.status === 200) {
+      const newAccessToken = response.headers['authorization'];
+      localStorage.setItem('accessToken', newAccessToken);
+      return newAccessToken;
+    }
+  } catch (error) {
+    redirectToLogin();
+  }
+};
+
+const redirectToLogin = function () {
+  router.push("/login");
+};
+
+</script>
 
 <style scoped>
 .main-container {

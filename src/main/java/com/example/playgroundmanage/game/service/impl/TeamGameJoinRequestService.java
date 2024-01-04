@@ -12,6 +12,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+
 import static com.example.playgroundmanage.util.GameValidation.validateDuplicateUserInGame;
 
 @Service
@@ -58,6 +60,7 @@ public class TeamGameJoinRequestService implements RequestService {
         return gameRequestRepository.save(TeamGameJoinRequest.builder()
                         .game(game)
                         .subTeam(subTeam)
+                        .requestTime(gameRequestDto.getRequestTime().getLocalDateTime())
                         .user(gameRequestDto.getUser())
                         .expiredTime(game.getGameStartDateTime().plusMinutes(game.getRunningTime()))
                         .matchTeamSide(gameRequestDto.getMatchTeamSide())

@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.dto;
 
+import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import lombok.Builder;
@@ -20,10 +21,10 @@ public class GameRequestDto {
 
     private MatchTeamSide matchTeamSide;
 
-    private LocalDateTime requestTime;
-    //todo gameRequestDto 를 분리해야 하는데 subTeamId 와 teamId 가 null 일 수 있다.
+    private MyDateTime requestTime;
+
     @Builder
-    public GameRequestDto(String requestType, Long subTeamId, User user, Long teamId, MatchTeamSide matchTeamSide, LocalDateTime requestTime) {
+    public GameRequestDto(String requestType, Long subTeamId, User user, Long teamId, MatchTeamSide matchTeamSide, MyDateTime requestTime) {
         this.requestType = requestType;
         this.subTeamId = subTeamId;
         this.user = user;

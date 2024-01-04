@@ -54,6 +54,7 @@ public class TeamGameRegistrationRequestService implements RequestService {
         return gameRequestRepository.save(TeamGameRegistrationRequest.builder()
                         .game(game)
                         .team(team)
+                        .requestTime(gameRequestDto.getRequestTime().getLocalDateTime())
                         .user(gameRequestDto.getUser())
                         .expiredTime(game.getGameStartDateTime().plusMinutes(game.getRunningTime()))
                         .matchTeamSide(gameRequestDto.getMatchTeamSide())

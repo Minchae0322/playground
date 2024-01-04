@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.game.service.impl;
 
 import com.example.playgroundmanage.dto.GameRequestDto;
-import com.example.playgroundmanage.dto.response.PendingJoinRequest;
+import com.example.playgroundmanage.dto.response.PendingGameRequest;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameManagementService;
@@ -62,6 +62,7 @@ public class SoloGameJoinRequestService implements RequestService {
     private Long saveJoinRequest(Game game, GameRequestDto gameRequestDto) {
         return gameRequestRepository.save(SoloGameJoinRequest.builder()
                         .game(game)
+                        .requestTime(gameRequestDto.getRequestTime().getLocalDateTime())
                         .expiredTime(game.getGameStartDateTime())
                         .user(gameRequestDto.getUser())
                         .expiredTime(game.getGameStartDateTime().plusMinutes(game.getRunningTime()))
@@ -98,17 +99,4 @@ public class SoloGameJoinRequestService implements RequestService {
         return competingTeam.getSoloTeam();
     }
 
-
-    public List<PendingJoinRequest> getPendingJoinRequest(User user) {
-        List<GameRequest> gameRequests = gameRequestRepository.findAllByUserAndExpiredTimeAfter(user, LocalDateTime.now());
-        return gameRequests.stream()
-                .map(request -> PendingJoinRequest.builder()
-                        .requestId(request.getId())
-                        .gameSide(request.getMatchTeamSide().getValue())
-                        .requestTime(request.getRequestTime())
-                        .username(request.getUser().getUsername())
-                        .gameId(request.getGame().getId())
-                        .build()
-                ).toList();
-    }
 }

@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.game.service;
 
+import com.example.playgroundmanage.dto.GameRequestInfoDto;
 import com.example.playgroundmanage.game.repository.GameRequestRepository;
 import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.game.vo.Game;
@@ -38,8 +39,11 @@ public class GameManagementService {
     }
 
     @Transactional
-    public void getPendingGameRequests(User user) {
+    public List<GameRequestInfoDto> getPendingGameRequests(User user) {
         List<GameRequest> pendingRequests = gameRequestRepository.findAllByUserAndExpiredTimeAfter(user, LocalDateTime.now());
 
+        return pendingRequests.stream()
+                .map(GameRequest::toGameRequestDto)
+                .toList();
     }
 }

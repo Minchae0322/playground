@@ -1,6 +1,8 @@
 package com.example.playgroundmanage.game.vo.impl;
 
 
+import com.example.playgroundmanage.dto.GameRequestDto;
+import com.example.playgroundmanage.dto.GameRequestInfoDto;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.Entity;
@@ -23,4 +25,16 @@ public class TeamGameJoinRequest extends GameRequest {
         this.subTeam = subTeam;
     }
 
+    @Override
+    public GameRequestInfoDto toGameRequestDto() {
+        return GameRequestInfoDto.builder()
+                .game(getGame())
+                .requestId(getId())
+                .requestType("teamGameJoin")
+                .user(getUser())
+                .subTeam(subTeam)
+                .matchTeamSide(getMatchTeamSide())
+                .requestTime(getRequestTime())
+                .build();
+    }
 }
