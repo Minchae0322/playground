@@ -31,6 +31,9 @@ public abstract class GameRequest {
     @ManyToOne
     private User user;
 
+    @ManyToOne
+    private User host;
+
 
     protected MatchTeamSide matchTeamSide;
 
@@ -40,10 +43,11 @@ public abstract class GameRequest {
     protected LocalDateTime requestTime;
 
 
-    public GameRequest(Long id, Game game, User user, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
+    public GameRequest(Long id, Game game, User user, User host, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
         this.id = id;
         this.game = game;
         this.user = user;
+        this.host = host;
         this.matchTeamSide = matchTeamSide;
         this.expiredTime = expiredTime;
         this.requestTime = requestTime;

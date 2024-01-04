@@ -75,7 +75,7 @@ const router = createRouter({
     },
 
     {
-      path: '/game/requests',
+      path: '/user/requests',
       name: 'gameRequest',
       component: gameRequest,
       props: true

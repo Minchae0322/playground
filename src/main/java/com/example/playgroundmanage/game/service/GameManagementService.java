@@ -40,7 +40,7 @@ public class GameManagementService {
 
     @Transactional
     public List<GameRequestInfoDto> getPendingGameRequests(User user) {
-        List<GameRequest> pendingRequests = gameRequestRepository.findAllByUserAndExpiredTimeAfter(user, LocalDateTime.now());
+        List<GameRequest> pendingRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(user, LocalDateTime.now());
 
         return pendingRequests.stream()
                 .map(GameRequest::toGameRequestDto)

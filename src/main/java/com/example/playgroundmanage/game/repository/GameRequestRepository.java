@@ -15,5 +15,5 @@ public interface GameRequestRepository extends JpaRepository<GameRequest, Long> 
 
 
 
-    List<GameRequest> findAllByUserAndExpiredTimeAfter(User user, LocalDateTime localDateTime);
+    List<GameRequest> findAllByHostAndExpiredTimeAfter(User user, LocalDateTime localDateTime);
 }

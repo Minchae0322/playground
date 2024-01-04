@@ -6,25 +6,26 @@ import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class TeamGameRegistrationRequest extends GameRequest {
 
     @ManyToOne
     private Team team;
 
     @Builder
-    public TeamGameRegistrationRequest(Long id, Game game, User user, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, Team team) {
-        super(id, game, user, matchTeamSide, expiredTime, requestTime);
+    public TeamGameRegistrationRequest(Long id, Game game, User user, User host, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, Team team) {
+        super(id, game, user, host, matchTeamSide, expiredTime, requestTime);
         this.team = team;
     }
+
+
+
 
     @Override
     public GameRequestInfoDto toGameRequestDto() {

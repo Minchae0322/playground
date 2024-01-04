@@ -8,20 +8,23 @@
         <!-- Table Head -->
         <thead>
         <tr>
-          <th>Name</th>
-          <th>Date & Time</th>
+          <th>게임</th>
+          <th>참가자</th>
           <th>Request Type</th>
-          <th>Purpose</th>
+          <th>요청시간</th>
           <th>Actions</th>
         </tr>
         </thead>
         <!-- Table Body -->
         <tbody>
-        <tr v-for="request in pendingRequests" :key="request.requestId">
+        <tr v-for="request in pendingRequests" :key="request.requestId"
+            :class="{'solo-game': request.requestType === 'soloGameJoin',
+               'team-game': request.requestType === 'teamGameJoin',
+               'registration-game': request.requestType === 'teamGameRegistration'}">
+          <td>{{ request.gameName }}</td>
           <td>{{ request.username }}</td>
-          <td>{{ request.requestTime }}</td>
           <td>{{ request.requestType }}</td>
-          <td>{{ request.gameName }}</td> <!-- Assuming purpose is represented by gameName -->
+          <td>{{ request.requestTime }}</td>
           <td class="action-buttons">
             <button class="action-button action-button-reject">Reject</button>
             <button class="action-button action-button-accept">Accept</button>
@@ -118,6 +121,20 @@ const redirectToLogin = function () {
   padding: 16px;
   margin: auto;
   box-sizing: border-box;
+}
+
+
+/* Different background colors for each request type */
+.solo-game {
+  background-color: #e0f7fa; /* Light blue for solo game join requests */
+}
+
+.team-game {
+  background-color: #e8f5e9; /* Light green for team game join requests */
+}
+
+.registration-game {
+  background-color: #fff3e0; /* Light orange for game registration requests */
 }
 
 /* 검색 및 정렬 섹션 스타일 */

@@ -2,6 +2,7 @@ package com.example.playgroundmanage.game.service.impl;
 
 import com.example.playgroundmanage.dto.GameRequestDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
+import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
@@ -60,6 +61,7 @@ public class TeamGameJoinRequestService implements RequestService {
         return gameRequestRepository.save(TeamGameJoinRequest.builder()
                         .game(game)
                         .subTeam(subTeam)
+                        .host(game.getHost())
                         .requestTime(gameRequestDto.getRequestTime().getLocalDateTime())
                         .user(gameRequestDto.getUser())
                         .expiredTime(game.getGameStartDateTime().plusMinutes(game.getRunningTime()))

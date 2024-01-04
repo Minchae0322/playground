@@ -88,21 +88,31 @@ const sendSoloGameJoinRequest = () => {
 };
 
 const sendTeamRegistrationRequest = () => {
-  isTeamRegistrationModalVisible.value = false;
-  // 선택된 팀을 처리하는 로직
-  validateAccessToken()
-  axios.post(`${apiBaseUrl}/game/${props.gameId}/join/teamGameRegistration`,
-      {
-        teamId: selectedTeam.value.teamId,
-        matchTeamSide: homeAndAwayTeamParams.value.matchTeamSide
-      }, {
-        headers: {
-          'Authorization': getAccessToken()
-        }
-      }
-  ).then(response => {
 
-  });
+  if (!selectedTeam.value.teamId) {
+    alert("가입한 팀이 있어야합니다");
+    return;
+  }
+
+  isTeamRegistrationModalVisible.value = false;
+
+
+    validateAccessToken();
+    axios.post(`${apiBaseUrl}/game/${props.gameId}/join/teamGameRegistration`,
+        {
+          teamId: selectedTeam.value.teamId,
+          matchTeamSide: homeAndAwayTeamParams.value.matchTeamSide
+        }, {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
+    ).then(response => {
+
+    });
+
+  // 선택된 팀을 처리하는 로직
+
 }
 
 const clickTeamRegistration = () => {

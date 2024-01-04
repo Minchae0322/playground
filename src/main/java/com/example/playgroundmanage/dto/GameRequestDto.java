@@ -19,6 +19,8 @@ public class GameRequestDto {
 
     private Long teamId;
 
+
+
     private MatchTeamSide matchTeamSide;
 
     private MyDateTime requestTime;

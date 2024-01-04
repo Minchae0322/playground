@@ -43,6 +43,9 @@ public class User implements Serializable{
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @OneToMany(mappedBy = "host", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<GameRequest> gameRequests_host;
+
     @OneToMany(mappedBy = "host", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Game> hostGames = new ArrayList<>();
 

@@ -3,6 +3,7 @@ package com.example.playgroundmanage.game.service.impl;
 import com.example.playgroundmanage.dto.GameRequestDto;
 import com.example.playgroundmanage.dto.response.PendingGameRequest;
 import com.example.playgroundmanage.exception.GameNotExistException;
+import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
@@ -38,6 +39,8 @@ public class SoloGameJoinRequestService implements RequestService {
     private final SubTeamRepository subTeamRepository;
 
 
+
+
     private final GameManagementService gameManagementService;
 
     @Override
@@ -62,6 +65,7 @@ public class SoloGameJoinRequestService implements RequestService {
     private Long saveJoinRequest(Game game, GameRequestDto gameRequestDto) {
         return gameRequestRepository.save(SoloGameJoinRequest.builder()
                         .game(game)
+                        .host(game.getHost())
                         .requestTime(gameRequestDto.getRequestTime().getLocalDateTime())
                         .expiredTime(game.getGameStartDateTime())
                         .user(gameRequestDto.getUser())

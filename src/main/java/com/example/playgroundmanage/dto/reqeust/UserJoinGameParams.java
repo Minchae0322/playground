@@ -18,7 +18,9 @@ public class UserJoinGameParams {
 
     private Long teamId;
 
+
     private String matchTeamSide;
+
 
     @Builder
     public UserJoinGameParams(Long subTeamId, Long teamId, String matchTeamSide) {
@@ -26,6 +28,7 @@ public class UserJoinGameParams {
         this.teamId = teamId;
         this.matchTeamSide = matchTeamSide;
     }
+
 
 
 

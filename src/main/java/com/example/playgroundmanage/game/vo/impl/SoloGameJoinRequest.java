@@ -20,10 +20,13 @@ import java.time.LocalDateTime;
 @Getter
 public class SoloGameJoinRequest extends GameRequest {
 
+
     @Builder
-    public SoloGameJoinRequest(Long id, Game game, User user, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
-        super(id, game, user, matchTeamSide, expiredTime, requestTime);
+    public SoloGameJoinRequest(Long id, Game game, User user, User host, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
+        super(id, game, user, host, matchTeamSide, expiredTime, requestTime);
     }
+
+
 
     @Override
     public GameRequestInfoDto toGameRequestDto() {
