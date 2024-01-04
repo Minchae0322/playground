@@ -1,7 +1,7 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import axios from "axios";
-
+import { defineEmits } from 'vue';
 import {useRouter} from "vue-router";
 import defaultImage from "@/assets/img.png";
 
@@ -33,6 +33,13 @@ const props = defineProps({
     required:true,
   }
 })
+
+
+const emits = defineEmits(['goBack']);
+
+function goBack() {
+  emits('goBack'); // 부모 컴포넌트에게 뒤로가기 이벤트 전달
+}
 
 onMounted(() => {
   getHomeTeams()
@@ -237,6 +244,7 @@ const handleSelection = (type, teamId) => {
 
 <template>
   <div class="game-information">
+    <button @click="goBack">뒤로 가기</button>
     <div class="tab-container">
       <div
           role="tablist"

@@ -1,20 +1,39 @@
 <template>
-  <div class="game-container">
-    <div class="game-image">
-      <!-- Your image goes here -->
-      <img src="../assets/soccer.png" alt="Game Image">
-      <div class="overlay">
-        <h1>Game Title</h1>
-        <p>Game Description</p>
-        <p>Start Time: 10:00 AM</p>
+  <div id="gameView-container">
+    <component :is="currentView" :game="selectedGame" key="selectedGame.gameId"></component>
+    <div class="game-info">
+      <div v-if="currentGame">
+        <div><strong>Host</strong> {{ currentGame.hostName }}</div>
+        <div><strong>StartTime</strong> {{ currentGame.gameStart }}</div>
+        <div><strong>Running Time</strong> {{ currentGame.time }}</div>
+      </div>
+      <div v-else>
+        <strong>No current game in progress</strong>
       </div>
     </div>
-    <div id="gameView-container">
-      <component :is="currentView" :game="selectedGame" key="selectedGame.gameId"
-                 @gameSelected="handleGameSelected"
-                 @goBack="handleGoBack"></component>
+
+    <div class="upcoming-games">
+      <h3>Upcoming Games</h3>
+      <ul>
+        <li v-for="(game,index) in upcomingGames" :key="index" @click="handleGameClick(game)">
+          <div >
+            <div  class="game-card">
+              <h2>{{ game.gameName }}</h2>
+              <div class="host-info">
+                <img :src="game.hostProfileImg || defaultImage">
+                <h3>Host: {{ game.hostName }}</h3>
+              </div>
+              <p class="game-time">Time: {{ game.gameStart }}</p>
+              <p class="running-time">Running Time: {{ game.runningTime }}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
     </div>
+    <button class="join-button" @click="openGameBuilder">Join Game</button>
+    <GameBuilderModal v-if="isGameBuilderModalOpen" :some-data="data" @closeGameBuilder=closeModal></GameBuilderModal>
   </div>
+
 </template>
 
 <script setup>
@@ -22,9 +41,8 @@ import {onMounted, ref} from 'vue';
 import axios from "axios";
 import GameBuilderModal from './GameBuilderView.vue';
 import {useRouter} from "vue-router";
-import defaultImage from '../assets/img.png';
-import PlaygroundInfoView from "@/views/PlaygroundInfoView.vue";
-import GameInfoView from './GameInfoView.vue';
+import { defineEmits } from 'vue';
+
 
 const data = ref('이것은 부모로부터 온 데이터입니다.');
 const isGameBuilderModalOpen = ref(false);
@@ -39,22 +57,67 @@ const upcomingGames = ref([{
 }]);
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
-const currentView = ref(PlaygroundInfoView); // 초기 뷰 설정
-const selectedGame = ref(null); // 선택된 게임
-
-function handleGameSelected(game) {
-  selectedGame.value = game; // 선택된 게임 업데이트
-  currentView.value = GameInfoView; // 뷰를 GameInfoView로 변경
-}
-
-function handleGoBack() {
-  currentView.value = PlaygroundInfoView; // 뷰를 PlaygroundInfoView로 변경
-}
+const emits = defineEmits(['gameSelected']);
 
 onMounted(() => {
   // Check if the initial page number is provided in the route query
+  getInProgressGame();
+  getUpcomingGames();
 });
 
+function handleGameClick(game) {
+  // 게임이 클릭되었을 때 부모 컴포넌트에 알림
+  emits('gameSelected', game);
+}
+
+
+
+const openGameBuilder = function () {
+  isGameBuilderModalOpen.value = !isGameBuilderModalOpen.value;
+};
+
+
+const closeModal = () => {
+  isGameBuilderModalOpen.value = false;
+  router.go(0);
+};
+const getInProgressGame = function () {
+
+  const accessToken = localStorage.getItem("accessToken");
+  if(accessToken) {
+    axios.get(`${apiBaseUrl}/playground/2/current`,
+        {  headers: {
+            'Authorization': accessToken
+          }}
+    ).then(response => {
+      if (response.status === 200) {
+        currentGame.value = response.data;
+      }
+    });
+  }
+
+};
+
+const getUpcomingGames = function () {
+  const accessToken = localStorage.getItem("accessToken");
+  if(accessToken) {
+    axios.get(`${apiBaseUrl}/playground/2/upComing`,
+        {  headers: {
+            'Authorization': accessToken
+          }}
+    ).then(response => {
+      upcomingGames.value = response.data.map(game => ({
+        gameId: game.gameId,
+        gameName: game.gameName,
+        hostName: game.hostName,
+        gameStart: game.gameStart,
+        runningTime: game.runningTime,
+        hostProfileImg: game.hostProfileImg ? `data:image/jpeg;base64,${game.hostProfileImg}` : defaultImage,
+        onClick: () => showGameInfo(game.gameId)
+      }));
+    });
+  }
+};
 
 </script>
 

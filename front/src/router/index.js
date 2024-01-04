@@ -11,6 +11,8 @@ import teamBuilding from '../views/TeamBuildingView.vue'
 import userInfo from '../views/UserInfoView.vue'
 import teamInfo from '../views/TeamInfoView.vue'
 import gameRequest from '../views/GameRequestView.vue';
+import playgroundInfo from '../views/PlaygroundInfoView.vue'
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -78,6 +80,13 @@ const router = createRouter({
       path: '/user/requests',
       name: 'gameRequest',
       component: gameRequest,
+      props: true
+    },
+
+    {
+      path: '/playground/:playgroundId',
+      name: 'playgroundInfo',
+      component: playgroundInfo,
       props: true
     },
   ]
