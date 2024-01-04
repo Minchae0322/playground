@@ -9,6 +9,8 @@
         <p>Start Time: 10:00 AM</p>
       </div>
     </div>
+    <div id="gameView-container">
+      <component :is="currentView" :game="currentGame" />
     <div class="game-info">
       <div v-if="currentGame">
         <div><strong>Host</strong> {{ currentGame.hostName }}</div>
@@ -40,6 +42,7 @@
     </div>
     <button class="join-button" @click="openGameBuilder">Join Game</button>
     <GameBuilderModal v-if="isGameBuilderModalOpen" :some-data="data" @closeGameBuilder=closeModal></GameBuilderModal>
+    </div>
   </div>
 </template>
 

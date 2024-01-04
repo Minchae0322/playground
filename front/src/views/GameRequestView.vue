@@ -1,5 +1,6 @@
 <template>
   <main class="main-container">
+
     <!-- ...other components... -->
 
     <!-- Table container -->
@@ -28,7 +29,7 @@
           <td>{{ request.requestType }}</td>
           <td>{{ request.requestTime }}</td>
           <td class="action-buttons">
-            <button class="action-button action-button-reject">Reject</button>
+            <button class="action-button action-button-reject" @click="rejectRequest(request.requestId, request.requestType)">Reject</button>
             <button class="action-button action-button-accept" @click="acceptRequest(request.requestId, request.requestType)">Accept</button>
           </td>
         </tr>
@@ -43,6 +44,7 @@ import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import {useRouter} from "vue-router";
 import router from "@/router";
+import UserInfoView from '../views/UserInfoView.vue'
 
 
 const apiBaseUrl = "http://localhost:8080";
@@ -75,6 +77,27 @@ const acceptRequest = async (requestId, requestType) => {
   await validateAccessToken();
   try {
     const response = await axios.patch(`${apiBaseUrl}/game/accept/${requestId}/${requestType}`, {}, {
+      headers: {
+        'Authorization': getAccessToken()
+      }
+    });
+    if (response.status === 200) {
+      // 성공적인 요청 후 처리. 예를 들어, 요청 목록을 갱신하거나 사용자에게 알림을 표시할 수 있습니다.
+      // 예: pendingRequests.value = pendingRequests.value.filter(request => request.requestId !== requestId);
+      alert('Request accepted successfully.');
+      router.go(0)
+    }
+  } catch (error) {
+    console.error("There was an error accepting the request: ", error);
+    // 사용자에게 실패를 알리는 메시지를 표시합니다.
+    alert('Failed to accept the request.');
+  }
+};
+
+const rejectRequest = async (requestId, requestType) => {
+  await validateAccessToken();
+  try {
+    const response = await axios.patch(`${apiBaseUrl}/game/reject/${requestId}/${requestType}`, {}, {
       headers: {
         'Authorization': getAccessToken()
       }

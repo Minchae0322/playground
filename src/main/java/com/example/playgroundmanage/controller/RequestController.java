@@ -40,7 +40,7 @@ public class RequestController {
         requestService.acceptRequest(requestId);
     }
 
-    @DeleteMapping("/game/accept/{requestId}/{requestType}")
+    @DeleteMapping("/game/reject/{requestId}/{requestType}")
     public void declineGameRequest(@PathVariable Long requestId, @PathVariable("requestType") String type) {
         RequestService requestService = requestServiceFinder.find(type);
 
