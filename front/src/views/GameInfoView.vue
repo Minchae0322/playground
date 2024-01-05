@@ -9,15 +9,35 @@ import { defineProps } from 'vue';
 const apiBaseUrl = "http://localhost:8080";
 
 const router = useRouter();
-const homeTeams = ref([])
-const awayTeams = ref([])
-const homeAndAwayTeams = ref([{
+const homeTeams = ref({
   matchTeamSide: "HOME",
-}]);
-const homeAndAwayTeamParams = ref({
-  matchTeamSide: "HOME",
-    }
-);
+  subTeams: [{
+    teamProfileImg: '',
+    users: [{
+      userProfileImg:''
+    }]
+  }],
+  soloTeam: {
+    users: [{
+      userProfileImg:''
+    }]
+  }
+})
+const awayTeams = ref({
+  matchTeamSide: "AWAY",
+  subTeams: [{
+    teamProfileImg: '',
+    users: [{
+      userProfileImg:''
+    }]
+  }],
+  soloTeam: {
+    users: [{
+      userProfileImg:''
+    }]
+  }
+})
+const homeAndAwayTeams = ref({});
 
 const isTeamRegistrationModalVisible = ref(false);
 const teamsUserBelongTo = ref([{
@@ -45,63 +65,71 @@ function goBack() {
 }
 
 onMounted(async () => {
-  await getHomeTeams()
-  await getAwayTeams()
+  await getTeamData('HOME')
+  await getTeamData('AWAY')
   await clickHomeTeam()
 });
 
 
-const getHomeTeams = async () => {
+function encodeImageToBase64(image) {
+  return image ? `data:image/jpeg;base64,${image}` : '';
+}
+
+// 사용자 정보를 변환하는 함수
+function transformUsers(users) {
+  return users.map(user => ({
+    ...user,
+    userProfileImg: encodeImageToBase64(user.userProfileImg)
+  }));
+}
+
+// 팀 데이터를 업데이트하는 함수
+const getTeamData = async (matchTeamSide) => {
   await validateAccessToken();
 
   try {
-    const response = await axios.get(`${apiBaseUrl}/game/${props.game.gameId}/HOME`, {
+    const response = await axios.get(`${apiBaseUrl}/game/${props.game.gameId}/${matchTeamSide}`, {
       headers: {
         'Authorization': getAccessToken()
       }
     });
 
     if (response.status === 200) {
-      homeTeams.value = response.data;
+      const transformedSubTeams = response.data.subTeams.map(subTeam => ({
+        ...subTeam,
+        teamProfileImg: encodeImageToBase64(subTeam.teamProfileImg),
+        users: transformUsers(subTeam.users)
+      }));
+
+      const transformedSoloTeamUsers = transformUsers(response.data.soloTeam.users);
+
+      if (matchTeamSide === 'HOME') {
+        homeTeams.value = { ...homeTeams.value, subTeams: transformedSubTeams, soloTeam: { users: transformedSoloTeamUsers } };
+      } else if (matchTeamSide === 'AWAY') {
+        awayTeams.value = { ...awayTeams.value, subTeams: transformedSubTeams, soloTeam: { users: transformedSoloTeamUsers } };
+      }
     }
   } catch (error) {
-    console.error('Home teams 정보를 가져오는데 실패했습니다:', error);
-    // 여기서 에러 처리 로직을 추가할 수 있습니다.
+    console.error(`Failed to fetch ${matchTeamSide} teams data:`, error);
+    // 에러 처리 로직을 추가할 수 있습니다.
   }
 };
-
-const getAwayTeams = function () {
-  validateAccessToken()
-
-  axios.get(`${apiBaseUrl}/game/${props.game.gameId}/AWAY`,
-      {
-        headers: {
-          'Authorization': getAccessToken()
-        }
-      }
-  ).then(response => {
-    if (response.status === 200) {
-      awayTeams.value = response.data
-    }
-  });
-};
-
-const sendSoloGameJoinRequest = () => {
-  validateAccessToken()
-  axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/soloGameJoin`,{
-        matchTeamSide: homeAndAwayTeamParams.value.matchTeamSide,
-  },
+const sendSoloGameJoinRequest = async () => {
+  await validateAccessToken()
+  try {
+    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/soloGameJoin`,{
+          matchTeamSide: homeAndAwayTeams.value.matchTeamSide,
+        },
         {  headers: {
             'Authorization': getAccessToken()
           }}
-    ).then(response => {
-      if (response.status === 200) {
-      }
-    });
+    )
+  } catch (error) {
+    showErrorMessage(error)
+  }
 };
 
-const sendTeamRegistrationRequest = () => {
-
+const sendTeamRegistrationRequest = async () => {
   if (!selectedTeam.value.teamId) {
     alert("팀을 선택해주세요");
     return;
@@ -109,21 +137,50 @@ const sendTeamRegistrationRequest = () => {
 
   isTeamRegistrationModalVisible.value = false;
 
+  await validateAccessToken();
 
-    validateAccessToken();
-    axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameRegistration`,
+  try {
+    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameRegistration`, {
+      teamId: selectedTeam.value.teamId,
+      matchTeamSide: homeAndAwayTeams.value.matchTeamSide
+    }, {
+      headers: {
+        'Authorization': getAccessToken()
+      }
+    });
+    // 서버에서 성공 응답을 받았을 때의 처리를 이곳에 추가할 수 있습니다.
+  } catch (error) {
+    showErrorMessage(error)
+  }
+};
+
+const sendTeamJoinRequest = async (subTeamId) => {
+  await validateAccessToken();
+  try {
+    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameJoin`,
         {
-          teamId: selectedTeam.value.teamId,
-          matchTeamSide: homeAndAwayTeamParams.value.matchTeamSide
+          subTeamId: subTeamId,
+          matchTeamSide: homeAndAwayTeams.value.matchTeamSide
         }, {
           headers: {
             'Authorization': getAccessToken()
           }
         }
-    ).then(response => {
+    )
+  } catch (error) {
+    showErrorMessage(error)
+  }
 
-    });
-}
+};
+
+const showErrorMessage = (error) => {
+  if (error.response && error.response.data && error.response.data.message) {
+    alert(error.response.data.message);
+  } else {
+    // 에러 응답이 없거나 예상치 못한 에러의 경우
+    alert("경기 참가 과정에서 에러가 발생했습니다.");
+  }
+};
 
 const clickTeamRegistration = () => {
   isTeamRegistrationModalVisible.value = true;
@@ -132,13 +189,13 @@ const clickTeamRegistration = () => {
 const clickHomeTeam = () => {
   activeName.value = 'first'
   homeAndAwayTeams.value = homeTeams.value;
-  homeAndAwayTeamParams.value.matchTeamSide = "HOME"
+
 };
 
 const clickAwayTeam = () => {
   activeName.value = 'second'
   homeAndAwayTeams.value = awayTeams.value;
-  homeAndAwayTeamParams.value.matchTeamSide = "AWAY"
+
 };
 
 const toggleJoinMenu = function () {
@@ -259,17 +316,30 @@ const redirectToLogin = function () {
 
     <div class="teams-container">
       <div class="team">
-        <h2>{{ homeAndAwayTeamParams.matchTeamSide }}</h2>
+        <h2>{{ homeAndAwayTeams.matchTeamSide}}</h2>
+        <div v-if="homeAndAwayTeams.subTeams">
         <div class="team-details" v-for="(team, index) in homeAndAwayTeams.subTeams" :key="index">
+          <img class="team-image" :src="team.teamProfileImg || defaultImage">
           <h2>{{ team.teamName }}</h2>
           <div class="participants-container">
             <div class="participant" v-for="(participant, index) in team.users" :key="index">
-              <span class="user-id">{{ participant.userId }}</span>
+              <img :src="participant.userProfileImg || defaultImage">
               <span class="user-nickname">{{ participant.userNickname }}</span>
             </div>
           </div>
-          <button class="add-button" @click="addParticipant(team.teamId)">Add Player</button>
+          <button class="add-button" @click="sendTeamJoinRequest(team.subTeamId)">Add Player</button>
         </div>
+        </div>
+        <div v-if="homeAndAwayTeams.soloTeam">
+        <div class="team-details" v-for="(participant, index) in homeAndAwayTeams.soloTeam.users" :key="index">
+          <div class="participant">
+            <img :src="participant.userProfileImg || defaultImage">
+            <span class="user-nickname">{{ participant.userNickname }}</span>
+          </div>
+
+        </div>
+        </div>
+
 
           <div id="app" class="flex justify-center items-center h-screen">
             <div class="relative">
@@ -349,7 +419,6 @@ a {
 }
 
 .game-information {
-  width: 90%;
   font-family: 'Arial', sans-serif;
   color: #333;
   text-align: center;
@@ -360,6 +429,7 @@ a {
   display: flex; /* Flexbox를 활성화 */
   justify-content: center; /* 수평 방향 가운데 정렬 */
   align-items: center; /* 수직 방향 가운데 정렬 */
+
   width: 70%; /* teams-container와 동일한 너비 */
   margin: auto; /* 가운데 정렬을 위해 자동 마진 사용 */
   height: auto; /* 컨텐츠에 맞게 높이 설정 */
@@ -418,17 +488,20 @@ a {
 
 .teams-container {
   display: flex;
-  justify-content: center;
-
+  justify-content: center; /* 가로 방향 가운데 정렬 */
+  align-items: center; /* 세로 방향 가운데 정렬 */
   margin-top: 20px;
+  width: 100%; /* 컨테이너 너비를 100%로 설정 */
 }
 
 .team {
   border: 2px solid #ddd;
   border-radius: 8px;
   padding: 20px;
-  text-align: left;
-  width: calc(70% - 40px); /* Adjust for padding and spacing between teams */
+
+  margin: 0 auto; /* .team 요소를 가로 방향으로 가운데 정렬 */
+  width: calc(90% - 40px); /* 여기서는 .team 요소의 너비를 90%로 설정, 여백이나 패딩을 고려하여 조정 */
+  /* 기타 스타일 */
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   background: #fff;
 }
@@ -436,6 +509,7 @@ a {
 .team h2 {
   font-size: 26px;
   font-weight: bold;
+  text-align: left;
   font-family: primary-font,sans-serif;
   color: #000000;
 }
@@ -714,13 +788,6 @@ a {
   cursor: pointer;
 }
 
-/* Team Image Style */
-.team-image {
-  width: 20px; /* 이미지 크기 조절 */
-  height: 20px;
-  margin-right: 10px; /* 오른쪽에 여백 추가 */
-  border-radius: 50%; /* 이미지를 원형으로 */
-}
 
 /* Team Name Style */
 .team-name {
@@ -732,16 +799,6 @@ a {
 
 .dropdown-content .dropdown-item:hover {
   background-color: #f1f1f1;
-
-}
-
-.team-image {
-
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-  border-radius: 50%;
-  vertical-align: middle;
 
 }
 
@@ -773,7 +830,26 @@ a {
 
 
 
+.team-image {
+  width: 50px; /* 이미지 크기 조절 */
+  height: 50px; /* 이미지 크기 조절 */
+  border-radius: 25%; /* 이미지를 원형으로 만듦 */
+  object-fit: cover; /* 이미지 비율을 유지하면서 요소에 맞게 조정 */
+  border: 2px solid #ddd; /* 이미지 주변에 테두리 추가 */
+  margin-right: 10px; /* 텍스트와의 간격을 위한 마진 */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 이미지에 그림자 추가 */
+}
 
+/* User Profile Image Style */
+.participant img {
+  width: 40px; /* 이미지 크기 조절 */
+  height: 40px; /* 이미지 크기 조절 */
+  border-radius: 50%; /* 이미지를 원형으로 만듦 */
+  object-fit: cover; /* 이미지 비율을 유지하면서 요소에 맞게 조정 */
+  border: 1px solid #ccc; /* 이미지 주변에 테두리 추가 */
+  margin-right: 10px; /* 닉네임과의 간격을 위한 마진 */
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 이미지에 그림자 추가 */
+}
 
 .container-confirm-style {
   display: flex;

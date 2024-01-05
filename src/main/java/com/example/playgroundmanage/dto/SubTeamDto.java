@@ -22,14 +22,17 @@ public class SubTeamDto {
 
     private String teamName;
 
+    private Long subTeamId;
+
     private String teamProfileImg;
 
     private List<UserInfoDto> users;
 
     @Builder
-    public SubTeamDto(Long teamId, String teamName, InMemoryMultipartFile teamProfileImg, List<UserInfoDto> users) {
+    public SubTeamDto(Long teamId, String teamName, Long subTeamId, InMemoryMultipartFile teamProfileImg, List<UserInfoDto> users) {
         this.teamId = teamId;
         this.teamName = teamName;
+        this.subTeamId = subTeamId;
         this.teamProfileImg = multipartFileToString(teamProfileImg);
         this.users = users;
     }

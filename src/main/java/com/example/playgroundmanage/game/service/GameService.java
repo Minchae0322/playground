@@ -33,6 +33,7 @@ public class GameService {
 
     private final PlaygroundRepository playgroundRepository;
 
+    private final UserService userService;
 
     private final FileHandler fileHandler;
     @Transactional
@@ -73,7 +74,10 @@ public class GameService {
         SubTeam soloTeam = game.getCompetingTeamBySide(matchTeamSide).getSoloTeam();
 
         return SubTeamDto.builder()
-                .users(soloTeam.getParticipantsInfo())
+                .subTeamId(soloTeam.getId())
+                .users(soloTeam.getGameParticipants().stream()
+                        .map(gameParticipant -> userService.getUserInfo(gameParticipant.getUser().getId()))
+                        .toList())
                 .build();
     }
 
@@ -81,10 +85,13 @@ public class GameService {
         InMemoryMultipartFile teamProfileImg = fileHandler.extractFile(subTeam.getTeam().getTeamPic());
 
         return SubTeamDto.builder()
+                .subTeamId(subTeam.getId())
                 .teamId(subTeam.getTeam().getId())
                 .teamName(subTeam.getTeam().getTeamName())
                 .teamProfileImg(teamProfileImg)
-                .users(subTeam.getParticipantsInfo())
+                .users(subTeam.getGameParticipants().stream()
+                        .map(gameParticipant -> userService.getUserInfo(gameParticipant.getUser().getId()))
+                        .toList())
                 .build();
     }
 

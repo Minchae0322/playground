@@ -7,12 +7,16 @@ import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.game.vo.GameRequest;
 import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
@@ -30,7 +34,10 @@ public class GameManagementService {
     }
 
     public List<GameParticipant> findGameParticipantsInGame(Game game) {
-        return gameParticipantRepository.findAllByGame(game);
+        return Stream.of(MatchTeamSide.HOME, MatchTeamSide.AWAY)
+                .flatMap(side -> game.getCompetingTeamBySide(side).getSubTeams().stream())
+                .flatMap(g -> g.getGameParticipants().stream())
+                .toList();
     }
 
     public void deleteRequest(Long requestId) {

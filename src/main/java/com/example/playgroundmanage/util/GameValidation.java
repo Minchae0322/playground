@@ -35,7 +35,7 @@ public final class GameValidation {
                 .anyMatch(gp -> gp.getUser().equals(user));
 
         if (isAlreadyParticipant) {
-            throw new IllegalArgumentException("이미 게임에 참여하고 있는 사용자입니다: " + user);
+            throw new IllegalArgumentException("이미 게임에 참여하고 있는 사용자입니다: ");
         }
     }
 

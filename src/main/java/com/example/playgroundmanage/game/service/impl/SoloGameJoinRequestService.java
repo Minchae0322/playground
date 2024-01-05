@@ -85,6 +85,7 @@ public class SoloGameJoinRequestService implements RequestService {
 
         SubTeam soloTeam = getSoloTeam(soloGameJoinRequest.getGame(), soloGameJoinRequest.getMatchTeamSide());
 
+        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(soloGameJoinRequest.getGame()), soloGameJoinRequest.getUser());
         gameManagementService.deleteRequest(soloGameJoinRequest.getId());
 
         return gameParticipantRepository.save(GameParticipant.builder()

@@ -105,7 +105,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserInfoDto getUserInfo(Long userId) throws IOException {
+    public UserInfoDto getUserInfo(Long userId)  {
         User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
         InMemoryMultipartFile userProfileImg = fileHandler.extractFile(user.getProfileImg());
 

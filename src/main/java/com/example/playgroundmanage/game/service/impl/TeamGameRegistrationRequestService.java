@@ -82,6 +82,7 @@ public class TeamGameRegistrationRequestService implements RequestService {
 
         SubTeam subTeam = createSubTeam(teamGameRegistrationRequest.getTeam(), teamGameRegistrationRequest.getGame().getCompetingTeamBySide(teamGameRegistrationRequest.getMatchTeamSide()));
 
+        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(teamGameRegistrationRequest.getGame()), teamGameRegistrationRequest.getUser());
         gameManagementService.deleteRequest(teamGameRegistrationRequest.getId());
 
         return gameParticipantRepository.save(GameParticipant.builder()

@@ -100,6 +100,9 @@ public class FileHandlerImpl implements FileHandler {
 
     @Override
     public InMemoryMultipartFile extractFile(UploadFile uploadFile) {
+        if (uploadFile == null) {
+            return null;
+        }
         File inMemoryFile = new File(getFullPath(uploadFile.getStoreFileName()));
         byte[] fileContent = new byte[0];
         try {
