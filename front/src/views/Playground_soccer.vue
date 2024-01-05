@@ -63,6 +63,7 @@ onMounted(() => {
   max-width: 70vw; /* Adjust the maximum width to your preference */
   width: 75vw; /* This will make the container take up 100% of its parent up to max-width */
   margin: auto;
+
   border: 1px solid #ccc;
   padding: 20px;
   border-radius: 10px;

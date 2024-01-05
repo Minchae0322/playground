@@ -37,7 +37,9 @@ const awayTeams = ref({
     }]
   }
 })
-const homeAndAwayTeams = ref({});
+const homeAndAwayTeams = ref({
+  matchTeamSide: "HOME",
+});
 
 const isTeamRegistrationModalVisible = ref(false);
 const teamsUserBelongTo = ref([{
@@ -63,6 +65,7 @@ const emits = defineEmits(['goBack']);
 function goBack() {
   emits('goBack'); // 부모 컴포넌트에게 뒤로가기 이벤트 전달
 }
+
 
 onMounted(async () => {
   await getTeamData('HOME')
@@ -330,7 +333,7 @@ const redirectToLogin = function () {
           <button class="add-button" @click="sendTeamJoinRequest(team.subTeamId)">Add Player</button>
         </div>
         </div>
-        <div v-if="homeAndAwayTeams.soloTeam">
+        <div  v-if="homeAndAwayTeams.soloTeam">
         <div class="team-details" v-for="(participant, index) in homeAndAwayTeams.soloTeam.users" :key="index">
           <div class="participant">
             <img :src="participant.userProfileImg || defaultImage">
@@ -421,7 +424,9 @@ a {
 .game-information {
   font-family: 'Arial', sans-serif;
   color: #333;
+
   text-align: center;
+
 
 }
 
@@ -488,6 +493,7 @@ a {
 
 .teams-container {
   display: flex;
+
   justify-content: center; /* 가로 방향 가운데 정렬 */
   align-items: center; /* 세로 방향 가운데 정렬 */
   margin-top: 20px;
@@ -498,7 +504,6 @@ a {
   border: 2px solid #ddd;
   border-radius: 8px;
   padding: 20px;
-
   margin: 0 auto; /* .team 요소를 가로 방향으로 가운데 정렬 */
   width: calc(90% - 40px); /* 여기서는 .team 요소의 너비를 90%로 설정, 여백이나 패딩을 고려하여 조정 */
   /* 기타 스타일 */
@@ -521,6 +526,7 @@ a {
   padding: 10px;
   margin-bottom: 20px;
   display: flex;
+
   flex-direction: column;
   align-items: flex-start; /* Align items to the start of the flex container */
 }

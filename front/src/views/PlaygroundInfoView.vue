@@ -15,7 +15,7 @@
     <div class="upcoming-games">
       <h3>Upcoming Games</h3>
       <ul>
-        <li v-for="(game,index) in upcomingGames" :key="index" @click="handleGameClick(game)">
+        <li v-for="(game,gameId) in upcomingGames" :key="gameId" @click="handleGameClick(game)">
           <div >
             <div  class="game-card">
               <h2>{{ game.gameName }}</h2>
@@ -48,21 +48,16 @@ const data = ref('이것은 부모로부터 온 데이터입니다.');
 const isGameBuilderModalOpen = ref(false);
 const currentGame = ref('')
 const upcomingGames = ref([{
-  gameId: 0,
-  gameName: '',
-  hostName: '',
-  hostProfileImg: '',
-  gameStart: '',
-  runningTime: '',
+
 }]);
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
 const emits = defineEmits(['gameSelected']);
 
-onMounted(() => {
+onMounted(async () => {
   // Check if the initial page number is provided in the route query
   getInProgressGame();
-  getUpcomingGames();
+  await getUpcomingGames();
 });
 
 function handleGameClick(game) {
@@ -81,43 +76,78 @@ const closeModal = () => {
   isGameBuilderModalOpen.value = false;
   router.go(0);
 };
-const getInProgressGame = function () {
+const getInProgressGame = async function () {
+  await validateAccessToken()
 
-  const accessToken = localStorage.getItem("accessToken");
-  if(accessToken) {
-    axios.get(`${apiBaseUrl}/playground/2/current`,
+  await axios.get(`${apiBaseUrl}/playground/2/current`,
         {  headers: {
-            'Authorization': accessToken
+            'Authorization': getAccessToken()
           }}
     ).then(response => {
       if (response.status === 200) {
         currentGame.value = response.data;
       }
     });
-  }
+}
 
-};
-
-const getUpcomingGames = function () {
-  const accessToken = localStorage.getItem("accessToken");
-  if(accessToken) {
-    axios.get(`${apiBaseUrl}/playground/2/upComing`,
+const getUpcomingGames = async () => {
+  await validateAccessToken()
+   await axios.get(`${apiBaseUrl}/playground/2/upComing`,
         {  headers: {
-            'Authorization': accessToken
+            'Authorization': getAccessToken()
           }}
     ).then(response => {
       upcomingGames.value = response.data.map(game => ({
-        gameId: game.gameId,
-        gameName: game.gameName,
-        hostName: game.hostName,
-        gameStart: game.gameStart,
-        runningTime: game.runningTime,
+        ...game,
         hostProfileImg: game.hostProfileImg ? `data:image/jpeg;base64,${game.hostProfileImg}` : defaultImage,
         onClick: () => showGameInfo(game.gameId)
       }));
     });
+
+};
+
+const validateAccessToken = async function () {
+  const accessToken = getAccessToken();
+  if (!accessToken) {
+    redirectToLogin()
+    return;
+  }
+
+  try {
+    await axios.get(`${apiBaseUrl}/token/valid`, {
+      headers: {'Authorization': accessToken},
+    });
+  } catch (error) {
+    await updateAccessToken();
   }
 };
+
+const getAccessToken = function () {
+  return localStorage.getItem("accessToken");
+};
+
+const updateAccessToken = async function () {
+  const refreshToken = localStorage.getItem("refreshToken");
+  if (!refreshToken) return redirectToLogin();
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
+      headers: { 'RefreshToken': refreshToken }
+    });
+    if (response.status === 200) {
+      const newAccessToken = response.headers['authorization'];
+      localStorage.setItem('accessToken', newAccessToken);
+      return newAccessToken;
+    }
+  } catch (error) {
+    redirectToLogin();
+  }
+};
+
+const redirectToLogin = function () {
+  router.push("/login");
+};
+
 
 </script>
 
