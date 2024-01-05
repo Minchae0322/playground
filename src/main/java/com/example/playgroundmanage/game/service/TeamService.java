@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -78,14 +79,9 @@ public class TeamService {
     }
 
     public InMemoryMultipartFile getUserProfileImg(UploadFile uploadFile) {
-        if (uploadFile != null) {
-            try {
-                return fileHandler.extractFile(uploadFile);
-            } catch (IOException e) {
-                throw new RuntimeException("사진을 가져 올 수 없습니다.");
-            }
-        }
-        return null;
+        return Optional.ofNullable(uploadFile)
+                .map(fileHandler::extractFile)
+                .orElse(null);
     }
 
     public Team findByTeamId(Long teamId) {

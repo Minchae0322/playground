@@ -13,9 +13,9 @@ const user = ref({
   userProfileImg: ref('')
 })
 
-onMounted(() => {
+onMounted(async () => {
   // Check if the initial page number is provided in the route query
-  getUserInfo()
+  await getUserInfo()
 });
 
 const clickUserInfo = function () {
@@ -23,9 +23,9 @@ const clickUserInfo = function () {
   router.push({name: 'userInfo'})
 };
 
-const getUserInfo = function () {
-  validateAccessToken()
-  axios.get(`${apiBaseUrl}/user/info`,
+const getUserInfo = async function () {
+  await validateAccessToken()
+  await axios.get(`${apiBaseUrl}/user/info`,
       {
         headers: {
           'Authorization': localStorage.getItem("accessToken")
@@ -35,7 +35,6 @@ const getUserInfo = function () {
     user.value.userNickname = response.data.userNickname
     user.value.userProfileImg = `data:image/jpeg;base64,${response.data.userProfileImg}`;
   });
-
 };
 
 const validateAccessToken = async function () {

@@ -74,11 +74,7 @@ public class UserService {
 
     public InMemoryMultipartFile getTeamProfileImg(UploadFile uploadFile) {
         if (uploadFile != null) {
-            try {
-                return fileHandler.extractFile(uploadFile);
-            } catch (IOException e) {
-                throw new RuntimeException("사진을 가져 올 수 없습니다.");
-            }
+            return fileHandler.extractFile(uploadFile);
         }
         return null;
     }
@@ -105,11 +101,7 @@ public class UserService {
 
     @Transactional
     public InMemoryMultipartFile getUserProfileImg(User user)  {
-        try {
-            return fileHandler.extractFile(user.getProfileImg());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return fileHandler.extractFile(user.getProfileImg());
     }
 
     @Transactional

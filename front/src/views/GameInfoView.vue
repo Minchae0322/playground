@@ -4,13 +4,16 @@ import axios from "axios";
 import { defineEmits } from 'vue';
 import {useRouter} from "vue-router";
 import defaultImage from "@/assets/img.png";
+import { defineProps } from 'vue';
 
 const apiBaseUrl = "http://localhost:8080";
 
 const router = useRouter();
 const homeTeams = ref([])
 const awayTeams = ref([])
-const homeAndAwayTeams = ref([]);
+const homeAndAwayTeams = ref([{
+  matchTeamSide: "HOME",
+}]);
 const homeAndAwayTeamParams = ref({
   matchTeamSide: "HOME",
     }
@@ -28,11 +31,11 @@ const dropdownVisible = ref(false);
 const menuVisible = ref(false)
 const activeName = ref('first')
 const props = defineProps({
-  gameId: {
-    type: Number,
-    required:true,
+  game: {
+    type: Object,
+    required: true
   }
-})
+});
 
 
 const emits = defineEmits(['goBack']);
@@ -41,33 +44,36 @@ function goBack() {
   emits('goBack'); // 부모 컴포넌트에게 뒤로가기 이벤트 전달
 }
 
-onMounted(() => {
-  getHomeTeams()
-  getAwayTeams()
+onMounted(async () => {
+  await getHomeTeams()
+  await getAwayTeams()
+  await clickHomeTeam()
 });
 
 
-const getHomeTeams = function () {
-  validateAccessToken();
+const getHomeTeams = async () => {
+  await validateAccessToken();
 
-  axios.get(`${apiBaseUrl}/game/${props.gameId}/homeTeams`,
-      {
-        headers: {
-          'Authorization': getAccessToken()
-        }
+  try {
+    const response = await axios.get(`${apiBaseUrl}/game/${props.game.gameId}/HOME`, {
+      headers: {
+        'Authorization': getAccessToken()
       }
-  ).then(response => {
-    if (response.status === 200) {
-      homeTeams.value = response.data
-    }
-  });
+    });
 
+    if (response.status === 200) {
+      homeTeams.value = response.data;
+    }
+  } catch (error) {
+    console.error('Home teams 정보를 가져오는데 실패했습니다:', error);
+    // 여기서 에러 처리 로직을 추가할 수 있습니다.
+  }
 };
 
 const getAwayTeams = function () {
   validateAccessToken()
 
-  axios.get(`${apiBaseUrl}/game/${props.gameId}/awayTeams`,
+  axios.get(`${apiBaseUrl}/game/${props.game.gameId}/AWAY`,
       {
         headers: {
           'Authorization': getAccessToken()
@@ -82,7 +88,7 @@ const getAwayTeams = function () {
 
 const sendSoloGameJoinRequest = () => {
   validateAccessToken()
-  axios.post(`${apiBaseUrl}/game/${props.gameId}/join/soloGameJoin`,{
+  axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/soloGameJoin`,{
         matchTeamSide: homeAndAwayTeamParams.value.matchTeamSide,
   },
         {  headers: {
@@ -97,7 +103,7 @@ const sendSoloGameJoinRequest = () => {
 const sendTeamRegistrationRequest = () => {
 
   if (!selectedTeam.value.teamId) {
-    alert("가입한 팀이 있어야합니다");
+    alert("팀을 선택해주세요");
     return;
   }
 
@@ -105,7 +111,7 @@ const sendTeamRegistrationRequest = () => {
 
 
     validateAccessToken();
-    axios.post(`${apiBaseUrl}/game/${props.gameId}/join/teamGameRegistration`,
+    axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameRegistration`,
         {
           teamId: selectedTeam.value.teamId,
           matchTeamSide: homeAndAwayTeamParams.value.matchTeamSide
@@ -117,9 +123,6 @@ const sendTeamRegistrationRequest = () => {
     ).then(response => {
 
     });
-
-  // 선택된 팀을 처리하는 로직
-
 }
 
 const clickTeamRegistration = () => {
@@ -209,35 +212,8 @@ const updateAccessToken = async function () {
     redirectToLogin();
   }
 };
-
-
 const redirectToLogin = function () {
   router.push("/login");
-};
-
-
-
-
-
-
-
-
-
-
-
-const selectedTeamId = ref(null);
-const participantType = ref('');
-
-const showSelect = () => {
-  selectedTeamId.value = teamId; // Show the select box
-
-};
-
-const handleSelection = (type, teamId) => {
-  // Handle the selection logic here
-  console.log(`Selected: ${type} for team ID: ${teamId}`);
-  // Reset after handling
-  selectedTeamId.value = null;
 };
 </script>
 
@@ -255,7 +231,6 @@ const handleSelection = (type, teamId) => {
         <button
             type="button"
             role="tab"
-
             class="tab-button"
             :data-state="activeName === 'first' ? 'active' : 'inactive'"
             :class="{ active: activeName === 'first' }"
@@ -285,7 +260,7 @@ const handleSelection = (type, teamId) => {
     <div class="teams-container">
       <div class="team">
         <h2>{{ homeAndAwayTeamParams.matchTeamSide }}</h2>
-        <div class="team-details" v-for="(team, index) in homeAndAwayTeams" :key="index">
+        <div class="team-details" v-for="(team, index) in homeAndAwayTeams.subTeams" :key="index">
           <h2>{{ team.teamName }}</h2>
           <div class="participants-container">
             <div class="participant" v-for="(participant, index) in team.users" :key="index">
@@ -421,6 +396,7 @@ a {
 }
 
 .tab-button.active {
+
   background-color: #ffffff; /* active background */
   color: #000000; /* text-foreground */
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* active shadow */
@@ -842,5 +818,22 @@ a {
   .game-information {
     width: 95%;
   }
+}
+
+button.goBack {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: #f8f8f8;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button.goBack:hover {
+  background-color: #e2e2e2;
 }
 </style>

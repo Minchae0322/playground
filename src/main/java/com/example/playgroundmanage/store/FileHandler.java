@@ -17,9 +17,11 @@ public interface FileHandler{
 
     List<? extends UploadFile> storeFiles(List<MultipartFile> multipartFiles, Object objectBy) throws IOException;
 
-    List<InMemoryMultipartFile> extractFiles(List<? extends UploadFile> uploadFiles) throws IOException;
+    List<InMemoryMultipartFile> extractFiles(List<? extends UploadFile> uploadFiles);
 
-    InMemoryMultipartFile extractFile(UploadFile uploadFile) throws IOException;
+    InMemoryMultipartFile extractFile(UploadFile uploadFile);
 
     String extractExt(String originalFilename);
+
+
 }
