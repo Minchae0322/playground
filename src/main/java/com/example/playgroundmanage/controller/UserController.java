@@ -44,7 +44,7 @@ public class UserController {
         testRepository.save(Test.builder()
                 .zonedDateTime(ZonedDateTime.now())
                 .build());
-        return userService.getUserInfo(userDetails.getUser().getId());
+        return userService.getUserInfo(userDetails.getUser());
     }
 
     @GetMapping("/token/valid")

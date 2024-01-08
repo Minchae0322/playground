@@ -59,30 +59,34 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+
 .game-container {
   max-width: 70vw; /* Adjust the maximum width to your preference */
-  width: 75vw; /* This will make the container take up 100% of its parent up to max-width */
-  margin: auto;
-
+  width: 77vw; /* This will make the container take up 100% of its parent up to max-width */
+  margin: auto auto 0;
   border: 1px solid #ccc;
-  padding: 20px;
+  padding: 0; /* Padding 제거 */
   border-radius: 10px;
-  background-color: #f9f9f9;
+
 }
 
 .game-image {
   position: relative;
   width: 100%;
+  height: auto; /* 이미지의 높이를 자동으로 조정 */
+
 }
 /* ... other styles ... */
 
 .game-image img {
   width: 100%;
-  height: auto; /* 높이를 자동으로 설정하여 원본 이미지 비율 유지 */
+  height:100%; /* 높이를 자동으로 설정하여 원본 이미지 비율 유지 */
   aspect-ratio: 18 / 7; /* 18:9 비율로 설정 */
   object-fit: cover; /* 이미지가 지정된 비율에 맞도록 조정 */
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
+  display: block; /* 이미지를 블록 요소로 만들어 불필요한 여백 제거 */
 }
 
 .overlay {
@@ -91,41 +95,8 @@ onMounted(() => {
   background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
   color: white;
   width: 30%;
-  padding: 10px;
+  padding: 10px 10px 0;
   text-align: center;
-}
-
-
-
-
-.game-info {
-  border: 1px solid #ddd; /* Add a border */
-  padding: 15px; /* Add some padding inside the card */
-  margin-top: 20px; /* Add some space above the card */
-  background-color: #fff; /* Set a background color */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  border-radius: 8px; /* Optional: rounded corners */
-  cursor: pointer; /* Indicates it's clickable */
-  transition: box-shadow 0.3s; /* Smooth transition for hover effect */
-}
-
-.game-info:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Slightly larger shadow on hover */
-}
-.join-button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 20px;
-  background-color: #000;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.join-button:hover {
-  background-color: #444;
 }
 
 .upcoming-games {

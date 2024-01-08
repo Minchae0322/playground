@@ -17,12 +17,15 @@ public class UserInfoDto {
     private Long userId;
     private String userNickname;
 
+    private String userRole;
+
     private String userProfileImg;
 
     @Builder
-    public UserInfoDto(Long userId, String userNickname, InMemoryMultipartFile userProfileImg)  {
+    public UserInfoDto(Long userId, String userNickname, String userRole, InMemoryMultipartFile userProfileImg)  {
         this.userId = userId;
         this.userNickname = userNickname;
+        this.userRole = userRole;
         this.userProfileImg = multipartFileToString(userProfileImg);
     }
 }

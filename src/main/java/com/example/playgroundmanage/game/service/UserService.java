@@ -4,6 +4,7 @@ import com.example.playgroundmanage.dto.UserNicknameDto;
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.exception.UserNotExistException;
+import com.example.playgroundmanage.game.repository.TeamingRepository;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.login.dto.UserEdit;
 import com.example.playgroundmanage.login.dto.UserSignupForm;
@@ -32,7 +33,7 @@ import static com.example.playgroundmanage.validator.UserValidator.validateUser;
 public class UserService {
     private final UserRepository userRepository;
 
-    private final TeamingService teamingService;
+    private final TeamingRepository teamingRepository;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -105,11 +106,23 @@ public class UserService {
     }
 
     @Transactional
-    public UserInfoDto getUserInfo(Long userId)  {
-        User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
+    public UserInfoDto getUserInfo(User user)  {
         InMemoryMultipartFile userProfileImg = fileHandler.extractFile(user.getProfileImg());
 
         return UserInfoDto.builder()
+                .userNickname(user.getNickname())
+                .userId(user.getId())
+                .userProfileImg(userProfileImg)
+                .build();
+    }
+
+    @Transactional
+    public UserInfoDto getUserInfoInTeam(Team team, User user)  {
+        String role = teamingRepository.findByTeamAndUser(team, user).getRole();
+        InMemoryMultipartFile userProfileImg = fileHandler.extractFile(user.getProfileImg());
+
+        return UserInfoDto.builder()
+                .userRole(role)
                 .userNickname(user.getNickname())
                 .userId(user.getId())
                 .userProfileImg(userProfileImg)

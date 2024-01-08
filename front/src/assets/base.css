@@ -40,15 +40,14 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-background: var(--vt-c-black);
-    --color-background-soft: var(--vt-c-black-soft);
-    --color-background-mute: var(--vt-c-black-mute);
-
-    --color-border: var(--vt-c-divider-dark-2);
-    --color-border-hover: var(--vt-c-divider-dark-1);
-
-    --color-heading: var(--vt-c-text-dark-1);
-    --color-text: var(--vt-c-text-dark-2);
+    --primary-color: #E1EBEE; /* 주 색상 */
+    --secondary-color: #6a85b6; /* 보조 색상 */
+    --accent-color: #4C516D; /* 강조 색상 */
+    --text-primary: #2C3E50; /* 주 텍스트 색상 */
+    --text-secondary: #7F8C8D; /* 보조 텍스트 색상 */
+    --background-color: #efeff0; /* 배경 색상 */
+    --button-hover: #4E6EF2; /* 버튼 호버 상태 색상 */
+    --white: #fff;
   }
 }
 
@@ -63,7 +62,7 @@
 body {
   min-height: 100vh;
   color: var(--color-text);
-  background: var(--color-background);
+  background: var(--background-color);
   transition:
     color 0.5s,
     background-color 0.5s;

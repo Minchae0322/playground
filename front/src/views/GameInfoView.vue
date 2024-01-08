@@ -279,65 +279,75 @@ const redirectToLogin = function () {
 
 
 <template>
-  <div class="game-information">
-    <button @click="goBack">뒤로 가기</button>
-    <div class="tab-container">
-      <div
-          role="tablist"
-          aria-orientation="horizontal"
-          class="tab-list"
-          tabindex="0"
-      >
-        <button
-            type="button"
-            role="tab"
-            class="tab-button"
-            :data-state="activeName === 'first' ? 'active' : 'inactive'"
-            :class="{ active: activeName === 'first' }"
-            @click="clickHomeTeam"
+  <div class="game-information-container">
+    <div class="game-info">
+      <h2>{{ homeAndAwayTeams.matchTeamSide}}</h2>
+      <div class="tab-container">
+        <button class="button-goBack" @click="goBack">Back</button>
+        <div
+            role="tablist"
+            aria-orientation="horizontal"
+            class="tab-list"
             tabindex="0"
         >
-          Home Team
-        </button>
-        <button
-            type="button"
-            role="tab"
-            :aria-selected="activeName === 'second'"
-            aria-controls="radix-:r0:-content-awayTeam"
-            class="tab-button"
-            :data-state="activeName === 'second' ? 'active' : 'inactive'"
-            :class="{ active: activeName === 'second' }"
-            @click="clickAwayTeam"
-            tabindex="0"
-        >
-          Away Team
-        </button>
-      </div>
-
+          <button
+              type="button"
+              role="tab"
+              class="tab-button"
+              :data-state="activeName === 'first' ? 'active' : 'inactive'"
+              :class="{ active: activeName === 'first' }"
+              @click="clickHomeTeam"
+              tabindex="0"
+          >
+            主队 <span class="checkmark" v-show="activeName === 'first'">✔</span>
+          </button>
+          <button
+              type="button"
+              role="tab"
+              :aria-selected="activeName === 'second'"
+              aria-controls="radix-:r0:-content-awayTeam"
+              class="tab-button"
+              :data-state="activeName === 'second' ? 'active' : 'inactive'"
+              :class="{ active: activeName === 'second' }"
+              @click="clickAwayTeam"
+              tabindex="0"
+          >客队 <span class="checkmark" v-show="activeName === 'second'">✔</span>
+          </button>
+        </div>
+    </div>
 
   </div>
 
+
     <div class="teams-container">
       <div class="team">
-        <h2>{{ homeAndAwayTeams.matchTeamSide}}</h2>
+
         <div v-if="homeAndAwayTeams.subTeams">
-        <div class="team-details" v-for="(team, index) in homeAndAwayTeams.subTeams" :key="index">
-          <img class="team-image" :src="team.teamProfileImg || defaultImage">
-          <h2>{{ team.teamName }}</h2>
-          <div class="participants-container">
-            <div class="participant" v-for="(participant, index) in team.users" :key="index">
-              <img :src="participant.userProfileImg || defaultImage">
-              <span class="user-nickname">{{ participant.userNickname }}</span>
+          <div class="team-details" v-for="(team, index) in homeAndAwayTeams.subTeams" :key="index">
+            <div class="team-info-container">
+              <img class="team-image" :src="team.teamProfileImg || defaultImage">
+              <div class="team-info">
+                <div class="team-name">{{ team.teamName }}</div>
+                <div class="team-description">{{ team.teamDescription }}</div>
+              </div>
+
             </div>
+            <div class="team-member-container">
+              <div class="team-member" v-for="(participant, index) in team.users" :key="index">
+                <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
+                <p class="user-nickname">{{ participant.userNickname }}</p>
+                <p class="user-role">{{ participant.userRole }}</p>
+              </div>
+            </div>
+            <button class="add-button" @click="sendTeamJoinRequest(team.subTeamId)"> 参加</button>
           </div>
-          <button class="add-button" @click="sendTeamJoinRequest(team.subTeamId)">Add Player</button>
-        </div>
         </div>
         <div  v-if="homeAndAwayTeams.soloTeam">
         <div class="team-details" v-for="(participant, index) in homeAndAwayTeams.soloTeam.users" :key="index">
-          <div class="participant">
+          <div class="team-member">
             <img :src="participant.userProfileImg || defaultImage">
-            <span class="user-nickname">{{ participant.userNickname }}</span>
+            <p class="user-nickname">{{ participant.userNickname }}</p>
+
           </div>
 
         </div>
@@ -398,9 +408,16 @@ const redirectToLogin = function () {
 
 
 <style scoped>
+
+
+body {
+  background: var(--white);
+}
+
 h1 {
-  font-size: 24px;
-  color: #838383;
+  background-color: #333;
+  padding: 10px;
+  text-align: center;
 }
 
 p {
@@ -421,115 +438,268 @@ a {
   font-size: 17px;
 }
 
-.game-information {
+/* 게임 정보 컨테이너 및 기본 스타일 */
+.game-information-container {
   font-family: 'Arial', sans-serif;
-  color: #333;
-
   text-align: center;
-
-
+  background: var(--white);
 }
 
+.game-info {
+  width: 100%;
+
+  background: var(--white);
+}
+
+.game-info h2 {
+  background-image: linear-gradient(to right, #6a85b6 0%, #bac8e0 100%);
+  color: white;
+  padding: 10px 10px 10px 20px;
+  font-size: 130%;
+  font-weight: bold;
+  width: 100%;
+  text-align: left;
+  font-family: primary-font,sans-serif;
+}
+/* 뒤로 가기 버튼 스타일 */
+
+
+/* 탭 컨테이너 스타일 */
 .tab-container {
-  display: flex; /* Flexbox를 활성화 */
-  justify-content: center; /* 수평 방향 가운데 정렬 */
-  align-items: center; /* 수직 방향 가운데 정렬 */
-
-  width: 70%; /* teams-container와 동일한 너비 */
-  margin: auto; /* 가운데 정렬을 위해 자동 마진 사용 */
-  height: auto; /* 컨텐츠에 맞게 높이 설정 */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: var(--white);
+  width: 100%;
+  margin: auto;
+  height: auto;
 }
 
+.button-goBack {
+  background: var(--accent-color);
+  border: 1px solid rgba(50, 58, 65, 0.9); /* Solid blue border for contrast */
+  padding: 10px 20px; /* 버튼 패딩 조정 */
+
+  color: white; /* 텍스트 색상 */
+  border-radius: 4px;
+  margin: 10px auto 10px 25px;
+  text-align: left; /* 왼쪽 정렬 */
+}
+
+/* 탭 리스트 스타일 */
 .tab-list {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  height: 3rem; /* 세로 길이 증가 */
-  background-color: #f0f0f0; /* muted background */
-  padding: 0.5rem; /* 패딩 증가 */
-  border-radius: 0.875rem; /* lg */
-  width: 100%;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* teams-container 스타일과 일치 */
+  background: var(--background-color);
+  border-radius: 4px;
+  width: 95%;
+
 }
 
-
+/* 탭 버튼 기본 스타일 */
 .tab-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-  border-radius: 0.375rem; /* md */
-  padding: 0.75rem; /* 3 */
-  font-size: 0.875rem; /* sm */
-  font-weight: 500; /* medium */
-  transition: all 0.3s ease;
+  border-radius: 4px;
+  font-size: 17px;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;;
+  padding: 10px;
   cursor: pointer;
-  border: none; /* Remove border */
-  background-color: transparent; /* Inactive state background */
-  color: #888888; /* muted-foreground */
+  width: 50%;
+  border: 1px solid #d0d0d0;
+  background-color: transparent;
+  color: #989898;
   outline: none;
 }
 
-.tab-button.active {
-
-  background-color: #ffffff; /* active background */
-  color: #000000; /* text-foreground */
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* active shadow */
+.checkmark {
+  display: none; /* 기본적으로 보이지 않도록 설정 */
+  margin-left: 10px; /* 텍스트로부터 여백 */
+  color: var(--secondary-color); /* 체크 표시 색상 */
+  font-size: 18px; /* 체크 표시 크기 */
 }
 
+/* 탭 버튼 활성화 시 체크 표시 보이게 하기 */
+.tab-button.active .checkmark {
+  display: inline; /* 활성화 상태일 때만 보이도록 설정 */
+}
+/* 탭 버튼 활성화 시 스타일 */
+.tab-button.active {
+  background-color: #ffffff; /* 활성화 배경 */
+  color: #000000; /* 활성화 텍스트 색상 */
+  font-weight: 600;
+}
+
+/* 탭 버튼 포커스 시 스타일 */
 .tab-button:focus-visible {
   ring-width: 2px;
-  ring-color: #bbbbbb; /* ring */
+  background-color: var(--white);
   ring-offset-width: 2px;
-  ring-offset-color: #ffffff; /* ring-offset-background */
+  ring-offset-color: #ffffff;
 }
 
+/* 탭 버튼 비활성화 시 스타일 */
 .tab-button:disabled {
   pointer-events: none;
+  color: #333333;
   opacity: 0.5;
 }
 
-
-
 .teams-container {
-  display: flex;
+  font-family: Arial, sans-serif;
+  background: var(--white);
+  width: 100%;
+  align-items: center; /* 가로축을 기준으로 중앙 정렬합니다. */
 
-  justify-content: center; /* 가로 방향 가운데 정렬 */
-  align-items: center; /* 세로 방향 가운데 정렬 */
-  margin-top: 20px;
-  width: 100%; /* 컨테이너 너비를 100%로 설정 */
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: box-shadow 0.3s ease;
 }
+
+
 
 .team {
-  border: 2px solid #ddd;
+  background: var(--background-color);
   border-radius: 8px;
-  padding: 20px;
-  margin: 0 auto; /* .team 요소를 가로 방향으로 가운데 정렬 */
-  width: calc(90% - 40px); /* 여기서는 .team 요소의 너비를 90%로 설정, 여백이나 패딩을 고려하여 조정 */
-  /* 기타 스타일 */
-  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  background: #fff;
+  justify-content: center;
+
 }
 
-.team h2 {
-  font-size: 26px;
-  font-weight: bold;
-  text-align: left;
-  font-family: primary-font,sans-serif;
-  color: #000000;
-}
+
+
+
 
 .team-details {
-  background: #F3F4F6; /* Light grey background */
+  background: #ffffff; /* Light grey background */
   border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-  padding: 10px;
-  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  padding: 12px;
+  margin: 0 auto 20px auto;
   display: flex;
-
+  width: 95%;
   flex-direction: column;
+  transition: box-shadow 0.3s ease;
   align-items: flex-start; /* Align items to the start of the flex container */
 }
+
+.team-details:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.team-info-container {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  background: #f8f9fa; /* 연한 배경색으로 구분감을 줍니다 */
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 가독성을 위한 약간의 그림자를 추가합니다 */
+}
+
+
+.team-image {
+  width: 40px;
+  height: 40px;
+  border-radius: 25%;
+  margin-right: 15px;
+}
+
+.team-info {
+  line-height: 1.2; /* 1.2는 글꼴 크기의 120%를 의미합니다 */
+}
+
+.team-name {
+  text-align: start;
+  font-size: 19px;
+  font-weight: 600;
+  color: #333;
+}
+
+
+.team-description {
+  text-align: start;
+  font-size: 13px;
+  font-weight: lighter;
+  color: #838383;
+}
+
+
+.team-member-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.team-member {
+  display: flex;
+  margin: 20px 10px 4px 0;
+  flex-direction: column;
+  background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+  padding: 10px 15px 10px 15px;
+  width: 90px;
+  height: 90px;
+  text-align: center;
+  line-height: 1.1; /* 1.2는 글꼴 크기의 120%를 의미합니다 */
+  border-radius: 6px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 이미지에 그림자 추가 */
+}
+
+.team-member-photo {
+  width: 35px; /* 이미지 크기 조절 */
+  height: 35px; /* 이미지 크기 조절 */
+  object-fit: cover; /* 이미지 비율을 유지하면서 요소에 맞게 조정 */
+  border-radius: 50%;
+  margin-bottom: 12px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.team-member .user-nickname {
+  font-size: 12px;
+  font-weight: 600;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", helvetica, "Apple SD Gothic Neo", sans-serif;
+}
+
+.team-member .user-role {
+  font-size: 9px;
+  color: #838383;
+}
+
+
+
+.add-button {
+  background-color: #4C516D; /* Semi-transparent blue color */
+  color: white;
+  border: 1px solid rgba(50, 58, 65, 0.9); /* Solid blue border for contrast */
+  border-radius: 6px; /* Makes the button round */
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  margin-top: 10px;
+  justify-content: center;
+  align-items: center;
+  width: 200px;
+  position: relative; /* Needed to position the pseudo-element */
+}
+
+.add-button::before {
+  content: "+"; /* Adds the plus sign */
+  font-size: 24px; /* Size of the plus sign */
+
+}
+
+.add-button:hover {
+  background-color: var(--accent-color); /* Darker transparent blue on hover */
+}
+
 
 .styled-button {
   padding: 8px 16px;
@@ -591,9 +761,6 @@ a {
 
 
 
-.team-details:hover {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-}
 
 .select-container {
   text-align: center;
@@ -605,24 +772,14 @@ a {
   margin-right: 5px;
 }
 
-.participant {
-  background: #f9f9f9;
-  border-radius: 4px;
-  padding: 10px;
-  margin: 10px 0;
-  transition: transform 0.3s ease, background-color 0.3s ease;
-}
 
-.participant:hover {
+
+.team-member:hover {
   transform: translateY(-3px);
   background-color: #ececec;
 }
 
-.participant p {
-  margin: 0;
-  font-size: 14px;
-  color: #444;
-}
+
 .participants-container {
   display: flex;
   flex-wrap: wrap;
@@ -630,71 +787,14 @@ a {
   margin-bottom: 15px;
 }
 
-.participant {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  padding: 8px 16px;
-  transition: background-color 0.3s ease;
-}
 
-.participant:hover {
+
+.team-member:hover {
   background-color: #f8f8f8;
 }
 
-.user-id {
-  font-weight: bold;
-  margin-right: 5px;
-}
-
-.user-nickname {
-  color: #888;
-}
-
-.add-button {
-  /* ... existing add-button styles ... */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.add-button:hover {
-  /* ... existing hover effect or create a new one ... */
-  background-color: #0056b3;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
 
 
-/* Media query for responsiveness */
-
-
-.add-button {
-  background-color: rgba(70, 130, 180, 0.3); /* Semi-transparent blue color */
-  color: white;
-  border: 2px solid rgba(70, 130, 180, 0.9); /* Solid blue border for contrast */
-  border-radius: 6px; /* Makes the button round */
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 90%;
-
-  position: relative; /* Needed to position the pseudo-element */
-}
-
-
-
-/* 화살표 대신 사용할 배경 이미지 설정 */
-
-
-.add-button::before {
-  content: "+"; /* Adds the plus sign */
-  font-size: 24px; /* Size of the plus sign */
-
-}
-
-.add-button:hover {
-  background-color: rgba(70, 130, 180, 0.5); /* Darker transparent blue on hover */
-}
 
 .modal-overlay {
   position: fixed;
@@ -795,28 +895,12 @@ a {
 }
 
 
-/* Team Name Style */
-.team-name {
-  font-weight: bold;
-  margin-left: 10px; /* 이름과 이미지 사이 여백 */
-}
 
 
 
 .dropdown-content .dropdown-item:hover {
   background-color: #f1f1f1;
 
-}
-
-.team-name {
-  font-weight: bold;
-
-}
-
-.team-description {
-  display: block;
-  font-size: 0.8em;
-  margin-top: 5px;
 }
 
 .selected-team-container {
@@ -836,26 +920,10 @@ a {
 
 
 
-.team-image {
-  width: 50px; /* 이미지 크기 조절 */
-  height: 50px; /* 이미지 크기 조절 */
-  border-radius: 25%; /* 이미지를 원형으로 만듦 */
-  object-fit: cover; /* 이미지 비율을 유지하면서 요소에 맞게 조정 */
-  border: 2px solid #ddd; /* 이미지 주변에 테두리 추가 */
-  margin-right: 10px; /* 텍스트와의 간격을 위한 마진 */
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 이미지에 그림자 추가 */
-}
+
 
 /* User Profile Image Style */
-.participant img {
-  width: 40px; /* 이미지 크기 조절 */
-  height: 40px; /* 이미지 크기 조절 */
-  border-radius: 50%; /* 이미지를 원형으로 만듦 */
-  object-fit: cover; /* 이미지 비율을 유지하면서 요소에 맞게 조정 */
-  border: 1px solid #ccc; /* 이미지 주변에 테두리 추가 */
-  margin-right: 10px; /* 닉네임과의 간격을 위한 마진 */
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1); /* 이미지에 그림자 추가 */
-}
+
 
 .container-confirm-style {
   display: flex;
@@ -897,25 +965,10 @@ a {
     margin-bottom: 20px;
   }
 
-  .game-information {
+  .game-information-container {
     width: 95%;
   }
 }
 
-button.goBack {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  padding: 10px 20px;
-  background-color: #f8f8f8;
-  border: none;
-  border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
 
-button.goBack:hover {
-  background-color: #e2e2e2;
-}
 </style>

@@ -14,7 +14,7 @@
 
     <div class="upcoming-games">
       <h3>Upcoming Games</h3>
-      <ul>
+      <ul v-if="upcomingGames">
         <li v-for="(game,gameId) in upcomingGames" :key="gameId" @click="handleGameClick(game)">
           <div >
             <div  class="game-card">

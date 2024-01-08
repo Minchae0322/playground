@@ -4,6 +4,7 @@ import com.example.playgroundmanage.dto.TeamRegistration;
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.dto.response.TeamMemberDto;
 import com.example.playgroundmanage.exception.TeamNotExistException;
+import com.example.playgroundmanage.game.repository.TeamingRepository;
 import com.example.playgroundmanage.game.vo.Team;
 import com.example.playgroundmanage.game.vo.Teaming;
 import com.example.playgroundmanage.game.vo.User;
@@ -31,6 +32,8 @@ public class TeamService {
     private final UserService userService;
 
     private final FileHandler fileHandler;
+
+    private TeamingRepository teamingRepository;
 
 
     @Transactional
@@ -82,6 +85,12 @@ public class TeamService {
         return Optional.ofNullable(uploadFile)
                 .map(fileHandler::extractFile)
                 .orElse(null);
+    }
+
+    @Transactional
+    public String getUserRoleInTeam(User user, Team team) {
+        Teaming teaming = teamingRepository.findByTeamAndUser(team, user);
+        return teaming.getRole();
     }
 
     public Team findByTeamId(Long teamId) {

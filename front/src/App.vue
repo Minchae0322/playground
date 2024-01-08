@@ -113,7 +113,7 @@ const redirectToLogin = function () {
 }
 
 body {
-  background: white;
+  background: var(--background-color);
   min-width: 97vw;
   display: flow;
   justify-content: center;
@@ -122,6 +122,7 @@ body {
 }
 
 header {
+  background: var(--background-color);
   display: flex;
   align-items: end;
   justify-content: end;

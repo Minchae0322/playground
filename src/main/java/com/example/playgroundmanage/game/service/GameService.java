@@ -68,6 +68,7 @@ public class GameService {
                 .toList();
     }
 
+    @Transactional
     public SubTeamDto getSoloTeamByTeamSide(Long gameId, MatchTeamSide matchTeamSide) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
@@ -76,10 +77,12 @@ public class GameService {
         return SubTeamDto.builder()
                 .subTeamId(soloTeam.getId())
                 .users(soloTeam.getGameParticipants().stream()
-                        .map(gameParticipant -> userService.getUserInfo(gameParticipant.getUser().getId()))
+                        .map(gameParticipant -> userService.getUserInfo(gameParticipant.getUser()))
                         .toList())
                 .build();
     }
+
+
 
     private SubTeamDto toSubTeamDto(SubTeam subTeam){
         InMemoryMultipartFile teamProfileImg = fileHandler.extractFile(subTeam.getTeam().getTeamPic());
@@ -89,8 +92,9 @@ public class GameService {
                 .teamId(subTeam.getTeam().getId())
                 .teamName(subTeam.getTeam().getTeamName())
                 .teamProfileImg(teamProfileImg)
+                .teamDescription(subTeam.getTeam().getDescription())
                 .users(subTeam.getGameParticipants().stream()
-                        .map(gameParticipant -> userService.getUserInfo(gameParticipant.getUser().getId()))
+                        .map(gameParticipant -> userService.getUserInfoInTeam(subTeam.getTeam(), gameParticipant.getUser()))
                         .toList())
                 .build();
     }

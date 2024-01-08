@@ -11,4 +11,6 @@ public interface TeamingRepository extends JpaRepository<Teaming, Long> {
     List<Teaming> findAllByTeam(Team team);
 
     List<Teaming> findAllByUser(User user);
+
+    Teaming findByTeamAndUser(Team team, User user);
 }
