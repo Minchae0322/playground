@@ -1,10 +1,11 @@
 <script setup>
-import {onMounted, ref} from "vue";
+import {onMounted, onUpdated, ref} from "vue";
 import axios from "axios";
 import { defineEmits } from 'vue';
 import {useRouter} from "vue-router";
 import defaultImage from "@/assets/img.png";
 import { defineProps } from 'vue';
+import PlaygroundInfoView from "@/views/PlaygroundInfoView.vue";
 
 const apiBaseUrl = "http://localhost:8080";
 
@@ -58,7 +59,7 @@ const props = defineProps({
     required: true
   }
 });
-
+const buttonText = ref("+")
 
 const emits = defineEmits(['goBack']);
 
@@ -201,8 +202,20 @@ const clickAwayTeam = () => {
 
 };
 
-const toggleJoinMenu = function () {
+const toggleJoinMenu = async function () {
   menuVisible.value = !menuVisible.value;
+  buttonText.value = menuVisible.value ? "-" : "+"
+};
+
+const clickScroll = async () => {
+  await toggleJoinMenu()
+  const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+  console.log(currentScroll, window.innerHeight)
+  // 한 페이지 아래로 스크롤
+  window.scrollTo({
+    top: currentScroll + window.innerHeight, // 현재 스크롤 위치에 한 화면 높이를 더함
+    behavior: 'smooth'  // 부드러운 스크롤 효과
+  });
 };
 
 const toggleUserTeamDropdown = () => {
@@ -213,7 +226,9 @@ const toggleUserTeamDropdown = () => {
 const selectTeam = (team) => {
   selectedTeam.value = team;
   dropdownVisible.value = false;
+  const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
 };
+
 
 const cancel = () => {
   isTeamRegistrationModalVisible.value = false;
@@ -279,9 +294,9 @@ const redirectToLogin = function () {
 
 
 <template>
-  <div class="game-information-container">
-    <div class="game-info">
-      <h2>{{ homeAndAwayTeams.matchTeamSide}}</h2>
+  <div class="game-container">
+    <div class="game-info-container">
+
       <div class="tab-container">
         <button class="button-goBack" @click="goBack">Back</button>
         <div
@@ -318,22 +333,24 @@ const redirectToLogin = function () {
 
   </div>
 
-
+    <div class="game-info">{{ homeAndAwayTeams.matchTeamSide}}</div>
     <div class="teams-container">
-      <div class="team">
 
+      <div class="team">
         <div v-if="homeAndAwayTeams.subTeams">
           <div class="team-details" v-for="(team, index) in homeAndAwayTeams.subTeams" :key="index">
             <div class="team-info-container">
+
               <img class="team-image" :src="team.teamProfileImg || defaultImage">
               <div class="team-info">
                 <div class="team-name">{{ team.teamName }}</div>
                 <div class="team-description">{{ team.teamDescription }}</div>
               </div>
-
             </div>
+            <div class="line"></div>
             <div class="team-member-container">
               <div class="team-member" v-for="(participant, index) in team.users" :key="index">
+                <div class="member-marker">队员</div>
                 <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
                 <p class="user-nickname">{{ participant.userNickname }}</p>
                 <p class="user-role">{{ participant.userRole }}</p>
@@ -345,9 +362,9 @@ const redirectToLogin = function () {
         <div  v-if="homeAndAwayTeams.soloTeam">
         <div class="team-details" v-for="(participant, index) in homeAndAwayTeams.soloTeam.users" :key="index">
           <div class="team-member">
-            <img :src="participant.userProfileImg || defaultImage">
+            <div class="member-marker">个人</div>
+            <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
             <p class="user-nickname">{{ participant.userNickname }}</p>
-
           </div>
 
         </div>
@@ -356,18 +373,19 @@ const redirectToLogin = function () {
 
           <div id="app" class="flex justify-center items-center h-screen">
             <div class="relative">
-              <button
-                  class="styled-button"
-                  @click="toggleJoinMenu"
-                  aria-haspopup="menu"
-                  :aria-expanded="menuVisible.toString()"
-              >
-                +
-              </button>
-              <div v-if="menuVisible" class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+              <div v-if="menuVisible" ref="menu"  class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
                 <a  @click="sendSoloGameJoinRequest" class="menu-item" role="menuitem">개인으로 참가하기</a>
                 <a @click="clickTeamRegistration"  class="menu-item" role="menuitem">팀으로 참가하기</a>
               </div>
+              <button
+                  class="select-team-solo-button"
+                  @click="clickScroll"
+                  aria-haspopup="menu"
+                  :aria-expanded="menuVisible.toString()"
+              >
+                {{ buttonText }}
+              </button>
+
             </div>
           </div>
 
@@ -439,25 +457,31 @@ a {
 }
 
 /* 게임 정보 컨테이너 및 기본 스타일 */
-.game-information-container {
+.game-container {
   font-family: 'Arial', sans-serif;
   text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+  background: var(--white);
+}
+
+.game-info-container {
+  width: 100%;
+
   background: var(--white);
 }
 
 .game-info {
-  width: 100%;
-
-  background: var(--white);
-}
-
-.game-info h2 {
   background-image: linear-gradient(to right, #6a85b6 0%, #bac8e0 100%);
   color: white;
+  margin-top: 10px;
   padding: 10px 10px 10px 20px;
   font-size: 130%;
   font-weight: bold;
   width: 100%;
+  border-radius: 8px 8px 0  0;
   text-align: left;
   font-family: primary-font,sans-serif;
 }
@@ -493,9 +517,9 @@ a {
   justify-content: space-around;
   align-items: center;
   background: var(--background-color);
-  border-radius: 4px;
+  border-radius: 8px;
   width: 95%;
-
+  margin-bottom: 10px;
 }
 
 /* 탭 버튼 기본 스타일 */
@@ -504,16 +528,17 @@ a {
   align-items: center;
   justify-content: center;
   white-space: nowrap;
-  border-radius: 4px;
-  font-size: 17px;
+  border-radius:8px;
+  font-size: 1.2rem;
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;;
   padding: 10px;
   cursor: pointer;
   width: 50%;
-  border: 1px solid #d0d0d0;
+  border: 1px solid #d3dadf;
   background-color: transparent;
   color: #989898;
   outline: none;
+
 }
 
 .checkmark {
@@ -530,8 +555,9 @@ a {
 /* 탭 버튼 활성화 시 스타일 */
 .tab-button.active {
   background-color: #ffffff; /* 활성화 배경 */
-  color: #000000; /* 활성화 텍스트 색상 */
+  color: #3f3f3f; /* 활성화 텍스트 색상 */
   font-weight: 600;
+
 }
 
 /* 탭 버튼 포커스 시 스타일 */
@@ -551,11 +577,12 @@ a {
 
 .teams-container {
   font-family: Arial, sans-serif;
-  background: var(--white);
+  background: #f5f8ff;
   width: 100%;
   align-items: center; /* 가로축을 기준으로 중앙 정렬합니다. */
-
-  padding: 20px;
+  margin: 0 0 0;
+  padding: 10px;
+  border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
 }
@@ -563,22 +590,27 @@ a {
 
 
 .team {
-  background: var(--background-color);
+  background: #f5f8ff;
   border-radius: 8px;
   justify-content: center;
 
 }
 
 
-
+.line {
+  width: 100%;
+  padding: 0 0 15px 0;
+  border-bottom: 2px solid #383d4a;
+}
 
 
 .team-details {
   background: #ffffff; /* Light grey background */
-  border-radius: 8px; /* Rounded corners */
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  border-radius: 16px; /* Rounded corners */
+  -webkit-box-shadow: 0px 3px 9px rgba(0,0,0,.05);
+  box-shadow: 0px 3px 9px rgba(0,0,0,.05);
   padding: 12px;
-  margin: 0 auto 20px auto;
+  margin: 10px auto 20px auto;
   display: flex;
   width: 95%;
   flex-direction: column;
@@ -594,17 +626,15 @@ a {
   display: flex;
   width: 100%;
   align-items: center;
-  background: #f8f9fa; /* 연한 배경색으로 구분감을 줍니다 */
-  padding: 10px;
+  padding: 0px 10px 0px 10px;
   border-radius: 5px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 가독성을 위한 약간의 그림자를 추가합니다 */
 }
 
-
 .team-image {
-  width: 40px;
-  height: 40px;
-  border-radius: 25%;
+  width: 50px;
+  height: 50px;
+
+  border-radius: 15%;
   margin-right: 15px;
 }
 
@@ -614,7 +644,8 @@ a {
 
 .team-name {
   text-align: start;
-  font-size: 19px;
+  font-size: 21px;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   font-weight: 600;
   color: #333;
 }
@@ -634,15 +665,23 @@ a {
   align-items: center;
 }
 
+.member-marker {
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--accent-color);
+}
+
 .team-member {
   display: flex;
-  margin: 20px 10px 4px 0;
+  margin: 20px 4px 10px 10px;
   flex-direction: column;
-  background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
+  background: white;
   padding: 10px 15px 10px 15px;
   width: 90px;
-  height: 90px;
+  height: 110px;
   text-align: center;
+  border: 1px solid #cccccc;
   line-height: 1.1; /* 1.2는 글꼴 크기의 120%를 의미합니다 */
   border-radius: 6px;
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 이미지에 그림자 추가 */
@@ -653,9 +692,7 @@ a {
   height: 35px; /* 이미지 크기 조절 */
   object-fit: cover; /* 이미지 비율을 유지하면서 요소에 맞게 조정 */
   border-radius: 50%;
-  margin-bottom: 12px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: 4px auto 10px;
 }
 
 .team-member .user-nickname {
@@ -679,7 +716,7 @@ a {
   background-color: #4C516D; /* Semi-transparent blue color */
   color: white;
   border: 1px solid rgba(50, 58, 65, 0.9); /* Solid blue border for contrast */
-  border-radius: 6px; /* Makes the button round */
+  border-radius: 4px; /* Makes the button round */
   cursor: pointer;
   transition: background-color 0.3s ease;
   display: flex;
@@ -687,6 +724,8 @@ a {
   justify-content: center;
   align-items: center;
   width: 200px;
+  font-weight: 600;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   position: relative; /* Needed to position the pseudo-element */
 }
 
@@ -701,22 +740,24 @@ a {
 }
 
 
-.styled-button {
+.select-team-solo-button {
   padding: 8px 16px;
-  border: 1px solid #ccc;
-  width: 90%;
+  border: 1px solid #252525;
+  width: 95%;
   border-radius: 4px;
   margin-bottom: 5px; /* 필요에 따라 조정 */
+  margin-top: 10px;
   font-size: 14px;
   cursor: pointer;
   outline: none;
-
+  background: var(--accent-color);
   z-index: 1000; /* 메뉴가 버튼 아래에 오도록 z-index 설정 */
 }
 
-.styled-button:hover {
-  background-color: #f8f8f8;
+.select-team-solo-button:hover {
+  background-color: var(--secondary-color)
 }
+
 
 .styled-menu {
   position: absolute;
@@ -933,6 +974,7 @@ a {
 
 .button-confirm {
   margin: 0px 20px;
+  background: var(--accent-color);
 }
 
 .button-cancel {
@@ -948,7 +990,7 @@ a {
 }
 
 .button-confirm:hover {
-  background-color: rgba(0, 0, 0, 0.85); /* 마우스 오버 시 배경색 변경 */
+  background-color: var(--secondary-color); /* 마우스 오버 시 배경색 변경 */
   color: #ffffff; /* 마우스 오버 시 글자색 변경 */
 }
 
@@ -965,7 +1007,7 @@ a {
     margin-bottom: 20px;
   }
 
-  .game-information-container {
+  .game-container {
     width: 95%;
   }
 }

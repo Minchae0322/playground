@@ -1,7 +1,7 @@
 <template>
   <div id="gameView-container">
     <component :is="currentView" :game="selectedGame" key="selectedGame.gameId"></component>
-    <div class="game-info">
+    <div class="game-info-container">
       <div v-if="currentGame">
         <div><strong>Host</strong> {{ currentGame.hostName }}</div>
         <div><strong>StartTime</strong> {{ currentGame.gameStart }}</div>
@@ -190,7 +190,7 @@ const redirectToLogin = function () {
 
 
 
-.game-info {
+.game-info-container {
   border: 1px solid #ddd; /* Add a border */
   padding: 15px; /* Add some padding inside the card */
   margin-top: 20px; /* Add some space above the card */
@@ -201,7 +201,7 @@ const redirectToLogin = function () {
   transition: box-shadow 0.3s; /* Smooth transition for hover effect */
 }
 
-.game-info:hover {
+.game-info-container:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Slightly larger shadow on hover */
 }
 .join-button {
