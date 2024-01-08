@@ -220,7 +220,7 @@ body {
   justify-content: center;
   align-items: center;
 
-  background: #f9fbfc; /* 배경색을 추가할 수도 있습니다 */
+  background: var(--background-color); /* 배경색을 추가할 수도 있습니다 */
 }
 
 .userInfo-container {
@@ -291,7 +291,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: #064183;
+  background: var(--accent-color);
   width: 20%;
   color: white;
   font-family: gothic-bold,serif;
@@ -397,7 +397,8 @@ button:hover {
   display: flex;
   align-items: center;
   border-radius: 12px 12px 0 0;
-  background: linear-gradient(to right, #2c9bce,#064183);
+  background: var(--primary-gradient);
+
   color: white;
   padding: 0 5px 10px;
 }

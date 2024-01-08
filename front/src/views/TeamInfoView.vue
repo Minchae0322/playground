@@ -170,9 +170,9 @@ const redirectToLogin = function () {
 }
 
 .team-history {
-  background: #f9f9f9; /* Light grey background */
+  background: var(--white); /* Light grey background */
   border: 1px solid #ddd; /* Light grey border */
-  border-radius: 4px; /* Rounded corners */
+  border-radius: 8px; /* Rounded corners */
   padding: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -216,14 +216,19 @@ const redirectToLogin = function () {
 
 
 .team-achievements {
-  border-top: 2px solid #000;
-  padding-top: 20px;
+
+  border-radius: 8px;
   margin-top: 20px;
+  background: var(--white);
+  padding: 20px;
 }
 
 .team-players {
   margin-top: 20px;
   margin-bottom: 20px;
+  padding: 20px;
+  border-radius: 8px; /* Rounded corners */
+  background: var(--white);
 }
 
 .team-players h2 {
@@ -235,6 +240,7 @@ const redirectToLogin = function () {
 .team-players table {
   width: 100%;
   border-collapse: collapse;
+
   margin-top: 20px; /* Space between title and table */
 }
 
@@ -257,7 +263,7 @@ const redirectToLogin = function () {
 }
 .team-players th {
   font-weight: bold;
-  background-color: #f8f8f8; /* Light gray background for headers */
+  background: var(--white); /* Light gray background for headers */
   border-bottom: 2px solid #eaeaea; /* Slightly darker border for headers */
 }
 
@@ -281,9 +287,11 @@ const redirectToLogin = function () {
 .team-achievements ul {
   list-style: none;
   padding: 0;
+
 }
 
 .team-achievements li {
+
   background: #f2f2f2;
   margin-bottom: 5px;
   padding: 10px;

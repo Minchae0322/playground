@@ -95,7 +95,7 @@ onMounted(() => {
   background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
   color: white;
   width: 30%;
-  padding: 10px 10px 0;
+  padding: 10px 10px 10px 10px;
   text-align: center;
 }
 

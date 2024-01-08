@@ -119,7 +119,11 @@ const getTeamData = async (matchTeamSide) => {
   }
 };
 const sendSoloGameJoinRequest = async () => {
-  await validateAccessToken()
+  const isConfirm = confirm("진행하시겠습니까?")
+  if (!isConfirm) {
+    return
+  }
+  await validateAccessToken();
   try {
     await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/soloGameJoin`,{
           matchTeamSide: homeAndAwayTeams.value.matchTeamSide,
@@ -133,12 +137,17 @@ const sendSoloGameJoinRequest = async () => {
   }
 };
 
+
+
 const sendTeamRegistrationRequest = async () => {
   if (!selectedTeam.value.teamId) {
     alert("팀을 선택해주세요");
     return;
   }
-
+  const isConfirm = confirm("진행하시겠습니까?")
+  if (!isConfirm) {
+    return
+  }
   isTeamRegistrationModalVisible.value = false;
 
   await validateAccessToken();
@@ -159,6 +168,10 @@ const sendTeamRegistrationRequest = async () => {
 };
 
 const sendTeamJoinRequest = async (subTeamId) => {
+  const isConfirm = confirm("진행하시겠습니까?")
+  if (!isConfirm) {
+    return
+  }
   await validateAccessToken();
   try {
     await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameJoin`,
@@ -340,14 +353,14 @@ const redirectToLogin = function () {
         <div v-if="homeAndAwayTeams.subTeams">
           <div class="team-details" v-for="(team, index) in homeAndAwayTeams.subTeams" :key="index">
             <div class="team-info-container">
-
               <img class="team-image" :src="team.teamProfileImg || defaultImage">
               <div class="team-info">
                 <div class="team-name">{{ team.teamName }}</div>
-                <div class="team-description">{{ team.teamDescription }}</div>
+                <div class="team-more"> > </div>
               </div>
             </div>
             <div class="line"></div>
+            <div class="participants-num">참여중인 인원 수 6</div>
             <div class="team-member-container">
               <div class="team-member" v-for="(participant, index) in team.users" :key="index">
                 <div class="member-marker">队员</div>
@@ -479,6 +492,7 @@ a {
   margin-top: 10px;
   padding: 10px 10px 10px 20px;
   font-size: 130%;
+  letter-spacing: 4px;
   font-weight: bold;
   width: 100%;
   border-radius: 8px 8px 0  0;
@@ -534,7 +548,7 @@ a {
   padding: 10px;
   cursor: pointer;
   width: 50%;
-  border: 1px solid #d3dadf;
+  border: 1px solid #bac0c4;
   background-color: transparent;
   color: #989898;
   outline: none;
@@ -600,15 +614,21 @@ a {
 .line {
   width: 100%;
   padding: 0 0 15px 0;
-  border-bottom: 2px solid #383d4a;
+  border-bottom: 1px solid #c7c7c7;
 }
 
+.participants-num {
+  font-size: 9px;
+  padding: 10px 10px 0 10px;
+  color: #838383;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+}
 
 .team-details {
   background: #ffffff; /* Light grey background */
   border-radius: 16px; /* Rounded corners */
   -webkit-box-shadow: 0px 3px 9px rgba(0,0,0,.05);
-  box-shadow: 0px 3px 9px rgba(0,0,0,.05);
+  box-shadow: 0px 5px 12px rgba(0,0,0,.15);
   padding: 12px;
   margin: 10px auto 20px auto;
   display: flex;
@@ -639,18 +659,32 @@ a {
 }
 
 .team-info {
+  display: flex;
+  flex-direction: row;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
   line-height: 1.2; /* 1.2는 글꼴 크기의 120%를 의미합니다 */
 }
 
 .team-name {
   text-align: start;
   font-size: 21px;
+  letter-spacing: 4px;
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   font-weight: 600;
   color: #333;
 }
 
-
+.team-more {
+  margin-left: 5px;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  font-size: 15px;
+  border: 2px solid #838383;
+  color: #838383;
+}
 .team-description {
   text-align: start;
   font-size: 13px;
@@ -661,20 +695,22 @@ a {
 
 .team-member-container {
   display: flex;
+  width: 100%;
   flex-direction: row;
   align-items: center;
+
 }
 
 .member-marker {
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
   font-size: 13px;
-  font-weight: 600;
+
   color: var(--accent-color);
 }
 
 .team-member {
   display: flex;
-  margin: 20px 4px 10px 10px;
+  margin: 10px 4px 10px 10px;
   flex-direction: column;
   background: white;
   padding: 10px 15px 10px 15px;
@@ -721,6 +757,7 @@ a {
   transition: background-color 0.3s ease;
   display: flex;
   margin-top: 10px;
+  letter-spacing: 4px;
   justify-content: center;
   align-items: center;
   width: 200px;
