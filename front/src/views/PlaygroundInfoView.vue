@@ -8,7 +8,7 @@
         <div><strong>Running Time</strong> {{ currentGame.time }}</div>
       </div>
       <div v-else>
-        <strong>No current game in progress</strong>
+        <div>No current game in progress</div>
       </div>
     </div>
 
@@ -152,6 +152,14 @@ const redirectToLogin = function () {
 </script>
 
 <style scoped>
+
+body {
+  color: #333333;
+}
+
+div {
+  color: #333333;
+}
 .game-container {
   max-width: 70vw; /* Adjust the maximum width to your preference */
   width: 75vw; /* This will make the container take up 100% of its parent up to max-width */

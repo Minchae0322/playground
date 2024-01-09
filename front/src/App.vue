@@ -97,20 +97,7 @@ const redirectToLogin = function () {
 
 <style scoped>
 
-@font-face {
-  font-family: 'primary-font';
-  src: url("assets/font/static/NotoSansKR-Regular.ttf");
-}
 
-@font-face {
-  font-family: 'gothic';
-  src: url("assets/font/malgun.ttf");
-}
-
-@font-face {
-  font-family: 'gothic-bold';
-  src: url("assets/font/malgunbd.ttf");
-}
 
 body {
   background: var(--background-color);

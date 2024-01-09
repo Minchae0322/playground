@@ -9,7 +9,6 @@ public class UserEdit {
 
 
     @Builder
-
     public UserEdit(String userNickname) {
         this.userNickname = userNickname;
     }

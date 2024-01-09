@@ -17,10 +17,10 @@ public class TeamMemberDto {
 
     private String userProfileImg;
 
-    private String role;
+    private String userRole;
 
     @Builder
-    public TeamMemberDto(Long userId, String userNickname, InMemoryMultipartFile userProfileImg, String role) {
+    public TeamMemberDto(Long userId, String userNickname, InMemoryMultipartFile userProfileImg, String userRole) {
         this.userId = userId;
         this.userNickname = userNickname;
         if (userProfileImg != null) {
@@ -30,6 +30,6 @@ public class TeamMemberDto {
                 throw new RuntimeException("이미지 변환 실패", e);
             }
         }
-        this.role = role;
+        this.userRole = userRole;
     }
 }

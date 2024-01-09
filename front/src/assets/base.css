@@ -38,9 +38,39 @@
 }
 */
 
+@font-face {
+  font-family: 'primary-font';
+  src: url("font/static/NotoSansKR-Regular.ttf");
+}
+
+@font-face {
+  font-family: 'MiSans-Light';
+  src: url("font/MiSans-Light.ttf");
+}
+
+@font-face {
+  font-family: 'MiSans-Medium';
+  src: url("font/MiSans-Medium.ttf");
+}
+
+@font-face {
+  font-family: 'MiSans-Semibold';
+  src: url("font/MiSans-Semibold.ttf");
+}
+
+@font-face {
+  font-family: 'gothic';
+  src: url("font/malgun.ttf");
+}
+
+@font-face {
+  font-family: 'gothic-bold';
+  src: url("font/malgunbd.ttf");
+}
+
 @media (prefers-color-scheme: dark) {
   :root {
-    --primary-color: #E1EBEE; /* 주 색상 */
+    --primary-color: #333333; /* 주 색상 */
     --secondary-color: #6a85b6; /* 보조 색상 */
     --accent-color: #4C516D; /* 강조 색상 */
     --primary-gradient: linear-gradient(to right, #6a85b6 0%, #bac8e0 100%);
@@ -57,30 +87,20 @@
 *::after {
   box-sizing: border-box;
   margin: 0;
-  font-weight: normal;
 }
-
+button {
+  font-family: MiSans-Semibold, sans-serif;
+  color: white;
+}
 body {
   min-height: 100vh;
-  color: var(--color-text);
+  color: var(--primary-color);
   background: var(--background-color);
+  font-family: MiSans-Semibold,sans-serif;
   transition:
     color 0.5s,
     background-color 0.5s;
   line-height: 1.6;
-  font-family:
-    Inter,
-    -apple-system,
-    BlinkMacSystemFont,
-    'Segoe UI',
-    Roboto,
-    Oxygen,
-    Ubuntu,
-    Cantarell,
-    'Fira Sans',
-    'Droid Sans',
-    'Helvetica Neue',
-    sans-serif;
   font-size: 15px;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;

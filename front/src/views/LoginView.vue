@@ -2,9 +2,9 @@
 
 
   <div class="mx-auto max-w-md space-y-6 ">
-    <div class="space-y-2 text-center">
-      <h1 class="login-container text-3xl font-bold">Sign In</h1>
-      <p class="text-gray-500 dark:text-gray-400">Enter your email and password to sign in</p>
+    <div class=" text-center">
+      <h1 class="login-container text-3xl">Sign In</h1>
+      <div class="font">Enter your email and password to sign in</div>
     </div>
     <div class="space-y-4">
       <div class="space-id">
@@ -36,10 +36,10 @@
       </button>
     </div>
     <div class="flex justify-between text-sm font-light">
-      <a class="text-color-black font-light" href="#">
+      <a class="text-color-black font" href="#">
         Forgot password?
       </a>
-      <a class="text-color-black font-light" href="#">
+      <a class="text-color-black font" href="#">
         Create an account
       </a>
     </div>
@@ -120,16 +120,18 @@ const write = async function () {
 
 </script>
 
-<style>
+<style scoped>
 /* General Styles */
 body {
-
-  font-family: 'Arial', sans-serif;
   background-color: #f5f5f5;
   color: #333;
 }
 .login-container {
   margin-top: 50px;
+}
+
+.font {
+  font-family: MiSans-Light,sans-serif;
 }
 
 /* Container Styles */
@@ -188,9 +190,6 @@ body {
   margin-bottom: 1.5rem;
 }
 
-.font-light {
-  font-weight: 10;
-}
 
 
 
@@ -271,14 +270,7 @@ button {
 }
 
 /* Social Sign-in Button Styles */
-.border {
-  border-width: 1px;
-}
 
-
-.margin-top-20 {
-  margin-top: 50px;
-}
 
 
 

@@ -12,6 +12,7 @@ import com.example.playgroundmanage.game.repository.TeamRepository;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.store.UploadFile;
+import com.example.playgroundmanage.util.TeamValidation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+
+import static com.example.playgroundmanage.util.TeamValidation.validateJoinTeam;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +36,7 @@ public class TeamService {
 
     private final FileHandler fileHandler;
 
-    private TeamingRepository teamingRepository;
+    private final TeamingRepository teamingRepository;
 
 
     @Transactional
@@ -75,7 +78,7 @@ public class TeamService {
                 .map(t -> TeamMemberDto.builder()
                         .userProfileImg(getUserProfileImg(t.getUser().getProfileImg()))
                         .userNickname(t.getUser().getNickname())
-                        .role(t.getRole())
+                        .userRole(t.getRole())
                         .userId(t.getUser().getId())
                         .build())
                 .toList();
@@ -115,9 +118,17 @@ public class TeamService {
     }
 
 
+    @Transactional
+    public void joinTeam(Long teamId, User user) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(TeamNotExistException::new);
 
+        validateJoinTeam(team, user);
 
-
-
-
+        teamingRepository.save(Teaming.builder()
+                .team(team)
+                .user(user)
+                .role("Member")
+                .build());
+    }
 }

@@ -6,6 +6,7 @@
         <h1>{{ team.teamName }}</h1>
         <p class="team-type">{{ team.teamSportsEvent }}</p>
       </div>
+      <button class="button-teamJoin" @click="clickJoinTeam">加入</button>
     </div>
     <div class="team-history">
       <h2>Team History</h2>
@@ -83,6 +84,22 @@ onMounted(() => {
   getTeamMembers()
 });
 
+
+const clickJoinTeam = async () => {
+  await validateAccessToken()
+  try {
+    await axios.post(`${apiBaseUrl}/team/join/${props.teamId}`, {},
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
+    );
+    alert("가입에 성공하였습니다.");
+  } catch (error) {
+    alert(error.response.data.message);
+  }
+};
 const getTeamMembers = function () {
   validateAccessToken()
   axios.get(`${apiBaseUrl}/team/${props.teamId}/members`,
@@ -166,7 +183,17 @@ const redirectToLogin = function () {
 .team-container {
   width: 70%;
   margin: 20px auto;
-  font-family: Arial, sans-serif;
+
+}
+
+.button-teamJoin {
+  background: var(--accent-color);
+  border: 1px solid rgba(50, 58, 65, 0.9); /* Solid blue border for contrast */
+  padding: 10px 40px; /* 버튼 패딩 조정 */
+  color: white; /* 텍스트 색상 */
+  border-radius: 4px;
+  margin: 10px 18px 10px auto;
+  text-align: left; /* 왼쪽 정렬 */
 }
 
 .team-history {
@@ -176,16 +203,19 @@ const redirectToLogin = function () {
   padding: 20px;
   margin-top: 20px;
   margin-bottom: 20px;
+  font-family: MiSans-Medium, sans-serif;
 }
 
 .team-history h2 {
   font-size: 1.5em;
   color: #333; /* Darker text color for the title */
   margin-bottom: 10px;
+
 }
 
 .team-history p {
   font-size: 1em;
+  font-family: MiSans-Light, sans-serif;
   color: #555; /* Slightly lighter text color for the paragraph */
   line-height: 1.6; /* More readable line height */
 }
@@ -206,6 +236,7 @@ const redirectToLogin = function () {
 
 .team-info h1 {
   margin: 0;
+
   font-size: 2em;
 }
 
@@ -216,7 +247,7 @@ const redirectToLogin = function () {
 
 
 .team-achievements {
-
+  font-family: MiSans-Medium, sans-serif;
   border-radius: 8px;
   margin-top: 20px;
   background: var(--white);
@@ -234,6 +265,7 @@ const redirectToLogin = function () {
 .team-players h2 {
   font-size: 1.5em;
   color: #333;
+  font-family: MiSans-Medium, sans-serif;
   margin-bottom: 10px;
 }
 
@@ -244,12 +276,18 @@ const redirectToLogin = function () {
   margin-top: 20px; /* Space between title and table */
 }
 
+
+.team-players th {
+  font-family: MiSans-Light, sans-serif;
+}
+
 .team-players th,
 .team-players td {
   text-align: left;
   padding: 12px 8px; /* Adjust the padding to match the design */
   border-bottom: 1px solid #ddd; /* Light gray border for separation */
 }
+
 .team-players img {
   margin: 10px 0 10px 20px;
   width: 50px;
@@ -262,14 +300,12 @@ const redirectToLogin = function () {
   box-shadow: 0 3px 6px 0 rgba(29,34,53,.08);
 }
 .team-players th {
-  font-weight: bold;
   background: var(--white); /* Light gray background for headers */
   border-bottom: 2px solid #eaeaea; /* Slightly darker border for headers */
 }
 
 .team-players tbody tr:hover {
   background-color: #f2f2f2; /* Slightly darker background on hover */
-  font-family: gothic-bold,sans-serif;
 }
 
 .team-players tbody td {
@@ -280,14 +316,13 @@ const redirectToLogin = function () {
 /* Remove the border from the last row to match the design */
 .team-players tr:last-child td {
   border-bottom: none;
-
 }
 
 
 .team-achievements ul {
   list-style: none;
   padding: 0;
-
+  font-family: MiSans-Light, sans-serif;
 }
 
 .team-achievements li {

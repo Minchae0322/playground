@@ -247,6 +247,9 @@ const cancel = () => {
   isTeamRegistrationModalVisible.value = false;
   // 추가 취소 로직
 };
+
+
+
 const getTeamsUserBelongTo = function () {
   validateAccessToken();
   axios.get(`${apiBaseUrl}/user/teams`,
@@ -346,21 +349,31 @@ const redirectToLogin = function () {
 
   </div>
 
-    <div class="game-info">{{ homeAndAwayTeams.matchTeamSide}}</div>
+    <div class="game-info">{{ homeAndAwayTeams.matchTeamSide}}
+      <div class="game-details">
+
+        <div>{{props.game.gameName}}</div>
+        <div class="game-details-title">시작 시간</div>
+        <div>{{props.game.gameStart}}</div>
+        <div class="game-details-title">진행 시간</div>
+        <div>{{props.game.runningTime}}</div>
+      </div>
+
+    </div>
     <div class="teams-container">
 
       <div class="team">
         <div v-if="homeAndAwayTeams.subTeams">
           <div class="team-details" v-for="(team, index) in homeAndAwayTeams.subTeams" :key="index">
-            <div class="team-info-container">
+            <router-link :to="{ name:'teamInfo', params: { teamId: team.teamId } }" class="team-info-container">
               <img class="team-image" :src="team.teamProfileImg || defaultImage">
               <div class="team-info">
                 <div class="team-name">{{ team.teamName }}</div>
                 <div class="team-more"> > </div>
               </div>
-            </div>
+            </router-link>
             <div class="line"></div>
-            <div class="participants-num">참여중인 인원 수 6</div>
+            <div class="participants-num">참여중인 인원 수 {{team.users.length}}</div>
             <div class="team-member-container">
               <div class="team-member" v-for="(participant, index) in team.users" :key="index">
                 <div class="member-marker">队员</div>
@@ -387,8 +400,8 @@ const redirectToLogin = function () {
           <div id="app" class="flex justify-center items-center h-screen">
             <div class="relative">
               <div v-if="menuVisible" ref="menu"  class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                <a  @click="sendSoloGameJoinRequest" class="menu-item" role="menuitem">개인으로 참가하기</a>
-                <a @click="clickTeamRegistration"  class="menu-item" role="menuitem">팀으로 참가하기</a>
+                <div @click="sendSoloGameJoinRequest" class="menu-item" role="menuitem">个人</div>
+                <div @click="clickTeamRegistration"  class="menu-item" role="menuitem">팀으로 참가하기</div>
               </div>
               <button
                   class="select-team-solo-button"
@@ -443,6 +456,8 @@ const redirectToLogin = function () {
 
 body {
   background: var(--white);
+  color: #333333;
+
 }
 
 h1 {
@@ -457,7 +472,7 @@ p {
 }
 
 h2 {
-  font-family: gothic-bold;
+
 }
 
 button:hover {
@@ -465,13 +480,14 @@ button:hover {
 }
 
 a {
-  font-family: gothic-bold;
+
   font-size: 17px;
+  text-decoration: none;
 }
 
 /* 게임 정보 컨테이너 및 기본 스타일 */
 .game-container {
-  font-family: 'Arial', sans-serif;
+
   text-align: center;
   align-items: center;
   justify-content: center;
@@ -497,7 +513,7 @@ a {
   width: 100%;
   border-radius: 8px 8px 0  0;
   text-align: left;
-  font-family: primary-font,sans-serif;
+
 }
 /* 뒤로 가기 버튼 스타일 */
 
@@ -544,7 +560,7 @@ a {
   white-space: nowrap;
   border-radius:8px;
   font-size: 1.2rem;
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;;
+  font-family: MiSans-Light,sans-serif;
   padding: 10px;
   cursor: pointer;
   width: 50%;
@@ -568,10 +584,9 @@ a {
 }
 /* 탭 버튼 활성화 시 스타일 */
 .tab-button.active {
+  font-family: MiSans-Semibold, sans-serif;
   background-color: #ffffff; /* 활성화 배경 */
   color: #3f3f3f; /* 활성화 텍스트 색상 */
-  font-weight: 600;
-
 }
 
 /* 탭 버튼 포커스 시 스타일 */
@@ -585,12 +600,22 @@ a {
 /* 탭 버튼 비활성화 시 스타일 */
 .tab-button:disabled {
   pointer-events: none;
+
   color: #333333;
   opacity: 0.5;
 }
 
+.game-details {
+  font-family: MiSans-Light,sans-serif;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.game-details-title {
+  font-size: 9px;
+}
+
 .teams-container {
-  font-family: Arial, sans-serif;
   background: #f5f8ff;
   width: 100%;
   align-items: center; /* 가로축을 기준으로 중앙 정렬합니다. */
@@ -621,12 +646,12 @@ a {
   font-size: 9px;
   padding: 10px 10px 0 10px;
   color: #838383;
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+
 }
 
 .team-details {
   background: #ffffff; /* Light grey background */
-  border-radius: 16px; /* Rounded corners */
+  border-radius: 4px; /* Rounded corners */
   -webkit-box-shadow: 0px 3px 9px rgba(0,0,0,.05);
   box-shadow: 0px 5px 12px rgba(0,0,0,.15);
   padding: 12px;
@@ -644,11 +669,13 @@ a {
 
 .team-info-container {
   display: flex;
-  width: 100%;
+
   align-items: center;
-  padding: 0px 10px 0px 10px;
+  padding: 5px 10px 5px 10px;
   border-radius: 5px;
 }
+
+
 
 .team-image {
   width: 50px;
@@ -671,7 +698,7 @@ a {
   text-align: start;
   font-size: 21px;
   letter-spacing: 4px;
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+
   font-weight: 600;
   color: #333;
 }
@@ -702,7 +729,7 @@ a {
 }
 
 .member-marker {
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+
   font-size: 13px;
 
   color: var(--accent-color);
@@ -738,7 +765,7 @@ a {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: -apple-system, BlinkMacSystemFont, "Malgun Gothic", "맑은 고딕", helvetica, "Apple SD Gothic Neo", sans-serif;
+
 }
 
 .team-member .user-role {
@@ -762,7 +789,7 @@ a {
   align-items: center;
   width: 200px;
   font-weight: 600;
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+
   position: relative; /* Needed to position the pseudo-element */
 }
 
@@ -813,6 +840,7 @@ a {
   border-bottom: 1px solid #ccc; /* 마지막 메뉴 아이템을 제외한 각 메뉴 아이템 사이의 구분선 */
   color: #333;
   text-decoration: none;
+  font-family: MiSans-Semibold, sans-serif;
 }
 
 .menu-item:last-child {

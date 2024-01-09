@@ -10,6 +10,7 @@ import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+
+
 
 @RestController
 @RequiredArgsConstructor
@@ -53,5 +56,12 @@ public class TeamController {
     @GetMapping("/team/{teamId}/members")
     public List<TeamMemberDto> getTeamMembers(@PathVariable Long teamId) {
         return teamService.getTeamMembers(teamId);
+    }
+
+    @PostMapping("/team/join/{teamId}")
+    public ResponseEntity<String> joinTeam(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Long teamId) {
+
+        teamService.joinTeam(teamId, myUserDetails.getUser());
+        return ResponseEntity.ok("success");
     }
 }

@@ -77,6 +77,9 @@ public class User implements Serializable{
 
     @Transactional
     public User update(UserEdit userEdit) {
+        if (userEdit.getUserNickname().equals("") || userEdit.getUserNickname().length() > 9) {
+            throw new RuntimeException("닉네임 형식에 안맞습니다. 최대 글자 9자.");
+        }
         this.nickname = userEdit.getUserNickname();
         return this;
     }
