@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.game.vo;
 
 
+import com.example.playgroundmanage.dto.TeamRequestInfoDto;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -42,5 +43,16 @@ public abstract class TeamRequest extends Request {
         this.leader = leader;
         this.introduction = introduction;
         this.requestTime = requestTime;
+    }
+
+    public TeamRequestInfoDto toTeamRequestInfoDto() {
+        return TeamRequestInfoDto.builder()
+                .user(user)
+                .leader(leader)
+                .team(team)
+                .requestId(id)
+                .introduction(introduction)
+                .requestTime(requestTime)
+                .build();
     }
 }

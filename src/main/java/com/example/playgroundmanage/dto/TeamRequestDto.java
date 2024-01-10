@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class TeamRequestDto extends RequestDto{
+public class TeamRequestDto extends RequestDto {
 
     private Long teamId;
 
