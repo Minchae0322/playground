@@ -6,15 +6,15 @@ import com.example.playgroundmanage.dto.SubTeamDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.MatchNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
+import com.example.playgroundmanage.exception.UserNotParticipantGameException;
 import com.example.playgroundmanage.game.repository.*;
-import com.example.playgroundmanage.game.vo.CompetingTeam;
-import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.game.vo.SubTeam;
+import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.location.vo.Playground;
+import com.example.playgroundmanage.util.GameParticipantFinder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -36,6 +36,10 @@ public class GameService {
     private final UserService userService;
 
     private final FileHandler fileHandler;
+
+    private final GameParticipantRepository gameParticipantRepository;
+
+    private final GameParticipantFinder gameParticipantFinder;
     @Transactional
     public Long generateGame(Long playgroundId, GameDto gameDto) {
         Playground playground = playgroundRepository.findById(playgroundId)
@@ -99,11 +103,24 @@ public class GameService {
                 .build();
     }
 
+    @Transactional
+    public void userOutOfGame(Long gameId, User user) {
+        Game game = gameRepository.findById(gameId)
+                .orElseThrow(GameNotExistException::new);
 
+        GameParticipant gameParticipant = gameParticipantFinder.getParticipantInGame(game, user)
+                .orElseThrow(UserNotParticipantGameException::new);
 
+        gameParticipantRepository.delete(gameParticipant);
+        checkAndDeleteSubTeamIfEmpty(gameParticipant);
+    }
 
-
-
+    private void checkAndDeleteSubTeamIfEmpty(GameParticipant gameParticipant) {
+        SubTeam subTeam = gameParticipant.getSubTeam();
+        if (subTeam != null && subTeam.getGameParticipants().isEmpty()) {
+            subTeamRepository.delete(subTeam);
+        }
+    }
 
 
     public Game getMatch(Long matchId) {

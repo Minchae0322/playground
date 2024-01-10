@@ -58,5 +58,11 @@ public class GameController {
         return ResponseEntity.ok(generatedGameId);
     }
 
+    @DeleteMapping("/game/{gameId}/out")
+    public ResponseEntity<String> userOutOfGame(@PathVariable Long gameId, @AuthenticationPrincipal MyUserDetails myUserDetails) {
+        gameService.userOutOfGame(gameId, myUserDetails.getUser());
+
+        return ResponseEntity.ok("success");
+    }
 
 }

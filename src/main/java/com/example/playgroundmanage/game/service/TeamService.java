@@ -119,16 +119,16 @@ public class TeamService {
 
 
     @Transactional
-    public void joinTeam(Long teamId, User user) {
+    public Long joinTeam(Long teamId, User user) {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(TeamNotExistException::new);
 
         validateJoinTeam(team, user);
 
-        teamingRepository.save(Teaming.builder()
+        return teamingRepository.save(Teaming.builder()
                 .team(team)
                 .user(user)
                 .role("Member")
-                .build());
+                .build()).getId();
     }
 }

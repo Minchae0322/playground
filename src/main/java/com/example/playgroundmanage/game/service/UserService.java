@@ -65,7 +65,7 @@ public class UserService {
         List<Teaming> teams = user.getTeams();
         return teams.stream()
                 .map(t -> TeamInfoResponse.builder()
-                        .teamId(t.getId())
+                        .teamId(t.getTeam().getId())
                         .sportsEvent(t.getTeam().getSportsEvent().getValue())
                         .teamName(t.getTeam().getTeamName())
                         .teamProfileImg(getTeamProfileImg(t.getTeam().getTeamPic()))

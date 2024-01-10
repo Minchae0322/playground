@@ -373,7 +373,7 @@ const redirectToLogin = function () {
               </div>
             </router-link>
             <div class="line"></div>
-            <div class="participants-num">참여중인 인원 수 {{team.users.length}}</div>
+            <div class="participants-num">参与人数 {{team.users.length}}</div>
             <div class="team-member-container">
               <div class="team-member" v-for="(participant, index) in team.users" :key="index">
                 <div class="member-marker">队员</div>
@@ -503,6 +503,8 @@ a {
 }
 
 .game-info {
+  display: flex;
+  align-items: center;
   background-image: linear-gradient(to right, #6a85b6 0%, #bac8e0 100%);
   color: white;
   margin-top: 10px;
@@ -606,6 +608,7 @@ a {
 }
 
 .game-details {
+  margin-left: 200px;
   font-family: MiSans-Light,sans-serif;
   font-size: 14px;
   letter-spacing: 2px;
@@ -616,20 +619,19 @@ a {
 }
 
 .teams-container {
-  background: #f5f8ff;
+  background: var(--background-color);
   width: 100%;
   align-items: center; /* 가로축을 기준으로 중앙 정렬합니다. */
   margin: 0 0 0;
-  padding: 10px;
+  padding: 10px 0;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: box-shadow 0.3s ease;
 }
 
 
 
 .team {
-  background: #f5f8ff;
+  background: var(--background-color);
   border-radius: 8px;
   justify-content: center;
 
@@ -643,21 +645,21 @@ a {
 }
 
 .participants-num {
-  font-size: 9px;
+  font-size: 11px;
+  font-family: MiSans-Medium,sans-serif;
   padding: 10px 10px 0 10px;
   color: #838383;
-
+  letter-spacing: 1px;
 }
 
 .team-details {
   background: #ffffff; /* Light grey background */
   border-radius: 4px; /* Rounded corners */
-  -webkit-box-shadow: 0px 3px 9px rgba(0,0,0,.05);
-  box-shadow: 0px 5px 12px rgba(0,0,0,.15);
+
   padding: 12px;
   margin: 10px auto 20px auto;
   display: flex;
-  width: 95%;
+  width: 100%;
   flex-direction: column;
   transition: box-shadow 0.3s ease;
   align-items: flex-start; /* Align items to the start of the flex container */
@@ -730,8 +732,8 @@ a {
 
 .member-marker {
 
-  font-size: 13px;
-
+  font-size: 12px;
+  font-family: MiSans-Light,sans-serif;
   color: var(--accent-color);
 }
 
@@ -1063,18 +1065,7 @@ a {
 
 
 @media (max-width: 768px) {
-  .teams-container {
-    flex-direction: column;
-  }
 
-  .team {
-    width: 100%;
-    margin-bottom: 20px;
-  }
-
-  .game-container {
-    width: 95%;
-  }
 }
 
 

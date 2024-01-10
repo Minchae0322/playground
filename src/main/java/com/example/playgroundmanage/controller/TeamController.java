@@ -58,10 +58,4 @@ public class TeamController {
         return teamService.getTeamMembers(teamId);
     }
 
-    @PostMapping("/team/join/{teamId}")
-    public ResponseEntity<String> joinTeam(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Long teamId) {
-
-        teamService.joinTeam(teamId, myUserDetails.getUser());
-        return ResponseEntity.ok("success");
-    }
 }

@@ -1,8 +1,9 @@
 package com.example.playgroundmanage.game.service.impl;
 
 import com.example.playgroundmanage.dto.GameRequestDto;
+import com.example.playgroundmanage.dto.RequestDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
-import com.example.playgroundmanage.exception.UserNotExistException;
+import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
@@ -12,8 +13,6 @@ import com.example.playgroundmanage.util.TeamSelector;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
 
 import static com.example.playgroundmanage.util.GameValidation.validateDuplicateUserInGame;
 
@@ -43,12 +42,13 @@ public class TeamGameJoinRequestService implements RequestService {
     }
 
     @Override
-    public Long generateRequest(Long gameId, GameRequestDto gameRequestDto) {
-        Game game = gameRepository.findById(gameId)
+    public Long generateRequest(RequestDto requestDto) {
+        GameRequestDto gameRequestDto = (GameRequestDto) requestDto;
+        Game game = gameRepository.findById(gameRequestDto.getGameId())
                 .orElseThrow(GameNotExistException::new);
 
         validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(game), gameRequestDto.getUser());
-        gameManagementService.deletePreviousRequest(game, gameRequestDto.getUser());
+        gameManagementService.deletePreviousGameRequest(game, gameRequestDto.getUser());
 
         return saveJoinRequest(game, gameRequestDto);
     }
@@ -77,7 +77,7 @@ public class TeamGameJoinRequestService implements RequestService {
     @Transactional
     public Long acceptRequest(Long requestId) {
         TeamGameJoinRequest teamGameJoinRequest = (TeamGameJoinRequest) gameRequestRepository.findById(requestId)
-                .orElseThrow();
+                .orElseThrow(RequestNotExistException::new);
 
         SubTeam subTeam = teamGameJoinRequest.getSubTeam();
 

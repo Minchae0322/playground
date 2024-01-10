@@ -79,7 +79,7 @@ const props = defineProps({
     required:true,
   }
 })
-onMounted(() => {
+onMounted(async () => {
   getTeamInfo()
   getTeamMembers()
 });

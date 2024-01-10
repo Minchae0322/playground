@@ -38,6 +38,10 @@ public class Team {
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Teaming> members = new ArrayList<>();
 
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<TeamRequest> teamRequests = new ArrayList<>();
+
+
     @Builder
     public Team(Long id, String teamName, UploadFile teamPic, User leader, String description, SportsEvent sportsEvent, List<SubTeam> subTeams, List<Teaming> members) {
         this.id = id;

@@ -1,9 +1,10 @@
 package com.example.playgroundmanage.game.service.impl;
 
 import com.example.playgroundmanage.dto.GameRequestDto;
+import com.example.playgroundmanage.dto.RequestDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
+import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.exception.TeamNotExistException;
-import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
@@ -37,12 +38,13 @@ public class TeamGameRegistrationRequestService implements RequestService {
 
     @Override
     @Transactional
-    public Long generateRequest(Long gameId, GameRequestDto gameRequestDto) {
-        Game game = gameRepository.findById(gameId)
+    public Long generateRequest(RequestDto requestDto) {
+        GameRequestDto gameRequestDto = (GameRequestDto) requestDto;
+        Game game = gameRepository.findById(gameRequestDto.getGameId())
                 .orElseThrow(GameNotExistException::new);
 
         validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(game), gameRequestDto.getUser());
-        gameManagementService.deletePreviousRequest(game, gameRequestDto.getUser());
+        gameManagementService.deletePreviousGameRequest(game, gameRequestDto.getUser());
 
         return saveJoinRequest(game, gameRequestDto);
     }
@@ -78,7 +80,7 @@ public class TeamGameRegistrationRequestService implements RequestService {
     @Transactional
     public Long acceptRequest(Long requestId) {
         TeamGameRegistrationRequest teamGameRegistrationRequest = (TeamGameRegistrationRequest) gameRequestRepository.findById(requestId)
-                .orElseThrow();
+                .orElseThrow(RequestNotExistException::new);
 
         SubTeam subTeam = createSubTeam(teamGameRegistrationRequest.getTeam(), teamGameRegistrationRequest.getGame().getCompetingTeamBySide(teamGameRegistrationRequest.getMatchTeamSide()));
 

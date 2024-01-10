@@ -1,10 +1,11 @@
 package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.dto.GameRequestDto;
+import com.example.playgroundmanage.dto.RequestDto;
 
 public interface RequestService {
 
-    Long generateRequest(Long gameId, GameRequestDto gameRequestDto);
+    Long generateRequest(RequestDto RequestDto);
 
     String getRequestType();
 
