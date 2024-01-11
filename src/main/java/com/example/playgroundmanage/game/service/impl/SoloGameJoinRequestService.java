@@ -1,7 +1,9 @@
 package com.example.playgroundmanage.game.service.impl;
 
 import com.example.playgroundmanage.dto.GameRequestDto;
+import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.dto.RequestDto;
+import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.game.repository.*;
@@ -10,10 +12,12 @@ import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.game.vo.impl.SoloGameJoinRequest;
 import com.example.playgroundmanage.type.MatchTeamSide;
-import com.example.playgroundmanage.util.TeamSelector;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.example.playgroundmanage.util.GameValidation.validateDuplicateUserInGame;
 
@@ -23,19 +27,10 @@ public class SoloGameJoinRequestService implements RequestService {
 
     private final GameRepository gameRepository;
 
-    private final TeamRepository teamRepository;
 
     private final GameParticipantRepository gameParticipantRepository;
 
     private final GameRequestRepository gameRequestRepository;
-
-
-    private final SoloGameJoinRequestRepository soloGameJoinRequestRepository;
-    private final TeamSelector teamSelector;
-
-    private final SubTeamRepository subTeamRepository;
-
-
 
 
     private final GameManagementService gameManagementService;
@@ -43,6 +38,19 @@ public class SoloGameJoinRequestService implements RequestService {
     @Override
     public String getRequestType() {
         return "soloGameJoin";
+    }
+
+    @Override
+    public List<RequestInfoDto> getPendingRequests(PendingRequestParams pendingRequestParams) {
+        List<GameRequest> gameRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(pendingRequestParams.getHost(), LocalDateTime.now());
+        List<SoloGameJoinRequest> soloGameJoinRequests = gameRequests.stream()
+                .filter(gameRequest -> gameRequest instanceof SoloGameJoinRequest)
+                .map(gameRequest -> (SoloGameJoinRequest) gameRequest)
+                .toList();
+
+        return soloGameJoinRequests.stream()
+                .map(SoloGameJoinRequest::toGameRequestInfoDto)
+                .toList();
     }
 
     @Transactional

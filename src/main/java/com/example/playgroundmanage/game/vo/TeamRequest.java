@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.game.vo;
 
 
+import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.dto.TeamRequestInfoDto;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.*;
@@ -45,8 +46,8 @@ public abstract class TeamRequest extends Request {
         this.requestTime = requestTime;
     }
 
-    public TeamRequestInfoDto toTeamRequestInfoDto() {
-        return TeamRequestInfoDto.builder()
+    public RequestInfoDto toTeamRequestInfoDto() {
+        return RequestInfoDto.builder()
                 .user(user)
                 .leader(leader)
                 .team(team)

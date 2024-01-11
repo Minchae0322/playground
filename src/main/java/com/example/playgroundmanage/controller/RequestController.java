@@ -1,8 +1,9 @@
 package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.dto.GameRequestDto;
-import com.example.playgroundmanage.dto.GameRequestInfoDto;
+import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.dto.TeamRequestDto;
+import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.dto.reqeust.UserJoinGameParams;
 import com.example.playgroundmanage.dto.reqeust.UserJoinTeamParams;
 import com.example.playgroundmanage.dto.response.PendingGameRequest;
@@ -53,10 +54,23 @@ public class RequestController {
 
     @GetMapping("/user/pending/request")
     public List<PendingGameRequest> getPendingGameRequests(@AuthenticationPrincipal MyUserDetails myUserDetails) {
-        List<GameRequestInfoDto> pendingRequest = gameManagementService.getPendingGameRequests(myUserDetails.getUser());
+        List<RequestInfoDto> pendingRequest = gameManagementService.getPendingGameRequests(myUserDetails.getUser());
 
         return pendingRequest.stream()
-                .map(GameRequestInfoDto::toPendingGameRequest)
+                .map(RequestInfoDto::toPendingGameRequest)
+                .toList();
+    }
+
+    @PostMapping("/user/pending/request/{requestType}")
+    public List<PendingGameRequest> getPendingRequests(@RequestBody PendingRequestParams pendingRequestParams, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable String requestType) {
+
+        RequestService requestService = requestServiceFinder.find(requestType);
+
+        pendingRequestParams.setHost(myUserDetails.getUser());
+        List<RequestInfoDto> pendingRequest = requestService.getPendingRequests(pendingRequestParams);
+
+        return pendingRequest.stream()
+                .map(RequestInfoDto::toPendingGameRequest)
                 .toList();
     }
 

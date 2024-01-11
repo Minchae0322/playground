@@ -1,16 +1,11 @@
 package com.example.playgroundmanage.game.vo;
 
-import com.example.playgroundmanage.dto.GameRequestDto;
-import com.example.playgroundmanage.dto.GameRequestInfoDto;
-import com.example.playgroundmanage.game.vo.impl.SoloGameJoinRequest;
-import com.example.playgroundmanage.game.vo.impl.TeamGameJoinRequest;
-import com.example.playgroundmanage.game.vo.impl.TeamGameRegistrationRequest;
+import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -53,7 +48,7 @@ public abstract class GameRequest extends Request{
         this.requestTime = requestTime;
     }
 
-    public abstract GameRequestInfoDto toGameRequestDto();
+    public abstract RequestInfoDto toGameRequestInfoDto();
 
     /*public GameRequestDto toGameRequestDto() {
         GameRequestDto gameRequestDto = GameRequestDto.builder()

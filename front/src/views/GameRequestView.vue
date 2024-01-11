@@ -53,15 +53,17 @@ const apiBaseUrl = "http://localhost:8080";
 const pendingRequests = ref([]);
 
 onMounted(() => {
-  fetchPendingRequests()
+  fetchPendingRequests('teamGameJoin')
 })
 
 
 // Fetch data from server
-const fetchPendingRequests = async () => {
+const fetchPendingRequests = async (requestType) => {
   await validateAccessToken()
   try {
-    const response = await axios.get(`${apiBaseUrl}/user/pending/request`, {
+    const response = await axios.post(`${apiBaseUrl}/user/pending/request/${requestType}`, {
+      teamId: 1
+    }, {
       headers: {
         'Authorization': getAccessToken()
       }

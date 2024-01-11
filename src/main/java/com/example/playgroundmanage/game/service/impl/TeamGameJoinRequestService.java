@@ -1,7 +1,9 @@
 package com.example.playgroundmanage.game.service.impl;
 
 import com.example.playgroundmanage.dto.GameRequestDto;
+import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.dto.RequestDto;
+import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.game.repository.*;
@@ -13,6 +15,9 @@ import com.example.playgroundmanage.util.TeamSelector;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 import static com.example.playgroundmanage.util.GameValidation.validateDuplicateUserInGame;
 
@@ -39,6 +44,18 @@ public class TeamGameJoinRequestService implements RequestService {
     @Override
     public String getRequestType() {
         return "teamGameJoin";
+    }
+
+    @Override
+    public List<RequestInfoDto> getPendingRequests(PendingRequestParams pendingRequestParams) {
+        LocalDateTime currentTime = LocalDateTime.now();
+        List<GameRequest> gameRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(pendingRequestParams.getHost(), currentTime);
+
+        return gameRequests.stream()
+                .filter(TeamGameJoinRequest.class::isInstance)
+                .map(TeamGameJoinRequest.class::cast)
+                .map(TeamGameJoinRequest::toGameRequestInfoDto)
+                .toList();
     }
 
     @Override

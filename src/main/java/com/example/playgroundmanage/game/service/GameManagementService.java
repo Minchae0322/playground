@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.game.service;
 
-import com.example.playgroundmanage.dto.GameRequestInfoDto;
+import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.repository.GameRequestRepository;
 import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
@@ -47,11 +47,20 @@ public class GameManagementService {
     }
 
     @Transactional
-    public List<GameRequestInfoDto> getPendingGameRequests(User user) {
+    public List<RequestInfoDto> getPendingGameRequests(User user) {
         List<GameRequest> pendingRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(user, LocalDateTime.now());
 
         return pendingRequests.stream()
-                .map(GameRequest::toGameRequestDto)
+                .map(GameRequest::toGameRequestInfoDto)
+                .toList();
+    }
+
+    @Transactional
+    public List<RequestInfoDto> getPendingTeamGameJoinRequests(User user) {
+        List<GameRequest> pendingRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(user, LocalDateTime.now());
+
+        return pendingRequests.stream()
+                .map(GameRequest::toGameRequestInfoDto)
                 .toList();
     }
 }

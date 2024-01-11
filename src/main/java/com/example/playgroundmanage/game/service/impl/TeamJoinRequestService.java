@@ -1,7 +1,9 @@
 package com.example.playgroundmanage.game.service.impl;
 
+import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.dto.RequestDto;
 import com.example.playgroundmanage.dto.TeamRequestDto;
+import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.repository.TeamRepository;
@@ -11,9 +13,12 @@ import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.game.service.TeamService;
 import com.example.playgroundmanage.game.vo.Team;
 import com.example.playgroundmanage.game.vo.TeamRequest;
+import com.example.playgroundmanage.game.vo.impl.TeamGameJoinRequest;
 import com.example.playgroundmanage.game.vo.impl.TeamJoinRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import java.util.List;
 
 import static com.example.playgroundmanage.util.TeamValidation.validateJoinTeam;
 
@@ -57,6 +62,20 @@ public class TeamJoinRequestService implements RequestService {
     @Override
     public String getRequestType() {
         return "teamJoin";
+    }
+
+    @Override
+    public List<RequestInfoDto> getPendingRequests(PendingRequestParams pendingRequestParams) {
+        Team team = teamRepository.findById(pendingRequestParams.getTeamId())
+                .orElseThrow(TeamNotExistException::new);
+
+        List<TeamRequest> teamRequests = teamRequestRepository.findAllByTeamAndUser(team, pendingRequestParams.getHost());
+
+        return teamRequests.stream()
+                .filter(TeamJoinRequest.class::isInstance)
+                .map(TeamJoinRequest.class::cast)
+                .map(TeamRequest::toTeamRequestInfoDto)
+                .toList();
     }
 
     @Override

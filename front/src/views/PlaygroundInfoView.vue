@@ -74,8 +74,11 @@ const openGameBuilder = function () {
 
 const closeModal = () => {
   isGameBuilderModalOpen.value = false;
-  router.go(0);
+  getUpcomingGames()
 };
+
+
+
 const getInProgressGame = async function () {
   await validateAccessToken()
 

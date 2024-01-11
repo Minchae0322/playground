@@ -1,7 +1,6 @@
 package com.example.playgroundmanage.game.vo.impl;
 
-import com.example.playgroundmanage.dto.GameRequestDto;
-import com.example.playgroundmanage.dto.GameRequestInfoDto;
+import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.Entity;
@@ -28,8 +27,8 @@ public class TeamGameRegistrationRequest extends GameRequest {
 
 
     @Override
-    public GameRequestInfoDto toGameRequestDto() {
-        return GameRequestInfoDto.builder()
+    public RequestInfoDto toGameRequestInfoDto() {
+        return RequestInfoDto.builder()
                 .game(getGame())
                 .requestId(getId())
                 .requestType("teamGameRegistration")

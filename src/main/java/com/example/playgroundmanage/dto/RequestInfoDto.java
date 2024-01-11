@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.dto;
 
 import com.example.playgroundmanage.dto.response.PendingGameRequest;
+import com.example.playgroundmanage.dto.response.PendingTeamRequest;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.SubTeam;
 import com.example.playgroundmanage.game.vo.Team;
@@ -13,35 +14,27 @@ import lombok.Data;
 import java.time.LocalDateTime;
 
 @Data
-public class GameRequestInfoDto {
+@Builder
+public class RequestInfoDto {
 
     private Long requestId;
-    private Game game;
-
-    private String requestType;
-
-    private SubTeam subTeam;
-
+    private LocalDateTime requestTime;
     private User user;
 
+    // GameRequestInfoDto 관련 필드
+    private Game game;
+    private String requestType;
+    private SubTeam subTeam;
     private Team team;
-
     private MatchTeamSide matchTeamSide;
 
-    private LocalDateTime requestTime;
+    // TeamRequestInfoDto 관련 필드
+    private String introduction;
+    private User leader;
 
-    @Builder
-    public GameRequestInfoDto(Long requestId, Game game, String requestType, SubTeam subTeam, User user, Team team, MatchTeamSide matchTeamSide, LocalDateTime requestTime) {
-        this.requestId = requestId;
-        this.game = game;
-        this.requestType = requestType;
-        this.subTeam = subTeam;
-        this.user = user;
-        this.team = team;
-        this.matchTeamSide = matchTeamSide;
-        this.requestTime = requestTime;
-    }
 
+
+    // 기존의 toPendingGameRequest 메서드
     public PendingGameRequest toPendingGameRequest() {
         return PendingGameRequest.builder()
                 .teamName(team == null ? "" : team.getTeamName())
@@ -55,6 +48,18 @@ public class GameRequestInfoDto {
                 .userId(user.getId())
                 .subTeamName(subTeam == null ? "" : subTeam.getTeam().getTeamName())
                 .matchTeamSide(matchTeamSide.getValue())
+                .build();
+    }
+
+    // 기존의 ToPendingTeamRequest 메서드
+    public PendingTeamRequest toPendingTeamRequest() {
+        return PendingTeamRequest.builder()
+                .teamName(team.getTeamName())
+                .userName(user.getNickname())
+                .userId(user.getId())
+                .introduction(introduction)
+                .requestId(requestId)
+                .requestTime(requestTime)
                 .build();
     }
 
