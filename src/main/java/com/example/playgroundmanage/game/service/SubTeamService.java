@@ -42,5 +42,15 @@ public class SubTeamService {
                 .build();
     }
 
+    @Transactional
+    public void deleteSubTeamIfParticipantZero(Long subTeamId) {
+        SubTeam subTeam = subTeamRepository.findById(subTeamId)
+                .orElseThrow();
+        if (subTeam.getGameParticipants().size() == 0) {
+            subTeam.getCompetingTeam().getSubTeams().remove(subTeam);
+            subTeamRepository.delete(subTeam);
+        }
+    }
+
 
 }

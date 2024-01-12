@@ -97,6 +97,7 @@ public class SoloGameJoinRequestService implements RequestService {
         return gameParticipantRepository.save(GameParticipant.builder()
                 .isAccepted(true)
                 .subTeam(soloTeam)
+                .game(soloGameJoinRequest.getGame())
                 .user(soloGameJoinRequest.getUser())
                 .build()).getId();
     }

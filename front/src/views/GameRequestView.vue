@@ -54,6 +54,7 @@ const pendingRequests = ref([]);
 
 onMounted(() => {
   fetchPendingRequests('teamGameJoin')
+  fetchPendingRequests('teamGameRegistration')
 })
 
 
@@ -61,7 +62,7 @@ onMounted(() => {
 const fetchPendingRequests = async (requestType) => {
   await validateAccessToken()
   try {
-    const response = await axios.post(`${apiBaseUrl}/user/pending/request/${requestType}`, {
+    const response = await axios.post(`${apiBaseUrl}/user/pending/request/game/${requestType}`, {
       teamId: 1
     }, {
       headers: {

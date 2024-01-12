@@ -17,21 +17,20 @@ public class GameParticipant {
     @ManyToOne(cascade = CascadeType.MERGE)
     private User user;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private SubTeam subTeam;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Game game;
 
     private boolean isAccepted;
 
     @Builder
-    public GameParticipant(Long id, User user, SubTeam subTeam, boolean isAccepted) {
+    public GameParticipant(Long id, User user, SubTeam subTeam, Game game, boolean isAccepted) {
         this.id = id;
         this.user = user;
         this.subTeam = subTeam;
+        this.game = game;
         this.isAccepted = isAccepted;
     }
-
-
 }

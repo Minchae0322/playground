@@ -7,6 +7,7 @@ import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.dto.reqeust.UserJoinGameParams;
 import com.example.playgroundmanage.dto.reqeust.UserJoinTeamParams;
 import com.example.playgroundmanage.dto.response.PendingGameRequest;
+import com.example.playgroundmanage.dto.response.PendingTeamRequest;
 import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.game.service.RequestServiceFinder;
@@ -61,8 +62,8 @@ public class RequestController {
                 .toList();
     }
 
-    @PostMapping("/user/pending/request/{requestType}")
-    public List<PendingGameRequest> getPendingRequests(@RequestBody PendingRequestParams pendingRequestParams, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable String requestType) {
+    @PostMapping("/user/pending/request/game/{requestType}")
+    public List<PendingGameRequest> getPendingGameRequests(@RequestBody PendingRequestParams pendingRequestParams, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable String requestType) {
 
         RequestService requestService = requestServiceFinder.find(requestType);
 
@@ -71,6 +72,19 @@ public class RequestController {
 
         return pendingRequest.stream()
                 .map(RequestInfoDto::toPendingGameRequest)
+                .toList();
+    }
+
+    @PostMapping("/user/pending/request/team/{requestType}")
+    public List<PendingTeamRequest> getPendingTeamRequests(@RequestBody PendingRequestParams pendingRequestParams, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable String requestType) {
+
+        RequestService requestService = requestServiceFinder.find(requestType);
+
+        pendingRequestParams.setHost(myUserDetails.getUser());
+        List<RequestInfoDto> pendingRequest = requestService.getPendingRequests(pendingRequestParams);
+
+        return pendingRequest.stream()
+                .map(RequestInfoDto::toPendingTeamRequest)
                 .toList();
     }
 

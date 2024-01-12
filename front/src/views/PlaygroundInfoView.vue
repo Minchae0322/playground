@@ -14,9 +14,9 @@
 
     <div class="upcoming-games">
       <h3>Upcoming Games</h3>
-      <ul v-if="upcomingGames">
+      <ul >
         <li v-for="(game,gameId) in upcomingGames" :key="gameId" @click="handleGameClick(game)">
-          <div >
+          <div v-if="game.gameId" >
             <div  class="game-card">
               <h2>{{ game.gameName }}</h2>
               <div class="host-info">
@@ -57,7 +57,7 @@ const emits = defineEmits(['gameSelected']);
 onMounted(async () => {
   // Check if the initial page number is provided in the route query
   getInProgressGame();
-  await getUpcomingGames();
+  getUpcomingGames();
 });
 
 function handleGameClick(game) {

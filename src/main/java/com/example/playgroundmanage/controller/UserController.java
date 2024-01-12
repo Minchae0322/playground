@@ -40,7 +40,7 @@ public class UserController {
 
 
     @GetMapping("/user/info")
-    public UserInfoDto getUserInfo(@AuthenticationPrincipal MyUserDetails userDetails) throws IOException {
+    public UserInfoDto getUserInfo(@AuthenticationPrincipal MyUserDetails userDetails) {
         testRepository.save(Test.builder()
                 .zonedDateTime(ZonedDateTime.now())
                 .build());

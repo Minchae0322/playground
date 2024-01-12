@@ -10,6 +10,7 @@ import com.example.playgroundmanage.game.service.SubTeamService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.type.MatchTeamSide;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -58,10 +59,10 @@ public class GameController {
         return ResponseEntity.ok(generatedGameId);
     }
 
-    @DeleteMapping("/game/{gameId}/out")
-    public ResponseEntity<String> userOutOfGame(@PathVariable Long gameId, @AuthenticationPrincipal MyUserDetails myUserDetails) {
+    @DeleteMapping("/game/{gameId}/{subTeamId}/out")
+    public ResponseEntity<String> userOutOfGame(@PathVariable Long gameId, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Long subTeamId) {
         gameService.userOutOfGame(gameId, myUserDetails.getUser());
-
+        subTeamService.deleteSubTeamIfParticipantZero(subTeamId);
         return ResponseEntity.ok("success");
     }
 

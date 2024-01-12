@@ -107,6 +107,7 @@ public class TeamGameRegistrationRequestService implements RequestService {
         return gameParticipantRepository.save(GameParticipant.builder()
                 .isAccepted(true)
                 .subTeam(subTeam)
+                .game(teamGameRegistrationRequest.getGame())
                 .user(teamGameRegistrationRequest.getUser())
                 .build()).getId();
     }

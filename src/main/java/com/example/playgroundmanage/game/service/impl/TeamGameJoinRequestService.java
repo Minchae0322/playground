@@ -6,12 +6,14 @@ import com.example.playgroundmanage.dto.RequestDto;
 import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.RequestNotExistException;
+import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.game.vo.impl.TeamGameJoinRequest;
 import com.example.playgroundmanage.util.TeamSelector;
+import com.example.playgroundmanage.util.TeamValidation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -63,7 +65,10 @@ public class TeamGameJoinRequestService implements RequestService {
         GameRequestDto gameRequestDto = (GameRequestDto) requestDto;
         Game game = gameRepository.findById(gameRequestDto.getGameId())
                 .orElseThrow(GameNotExistException::new);
+        Team team = teamRepository.findById(((GameRequestDto) requestDto).getTeamId())
+                .orElseThrow(TeamNotExistException::new);
 
+        TeamValidation.validateUserInTeam(team, requestDto.getUser());
         validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(game), gameRequestDto.getUser());
         gameManagementService.deletePreviousGameRequest(game, gameRequestDto.getUser());
 
@@ -104,6 +109,7 @@ public class TeamGameJoinRequestService implements RequestService {
         return gameParticipantRepository.save(GameParticipant.builder()
                 .isAccepted(true)
                 .subTeam(subTeam)
+                .game(teamGameJoinRequest.getGame())
                 .user(teamGameJoinRequest.getUser())
                 .build()).getId();
     }

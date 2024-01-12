@@ -22,7 +22,7 @@ public class SubTeam {
     @ManyToOne
     private Team team;
 
-    @OneToMany(mappedBy = "subTeam", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "subTeam", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GameParticipant> gameParticipants = new ArrayList<>();
 
     private boolean isSoloTeam;

@@ -17,6 +17,7 @@ import com.example.playgroundmanage.game.vo.impl.TeamGameJoinRequest;
 import com.example.playgroundmanage.game.vo.impl.TeamJoinRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ import static com.example.playgroundmanage.util.TeamValidation.validateJoinTeam;
 
 
 @RequiredArgsConstructor
+@Service
 public class TeamJoinRequestService implements RequestService {
 
     private final TeamRepository teamRepository;
@@ -66,10 +68,7 @@ public class TeamJoinRequestService implements RequestService {
 
     @Override
     public List<RequestInfoDto> getPendingRequests(PendingRequestParams pendingRequestParams) {
-        Team team = teamRepository.findById(pendingRequestParams.getTeamId())
-                .orElseThrow(TeamNotExistException::new);
-
-        List<TeamRequest> teamRequests = teamRequestRepository.findAllByTeamAndUser(team, pendingRequestParams.getHost());
+        List<TeamRequest> teamRequests = teamRequestRepository.findAllByLeader(pendingRequestParams.getHost());
 
         return teamRequests.stream()
                 .filter(TeamJoinRequest.class::isInstance)

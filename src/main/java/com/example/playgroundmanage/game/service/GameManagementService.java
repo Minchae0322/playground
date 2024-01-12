@@ -34,6 +34,7 @@ public class GameManagementService {
                 .ifPresent(teamRequestRepository::delete);
     }
 
+    @Transactional
     public List<GameParticipant> findGameParticipantsInGame(Game game) {
         return Stream.of(MatchTeamSide.HOME, MatchTeamSide.AWAY)
                 .flatMap(side -> game.getCompetingTeamBySide(side).getSubTeams().stream())

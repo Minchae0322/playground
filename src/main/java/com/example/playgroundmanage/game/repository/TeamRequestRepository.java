@@ -12,5 +12,5 @@ public interface TeamRequestRepository extends JpaRepository<TeamRequest, Long> 
 
     Optional<TeamRequest> findByTeamAndUser(Team team, User user);
 
-    List<TeamRequest> findAllByTeamAndUser(Team team, User user);
+    List<TeamRequest> findAllByLeader(User leader);
 }

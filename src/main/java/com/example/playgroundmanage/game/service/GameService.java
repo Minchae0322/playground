@@ -103,6 +103,9 @@ public class GameService {
                 .build();
     }
 
+
+
+
     @Transactional
     public void userOutOfGame(Long gameId, User user) {
         Game game = gameRepository.findById(gameId)
@@ -110,14 +113,14 @@ public class GameService {
 
         GameParticipant gameParticipant = gameParticipantFinder.getParticipantInGame(game, user)
                 .orElseThrow(UserNotParticipantGameException::new);
+        game.getGameParticipants().remove(gameParticipant);
 
         gameParticipantRepository.delete(gameParticipant);
-        checkAndDeleteSubTeamIfEmpty(gameParticipant);
+
     }
 
-    private void checkAndDeleteSubTeamIfEmpty(GameParticipant gameParticipant) {
-        SubTeam subTeam = gameParticipant.getSubTeam();
-        if (subTeam != null && subTeam.getGameParticipants().isEmpty()) {
+    private void checkAndDeleteSubTeamIfEmpty(SubTeam subTeam) {
+        if (subTeam != null && subTeam.getGameParticipants().size() <= 1) {
             subTeamRepository.delete(subTeam);
         }
     }

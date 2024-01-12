@@ -48,6 +48,8 @@ const teamsUserBelongTo = ref([{
   teamProfileImg: '',
   teamName: '',
 }])
+
+const loggedInUserId = ref('');
 const selectedTeam = ref({});
 const dropdownVisible = ref(false);
 
@@ -72,6 +74,7 @@ onMounted(async () => {
   await getTeamData('HOME')
   await getTeamData('AWAY')
   await clickHomeTeam()
+  await getLoggedUserId()
 });
 
 
@@ -86,6 +89,23 @@ function transformUsers(users) {
     userProfileImg: encodeImageToBase64(user.userProfileImg)
   }));
 }
+
+const getLoggedUserId = async () => {
+  await validateAccessToken();
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/user/profile`,
+     {
+      headers: {
+        'Authorization': getAccessToken()
+      }
+    });
+    loggedInUserId.value = response.data.userId;
+    // 서버에서 성공 응답을 받았을 때의 처리를 이곳에 추가할 수 있습니다.
+  } catch (error) {
+    showErrorMessage(error)
+  }
+};
 
 // 팀 데이터를 업데이트하는 함수
 const getTeamData = async (matchTeamSide) => {
@@ -167,7 +187,7 @@ const sendTeamRegistrationRequest = async () => {
   }
 };
 
-const sendTeamJoinRequest = async (subTeamId) => {
+const sendTeamJoinRequest = async (subTeamId, teamId) => {
   const isConfirm = confirm("진행하시겠습니까?")
   if (!isConfirm) {
     return
@@ -177,6 +197,7 @@ const sendTeamJoinRequest = async (subTeamId) => {
     await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameJoin`,
         {
           subTeamId: subTeamId,
+          teamId: teamId,
           matchTeamSide: homeAndAwayTeams.value.matchTeamSide
         }, {
           headers: {
@@ -248,7 +269,13 @@ const cancel = () => {
   // 추가 취소 로직
 };
 
-
+const clickOutOfGame = async (subTeamId) => {
+  await validateAccessToken();
+  await axios.delete(`${apiBaseUrl}/game/${props.game.gameId}/${subTeamId}/out`,
+      {  headers: {
+          'Authorization': getAccessToken()}}
+  )
+};
 
 const getTeamsUserBelongTo = function () {
   validateAccessToken();
@@ -376,18 +403,20 @@ const redirectToLogin = function () {
             <div class="participants-num">参与人数 {{team.users.length}}</div>
             <div class="team-member-container">
               <div class="team-member" v-for="(participant, index) in team.users" :key="index">
+                <div v-if="participant.userId === loggedInUserId" class="close-marker" @click="clickOutOfGame(team.subTeamId)">X</div>
                 <div class="member-marker">队员</div>
                 <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
                 <p class="user-nickname">{{ participant.userNickname }}</p>
                 <p class="user-role">{{ participant.userRole }}</p>
               </div>
             </div>
-            <button class="add-button" @click="sendTeamJoinRequest(team.subTeamId)"> 参加</button>
+            <button class="add-button" @click="sendTeamJoinRequest(team.subTeamId, team.teamId)"> 参加</button>
           </div>
         </div>
         <div  v-if="homeAndAwayTeams.soloTeam">
         <div class="team-details" v-for="(participant, index) in homeAndAwayTeams.soloTeam.users" :key="index">
           <div class="team-member">
+            <div v-if="participant.userId === loggedInUserId" class="close-marker" @click="clickOutOfGame">X</div>
             <div class="member-marker">个人</div>
             <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
             <p class="user-nickname">{{ participant.userNickname }}</p>
@@ -727,11 +756,16 @@ a {
   width: 100%;
   flex-direction: row;
   align-items: center;
-
+  position: relative; /* 상대 위치 설정 */
 }
-
+.close-marker {
+  position: absolute; /* 절대 위치 설정 */
+  top: 0; /* 상단에 붙임 */
+  right: 0; /* 우측에 붙임 */
+  cursor: pointer; /* 마우스 포인터 스타일 변경 */
+  /* 필요한 추가 스타일 */
+}
 .member-marker {
-
   font-size: 12px;
   font-family: MiSans-Light,sans-serif;
   color: var(--accent-color);
@@ -742,7 +776,7 @@ a {
   margin: 10px 4px 10px 10px;
   flex-direction: column;
   background: white;
-  padding: 10px 15px 10px 15px;
+  padding: 10px 5px 5px 5px;
   width: 90px;
   height: 110px;
   text-align: center;
@@ -882,10 +916,7 @@ a {
 
 
 
-.team-member:hover {
-  transform: translateY(-3px);
-  background-color: #ececec;
-}
+
 
 
 .participants-container {

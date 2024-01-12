@@ -13,4 +13,12 @@ public class TeamValidation {
             throw new RuntimeException("이미 팀에 존재합니다.");
         }
     }
+
+    public static void validateUserInTeam(Team team, User user) {
+        boolean isTeamMember = team.getMembers().stream()
+                .anyMatch(teaming -> teaming.getUser().equals(user));
+        if (!isTeamMember) {
+            throw new RuntimeException("팀 멤버가 아닙니다.");
+        }
+    }
 }
