@@ -171,6 +171,7 @@ a{
 .main-container {
   width: 80%;
   padding: 16px;
+  height: 100%;
   margin: auto;
   box-sizing: border-box;
 }

@@ -18,6 +18,18 @@ onMounted(async () => {
   await getUserInfo()
 });
 
+
+
+const subMenuVisible = ref({
+  home: false,
+  matches: false,
+  // ... other menus
+});
+
+const toggleSubMenu = (menu) => {
+  subMenuVisible.value[menu] = !subMenuVisible.value[menu];
+};
+
 const clickUserInfo = function () {
   validateAccessToken();
   router.push({name: 'userInfo'})
@@ -53,6 +65,7 @@ const validateAccessToken = async function () {
   }
 };
 
+
 const getAccessToken = function () {
   return localStorage.getItem("accessToken");
 };
@@ -75,43 +88,86 @@ const updateAccessToken = async function () {
   }
 };
 
+
 const redirectToLogin = function () {
   router.push("/login");
 };
 </script>
 
 <template>
+
   <header>
     <div>
       <img :src="user.userProfileImg || defaultImage" @click="clickUserInfo">
     </div>
   </header>
 
-  <body>
-  <main>
 
-    <RouterView class="" />
+
+  <main class="main-content">
+    <div class="sidebar">
+      <div class="logo-container">
+        <img src="../src/assets/img.png" alt="Logo" class="logo">
+      </div>
+      <nav class="navigation">
+        <ul class="nav-links">
+          <li>
+            <div @click="toggleSubMenu('home')" class="nav-item">Home</div>
+            <ul v-if="subMenuVisible.home" class="sub-menu">
+              <li><RouterLink to="/home/1" class="sub-nav-item">Sub Menu 1</RouterLink></li>
+              <li><RouterLink to="/home/2" class="sub-nav-item">Sub Menu 2</RouterLink></li>
+            </ul>
+          </li>
+          <li>
+            <div @click="toggleSubMenu('matches')" class="nav-item">Matches</div>
+            <ul v-if="subMenuVisible.matches" class="sub-menu">
+              <li><RouterLink to="/matches/1" class="sub-nav-item">Sub Menu 1</RouterLink></li>
+              <li><RouterLink to="/matches/2" class="sub-nav-item">Sub Menu 2</RouterLink></li>
+            </ul>
+          </li>
+          <!-- ... 다른 메뉴 아이템 ... -->
+        </ul>
+      </nav>
+    </div>
+    <div class="router-view-container">
+    <RouterView />
+    </div>
   </main>
-  </body>
 </template>
 
 <style scoped>
-
-
-
-body {
-  background: var(--background-color);
-  min-width: 97vw;
-  display: flow;
-  justify-content: center;
-  align-items: center;
+.main-content {
+  display: flex;
+  align-items: start;
+  justify-content: start;
 
 }
 
+
+.sidebar {
+  flex: 1; /* sidebar 너비 설정 */
+  width: 250px;
+  height: 92vh;
+  left: 0;
+  top: 0;
+  background-color: #fff;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.router-view-container {
+  flex: 5; /* sidebar 너비 설정 */
+  height: 88vh; /* 원하는 높이로 설정 */
+  margin-top: 20px;
+  overflow-y: auto; /* 내용이 높이를 초과하면 스크롤바 생성 */
+}
+
 header {
-  background: var(--background-color);
+  background: var(--white);
   display: flex;
   align-items: end;
+  height: 8vh;
   justify-content: end;
 }
 
@@ -126,4 +182,41 @@ img {
   justify-content: end;
   box-shadow: 0 3px 6px 0 rgba(29,34,53,.08);
 }
+
+
+
+.logo-container {
+  padding: 20px;
+  text-align: center;
+}
+
+.logo {
+  max-width: 100%;
+  height: auto;
+}
+
+.navigation {
+  flex-grow: 1;
+}
+
+.nav-links {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.nav-item {
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+
+.nav-item:hover,
+.nav-item.router-link-active {
+  background-color: #f0f0f0;
+}
+
+
 </style>
