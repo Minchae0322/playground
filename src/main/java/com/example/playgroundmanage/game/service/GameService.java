@@ -3,6 +3,7 @@ package com.example.playgroundmanage.game.service;
 import com.example.playgroundmanage.dto.GameDto;
 
 import com.example.playgroundmanage.dto.SubTeamDto;
+import com.example.playgroundmanage.dto.UsersGameDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.MatchNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
@@ -19,6 +20,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 import static com.example.playgroundmanage.util.GameValidation.validateOverlappingGames;
@@ -117,6 +119,17 @@ public class GameService {
 
         gameParticipantRepository.delete(gameParticipant);
 
+    }
+
+    @Transactional
+    public List<UsersGameDto.UsersGameResponseDto> getMonthGameAsc(UsersGameDto.UsersGameRequestDto usersGameRequestDto) {
+        List<GameParticipant> userGame = gameParticipantRepository.findAllByUser(usersGameRequestDto.getUser());
+        List<GameParticipant> sameMonthGameParticipants = gameParticipantFinder.getGameOfSameYearAndMonth(userGame, usersGameRequestDto.getMyDateTime().getLocalDateTime());
+
+        return sameMonthGameParticipants.stream()
+                .sorted(Comparator.comparing(gameParticipant -> gameParticipant.getGame().getGameStartDateTime()))
+                .map(GameParticipant::toUsersGameResponseDto)
+                .toList();
     }
 
     private void checkAndDeleteSubTeamIfEmpty(SubTeam subTeam) {

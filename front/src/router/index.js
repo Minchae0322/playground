@@ -12,12 +12,18 @@ import userInfo from '../views/UserInfoView.vue'
 import teamInfo from '../views/TeamInfoView.vue'
 import gameRequest from '../views/GameRequestView.vue';
 import playgroundInfo from '../views/PlaygroundInfoView.vue'
-import teamRequest from '../views/TeamRequestView.vue';
-import TeamRequestView from "@/views/TeamRequestView.vue";
+import myTeam from '../views/MyTeamView.vue'
+import teamRequest from "@/views/TeamRequestView.vue";
+import home from "@/views/HomeView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+      {
+      path: '/home',
+      name: 'home',
+      component: home
+    },
     {
       path: '/login',
       name: 'login',
@@ -77,7 +83,11 @@ const router = createRouter({
       component: teamInfo,
       props: true
     },
-
+    {
+      path: '/my-team',
+      name: 'myTeam',
+      component: myTeam
+    },
     {
       path: '/user/requests',
       name: 'gameRequest',
@@ -95,7 +105,7 @@ const router = createRouter({
     {
       path: '/user/request/team',
       name: 'teamRequest',
-      component: TeamRequestView,
+      component: teamRequest,
     },
   ]
 })

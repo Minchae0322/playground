@@ -232,7 +232,7 @@ body {
   padding: 20px;
   box-shadow: 5px 1px 8px 0 rgba(0,0,0,.06);
   border-left: 1px solid rgba(0,0,0,.08);;
-  font-family: 'Arial', sans-serif;
+
   background: #fff; /* 카드의 배경색 */
   overflow: auto; /* 내용이 넘칠 때 스크롤바를 보여줌 */
 }
@@ -266,10 +266,9 @@ body {
 
 .nickname-container h2 {
   margin-bottom: 10px; /* 요소 간의 여백 추가 */
-  font-weight: 700;
+
   line-height: 32px;
-  word-break: break-all;
-  font-family: primary-font,sans-serif;
+
 }
 
 .nickname-container input {

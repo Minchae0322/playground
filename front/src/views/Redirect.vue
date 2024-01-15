@@ -35,7 +35,7 @@ onMounted(() => {
   if (accessToken.value) {
     sessionStorage.setItem('accessToken', accessToken.value);
     window.alert('로그인하였습니다');
-    router.push({ path: '/login' });
+    router.push({ path: '/home' });
   } else {
     router.replace('/login');
   }

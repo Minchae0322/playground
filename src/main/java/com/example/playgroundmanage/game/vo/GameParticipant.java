@@ -1,10 +1,13 @@
 package com.example.playgroundmanage.game.vo;
 
 
+import com.example.playgroundmanage.dto.UsersGameDto;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import static com.example.playgroundmanage.util.DateFormat.dateFormatYYYYMMDDHHMM;
 
 @Entity
 @Getter
@@ -17,10 +20,10 @@ public class GameParticipant {
     @ManyToOne(cascade = CascadeType.MERGE)
     private User user;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private SubTeam subTeam;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Game game;
 
     private boolean isAccepted;
@@ -32,5 +35,14 @@ public class GameParticipant {
         this.subTeam = subTeam;
         this.game = game;
         this.isAccepted = isAccepted;
+    }
+
+    public UsersGameDto.UsersGameResponseDto toUsersGameResponseDto() {
+        return UsersGameDto.UsersGameResponseDto.builder()
+                .gameStart(dateFormatYYYYMMDDHHMM(game.getGameStartDateTime()))
+                .hostName(game.getHost().getNickname())
+                .runningTime(game.getRunningTime())
+                .gameName(game.getGameName())
+                .build();
     }
 }

@@ -12,6 +12,7 @@ const user = ref({
   userNickname: '',
   userProfileImg: ref('')
 })
+const isLoggedIn = ref(false);
 
 onMounted(async () => {
   // Check if the initial page number is provided in the route query
@@ -35,18 +36,21 @@ const clickUserInfo = function () {
   router.push({name: 'userInfo'})
 };
 
-const getUserInfo = async function () {
+const getUserInfo = async () => {
   await validateAccessToken()
-  await axios.get(`${apiBaseUrl}/user/info`,
-      {
-        headers: {
-          'Authorization': localStorage.getItem("accessToken")
-        }
-      }
-  ).then(response => {
-    user.value.userNickname = response.data.userNickname
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/user/info`, {
+      headers: {
+        'Authorization': localStorage.getItem("accessToken"),
+      }}
+    );
+    isLoggedIn.value = true;
+    user.value.userNickname = response.data.userNickname;
     user.value.userProfileImg = `data:image/jpeg;base64,${response.data.userProfileImg}`;
-  });
+  } catch (error) {
+    isLoggedIn.value = false;
+  }
 };
 
 const validateAccessToken = async function () {
@@ -96,7 +100,7 @@ const redirectToLogin = function () {
 
 <template>
 
-  <header>
+  <header v-if="$route.name !== 'login'" >
     <div>
       <img :src="user.userProfileImg || defaultImage" @click="clickUserInfo">
     </div>
@@ -105,23 +109,24 @@ const redirectToLogin = function () {
 
 
   <main class="main-content">
-    <div class="sidebar">
+    <div v-if="$route.name !== 'login'" class="sidebar">
       <div class="logo-container">
         <img src="../src/assets/img.png" alt="Logo" class="logo">
       </div>
       <nav class="navigation">
         <ul class="nav-links">
           <li>
-            <div @click="toggleSubMenu('home')" class="nav-item">Home</div>
+            <div @click="toggleSubMenu('home')" class="nav-item">Team</div>
             <ul v-if="subMenuVisible.home" class="sub-menu">
-              <li><RouterLink to="/home/1" class="sub-nav-item">Sub Menu 1</RouterLink></li>
-              <li><RouterLink to="/home/2" class="sub-nav-item">Sub Menu 2</RouterLink></li>
+              <li><RouterLink :to="{ name:'myTeam'}" class="sub-nav-item">My Team</RouterLink></li>
+              <li><RouterLink to="/home/2" class="sub-nav-item">Team Join</RouterLink></li>
+              <li><RouterLink :to="{ name:'teamRequest'}" class="sub-nav-item">Team Request</RouterLink></li>
             </ul>
           </li>
           <li>
-            <div @click="toggleSubMenu('matches')" class="nav-item">Matches</div>
+            <div @click="toggleSubMenu('matches')" class="nav-item">Game</div>
             <ul v-if="subMenuVisible.matches" class="sub-menu">
-              <li><RouterLink to="/matches/1" class="sub-nav-item">Sub Menu 1</RouterLink></li>
+              <li><RouterLink :to="{name: 'gameRequest'}" class="sub-nav-item">Game Request</RouterLink></li>
               <li><RouterLink to="/matches/2" class="sub-nav-item">Sub Menu 2</RouterLink></li>
             </ul>
           </li>
