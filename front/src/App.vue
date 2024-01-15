@@ -127,7 +127,8 @@ const redirectToLogin = function () {
             <div @click="toggleSubMenu('matches')" class="nav-item">Game</div>
             <ul v-if="subMenuVisible.matches" class="sub-menu">
               <li><RouterLink :to="{name: 'gameRequest'}" class="sub-nav-item">Game Request</RouterLink></li>
-              <li><RouterLink to="/matches/2" class="sub-nav-item">Sub Menu 2</RouterLink></li>
+              <li><RouterLink :to="{name: 'myGame'}"  class="sub-nav-item">My Game</RouterLink></li>
+              <li><RouterLink :to="{name: 'myGame'}"  class="sub-nav-item">Host Game</RouterLink></li>
             </ul>
           </li>
           <!-- ... 다른 메뉴 아이템 ... -->

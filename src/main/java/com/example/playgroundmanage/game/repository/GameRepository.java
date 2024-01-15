@@ -11,4 +11,7 @@ public interface GameRepository extends JpaRepository<Game, Long> {
 
     List<Game> findAllByHostAndGameStartDateTimeAfter(User host, LocalDateTime matchStart);
 
+    List<Game> findAllByHost(User host);
+
+
 }

@@ -15,6 +15,7 @@ import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.location.vo.Playground;
+import com.example.playgroundmanage.util.DateFormat;
 import com.example.playgroundmanage.util.GameParticipantFinder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -88,7 +89,20 @@ public class GameService {
                 .build();
     }
 
+    @Transactional
+    public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(User user) {
+        List<Game> games = gameRepository.findAllByHost(user);
 
+        return games.stream()
+                .map(game -> UsersGameDto.UsersGameResponseDto.builder()
+                        .localDateTime(game.getGameStartDateTime())
+                        .gameStart(DateFormat.dateFormatYYYYMMDDHHMM(game.getGameStartDateTime()))
+                        .hostName(game.getHost().getNickname())
+                        .gameName(game.getGameName())
+                        .runningTime(game.getRunningTime())
+                        .build())
+                .toList();
+    }
 
     private SubTeamDto toSubTeamDto(SubTeam subTeam){
         InMemoryMultipartFile teamProfileImg = fileHandler.extractFile(subTeam.getTeam().getTeamPic());

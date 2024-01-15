@@ -73,13 +73,18 @@ public class GameController {
     }
 
     @GetMapping("/user/game/{year}/{month}")
-    public List<UsersGameDto.UsersGameResponseDto> getMonthGameInLatestOrder(@PathVariable Integer month, @PathVariable Integer year, @AuthenticationPrincipal MyUserDetails myUserDetails) {
+    public List<UsersGameDto.UsersGameResponseDto> getMonthGamesInLatestOrder(@PathVariable Integer month, @PathVariable Integer year, @AuthenticationPrincipal MyUserDetails myUserDetails) {
         UsersGameDto.UsersGameRequestDto usersGameRequestDto = UsersGameDto.UsersGameRequestDto.builder()
-                .myDateTime(initMyDateTime(LocalDateTime.of(year, month, 0, 0, 0)))
+                .myDateTime(initMyDateTime(LocalDateTime.of(year, month, 1, 0, 0)))
                 .user(myUserDetails.getUser())
                 .build();
 
         return gameService.getMonthGameAsc(usersGameRequestDto);
+    }
+
+    @GetMapping("/user/game/host")
+    public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(@AuthenticationPrincipal MyUserDetails myUserDetails) {
+        return gameService.getGamesUserHost(myUserDetails.getUser());
     }
 
 }

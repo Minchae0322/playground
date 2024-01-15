@@ -15,7 +15,7 @@ import playgroundInfo from '../views/PlaygroundInfoView.vue'
 import myTeam from '../views/MyTeamView.vue'
 import teamRequest from "@/views/TeamRequestView.vue";
 import home from "@/views/HomeView.vue";
-
+import myGame from '../views/MyGameView.vue'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -87,6 +87,12 @@ const router = createRouter({
       path: '/my-team',
       name: 'myTeam',
       component: myTeam
+    },
+
+    {
+      path: '/my-game',
+      name: 'myGame',
+      component: myGame
     },
     {
       path: '/user/requests',

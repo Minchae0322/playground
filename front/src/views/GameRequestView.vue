@@ -29,7 +29,7 @@
           <td>{{ request.requestType }}</td>
           <td>{{ request.requestTime }}</td>
           <td class="action-buttons">
-            <button class="action-button action-button-reject" @click="rejectRequest(request.requestId, request.requestType)">Reject</button>
+<!--            <button class="action-button action-button-reject" @click="rejectRequest(request.requestId, request.requestType)">Reject</button>-->
             <button class="action-button action-button-accept" @click="acceptRequest(request.requestId, request.requestType)">Accept</button>
           </td>
         </tr>

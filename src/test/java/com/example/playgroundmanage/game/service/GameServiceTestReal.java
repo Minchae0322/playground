@@ -63,7 +63,7 @@ class GameServiceTestReal {
                 .sportsEvent(SportsEvent.SOCCER)
                 .runningTime(60)
                 .host(testUser)
-                .startDateTime(MyDateTimeLocal.initMyDateTime(LocalDateTime.of(2024, 2, 5, 1, 0)))
+                .startDateTime(MyDateTimeLocal.initMyDateTime(LocalDateTime.of(2024, 2, 6, 1, 0)))
                 .build();
         Long gameId1 = generateGame(gameDto);
         Game game1 = gameRepository.findById(gameId1).orElseThrow();
@@ -76,7 +76,7 @@ class GameServiceTestReal {
         System.out.println("ssss" + LocalDateTime.now());
         List<UsersGameDto.UsersGameResponseDto> responseDtoList = gameService.getMonthGameAsc(UsersGameDto.UsersGameRequestDto.builder()
                         .user(testUser)
-                        .myDateTime(MyDateTimeLocal.initMyDateTime(LocalDateTime.of(2024, 2, 1, 0, 0)))
+                        .myDateTime(MyDateTimeLocal.initMyDateTime(LocalDateTime.of(2024, 3, 1, 0, 0)))
                 .build());
         System.out.println("ssss" + LocalDateTime.now());
         responseDtoList.size();

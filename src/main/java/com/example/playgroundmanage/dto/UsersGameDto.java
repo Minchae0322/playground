@@ -8,6 +8,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 
 public class UsersGameDto {
@@ -32,13 +33,19 @@ public class UsersGameDto {
         private String gameStart;
         private Integer runningTime;
 
+        private LocalDateTime localDateTime;
+
+
         @Builder
-        public UsersGameResponseDto(String gameName, String hostName, String gameStart, Integer runningTime) {
+        public UsersGameResponseDto(String gameName, String hostName, String gameStart, Integer runningTime, LocalDateTime localDateTime) {
             this.gameName = gameName;
             this.hostName = hostName;
             this.gameStart = gameStart;
             this.runningTime = runningTime;
+            this.localDateTime = localDateTime;
         }
+
+
 
 
         @Override
