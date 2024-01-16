@@ -16,6 +16,9 @@ import myTeam from '../views/MyTeamView.vue'
 import teamRequest from "@/views/TeamRequestView.vue";
 import home from "@/views/HomeView.vue";
 import myGame from '../views/MyGameView.vue'
+import hostGame from '../views/HostGameView.vue'
+
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -40,7 +43,12 @@ const router = createRouter({
       name: 'school',
       component: searchSchool
     },
+    {
+      path: '/user/game/host',
+      name: 'hostGame',
+      component: hostGame
 
+    },
     {
       path: '/soccer',
       name: 'soccer',
@@ -84,13 +92,13 @@ const router = createRouter({
       props: true
     },
     {
-      path: '/my-team',
+      path: '/user/team/my',
       name: 'myTeam',
       component: myTeam
     },
 
     {
-      path: '/my-game',
+      path: '/user/game/my',
       name: 'myGame',
       component: myGame
     },

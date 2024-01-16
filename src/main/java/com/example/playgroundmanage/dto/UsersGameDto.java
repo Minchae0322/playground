@@ -1,15 +1,11 @@
 package com.example.playgroundmanage.dto;
 
 import com.example.playgroundmanage.date.DateTime;
-import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.game.vo.CompetingTeam;
 import com.example.playgroundmanage.game.vo.User;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 
 public class UsersGameDto {
 
@@ -32,8 +28,7 @@ public class UsersGameDto {
         private String hostName;
         private String gameStart;
         private Integer runningTime;
-
-        private LocalDateTime localDateTime;
+        private LocalDateTime localDateStartTime;
 
 
         @Builder
@@ -42,7 +37,7 @@ public class UsersGameDto {
             this.hostName = hostName;
             this.gameStart = gameStart;
             this.runningTime = runningTime;
-            this.localDateTime = localDateTime;
+            this.localDateStartTime = localDateTime;
         }
 
 
