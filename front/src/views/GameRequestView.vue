@@ -55,6 +55,7 @@ const pendingRequests = ref([]);
 onMounted(() => {
   fetchPendingRequests('teamGameJoin')
   fetchPendingRequests('teamGameRegistration')
+  fetchPendingRequests('soloGameJoin')
 })
 
 

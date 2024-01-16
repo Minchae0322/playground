@@ -84,7 +84,7 @@ public class GameController {
     }
 
     @GetMapping("/user/game/host")
-    //todo 유저가 호스트 하는 게임이랑 유저가 참여하는 게임 프론트 엔드 완성
+
     public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(@AuthenticationPrincipal MyUserDetails myUserDetails) {
         return gameService.getGamesUserHost(myUserDetails.getUser());
     }

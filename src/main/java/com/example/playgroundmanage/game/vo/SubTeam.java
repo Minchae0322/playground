@@ -59,4 +59,11 @@ public class SubTeam {
         return this.getId() == team.getId();
     }
 
+    public String getTeamName() {
+        if (isSoloTeam) {
+            return "Solo";
+        }
+        return team.getTeamName();
+    }
+
 }

@@ -15,6 +15,7 @@
         <div class="game-info">
           <div class="game-title">{{ formatDate(game.gameStart) }}</div>
           <div class="host">Hosted by {{ game.hostName }}</div>
+          <div class="host">Hosted by {{ game.subTeamName }}</div>
         </div>
         <div class="game-time">{{ formatTime(game.gameStart) }} - {{ formatEndTime(game.gameStart, game.runningTime) }}</div>
       </div>
@@ -26,6 +27,7 @@
         <div class="game-info">
           <div class="game-title">{{ formatDate(game.gameStart) }}</div>
           <div class="host">Hosted by {{ game.hostName }}</div>
+          <div class="host">Team : {{ game.subTeamName }} </div>
         </div>
         <div class="game-time">{{ formatTime(game.gameStart) }} - {{ formatEndTime(game.gameStart, game.runningTime) }}</div>
       </div>
