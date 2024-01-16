@@ -24,6 +24,7 @@ public class UsersGameDto {
     @Data
     public static class UsersGameResponseDto implements Comparable<UsersGameResponseDto> {
 
+        private Long gameId;
         private String gameName;
         private String hostName;
         private String gameStart;
@@ -32,13 +33,15 @@ public class UsersGameDto {
 
 
         @Builder
-        public UsersGameResponseDto(String gameName, String hostName, String gameStart, Integer runningTime, LocalDateTime localDateTime) {
+        public UsersGameResponseDto(Long gameId, String gameName, String hostName, String gameStart, Integer runningTime, LocalDateTime localDateStartTime) {
+            this.gameId = gameId;
             this.gameName = gameName;
             this.hostName = hostName;
             this.gameStart = gameStart;
             this.runningTime = runningTime;
-            this.localDateStartTime = localDateTime;
+            this.localDateStartTime = localDateStartTime;
         }
+
 
 
 

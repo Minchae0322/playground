@@ -1,11 +1,9 @@
 package com.example.playgroundmanage.config;
 
+import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.repository.GameRequestRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
-import com.example.playgroundmanage.game.vo.GameRequest;
-import com.example.playgroundmanage.game.vo.Team;
-import com.example.playgroundmanage.game.vo.TeamRequest;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.game.vo.*;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.access.PermissionEvaluator;
@@ -21,6 +19,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
     private final GameRequestRepository gameRequestRepository;
 
     private final TeamRequestRepository teamRequestRepository;
+
+    private final GameRepository gameRepository;
 
     @Override
     public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
@@ -41,6 +41,12 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
             TeamRequest teamRequest = teamRequestRepository.findById((Long) targetId)
                     .orElseThrow();
             return Objects.equals(user.getId(), teamRequest.getLeader().getId());
+        }
+
+        if (targetType.equals("delete_game")) {
+            User user = (User) authentication.getPrincipal();
+            Game game = gameRepository.findById((Long) targetId).orElseThrow();
+            return Objects.equals(user.getId(), game.getHost().getId());
         }
 
 

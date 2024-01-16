@@ -16,6 +16,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,6 +87,13 @@ public class GameController {
     //todo 유저가 호스트 하는 게임이랑 유저가 참여하는 게임 프론트 엔드 완성
     public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(@AuthenticationPrincipal MyUserDetails myUserDetails) {
         return gameService.getGamesUserHost(myUserDetails.getUser());
+    }
+
+    @PreAuthorize("hasPermission(#gameId,'delete_game','DELETE')")
+    @DeleteMapping("/user/game/{gameId}/delete")
+    //todo 유저가 호스트 하는 게임이랑 유저가 참여하는 게임 프론트 엔드 완성
+    public void deleteGame(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Long gameId) {
+        gameService.deleteGame(gameId);
     }
 
 }

@@ -95,13 +95,22 @@ public class GameService {
 
         return games.stream()
                 .map(game -> UsersGameDto.UsersGameResponseDto.builder()
-                        .localDateTime(game.getGameStartDateTime())
+                        .gameId(game.getId())
+                        .localDateStartTime(game.getGameStartDateTime())
                         .gameStart(DateFormat.dateFormatYYYYMMDDHHMM(game.getGameStartDateTime()))
                         .hostName(game.getHost().getNickname())
                         .gameName(game.getGameName())
                         .runningTime(game.getRunningTime())
                         .build())
                 .toList();
+    }
+
+    @Transactional
+    public void deleteGame(Long gameId) {
+        Game game = gameRepository.findById(gameId)
+                .orElseThrow(GameNotExistException::new);
+
+        gameRepository.delete(game);
     }
 
     private SubTeamDto toSubTeamDto(SubTeam subTeam){
