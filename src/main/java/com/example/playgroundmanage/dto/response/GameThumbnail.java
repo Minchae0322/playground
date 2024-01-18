@@ -2,6 +2,7 @@ package com.example.playgroundmanage.dto.response;
 
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
+import com.example.playgroundmanage.store.impl.FileHandlerImpl;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.util.Util;
 import lombok.Builder;
@@ -11,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.util.Base64;
+
+import static com.example.playgroundmanage.store.impl.FileHandlerImpl.multipartFileToString;
 
 @Data
 @RequiredArgsConstructor
@@ -37,11 +40,7 @@ public class GameThumbnail {
         this.gameStart = gameStart;
         this.runningTime = runningTime;
         this.sportsEvent = sportsEvent;
-        try {
-            this.hostProfileImg = Base64.getEncoder().encodeToString(hostProfileImg.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException("이미지 변환 실패", e);
-        }
+        this.hostProfileImg = multipartFileToString(hostProfileImg);
         this.hostName = hostName;
     }
 }

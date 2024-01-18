@@ -37,6 +37,13 @@ const upcomingGames = ref([{
   gameStart: '',
   runningTime: '',
 }]);
+
+const props = defineProps({
+  playgroundId: {
+    type: Number,
+    required:true,
+  }
+})
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
 const currentView = ref(PlaygroundInfoView); // 초기 뷰 설정

@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import login from '../views/LoginView.vue'
 import oauth2 from '../views/Redirect.vue'
 import searchSchool from '../views/SerchSchoolView.vue'
-import playground_soccer from '../views/Playground_soccer.vue'
+import playground from '../views/PlaygroundView.vue'
 import timePickerDialog from '../views/GameBuilderView.vue'
 import game from '../views/GameDateSelectorView.vue'
 import gameInfo from '../views/GameInfoView.vue'
@@ -50,9 +50,10 @@ const router = createRouter({
 
     },
     {
-      path: '/soccer',
-      name: 'soccer',
-      component: playground_soccer
+      path: '/playground/:playgroundId',
+      name: 'playground',
+      component: playground,
+      props: true
     },
     {
       path: '/timePicker',
@@ -114,7 +115,7 @@ const router = createRouter({
     },
 
     {
-      path: '/playground/:playgroundId',
+      path: '/playground/info/:playgroundId',
       name: 'playgroundInfo',
       component: playgroundInfo,
       props: true

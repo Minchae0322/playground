@@ -5,13 +5,17 @@
     <div class="upcoming-games-border"></div>
     <div class="games">
       <div class="game-card" v-for="game in upcomingGames" :key="game.id">
-        <h3>{{ game.name }}</h3>
-        <p>Start Time: {{ game.startTime }} | Duration: {{ game.duration }} Hours | Host: {{ game.host }} | Playground: {{ game.playground }}</p>
+        <div class="upcoming-game-name">{{ game.gameName }}</div>
+        <div class="upcoming-game-info-container">
+        <div>Host: {{ game.hostName }}</div>
+        <div>Start Time: {{ game.gameStart }} | Running Time: {{ game.runningTime }} </div>
+        </div>
       </div>
     </div>
   </div>
   <div class="playground-list">
     <div v-for="info in playgroundInfoList" :key="info.playgroundId" class="playground-card">
+
       <div class="card-header">
         <img :src="info.playgroundProfileImg" alt="game image" class="game-image"/>
         <div class="playground-name">{{ info.playgroundName }}</div>
@@ -34,7 +38,9 @@
         </div>
       </div>
       <div class="card-footer">
-
+        <router-link :to="{ name: 'playground' , params : { playgroundId: info.playgroundId}}">
+          <button>view</button>
+        </router-link>
       </div>
     </div>
   </div>
@@ -50,9 +56,13 @@ import { defineEmits } from 'vue';
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
 
-const playgroundInfoList = ref([{}]);
+const playgroundInfoList = ref([{
+  playgroundId: 1,
+}]);
+const upcomingGames = ref([{}]);
 
 onMounted(async () => {
+  await getUpcomingGames('SOCCER')
   await getPlaygrounds('SOCCER')
 })
 
@@ -69,7 +79,19 @@ const getPlaygrounds = async (sportsEvent) => {
 
     }));
   });
+};
 
+const getUpcomingGames = async (sportsEvent) => {
+  await validateAccessToken()
+  await axios.get(`${apiBaseUrl}/campus/1/upcoming/${sportsEvent}`,
+      {  headers: {
+          'Authorization': getAccessToken()
+        }}
+  ).then(response => {
+    upcomingGames.value = response.data.map(game => ({
+      ...game,
+    }));
+  });
 };
 
 const validateAccessToken = async function () {
@@ -158,16 +180,29 @@ body {
 
 .games {
   display: flex;
-  justify-content: space-around;
-  padding: 0 20px;
+  justify-content: space-between;
 }
 
 .game-card {
+  margin-top: 10px;
+  background-color: var(--white);
   border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 20px;
-  width: 30%; /* 각 카드의 너비를 30%로 설정하여 가로로 3개가 들어갈 수 있도록 함 */
+  padding: 12px 15px;
+  border-radius: 4px;
+  width: 25%; /* 각 카드의 너비를 30%로 설정하여 가로로 3개가 들어갈 수 있도록 함 */
   text-align: left; /* 텍스트를 왼쪽으로 정렬 */
+}
+
+.upcoming-game-name {
+  margin-bottom: 5px;
+}
+
+.upcoming-game-info-container {
+  font-size: 11px;
+  font-family: MiSans-Normal, sans-serif;
+}
+
+.game-card:hover {
   box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 약간의 그림자 효과 추가 */
   transition: transform 0.3s ease; /* 호버 효과를 위한 전환 설정 */
 }
@@ -230,8 +265,13 @@ body {
 }
 
 .card-footer {
-  padding: 20px;
+  padding: 10px;
   background-color: #f9f9f9; /* 푸터 배경색 */
+}
+
+.card-footer button {
+  background-color: var(--primary-color);
+  width: 100%;
 }
 
 h2 {

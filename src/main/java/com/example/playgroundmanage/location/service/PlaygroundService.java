@@ -138,6 +138,7 @@ public class PlaygroundService {
         List<Playground> playgrounds = playgroundFinder.getPlaygroundsBySportsEvent(campus.getPlaygrounds(), valueOf);
         return playgrounds.stream()
                 .map(playground -> PlaygroundResponseDto.builder()
+                        .playgroundId(playground.getId())
                         .playgroundName(playground.getName())
                         .sportsEvent(playground.getSportsEvent().getValue())
                         .playgroundProfileImg(fileHandler.extractFile(playground.getImg()))
