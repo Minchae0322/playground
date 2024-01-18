@@ -6,6 +6,7 @@ import com.example.playgroundmanage.exception.NoOngoingGameException;
 import com.example.playgroundmanage.game.vo.Game;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Getter
+@Component
 @AllArgsConstructor
 public class GameFinder {
 
@@ -35,7 +37,7 @@ public class GameFinder {
                 .orElseThrow(NoOngoingGameException::new);
     }
 
-    public static List<Game> getUpcomingGames(List<Game> games, Integer numberOfGame, MyDateTime myDateTime) {
+    public List<Game> getUpcomingGames(List<Game> games, Integer numberOfGame, DateTime myDateTime) {
         return Optional.ofNullable(games)
                 .orElse(Collections.emptyList()) // 빈 리스트 반환으로 NullPointException 방지
                 .stream()

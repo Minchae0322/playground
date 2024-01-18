@@ -41,6 +41,8 @@ public class PlaygroundService {
 
     private final CampusRepository campusRepository;
 
+    private final GameFinder gameFinder;
+
     private final PlaygroundFinder playgroundFinder;
 
     @Transactional
@@ -85,7 +87,7 @@ public class PlaygroundService {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
 
-        List<Game> upcomingGames = GameFinder.getUpcomingGames(playground.getGames(), numberOfGame, MyDateTime.initMyDateTime(ZonedDateTime.now()));
+        List<Game> upcomingGames = gameFinder.getUpcomingGames(playground.getGames(), numberOfGame, MyDateTime.initMyDateTime(ZonedDateTime.now()));
 
         return upcomingGames.stream()
                 .map(Game::toGameDto)
@@ -133,7 +135,7 @@ public class PlaygroundService {
     public List<PlaygroundResponseDto> getPlaygroundByCampusAndSportsType(Long campusId, SportsEvent valueOf) {
         Campus campus = campusRepository.findById(campusId)
                 .orElseThrow(CampusNotExistException::new);
-        List<Playground> playgrounds = playgroundRepository.findAllByCampusAndSportsEvent(campus, valueOf);
+        List<Playground> playgrounds = playgroundFinder.getPlaygroundsBySportsEvent(campus.getPlaygrounds(), valueOf);
         return playgrounds.stream()
                 .map(playground -> PlaygroundResponseDto.builder()
                         .playgroundName(playground.getName())

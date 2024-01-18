@@ -36,10 +36,7 @@ public class PlaygroundController {
         return ResponseEntity.ok(gameDto.toGameThumbnail());
     }
 
-    @GetMapping("/playground/{campusId}/{sportsType}")
-    public List<PlaygroundResponseDto> getPlaygroundsByCampusAndSportsType(@PathVariable Long campusId, @PathVariable String sportsType) {
-        return playgroundService.getPlaygroundByCampusAndSportsType(campusId, SportsEvent.valueOf(sportsType));
-    }
+
 
     @GetMapping("/playground/{playgroundId}/upComing")
 
