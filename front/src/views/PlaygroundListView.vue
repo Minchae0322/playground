@@ -248,6 +248,7 @@ body {
 .playground-info-container {
   font-size: 10px;
   color: var(--text-secondary);
+
 }
 
 .game-info-container {

@@ -2,11 +2,13 @@
   <div class="game-container">
     <div class="game-image">
       <!-- Your image goes here -->
-      <img src="../assets/soccer.png" alt="Game Image">
+      <img :src="playgroundInfo.playgroundProfileImg" alt="Game Image">
       <div class="overlay">
-        <h1>Game Title</h1>
-        <p>Game Description</p>
-        <p>Start Time: 10:00 AM</p>
+        <h1>{{ playgroundInfo.playgroundName }}</h1>
+        <div class="playground-info-container">
+        <p>{{ playgroundInfo.schoolName }} | {{playgroundInfo.campusName}}</p>
+        <p>{{ playgroundInfo.sportsEvent }}</p>
+        </div>
       </div>
     </div>
     <div id="gameView-container">
@@ -27,16 +29,10 @@ import PlaygroundInfoView from "@/views/PlaygroundInfoView.vue";
 import GameInfoView from './GameInfoView.vue';
 
 const data = ref('이것은 부모로부터 온 데이터입니다.');
-const isGameBuilderModalOpen = ref(false);
-const currentGame = ref('')
-const upcomingGames = ref([{
-  gameId: 0,
-  gameName: '',
-  hostName: '',
-  hostProfileImg: '',
-  gameStart: '',
-  runningTime: '',
-}]);
+const playgroundInfo = ref({
+  playgroundProfileImg: '',
+
+})
 
 const props = defineProps({
   playgroundId: {
@@ -49,6 +45,32 @@ const router = useRouter();
 const currentView = ref(PlaygroundInfoView); // 초기 뷰 설정
 const selectedGame = ref(null); // 선택된 게임
 
+
+
+onMounted(async () => {
+  await getPlaygroundInfo()
+});
+
+const getPlaygroundInfo = async () => {
+  await validateAccessToken()
+  try {
+    const response = await axios.get(`${apiBaseUrl}/playground/${props.playgroundId}/info`,
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
+    )
+    playgroundInfo.value = response.data
+    playgroundInfo.value.playgroundProfileImg = `data:image/jpeg;base64,${response.data.playgroundProfileImg}`;
+
+
+  } catch (error) {
+    alert("운동장 정보를 불러오는데 실패했습니다.")
+    router.go(-1);
+  }
+};
+
 function handleGameSelected(game) {
   selectedGame.value = game; // 선택된 게임 업데이트
   currentView.value = GameInfoView; // 뷰를 GameInfoView로 변경
@@ -58,10 +80,47 @@ function handleGoBack() {
   currentView.value = PlaygroundInfoView; // 뷰를 PlaygroundInfoView로 변경
 }
 
-onMounted(() => {
-  // Check if the initial page number is provided in the route query
-});
+const validateAccessToken = async function () {
+  const accessToken = getAccessToken();
+  if (!accessToken) {
+    redirectToLogin()
+    return;
+  }
 
+  try {
+    await axios.get(`${apiBaseUrl}/token/valid`, {
+      headers: {'Authorization': accessToken},
+    });
+  } catch (error) {
+    await updateAccessToken();
+  }
+};
+
+const getAccessToken = function () {
+  return localStorage.getItem("accessToken");
+};
+
+const updateAccessToken = async function () {
+  const refreshToken = localStorage.getItem("refreshToken");
+  if (!refreshToken) return redirectToLogin();
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
+      headers: { 'RefreshToken': refreshToken }
+    });
+    if (response.status === 200) {
+      const newAccessToken = response.headers['authorization'];
+      localStorage.setItem('accessToken', newAccessToken);
+      return newAccessToken;
+    }
+  } catch (error) {
+    redirectToLogin();
+  }
+};
+
+const redirectToLogin = function () {
+  router.push("/login");
+};
 
 </script>
 
@@ -103,6 +162,12 @@ onMounted(() => {
   width: 30%;
   padding: 10px 10px 10px 10px;
   text-align: center;
+}
+
+.playground-info-container {
+  margin-left: 10px;
+  text-align: start;
+  font-family: MiSans-Normal,sans-serif;
 }
 
 .upcoming-games {

@@ -104,7 +104,7 @@ public class PlaygroundService {
 
 
     @Transactional
-    public InMemoryMultipartFile getPlaygroundImg(Long playgroundId) throws IOException {
+    public InMemoryMultipartFile getPlaygroundImg(Long playgroundId) {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
 

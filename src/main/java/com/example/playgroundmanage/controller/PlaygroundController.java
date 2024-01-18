@@ -39,7 +39,6 @@ public class PlaygroundController {
 
 
     @GetMapping("/playground/{playgroundId}/upComing")
-
     public List<GameThumbnail> getUpcomingGames(@PathVariable Long playgroundId) {
         List<GameDto> upcomingThreeGames = playgroundService.getUpcomingGames(playgroundId, 3);
 
@@ -55,7 +54,7 @@ public class PlaygroundController {
 
         return PlaygroundInfo.builder()
                 .playgroundName(playgroundDto.getPlaygroundName())
-                .playgroundImg(playgroundImg)
+                .playgroundProfileImg(playgroundImg)
                 .campusName(playgroundDto.getCampusName())
                 .schoolName(playgroundDto.getSchoolName())
                 .sportsEvent(playgroundDto.getSportsEvent())
