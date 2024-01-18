@@ -17,6 +17,7 @@ import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.util.DateFormat;
 import com.example.playgroundmanage.util.GameParticipantFinder;
+import com.example.playgroundmanage.util.GameSorting;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,8 @@ public class GameService {
     private final UserService userService;
 
     private final FileHandler fileHandler;
+
+    private final GameSorting gameSorting;
 
     private final GameParticipantRepository gameParticipantRepository;
 
@@ -92,8 +95,9 @@ public class GameService {
     @Transactional
     public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(User user) {
         List<Game> games = gameRepository.findAllByHost(user);
+        List<Game> gamesOrderedByLatest = gameSorting.sortGamesByLatest(games);
 
-        return games.stream()
+        return gamesOrderedByLatest.stream()
                 .map(game -> UsersGameDto.UsersGameResponseDto.builder()
                         .gameId(game.getId())
                         .localDateStartTime(game.getGameStartDateTime())

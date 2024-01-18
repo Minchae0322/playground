@@ -277,7 +277,7 @@ body {
 }
 
 .playground-info-container {
-  font-size: 10px;
+  font-size: 13px;
   color: var(--text-secondary);
 
 }

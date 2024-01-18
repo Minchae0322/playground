@@ -85,7 +85,7 @@
     --accent-color: #4C516D; /* 강조 색상 */
     --primary-gradient: linear-gradient(to right, #6a85b6 0%, #bac8e0 100%);
     --text-primary: #2C3E50; /* 주 텍스트 색상 */
-    --text-secondary: #bebebe; /* 보조 텍스트 색상 */
+    --text-secondary: #949494; /* 보조 텍스트 색상 */
     --background-color: #efeff0; /* 배경 색상 */
     --button-hover: #4E6EF2; /* 버튼 호버 상태 색상 */
     --white: #fff;

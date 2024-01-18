@@ -11,6 +11,12 @@ public class GameSorting {
 
     public List<Game> sortGamesByLatest(List<Game> games) {
         return games.stream()
+                .sorted(Comparator.comparing(Game::getGameStartDateTime).reversed())
+                .toList();
+    }
+
+    public List<Game> sortGamesByOldest(List<Game> games) {
+        return games.stream()
                 .sorted(Comparator.comparing(Game::getGameStartDateTime))
                 .toList();
     }
