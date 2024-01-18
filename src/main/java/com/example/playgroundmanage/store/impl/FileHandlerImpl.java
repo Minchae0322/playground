@@ -129,6 +129,6 @@ public class FileHandlerImpl implements FileHandler {
                         throw new UncheckedIOException("이미지 변환 실패", e);
                     }
                 })
-                .orElse(null);
+                .orElse("");
     }
 }

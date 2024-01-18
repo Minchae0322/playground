@@ -5,14 +5,18 @@ import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.dto.response.*;
+import com.example.playgroundmanage.exception.CampusNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
+import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.util.GameFinder;
+import com.example.playgroundmanage.util.PlaygroundFinder;
 import com.example.playgroundmanage.util.Util;
 import com.example.playgroundmanage.location.vo.Campus;
 import jakarta.transaction.Transactional;
@@ -36,6 +40,8 @@ public class PlaygroundService {
     private final FileHandler fileHandler;
 
     private final CampusRepository campusRepository;
+
+    private final PlaygroundFinder playgroundFinder;
 
     @Transactional
     public boolean isValidGameStartTime(Long playgroundId, GameTimeDto gameTimeDto) {
@@ -121,6 +127,22 @@ public class PlaygroundService {
         return games.stream()
                 .filter(g -> g.isTimeRangeOverlapping(day, runningTime))
                 .toList().size() != 0;
+    }
+
+    @Transactional
+    public List<PlaygroundResponseDto> getPlaygroundByCampusAndSportsType(Long campusId, SportsEvent valueOf) {
+        Campus campus = campusRepository.findById(campusId)
+                .orElseThrow(CampusNotExistException::new);
+        List<Playground> playgrounds = playgroundRepository.findAllByCampusAndSportsEvent(campus, valueOf);
+        return playgrounds.stream()
+                .map(playground -> PlaygroundResponseDto.builder()
+                        .playgroundName(playground.getName())
+                        .sportsEvent(playground.getSportsEvent().getValue())
+                        .playgroundProfileImg(fileHandler.extractFile(playground.getImg()))
+                        .campusName(playground.getCampus().getCampusName())
+                        .schoolName(playground.getCampus().getSchool().getSchoolName())
+                        .build())
+                .toList();
     }
 
 }

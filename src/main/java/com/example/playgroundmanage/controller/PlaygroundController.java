@@ -8,8 +8,11 @@ import com.example.playgroundmanage.dto.response.OccupiedTime;
 import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.dto.response.PlaygroundInfo;
 import com.example.playgroundmanage.game.service.UserService;
+import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.service.PlaygroundService;
+import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
+import com.example.playgroundmanage.type.SportsEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +34,11 @@ public class PlaygroundController {
         GameDto gameDto =  playgroundService.getOngoingGame(playgroundId);
 
         return ResponseEntity.ok(gameDto.toGameThumbnail());
+    }
+
+    @GetMapping("/playground/{campusId}/{sportsType}")
+    public List<PlaygroundResponseDto> getPlaygroundsByCampusAndSportsType(@PathVariable Long campusId, @PathVariable String sportsType) {
+        return playgroundService.getPlaygroundByCampusAndSportsType(campusId, SportsEvent.valueOf(sportsType));
     }
 
     @GetMapping("/playground/{playgroundId}/upComing")
