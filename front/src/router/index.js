@@ -17,7 +17,7 @@ import teamRequest from "@/views/TeamRequestView.vue";
 import home from "@/views/HomeView.vue";
 import myGame from '../views/MyGameView.vue'
 import hostGame from '../views/HostGameView.vue'
-
+import playgroundList from '../views/PlaygroundListView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -96,7 +96,11 @@ const router = createRouter({
       name: 'myTeam',
       component: myTeam
     },
-
+    {
+      path: '/playground/list',
+      name: 'playgroundList',
+      component: playgroundList
+    },
     {
       path: '/user/game/my',
       name: 'myGame',
