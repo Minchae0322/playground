@@ -13,7 +13,7 @@
       </div>
     </div>
   </div>
-  <div class="playground-list">
+  <div v-if="isPlaygroundExist" class="playground-list">
     <div v-for="info in playgroundInfoList" :key="info.playgroundId" class="playground-card">
 
       <div class="card-header">
@@ -43,11 +43,15 @@
         </router-link>
       </div>
     </div>
+
+  </div>
+  <div v-else>
+    <div class="playground-notExist">활성화된 운동장이 존재하지 않습니다.</div>
   </div>
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {onMounted, ref, watch} from 'vue';
 import axios from "axios";
 import GameBuilderModal from './GameBuilderView.vue';
 import {useRouter} from "vue-router";
@@ -55,30 +59,42 @@ import { defineEmits } from 'vue';
 
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
-
+const isPlaygroundExist = ref(true);
 const playgroundInfoList = ref([{
   playgroundId: 1,
 }]);
 const upcomingGames = ref([{}]);
 
+const props = defineProps({
+  sportsEvent: {
+    type: String,
+    required:true,
+  }
+});
+
+
 onMounted(async () => {
-  await getUpcomingGames('SOCCER')
-  await getPlaygrounds('SOCCER')
+
 })
 
 const getPlaygrounds = async (sportsEvent) => {
   await validateAccessToken()
-  await axios.get(`${apiBaseUrl}/playground/1/${sportsEvent}`,
-      {  headers: {
-          'Authorization': getAccessToken()
-        }}
-  ).then(response => {
+  try {
+    const response = await axios.get(`${apiBaseUrl}/playground/1/${sportsEvent}`,
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
+    );
     playgroundInfoList.value = response.data.map(playground => ({
       ...playground,
       playgroundProfileImg: playground.playgroundProfileImg ? `data:image/jpeg;base64,${playground.playgroundProfileImg}` : defaultImage,
-
     }));
-  });
+    isPlaygroundExist.value = true;
+    } catch (error) {
+    isPlaygroundExist.value = false;
+  }
 };
 
 const getUpcomingGames = async (sportsEvent) => {
@@ -135,6 +151,13 @@ const updateAccessToken = async function () {
 const redirectToLogin = function () {
   router.push("/login");
 };
+
+watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
+  if (newSportsEvent !== oldSportsEvent) {
+    getUpcomingGames(newSportsEvent)
+   getPlaygrounds(newSportsEvent)
+  }
+}, { immediate: true });
 </script>
 
 <style scoped>
@@ -148,6 +171,14 @@ body {
   font-family: 'Arial', sans-serif; /* 기본 글꼴 */
   background-color: #f4f4f4; /* 배경색 */
   color: #333; /* 기본 텍스트 색상 */
+}
+
+.playground-notExist {
+  text-align: center;
+  width: 100%;
+  margin-top: 200px;
+  align-content: center;
+  justify-content: center;
 }
 
 .upcoming-games-container {

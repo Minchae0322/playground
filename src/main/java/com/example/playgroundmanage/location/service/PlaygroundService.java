@@ -136,6 +136,9 @@ public class PlaygroundService {
         Campus campus = campusRepository.findById(campusId)
                 .orElseThrow(CampusNotExistException::new);
         List<Playground> playgrounds = playgroundFinder.getPlaygroundsBySportsEvent(campus.getPlaygrounds(), valueOf);
+        if (playgrounds.size() == 0) {
+            throw new PlaygroundNotExistException();
+        }
         return playgrounds.stream()
                 .map(playground -> PlaygroundResponseDto.builder()
                         .playgroundId(playground.getId())

@@ -22,6 +22,7 @@ onMounted(async () => {
 
 
 const subMenuVisible = ref({
+  playground: false,
   home: false,
   matches: false,
   // ... other menus
@@ -115,6 +116,14 @@ const redirectToLogin = function () {
       </div>
       <nav class="navigation">
         <ul class="nav-links">
+          <li>
+            <div @click="toggleSubMenu('playground')" class="nav-item">Playground</div>
+            <ul v-if="subMenuVisible.playground" class="sub-menu">
+              <li><RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" class="sub-nav-item">SOCCER</RouterLink></li>
+              <li><RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}"  class="sub-nav-item">BASKET BALL</RouterLink></li>
+              <li><RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BADMINTON'}}"  class="sub-nav-item">BADMINTON</RouterLink></li>
+            </ul>
+          </li>
           <li>
             <div @click="toggleSubMenu('home')" class="nav-item">Team</div>
             <ul v-if="subMenuVisible.home" class="sub-menu">

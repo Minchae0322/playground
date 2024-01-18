@@ -98,9 +98,10 @@ const router = createRouter({
       component: myTeam
     },
     {
-      path: '/playground/list',
+      path: '/playground/list/:sportsEvent',
       name: 'playgroundList',
-      component: playgroundList
+      component: playgroundList,
+      props: true
     },
     {
       path: '/user/game/my',
