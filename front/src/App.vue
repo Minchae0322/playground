@@ -128,7 +128,7 @@ const redirectToLogin = function () {
             <div @click="toggleSubMenu('home')" class="nav-item">Team</div>
             <ul v-if="subMenuVisible.home" class="sub-menu">
               <li><RouterLink :to="{ name:'myTeam'}" class="sub-nav-item">My Team</RouterLink></li>
-              <li><RouterLink to="/home/2" class="sub-nav-item">Team Join</RouterLink></li>
+              <li><RouterLink  :to="{ name:'teamList'}" class="sub-nav-item">Team Join</RouterLink></li>
               <li><RouterLink :to="{ name:'teamRequest'}" class="sub-nav-item">Team Request</RouterLink></li>
             </ul>
           </li>

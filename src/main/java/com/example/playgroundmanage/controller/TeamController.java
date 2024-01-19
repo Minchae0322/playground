@@ -2,8 +2,10 @@ package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.dto.TeamRegistration;
 import com.example.playgroundmanage.dto.TeamRegistrationRequest;
+import com.example.playgroundmanage.dto.TeamRequestDto;
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.dto.response.TeamMemberDto;
+import com.example.playgroundmanage.dto.response.TeamResponseDto;
 import com.example.playgroundmanage.game.service.TeamService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.type.SportsEvent;
@@ -56,6 +58,11 @@ public class TeamController {
     @GetMapping("/team/{teamId}/members")
     public List<TeamMemberDto> getTeamMembers(@PathVariable Long teamId) {
         return teamService.getTeamMembers(teamId);
+    }
+
+    @PostMapping("/team/list/{type}")
+    public List<TeamResponseDto> getTeams(@RequestBody TeamRequestDto teamRequestDto, @PathVariable String type) {
+        return teamService.getTeams(teamRequestDto, type);
     }
 
 }

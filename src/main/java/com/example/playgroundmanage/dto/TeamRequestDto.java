@@ -14,10 +14,13 @@ public class TeamRequestDto extends RequestDto {
 
     private String introduction;
 
+    private String type;
+
     @Builder
-    public TeamRequestDto(User user, MyDateTime requestTime, Long teamId, String introduction) {
+    public TeamRequestDto(User user, MyDateTime requestTime, Long teamId, String introduction, String type) {
         super(user, requestTime);
         this.teamId = teamId;
         this.introduction = introduction;
+        this.type = type;
     }
 }

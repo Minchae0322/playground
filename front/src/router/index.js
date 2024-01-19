@@ -7,17 +7,18 @@ import playground from '../views/PlaygroundView.vue'
 import timePickerDialog from '../views/GameBuilderView.vue'
 import game from '../views/GameDateSelectorView.vue'
 import gameInfo from '../views/GameInfoView.vue'
-import teamBuilding from '../views/TeamBuildingView.vue'
+import teamBuilding from '../views/team/TeamBuildingView.vue'
 import userInfo from '../views/UserInfoView.vue'
-import teamInfo from '../views/TeamInfoView.vue'
+import teamInfo from '../views/team/TeamInfoView.vue'
 import gameRequest from '../views/GameRequestView.vue';
 import playgroundInfo from '../views/PlaygroundInfoView.vue'
 import myTeam from '../views/MyTeamView.vue'
-import teamRequest from "@/views/TeamRequestView.vue";
+import teamRequest from "@/views/team/TeamRequestView.vue";
 import home from "@/views/HomeView.vue";
 import myGame from '../views/MyGameView.vue'
 import hostGame from '../views/HostGameView.vue'
 import playgroundList from '../views/PlaygroundListView.vue'
+import teamList from '../views/team/TeamListView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -102,6 +103,13 @@ const router = createRouter({
       name: 'playgroundList',
       component: playgroundList,
       props: true
+    },
+
+
+    {
+      path: '/team/list',
+      name: 'teamList',
+      component: teamList,
     },
     {
       path: '/user/game/my',

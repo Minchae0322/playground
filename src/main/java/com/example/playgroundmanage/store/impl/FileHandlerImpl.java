@@ -108,7 +108,8 @@ public class FileHandlerImpl implements FileHandler {
         try {
             fileContent = FileCopyUtils.copyToByteArray(inMemoryFile);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            return null;
+            //todo 처리 방식 고민 오류를 터뜨릴지 null 을 반환 할지.
         }
         return new InMemoryMultipartFile(uploadFile.getOrgFileName(), fileContent);
     }

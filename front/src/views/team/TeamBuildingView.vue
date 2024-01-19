@@ -16,9 +16,9 @@
       </div>
       <div class="sports-category-container">
         <h4 class="">Sports Type</h4>
-        <img src="../assets/soccer-ball.png" alt="" :class="{ 'selected': sportsEvent === 'Soccer' }"
+        <img src="../../assets/soccer-ball.png" alt="" :class="{ 'selected': sportsEvent === 'Soccer' }"
              @click="selectCategory('Soccer')">
-        <img src="../assets/baseball-ball.png" alt="" :class="{ 'selected': sportsEvent === 'Baseball' }"
+        <img src="../../assets/baseball-ball.png" alt="" :class="{ 'selected': sportsEvent === 'Baseball' }"
              @click="selectCategory('Baseball')">
       </div>
 
@@ -41,7 +41,7 @@
 
 <script setup>
 import {onMounted, ref} from 'vue';
-import defaultImage from '../assets/img.png';
+import defaultImage from '../../assets/img.png';
 import axios from "axios";
 import router from "@/router";
 

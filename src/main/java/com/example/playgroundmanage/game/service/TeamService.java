@@ -1,8 +1,10 @@
 package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.dto.TeamRegistration;
+import com.example.playgroundmanage.dto.TeamRequestDto;
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.dto.response.TeamMemberDto;
+import com.example.playgroundmanage.dto.response.TeamResponseDto;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.repository.TeamingRepository;
 import com.example.playgroundmanage.game.vo.Team;
@@ -12,6 +14,8 @@ import com.example.playgroundmanage.game.repository.TeamRepository;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.store.UploadFile;
+import com.example.playgroundmanage.util.TeamFinder;
+import com.example.playgroundmanage.util.TeamFinderFactory;
 import com.example.playgroundmanage.util.TeamValidation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -31,6 +35,7 @@ public class TeamService {
 
     private final TeamingService teamingService;
 
+    private final TeamFinderFactory teamFinderFactory;
 
     private final UserService userService;
 
@@ -53,6 +58,14 @@ public class TeamService {
             team.updateTeamPic(uploadFile);
         }
         return teamRepository.save(team);
+    }
+
+
+    @Transactional
+    public List<TeamResponseDto> getTeams(TeamRequestDto teamRequestDto, String by) {
+        TeamFinder teamFinder = teamFinderFactory.find(by);
+
+        return teamFinder.getTeams(teamRequestDto);
     }
 
     public void validateTeamName(String teamName) {

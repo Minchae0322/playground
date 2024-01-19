@@ -1,6 +1,6 @@
 <template>
   <div class="button-group">
-    <button :class="{ active: activeCampus === null }" @click="getWholePlaygroundAndUpcomingGames(props.sportsEvent)">Whole</button>
+    <button :class="{ active: activeCampus === null }" @click="getWholePlaygroundAndUpcomingGames(props.sportsEvent)">ALL</button>
     <div v-for="campus in campusInfo" :key="campus.campusId">
       <button :class="{ active: activeCampus === campus.campusId }" @click="getCampusPlaygroundAndUpcomingGames(campus.campusId, props.sportsEvent)"> {{ campus.campusName }} </button>
     </div>
