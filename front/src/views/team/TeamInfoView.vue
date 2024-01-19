@@ -1,7 +1,7 @@
 <template>
   <div class="team-container">
     <div class="team-header">
-      <img :src= team.teamProfileImg class="team-logo">
+      <img :src= team.teamProfileImg class="team-img">
       <div class="team-info">
         <h1>{{ team.teamName }}</h1>
         <p class="team-type">{{ team.teamSportsEvent }}</p>
@@ -226,7 +226,7 @@ const redirectToLogin = function () {
   margin-bottom: 30px;
 }
 
-.team-logo {
+.team-img {
   border-radius: 50%;
   width: 100px;
   height: 100px;

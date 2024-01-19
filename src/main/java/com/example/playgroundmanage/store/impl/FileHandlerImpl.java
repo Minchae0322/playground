@@ -4,6 +4,7 @@ import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.store.UploadFile;
 import com.example.playgroundmanage.store.UploadFileRepository;
+import com.fasterxml.jackson.databind.ext.OptionalHandlerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;

@@ -1,28 +1,19 @@
 <template>
+
+  <input type="text" v-model="searchQuery" placeholder="팀 이름 검색..." />
+
   <div class="team-container">
-    <div class="team-card">
-      <div class="team-logo"><!-- 로고 이미지 들어갈 위치 --></div>
-      <h3>Team Thunder</h3>
-      <p>A team of innovative thinkers and problem solvers.</p>
-      <button>View Details</button>
-    </div>
-    <div class="team-card">
-      <div class="team-logo"><!-- 로고 이미지 들어갈 위치 --></div>
-      <h3>Team Lightning</h3>
-      <p>A team of fast-paced, agile developers.</p>
-      <button>View Details</button>
-    </div>
-    <div class="team-card">
-      <div class="team-logo"><!-- 로고 이미지 들어갈 위치 --></div>
-      <h3>Team Tornado</h3>
-      <p>A team of creative designers and artists.</p>
-      <button>View Details</button>
-    </div>
-    <div class="team-card">
-      <div class="team-logo"><!-- 로고 이미지 들어갈 위치 --></div>
-      <h3>Team Cyclone</h3>
-      <p>A team of strategic planners and analysts.</p>
-      <button>View Details</button>
+    <div v-for="team in filteredTeams" :key="team.teamId" class="team-card">
+      <img :src=team.teamProfileImg class="team-img" :alt=defaultImage>
+      <div class="team-name">{{ team.teamName }}</div>
+      <div class="team-info-container">
+      <div>{{ team.teamDescription }}</div>
+        <div>{{team.sportsEvent}}</div>
+      </div>
+      <router-link :to="{name:'teamInfo', params:{teamId: team.teamId}}">
+        <button>View Details</button>
+      </router-link>
+
     </div>
   </div>
 
@@ -30,17 +21,17 @@
 
 
 <script setup>
-import {onMounted, ref} from "vue";
+import {computed, onMounted, ref} from "vue";
 import axios from "axios";
 import {useRouter} from "vue-router";
 import defaultImage from "@/assets/img.png";
 
-
+const searchQuery = ref(''); // 검색어를 위한 반응형 데이터
 const router = useRouter();
 const apiBaseUrl = "http://localhost:8080";
 
 const teams = ref([{
-
+  teamId: 1,
 }]);
 
 onMounted(async () => {
@@ -66,6 +57,12 @@ const getTeams = async (type) => {
 
   }
 };
+
+const filteredTeams = computed(() => {
+  return teams.value.filter(team =>
+      team.teamName && team.teamName.toLowerCase().includes(searchQuery.value.toLowerCase())
+  );
+});
 
 const validateAccessToken = async function () {
   const accessToken = getAccessToken();
@@ -123,7 +120,7 @@ const redirectToLogin = function () {
 }
 
 .team-card {
-  width: 240px; /* 카드의 폭 */
+  width: 20%; /* 카드의 폭 */
   text-align: center;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* 그림자 효과 */
   border-radius: 5px; /* 모서리 둥글게 */
@@ -131,19 +128,26 @@ const redirectToLogin = function () {
   background-color: #fff;
 }
 
-.team-logo {
-  height: 150px; /* 로고 영역 높이 */
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
+.team-img {
+  width: 100%;
+  height:100%; /* 높이를 자동으로 설정하여 원본 이미지 비율 유지 */
+  aspect-ratio: 18 / 15; /* 18:9 비율로 설정 */
+  object-fit: cover; /* 이미지가 지정된 비율에 맞도록 조정 */
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: block; /* 이미지를 블록 요소로 만들어 불필요한 여백 제거 */
 }
 
-.team-card h3 {
+.team-name {
   margin: 10px 0;
+  text-align: start;
+  width: 100%;
 }
 
-.team-card p {
-  margin: 10px 0 20px;
+.team-info-container {
+  margin: 10px 0;
+  text-align: start;
+  width: 100%;
 }
 
 .team-card button {
