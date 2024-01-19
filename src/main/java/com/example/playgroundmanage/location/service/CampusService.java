@@ -4,11 +4,14 @@ package com.example.playgroundmanage.location.service;
 import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.exception.CampusNotExistException;
+import com.example.playgroundmanage.exception.SchoolNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
+import com.example.playgroundmanage.location.repository.SchoolRepository;
 import com.example.playgroundmanage.location.vo.Campus;
 import com.example.playgroundmanage.location.vo.Playground;
+import com.example.playgroundmanage.location.vo.School;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.util.GameFinder;
 import com.example.playgroundmanage.util.GameSorting;
@@ -37,6 +40,8 @@ public class CampusService {
 
     private final GameSorting gameSorting;
 
+    private final SchoolRepository schoolRepository;
+
     @Transactional
     public List<GameDto> getUpcomingGamesInCampusBySportsEvent(Long campusId, SportsEvent sportsEvent) {
         Campus campus = campusRepository.findById(campusId)
@@ -49,6 +54,16 @@ public class CampusService {
         return games.stream()
                 .limit(3)
                 .map(Game::toGameDto)
+                .toList();
+    }
+
+    @Transactional
+    public List<GameDto> getUpcomingGamesBySportsEvent(Long schoolId, SportsEvent sportsEvent) {
+        School school = schoolRepository.findById(schoolId)
+                .orElseThrow(SchoolNotExistException::new);
+
+        return school.getCampus().stream()
+                .flatMap(campus -> getUpcomingGamesInCampusBySportsEvent(campus.getId(), sportsEvent).stream())
                 .toList();
     }
 

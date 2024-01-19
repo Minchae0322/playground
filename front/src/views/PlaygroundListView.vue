@@ -1,8 +1,8 @@
 <template>
   <div class="button-group">
-    <button @click="getPlaygrounds">Whole</button>
+    <button :class="{ active: activeCampus === null }" @click="getWholePlaygroundAndUpcomingGames(props.sportsEvent)">Whole</button>
     <div v-for="campus in campusInfo" :key="campus.campusId">
-      <button @click="getPlaygroundsByCampus(campus.campusId, props.sportsEvent)"> {{ campus.campusName }} </button>
+      <button :class="{ active: activeCampus === campus.campusId }" @click="getCampusPlaygroundAndUpcomingGames(campus.campusId, props.sportsEvent)"> {{ campus.campusName }} </button>
     </div>
   </div>
 
@@ -72,7 +72,7 @@ const playgroundInfoList = ref([{
 }]);
 const upcomingGames = ref([{}]);
 const campusInfo = ref([{}]);
-
+const activeCampus = ref(null);
 
 const props = defineProps({
   sportsEvent: {
@@ -119,10 +119,22 @@ const getPlaygroundsByCampus = async (campusId, sportsEvent) => {
       playgroundProfileImg: playground.playgroundProfileImg ? `data:image/jpeg;base64,${playground.playgroundProfileImg}` : defaultImage,
     }));
     isPlaygroundExist.value = true;
+
   } catch (error) {
     isPlaygroundExist.value = false;
   }
+  activeCampus.value = campusId;
 };
+
+const getWholePlaygroundAndUpcomingGames = (sportsEvent) => {
+  getPlaygrounds(sportsEvent)
+  getUpcomingGames(sportsEvent)
+}
+
+const getCampusPlaygroundAndUpcomingGames = (campusId, sportsEvent) => {
+  getPlaygroundsByCampus(campusId, sportsEvent)
+  getUpcomingGamesByCampusId(campusId, sportsEvent)
+}
 
 const getPlaygrounds = async (sportsEvent) => {
   await validateAccessToken()
@@ -139,17 +151,34 @@ const getPlaygrounds = async (sportsEvent) => {
       playgroundProfileImg: playground.playgroundProfileImg ? `data:image/jpeg;base64,${playground.playgroundProfileImg}` : defaultImage,
     }));
     isPlaygroundExist.value = true;
+
     } catch (error) {
     isPlaygroundExist.value = false;
   }
+  activeCampus.value = null;
 };
 
 const getUpcomingGames = async (sportsEvent) => {
   await validateAccessToken()
-  await axios.get(`${apiBaseUrl}/campus/1/upcoming/${sportsEvent}`,
+  await axios.get(`${apiBaseUrl}/school/1/upcoming/${sportsEvent}`,
       {  headers: {
           'Authorization': getAccessToken()
         }}
+  ).then(response => {
+    upcomingGames.value = response.data.map(game => ({
+      ...game,
+    }));
+  });
+};
+
+const getUpcomingGamesByCampusId = async (campusId, sportsEvent) => {
+  await validateAccessToken()
+  await axios.get(`${apiBaseUrl}/campus/${campusId}/upcoming/${sportsEvent}`,
+      {
+        headers: {
+          'Authorization': getAccessToken()
+        }
+      }
   ).then(response => {
     upcomingGames.value = response.data.map(game => ({
       ...game,
@@ -201,8 +230,7 @@ const redirectToLogin = function () {
 
 watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
   if (newSportsEvent !== oldSportsEvent) {
-    getUpcomingGames(newSportsEvent)
-   getPlaygrounds(newSportsEvent)
+   getWholePlaygroundAndUpcomingGames(newSportsEvent)
   }
 }, { immediate: true });
 </script>
