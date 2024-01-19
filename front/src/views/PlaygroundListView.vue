@@ -1,4 +1,11 @@
 <template>
+  <div class="button-group">
+    <button @click="getPlaygrounds">Whole</button>
+    <div v-for="campus in campusInfo" :key="campus.campusId">
+      <button @click="getPlaygroundsByCampus(campus.campusId, props.sportsEvent)"> {{ campus.campusName }} </button>
+    </div>
+  </div>
+
   <div class="upcoming-games-container">
     <h2>即将开始比赛</h2>
     <p>Check out our upcoming games.</p>
@@ -64,6 +71,8 @@ const playgroundInfoList = ref([{
   playgroundId: 1,
 }]);
 const upcomingGames = ref([{}]);
+const campusInfo = ref([{}]);
+
 
 const props = defineProps({
   sportsEvent: {
@@ -74,13 +83,51 @@ const props = defineProps({
 
 
 onMounted(async () => {
-
+  await getCampusInfo()
 })
+
+
+const getCampusInfo = async () => {
+  await validateAccessToken()
+  try {
+    const response = await axios.get(`${apiBaseUrl}/school/1/campus/info`,
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
+    );
+    campusInfo.value = response.data.map(campus => ({
+      ...campus,
+    }));
+  } catch (error) {
+  }
+};
+
+const getPlaygroundsByCampus = async (campusId, sportsEvent) => {
+  await validateAccessToken()
+  try {
+    const response = await axios.get(`${apiBaseUrl}/playground/${campusId}/${sportsEvent}`,
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
+    );
+    playgroundInfoList.value = response.data.map(playground => ({
+      ...playground,
+      playgroundProfileImg: playground.playgroundProfileImg ? `data:image/jpeg;base64,${playground.playgroundProfileImg}` : defaultImage,
+    }));
+    isPlaygroundExist.value = true;
+  } catch (error) {
+    isPlaygroundExist.value = false;
+  }
+};
 
 const getPlaygrounds = async (sportsEvent) => {
   await validateAccessToken()
   try {
-    const response = await axios.get(`${apiBaseUrl}/playground/1/${sportsEvent}`,
+    const response = await axios.get(`${apiBaseUrl}/school/1/playground/${sportsEvent}`,
         {
           headers: {
             'Authorization': getAccessToken()
@@ -169,9 +216,42 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
 
 body {
   font-family: 'Arial', sans-serif; /* 기본 글꼴 */
-  background-color: #f4f4f4; /* 배경색 */
+
   color: #333; /* 기본 텍스트 색상 */
 }
+
+.button-group {
+  display: flex; /* 이 부분을 변경하여 flex 컨테이너로 만듭니다. */
+  align-items: center; /* 버튼을 세로 중앙에 정렬합니다. 필요하지 않다면 제거 가능합니다. */
+  justify-content: flex-start; /* 버튼을 가로 방향으로 왼쪽 정렬합니다. */
+  margin-left: 20px;
+  background-color: var(--white);
+  border-radius: 5px;
+  overflow: hidden;
+  padding: 10px 20px;
+}
+
+.button-group button {
+  background-color: var(--background-color-gray);
+  border: none;
+  width: 70px;
+  height: 30px;
+  padding: 5px 20px;
+  color: var(--text-not-active);
+  cursor: pointer;
+  font-size: 10px;
+  font-family: MiSans-Medium, sans-serif;
+}
+
+.button-group button:hover {
+  background-color: #f0f0f0;
+}
+
+.button-group button.active {
+  background-color: var(--white);
+  color: #000;
+}
+
 
 .playground-notExist {
   text-align: center;
@@ -285,7 +365,7 @@ body {
 .game-info-container {
   padding: 15px; /* Add some padding inside the card */
 
-  background-color: var(--background-color); /* Set a background color */
+  background-color: var(--background-color-gray); /* Set a background color */
   border-radius: 8px; /* Optional: rounded corners */
   cursor: pointer; /* Indicates it's clickable */
   font-size: 0.6em;
@@ -325,13 +405,12 @@ li {
 }
 
 button {
-  background-color: #5cb85c; /* 버튼 배경색 */
   color: white; /* 버튼 텍스트 색상 */
   border: none;
   padding: 10px 20px;
   cursor: pointer;
   border-radius: 4px; /* 버튼 모서리 둥글게 */
-  margin-top: 10px; /* 버튼 위 여백 */
+
 }
 
 button:hover {

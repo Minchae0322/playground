@@ -7,11 +7,14 @@ import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.dto.response.*;
 import com.example.playgroundmanage.exception.CampusNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
+import com.example.playgroundmanage.exception.SchoolNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
+import com.example.playgroundmanage.location.repository.SchoolRepository;
 import com.example.playgroundmanage.location.vo.Playground;
+import com.example.playgroundmanage.location.vo.School;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.SportsEvent;
@@ -38,6 +41,8 @@ public class PlaygroundService {
     private final PlaygroundRepository playgroundRepository;
 
     private final FileHandler fileHandler;
+
+    private final SchoolRepository schoolRepository;
 
     private final CampusRepository campusRepository;
 
@@ -148,6 +153,16 @@ public class PlaygroundService {
                         .campusName(playground.getCampus().getCampusName())
                         .schoolName(playground.getCampus().getSchool().getSchoolName())
                         .build())
+                .toList();
+    }
+
+    @Transactional
+    public List<PlaygroundResponseDto> getPlaygroundBySportsType(Long schoolId, SportsEvent valueOf) {
+        School school = schoolRepository.findById(schoolId)
+                .orElseThrow(SchoolNotExistException::new);
+
+        return school.getCampus().stream()
+                .flatMap(campus -> getPlaygroundByCampusAndSportsType(campus.getId(), valueOf).stream())
                 .toList();
     }
 

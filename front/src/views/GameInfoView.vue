@@ -577,7 +577,7 @@ a {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  background: var(--background-color);
+  background: var(--background-color-gray);
   border-radius: 8px;
   width: 95%;
   margin-bottom: 10px;
@@ -648,7 +648,7 @@ a {
 }
 
 .teams-container {
-  background: var(--background-color);
+  background: var(--background-color-gray);
   width: 100%;
   align-items: center; /* 가로축을 기준으로 중앙 정렬합니다. */
   margin: 0 0 0;
@@ -660,7 +660,7 @@ a {
 
 
 .team {
-  background: var(--background-color);
+  background: var(--background-color-gray);
   border-radius: 8px;
   justify-content: center;
 

@@ -86,7 +86,8 @@
     --primary-gradient: linear-gradient(to right, #6a85b6 0%, #bac8e0 100%);
     --text-primary: #2C3E50; /* 주 텍스트 색상 */
     --text-secondary: #949494; /* 보조 텍스트 색상 */
-    --background-color: #efeff0; /* 배경 색상 */
+    --text-not-active: #7a7a7a;
+    --background-color-gray: #f1f4f6; /* 배경 색상 */
     --button-hover: #4E6EF2; /* 버튼 호버 상태 색상 */
     --white: #fff;
   }
@@ -105,7 +106,7 @@ button {
 body {
   min-height: 100vh;
   color: var(--primary-color);
-  background: var(--background-color);
+  background: var(--background-color-gray);
   font-family: MiSans-Semibold,sans-serif;
   transition:
     color 0.5s,

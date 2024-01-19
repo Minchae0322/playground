@@ -220,7 +220,7 @@ body {
   justify-content: center;
   align-items: center;
 
-  background: var(--background-color); /* 배경색을 추가할 수도 있습니다 */
+  background: var(--background-color-gray); /* 배경색을 추가할 수도 있습니다 */
 }
 
 .userInfo-container {
