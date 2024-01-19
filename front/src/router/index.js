@@ -3,7 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import login from '../views/LoginView.vue'
 import oauth2 from '../views/Redirect.vue'
 import searchSchool from '../views/SerchSchoolView.vue'
-import playground from '../views/PlaygroundView.vue'
+import playground from '../views/playground/PlaygroundView.vue'
 import timePickerDialog from '../views/GameBuilderView.vue'
 import game from '../views/GameDateSelectorView.vue'
 import gameInfo from '../views/GameInfoView.vue'
@@ -11,13 +11,13 @@ import teamBuilding from '../views/team/TeamBuildingView.vue'
 import userInfo from '../views/UserInfoView.vue'
 import teamInfo from '../views/team/TeamInfoView.vue'
 import gameRequest from '../views/GameRequestView.vue';
-import playgroundInfo from '../views/PlaygroundInfoView.vue'
+import playgroundInfo from '../views/playground/PlaygroundInfoView.vue'
 import myTeam from '../views/MyTeamView.vue'
 import teamRequest from "@/views/team/TeamRequestView.vue";
 import home from "@/views/HomeView.vue";
 import myGame from '../views/MyGameView.vue'
 import hostGame from '../views/HostGameView.vue'
-import playgroundList from '../views/PlaygroundListView.vue'
+import playgroundList from '../views/playground/PlaygroundListView.vue'
 import teamList from '../views/team/TeamListView.vue';
 
 const router = createRouter({

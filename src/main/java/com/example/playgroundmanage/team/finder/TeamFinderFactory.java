@@ -1,6 +1,6 @@
-package com.example.playgroundmanage.util;
+package com.example.playgroundmanage.team.finder;
 
-import com.example.playgroundmanage.game.service.RequestService;
+import com.example.playgroundmanage.team.finder.TeamFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

@@ -5,7 +5,7 @@ import { defineEmits } from 'vue';
 import {useRouter} from "vue-router";
 import defaultImage from "@/assets/img.png";
 import { defineProps } from 'vue';
-import PlaygroundInfoView from "@/views/PlaygroundInfoView.vue";
+import PlaygroundInfoView from "@/views/playground/PlaygroundInfoView.vue";
 
 const apiBaseUrl = "http://localhost:8080";
 

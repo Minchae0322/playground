@@ -1,8 +1,8 @@
-package com.example.playgroundmanage.game.service;
+package com.example.playgroundmanage.team.service;
 
-import com.example.playgroundmanage.game.repository.TeamingRepository;
-import com.example.playgroundmanage.game.vo.Team;
-import com.example.playgroundmanage.game.vo.Teaming;
+import com.example.playgroundmanage.location.repository.TeamingRepository;
+import com.example.playgroundmanage.team.vo.Team;
+import com.example.playgroundmanage.team.vo.Teaming;
 import com.example.playgroundmanage.game.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -2,8 +2,7 @@ package com.example.playgroundmanage.game.vo;
 
 
 import com.example.playgroundmanage.dto.RequestInfoDto;
-import com.example.playgroundmanage.dto.TeamRequestInfoDto;
-import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.team.vo.Team;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;

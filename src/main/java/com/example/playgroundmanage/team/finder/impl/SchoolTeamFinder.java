@@ -1,12 +1,11 @@
-package com.example.playgroundmanage.util.impl;
+package com.example.playgroundmanage.team.finder.impl;
 
 import com.example.playgroundmanage.dto.TeamRequestDto;
 import com.example.playgroundmanage.dto.response.TeamResponseDto;
-import com.example.playgroundmanage.game.repository.TeamRepository;
-import com.example.playgroundmanage.game.vo.Team;
+import com.example.playgroundmanage.location.respository.TeamRepository;
+import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.store.FileHandler;
-import com.example.playgroundmanage.store.impl.FileHandlerImpl;
-import com.example.playgroundmanage.util.TeamFinder;
+import com.example.playgroundmanage.team.finder.TeamFinder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

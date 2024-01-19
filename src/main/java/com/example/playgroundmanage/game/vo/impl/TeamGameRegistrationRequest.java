@@ -2,6 +2,7 @@ package com.example.playgroundmanage.game.vo.impl;
 
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.vo.*;
+import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;

@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.game.vo;
 
+import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.type.MatchResult;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.*;

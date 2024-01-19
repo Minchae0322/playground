@@ -1,7 +1,7 @@
-package com.example.playgroundmanage.game.repository;
+package com.example.playgroundmanage.location.repository;
 
-import com.example.playgroundmanage.game.vo.Team;
-import com.example.playgroundmanage.game.vo.Teaming;
+import com.example.playgroundmanage.team.vo.Team;
+import com.example.playgroundmanage.team.vo.Teaming;
 import com.example.playgroundmanage.game.vo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 

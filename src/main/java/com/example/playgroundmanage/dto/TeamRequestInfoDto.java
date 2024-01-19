@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.dto;
 
 import com.example.playgroundmanage.dto.response.PendingTeamRequest;
-import com.example.playgroundmanage.game.vo.Team;
+import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.game.vo.User;
 import lombok.Builder;
 import lombok.Data;

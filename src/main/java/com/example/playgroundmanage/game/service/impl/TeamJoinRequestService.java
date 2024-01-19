@@ -6,14 +6,13 @@ import com.example.playgroundmanage.dto.TeamRequestDto;
 import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.exception.TeamNotExistException;
-import com.example.playgroundmanage.game.repository.TeamRepository;
+import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
 import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.service.RequestService;
-import com.example.playgroundmanage.game.service.TeamService;
-import com.example.playgroundmanage.game.vo.Team;
+import com.example.playgroundmanage.team.service.TeamService;
+import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.game.vo.TeamRequest;
-import com.example.playgroundmanage.game.vo.impl.TeamGameJoinRequest;
 import com.example.playgroundmanage.game.vo.impl.TeamJoinRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.playgroundmanage.util.TeamValidation.validateJoinTeam;
+import static com.example.playgroundmanage.team.TeamValidation.validateJoinTeam;
 
 
 @RequiredArgsConstructor

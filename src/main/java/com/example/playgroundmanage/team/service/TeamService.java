@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.game.service;
+package com.example.playgroundmanage.team.service;
 
 import com.example.playgroundmanage.dto.TeamRegistration;
 import com.example.playgroundmanage.dto.TeamRequestDto;
@@ -6,17 +6,17 @@ import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.dto.response.TeamMemberDto;
 import com.example.playgroundmanage.dto.response.TeamResponseDto;
 import com.example.playgroundmanage.exception.TeamNotExistException;
-import com.example.playgroundmanage.game.repository.TeamingRepository;
-import com.example.playgroundmanage.game.vo.Team;
-import com.example.playgroundmanage.game.vo.Teaming;
+import com.example.playgroundmanage.location.repository.TeamingRepository;
+import com.example.playgroundmanage.game.service.UserService;
+import com.example.playgroundmanage.team.vo.Team;
+import com.example.playgroundmanage.team.vo.Teaming;
 import com.example.playgroundmanage.game.vo.User;
-import com.example.playgroundmanage.game.repository.TeamRepository;
+import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.store.UploadFile;
-import com.example.playgroundmanage.util.TeamFinder;
-import com.example.playgroundmanage.util.TeamFinderFactory;
-import com.example.playgroundmanage.util.TeamValidation;
+import com.example.playgroundmanage.team.finder.TeamFinder;
+import com.example.playgroundmanage.team.finder.TeamFinderFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +25,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
-import static com.example.playgroundmanage.util.TeamValidation.validateJoinTeam;
+import static com.example.playgroundmanage.team.TeamValidation.validateJoinTeam;
 
 @Service
 @RequiredArgsConstructor

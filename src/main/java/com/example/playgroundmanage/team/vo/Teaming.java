@@ -1,5 +1,7 @@
-package com.example.playgroundmanage.game.vo;
+package com.example.playgroundmanage.team.vo;
 
+import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.team.vo.Team;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;

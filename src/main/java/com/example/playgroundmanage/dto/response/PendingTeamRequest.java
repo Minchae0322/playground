@@ -1,7 +1,5 @@
 package com.example.playgroundmanage.dto.response;
 
-import com.example.playgroundmanage.game.vo.Team;
-import com.example.playgroundmanage.game.vo.User;
 import lombok.Builder;
 import lombok.Data;
 

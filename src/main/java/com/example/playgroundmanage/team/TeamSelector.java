@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.util;
+package com.example.playgroundmanage.team;
 
 import com.example.playgroundmanage.game.vo.CompetingTeam;
 import com.example.playgroundmanage.game.vo.Game;

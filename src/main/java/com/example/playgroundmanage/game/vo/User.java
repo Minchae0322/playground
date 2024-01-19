@@ -4,6 +4,7 @@ package com.example.playgroundmanage.game.vo;
 
 import com.example.playgroundmanage.login.dto.UserEdit;
 import com.example.playgroundmanage.store.UploadFile;
+import com.example.playgroundmanage.team.vo.Teaming;
 import com.example.playgroundmanage.type.UserRole;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;

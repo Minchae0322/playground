@@ -4,9 +4,10 @@ import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.impl.SoloGameJoinRequestService;
 
+import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
-import com.example.playgroundmanage.game.vo.Team;
+import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.game.vo.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;

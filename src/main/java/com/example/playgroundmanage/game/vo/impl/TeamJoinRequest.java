@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.game.vo.impl;
 
-import com.example.playgroundmanage.game.vo.Team;
+import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.game.vo.TeamRequest;
 import com.example.playgroundmanage.game.vo.User;
 import jakarta.persistence.Entity;

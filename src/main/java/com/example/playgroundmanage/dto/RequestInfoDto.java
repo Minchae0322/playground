@@ -4,7 +4,7 @@ import com.example.playgroundmanage.dto.response.PendingGameRequest;
 import com.example.playgroundmanage.dto.response.PendingTeamRequest;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.SubTeam;
-import com.example.playgroundmanage.game.vo.Team;
+import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import com.example.playgroundmanage.util.DateFormat;
