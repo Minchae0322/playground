@@ -1,9 +1,9 @@
-package com.example.playgroundmanage.game.vo.impl;
+package com.example.playgroundmanage.request.vo.impl;
 
 
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.game.vo.GameRequest;
+import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.Entity;

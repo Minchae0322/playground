@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.game.service;
+package com.example.playgroundmanage.request.service;
 
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.dto.RequestDto;

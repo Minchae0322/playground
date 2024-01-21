@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.team.vo;
 
 import com.example.playgroundmanage.game.vo.SubTeam;
-import com.example.playgroundmanage.game.vo.TeamRequest;
+import com.example.playgroundmanage.request.vo.TeamRequest;
 import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.store.UploadFile;
 import com.example.playgroundmanage.type.SportsEvent;

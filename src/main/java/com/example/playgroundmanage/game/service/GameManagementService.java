@@ -5,6 +5,7 @@ import com.example.playgroundmanage.game.repository.GameRequestRepository;
 import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
 import com.example.playgroundmanage.game.vo.*;
+import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.transaction.Transactional;

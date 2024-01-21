@@ -1,7 +1,7 @@
-package com.example.playgroundmanage.game.vo.impl;
+package com.example.playgroundmanage.request.vo.impl;
 
 import com.example.playgroundmanage.team.vo.Team;
-import com.example.playgroundmanage.game.vo.TeamRequest;
+import com.example.playgroundmanage.request.vo.TeamRequest;
 import com.example.playgroundmanage.game.vo.User;
 import jakarta.persistence.Entity;
 import lombok.AccessLevel;

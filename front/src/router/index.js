@@ -4,13 +4,13 @@ import login from '../views/LoginView.vue'
 import oauth2 from '../views/Redirect.vue'
 import searchSchool from '../views/SerchSchoolView.vue'
 import playground from '../views/playground/PlaygroundView.vue'
-import timePickerDialog from '../views/GameBuilderView.vue'
-import game from '../views/GameDateSelectorView.vue'
-import gameInfo from '../views/GameInfoView.vue'
+import timePickerDialog from '../views/game/GameBuilderView.vue'
+import game from '../views/game/GameDateSelectorView.vue'
+import gameInfo from '../views/game/GameInfoView.vue'
 import teamBuilding from '../views/team/TeamBuildingView.vue'
 import userInfo from '../views/UserInfoView.vue'
 import teamInfo from '../views/team/TeamInfoView.vue'
-import gameRequest from '../views/GameRequestView.vue';
+import gameRequest from '../views/game/GameRequestView.vue';
 import playgroundInfo from '../views/playground/PlaygroundInfoView.vue'
 import myTeam from '../views/MyTeamView.vue'
 import teamRequest from "@/views/team/TeamRequestView.vue";

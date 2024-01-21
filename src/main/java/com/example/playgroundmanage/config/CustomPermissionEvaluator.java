@@ -4,6 +4,8 @@ import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.repository.GameRequestRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
 import com.example.playgroundmanage.game.vo.*;
+import com.example.playgroundmanage.request.vo.GameRequest;
+import com.example.playgroundmanage.request.vo.TeamRequest;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.security.access.PermissionEvaluator;

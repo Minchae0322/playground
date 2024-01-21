@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.game.service.impl;
+package com.example.playgroundmanage.request.service.impl;
 
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.dto.RequestDto;
@@ -9,11 +9,11 @@ import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
 import com.example.playgroundmanage.game.service.GameManagementService;
-import com.example.playgroundmanage.game.service.RequestService;
+import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.team.service.TeamService;
 import com.example.playgroundmanage.team.vo.Team;
-import com.example.playgroundmanage.game.vo.TeamRequest;
-import com.example.playgroundmanage.game.vo.impl.TeamJoinRequest;
+import com.example.playgroundmanage.request.vo.TeamRequest;
+import com.example.playgroundmanage.request.vo.impl.TeamJoinRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -22,11 +22,11 @@
 <script setup>
 import {onMounted, ref} from 'vue';
 import axios from "axios";
-import GameBuilderModal from '../GameBuilderView.vue';
+import GameBuilderModal from '../game/GameBuilderView.vue';
 import {useRouter} from "vue-router";
 import defaultImage from '../../assets/img.png';
 import PlaygroundInfoView from "@/views/playground/PlaygroundInfoView.vue";
-import GameInfoView from '../GameInfoView.vue';
+import GameInfoView from '../game/GameInfoView.vue';
 
 const data = ref('이것은 부모로부터 온 데이터입니다.');
 const playgroundInfo = ref({

@@ -44,7 +44,7 @@ import { onMounted, ref } from 'vue';
 import axios from 'axios';
 import {useRouter} from "vue-router";
 import router from "@/router";
-import UserInfoView from '../views/UserInfoView.vue'
+import UserInfoView from '../UserInfoView.vue'
 
 
 const apiBaseUrl = "http://localhost:8080";

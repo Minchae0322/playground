@@ -2,7 +2,7 @@ package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameService;
-import com.example.playgroundmanage.game.service.impl.SoloGameJoinRequestService;
+import com.example.playgroundmanage.request.service.impl.SoloGameJoinRequestService;
 
 import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.type.SportsEvent;

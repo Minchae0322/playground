@@ -3,6 +3,7 @@ package com.example.playgroundmanage.game.service;
 import com.example.playgroundmanage.dto.RequestDto;
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
+import com.example.playgroundmanage.request.service.RequestService;
 
 import java.util.List;
 

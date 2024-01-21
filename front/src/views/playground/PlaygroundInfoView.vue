@@ -39,7 +39,7 @@
 <script setup>
 import {onMounted, ref} from 'vue';
 import axios from "axios";
-import GameBuilderModal from '../GameBuilderView.vue';
+import GameBuilderModal from '../game/GameBuilderView.vue';
 import {useRouter} from "vue-router";
 import { defineEmits } from 'vue';
 

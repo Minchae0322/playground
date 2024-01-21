@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.game.vo;
+package com.example.playgroundmanage.team.vo;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

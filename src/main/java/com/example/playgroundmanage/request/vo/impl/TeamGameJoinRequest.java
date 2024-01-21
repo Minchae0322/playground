@@ -1,8 +1,9 @@
-package com.example.playgroundmanage.game.vo.impl;
+package com.example.playgroundmanage.request.vo.impl;
+
 
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.vo.*;
-import com.example.playgroundmanage.team.vo.Team;
+import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -13,28 +14,25 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class TeamGameRegistrationRequest extends GameRequest {
+public class TeamGameJoinRequest extends GameRequest {
 
     @ManyToOne
-    private Team team;
+    private SubTeam subTeam;
 
     @Builder
-    public TeamGameRegistrationRequest(Long id, Game game, User user, User host, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, Team team) {
+    public TeamGameJoinRequest(Long id, Game game, User user, User host, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, SubTeam subTeam) {
         super(id, game, user, host, matchTeamSide, expiredTime, requestTime);
-        this.team = team;
+        this.subTeam = subTeam;
     }
-
-
-
 
     @Override
     public RequestInfoDto toGameRequestInfoDto() {
         return RequestInfoDto.builder()
                 .game(getGame())
                 .requestId(getId())
-                .requestType("teamGameRegistration")
+                .requestType("teamGameJoin")
                 .user(getUser())
-                .team(team)
+                .subTeam(subTeam)
                 .matchTeamSide(getMatchTeamSide())
                 .requestTime(getRequestTime())
                 .build();

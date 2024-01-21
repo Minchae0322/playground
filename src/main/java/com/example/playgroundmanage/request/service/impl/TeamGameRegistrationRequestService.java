@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.game.service.impl;
+package com.example.playgroundmanage.request.service.impl;
 
 import com.example.playgroundmanage.dto.GameRequestDto;
 import com.example.playgroundmanage.dto.RequestInfoDto;
@@ -9,10 +9,11 @@ import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameManagementService;
-import com.example.playgroundmanage.game.service.RequestService;
+import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
-import com.example.playgroundmanage.game.vo.impl.TeamGameRegistrationRequest;
+import com.example.playgroundmanage.request.vo.impl.TeamGameRegistrationRequest;
 import com.example.playgroundmanage.location.respository.TeamRepository;
+import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.team.TeamSelector;
 import jakarta.transaction.Transactional;
