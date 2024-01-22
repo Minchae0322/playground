@@ -8,6 +8,7 @@ import com.example.playgroundmanage.dto.response.TeamResponseDto;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.location.repository.TeamingRepository;
 import com.example.playgroundmanage.game.service.UserService;
+import com.example.playgroundmanage.team.TeamMemberFinder;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.team.vo.Teaming;
 import com.example.playgroundmanage.game.vo.User;
@@ -42,6 +43,8 @@ public class TeamService {
     private final FileHandler fileHandler;
 
     private final TeamingRepository teamingRepository;
+
+    private final TeamMemberFinder teamMemberFinder;
 
 
     @Transactional
@@ -143,5 +146,13 @@ public class TeamService {
                 .user(user)
                 .role("Member")
                 .build()).getId();
+    }
+
+    @Transactional
+    public boolean isTeamMember(Long teamId, User user) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(TeamNotExistException::new);
+
+        return teamMemberFinder.isTeamMember(team, user);
     }
 }

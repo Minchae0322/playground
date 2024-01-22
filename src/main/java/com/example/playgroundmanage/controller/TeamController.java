@@ -31,9 +31,15 @@ public class TeamController {
         return teamService.getTeamInfo(teamId);
     }
 
+    @GetMapping("/team/{teamId}/check/member")
+    public boolean isTeamMember(@PathVariable Long teamId, @AuthenticationPrincipal MyUserDetails myUserDetails) {
+        return teamService.isTeamMember(teamId, myUserDetails.getUser());
+    }
+
 
     @PostMapping(value = "/team/build", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public TeamInfoResponse generateTeam(@AuthenticationPrincipal MyUserDetails myUserDetails, @RequestPart("team") TeamRegistrationRequest params, @RequestPart(value = "imageFile", required = false) MultipartFile multipartFile) throws IOException {
+
         TeamRegistration teamRegistration = TeamRegistration.builder()
                 .teamPic(multipartFile)
                 .teamDescription(params.getTeamDescription())
