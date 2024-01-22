@@ -80,7 +80,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --primary-color: #333333; /* 주 색상 */
+    --primary-color: #365486; /* 주 색상 */
     --secondary-color: #6a85b6; /* 보조 색상 */
     --accent-color: #4C516D; /* 강조 색상 */
     --primary-gradient: linear-gradient(to right, #6a85b6 0%, #bac8e0 100%);

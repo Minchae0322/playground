@@ -255,6 +255,7 @@ body {
   margin-left: 20px;
   background-color: var(--white);
   border-radius: 5px;
+  margin-right: 20px;
   overflow: hidden;
   padding: 10px 20px;
 }
@@ -292,11 +293,13 @@ body {
 .upcoming-games-container {
   margin: 10px 40px;
 
+
 }
 
 .upcoming-games-container h2 {
   font-size: 1.8rem;
   color: #333;
+
   text-align: start;
   font-family: MiSans-Heavy, sans-serif;
 }
