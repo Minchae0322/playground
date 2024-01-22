@@ -6,7 +6,8 @@
         <h1>{{ team.teamName }}</h1>
         <p class="team-type">{{ team.teamSportsEvent }}</p>
       </div>
-      <button class="button-teamJoin" @click="clickJoinTeam">加入</button>
+      <button v-if="!isTeamMember" class="button-teamJoin" @click="clickJoinTeam">加入</button>
+      <button v-else class="button-teamJoin" >已加入</button>
     </div>
     <div class="team-history">
       <h2>Team History</h2>
@@ -51,10 +52,12 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import axios from "axios";
-
 import {useRouter} from "vue-router";
 import defaultImage from "@/assets/img.png";
+
+
 const router = useRouter();
+const isTeamMember = ref(false);
 const team = ref({
   teamProfileImg: ref(''),
   teamName: '',
@@ -80,10 +83,26 @@ const props = defineProps({
   }
 })
 onMounted(async () => {
+  await checkTeamMember();
   getTeamInfo()
   getTeamMembers()
 });
 
+const checkTeamMember = async () => {
+  await validateAccessToken()
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/team/${props.teamId}/check/member`,
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
+    );
+    isTeamMember.value = response.data;
+  } catch (error) {
+  }
+};
 
 const clickJoinTeam = async () => {
   await validateAccessToken()

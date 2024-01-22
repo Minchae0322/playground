@@ -320,8 +320,10 @@ body {
 
 .games {
   display: flex;
-  width: 800px;
-  justify-content: space-between;
+  width: 90%;
+  min-width: 1100px;
+  gap: 20px;
+  justify-content: start;
 }
 
 .game-card {
@@ -330,7 +332,7 @@ body {
   border: 1px solid #ddd;
   padding: 12px 15px;
   border-radius: 4px;
-  width: 25%; /* 각 카드의 너비를 30%로 설정하여 가로로 3개가 들어갈 수 있도록 함 */
+  width: 33%; /* 각 카드의 너비를 30%로 설정하여 가로로 3개가 들어갈 수 있도록 함 */
   text-align: left; /* 텍스트를 왼쪽으로 정렬 */
 }
 
