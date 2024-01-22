@@ -12,7 +12,7 @@ import userInfo from '../views/UserInfoView.vue'
 import teamInfo from '../views/team/TeamInfoView.vue'
 import gameRequest from '../views/game/GameRequestView.vue';
 import playgroundInfo from '../views/playground/PlaygroundInfoView.vue'
-import myTeam from '../views/MyTeamView.vue'
+import myTeam from '../views/team/MyTeamView.vue'
 import teamRequest from "@/views/team/TeamRequestView.vue";
 import home from "@/views/HomeView.vue";
 import myGame from '../views/MyGameView.vue'

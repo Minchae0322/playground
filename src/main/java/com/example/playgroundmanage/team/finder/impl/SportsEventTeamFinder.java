@@ -21,7 +21,7 @@ public class SportsEventTeamFinder implements TeamFinder {
     private final FileHandler fileHandler;
     @Override
     public List<TeamResponseDto> getTeams(TeamRequestDto teamRequestDto) {
-        List<Team> teams = teamRepository.findAllBySportsEvent(SportsEvent.valueOf(teamRequestDto.getSportsEvent()));
+        List<Team> teams = teamRepository.findAllBySportsEvent(SportsEvent.fromString(teamRequestDto.getSportsEvent()));
 
         return teams.stream()
                 .map(team -> TeamResponseDto.builder()

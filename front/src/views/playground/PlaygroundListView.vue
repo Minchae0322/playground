@@ -292,8 +292,6 @@ body {
 
 .upcoming-games-container {
   margin: 10px 40px;
-
-
 }
 
 .upcoming-games-container h2 {
@@ -322,6 +320,7 @@ body {
 
 .games {
   display: flex;
+  width: 800px;
   justify-content: space-between;
 }
 
@@ -337,10 +336,12 @@ body {
 
 .upcoming-game-name {
   margin-bottom: 5px;
+  color: var(--text-primary);
 }
 
 .upcoming-game-info-container {
   font-size: 11px;
+  color: var(--text-primary);
   font-family: MiSans-Normal, sans-serif;
 }
 
@@ -354,7 +355,7 @@ body {
 }
 
 .playground-list {
-  max-width: 100%; /* 최대 너비 설정 */
+  width: 1200px;
   margin: 20px auto; /* 중앙 정렬 */
   padding: 20px;
 }
@@ -385,6 +386,7 @@ body {
 .playground-name {
   font-size: 18px;
   text-align: center;
+  color: var(--text-primary);
 }
 
 .playground-info-container {
@@ -413,7 +415,7 @@ body {
 }
 
 .card-footer button {
-  background-color: var(--primary-color);
+  background-color: var(--text-primary);
   width: 100%;
 }
 
@@ -450,9 +452,7 @@ button:hover {
 
 /* 반응형 디자인: 화면 크기에 따라 스타일 조정 */
 @media (max-width: 768px) {
-  .playground-list {
-    padding: 10px;
-  }
+
 }
 
 </style>

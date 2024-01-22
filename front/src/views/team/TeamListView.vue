@@ -4,8 +4,19 @@
     <title></title>
 
   </head>
-  <input type="text" v-model="searchQuery" placeholder="팀 이름 검색..." />
+  <div class="info-container">
+    <h2>队伍</h2>
+    <p>Check out our teams</p>
+    <div class="info-container-border"></div>
+  </div>
+  <div class="sports-event-container">
+    <button @click="getTeams('sportsEvent','Soccer')">足球</button>
+    <button @click="getTeams('sportsEvent','Basketball')">篮球</button>
+    <button @click="getTeams('sportsEvent','Tennis')">网球</button>
+  </div>
 
+  <input type="text" v-model="searchQuery" placeholder="..." />
+  <div class="team-width">
   <div class="team-container">
     <div v-for="team in filteredTeams" :key="team.teamId" class="team-card">
       <router-link :to="{name:'teamInfo', params:{teamId: team.teamId}}">
@@ -18,7 +29,7 @@
     </div>
 
   </div>
-
+  </div>
 </template>
 
 
@@ -152,8 +163,35 @@ a {
   color: var(--text-not-active);
 }
 
+.info-container {
+  margin: 10px 30px;
+}
+.info-container h2 {
+  font-size: 1.8rem;
+  color: #333;
+
+  text-align: start;
+  font-family: MiSans-Heavy, sans-serif;
+}
+
+.info-container-border {
+  margin-left: auto;
+  margin-right: 100px;
+  width: 70%;
+  border-bottom: 1px solid var(--text-secondary);
+}
+
+.info-container p {
+  font-size: 0.8rem;
+  color: #666;
+  margin-right: auto;
+  margin-left: 100px;
+  margin-bottom: 20px;
+  font-family: MiSans-Normal,sans-serif;
+}
+
 input[type="text"] {
-  width: 100%; /* 전체 너비를 사용 */
+  width: 95%; /* 전체 너비를 사용 */
   padding: 10px 15px; /* 내부 여백 */
   margin: 10px 10px; /* 외부 여백 */
   box-sizing: border-box; /* 패딩과 테두리가 너비에 포함되도록 설정 */
@@ -174,18 +212,51 @@ input[type="text"]::placeholder {
   font-style: italic; /* 플레이스홀더 텍스트 스타일 */
 }
 
+.sports-event-container {
+  display: flex;
+  margin-left: 20px;
+}
+
+.sports-event-container button{
+  text-align: center;
+  width: 80px;
+  height: 30px;
+  margin: 5px 5px;
+  background-color: var(--text-primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-family: MiSans-Semibold,sans-serif;
+}
+
+.sports-event-container button:hover {
+
+  background-color: #365486;
+
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
+}
+
+.team-width {
+  display: flex;
+  width: 100%;
+  min-width: 1150px;
+  justify-content: center;
+}
+
 .team-container {
   display: flex;
-  justify-content: start;
-  align-items: flex-start;
+  width: 95%;
+  min-width: 1050px;
+  justify-content: space-between;
+  align-items: center;
   flex-wrap: wrap;
-  gap: 20px;
+  gap: 10px;
   padding: 10px;
 }
 
 .team-card {
   position: relative;
-  width: 20%; /* 카드의 폭 */
+  width: 24%; /* 카드의 폭 */
   text-align: start;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 그림자 효과 */
   border-radius: 8px; /* 모서리 둥글게 */
@@ -225,7 +296,7 @@ input[type="text"]::placeholder {
 
 .team-name {
   text-align: start;
-  font-size: 1.3rem;
+  font-size: 1.3em;
   color: #0F1035;
   letter-spacing: 1px;
   font-family: MiSans-Heavy,sans-serif;

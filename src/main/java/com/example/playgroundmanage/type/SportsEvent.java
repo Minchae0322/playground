@@ -3,7 +3,9 @@ package com.example.playgroundmanage.type;
 public enum SportsEvent {
     BASKETBALL("Basketball"),
     SOCCER("Soccer"),
-    BADMINTON("Badminton");
+    BADMINTON("Badminton"),
+
+    TENNIS("Tennis");
 
     private final String value;
 

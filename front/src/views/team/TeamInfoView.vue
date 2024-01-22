@@ -88,7 +88,9 @@ onMounted(async () => {
 const clickJoinTeam = async () => {
   await validateAccessToken()
   try {
-    await axios.post(`${apiBaseUrl}/team/join/${props.teamId}`, {},
+    await axios.post(`${apiBaseUrl}/team/join/teamJoin`, {
+      teamId: props.teamId
+        },
         {
           headers: {
             'Authorization': getAccessToken()

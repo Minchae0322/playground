@@ -1,14 +1,15 @@
 <template>
   <div class="teams">
     <div class="teams-title">
-      <h3>Teams</h3>
+      <h3>我的队伍</h3>
     </div>
     <div v-for="team in teams" :key="team.teamId" class="team-item">
       <router-link class="team-container" :to="{ name:'teamInfo', params: { teamId: team.teamId } }">
+        <div class="border"></div>
         <img :src="team.teamProfileImg || defaultImage" class="team-image"/>
         <div class="teams-info">
-          <h2 class=" team-name">{{ team.teamName }}</h2>
-          <h2 class="team-sportsEvent">종목: {{ team.teamSportsEvent }}</h2>
+          <div class=" team-name">{{ team.teamName }}</div>
+          <div class="team-sportsEvent">{{ team.teamSportsEvent }}</div>
         </div>
       </router-link>
     </div>
@@ -101,12 +102,21 @@ const redirectToLogin = function () {
 </script>
 
 <style scoped>
+
+body{
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  align-content: center;
+}
 .teams {
-  height: 100%;
-  background: #f9fbfc; /* 배경색을 추가할 수도 있습니다 */
+  padding: 20px;
+  margin: 0 auto;
+  width: 90%;
+  min-width: 1100px;
+  background: var(--background-color-gray); /* 배경색을 추가할 수도 있습니다 */
 }
 .router-link h2 {
-  font-family: gothic-bold;
   text-decoration: none;
 }
 
@@ -167,35 +177,44 @@ button:hover {
   margin: 5px;
   border-radius: 5px;
   text-align: center;
-
   flex-basis: calc(33.333% - 10px); /* 3개의 아이템을 한 줄에 나타내고 싶을 때 */
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+.team-item:hover {
+
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* 그림자 효과 강조 */
+  transform: translateY(-3px); /* 조금 위로 움직임 */
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
 }
 
 
-
 .team-name {
-  font-size: 14px; /* 적절한 크기 설정 */
-  color: #333;
+  font-family: MiSans-Heavy,sans-serif;
+  letter-spacing: 1px;
+  font-size: 18px; /* 적절한 크기 설정 */
+  color: var(--text-primary);
 
 }
 
 .teams-title {
   display: flex;
   align-items: center;
-  border-radius: 12px 12px 0 0;
+  border-radius: 4px 4px 0 0;
   background: var(--primary-gradient);
-
   color: white;
   padding: 0 5px 10px;
 }
 .team-sportsEvent {
   font-size: 14px; /* 적절한 크기 설정 */
+  color: var(--text-not-active);
+  font-family: MiSans-Light,sans-serif;
 }
+
+div {}
+
+
 /* 추가적으로 반응형 디자인을 고려할 수 있습니다. */
 a {
   text-decoration: none;
-  font-family: gothic-bold;
 }
 
 
