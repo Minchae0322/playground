@@ -36,16 +36,35 @@ const apiBaseUrl = "http://localhost:8080";
 const teams = ref([{
   teamId: 1,
   vibrantColor: '',
-
 }]);
 
 onMounted(async () => {
-  await getTeams('school');
+  await getTeams('school','');
 });
 
-const getTeams = async (type) => {
+const getTeams = async (type, sportsEvent) => {
   await validateAccessToken()
   
+  try {
+    const response = await axios.post(`${apiBaseUrl}/team/list/${type}`, {
+      sportsEvent: sportsEvent,
+    },{
+      headers: {
+        'Authorization': getAccessToken(),
+      }
+    },)
+    teams.value = response.data.map(team => ({
+      ...team,
+      teamProfileImg: team.teamProfileImg ? `data:image/jpeg;base64,${team.teamProfileImg}` : defaultImage,
+    }));
+  } catch (error) {
+
+  }
+};
+
+const getTeamsBySportsEvent = async () => {
+  await validateAccessToken()
+
   try {
     const response = await axios.post(`${apiBaseUrl}/team/list/${type}`, {
 
@@ -157,7 +176,7 @@ input[type="text"]::placeholder {
 
 .team-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: start;
   align-items: flex-start;
   flex-wrap: wrap;
   gap: 20px;
@@ -166,8 +185,8 @@ input[type="text"]::placeholder {
 
 .team-card {
   position: relative;
-  width: 23%; /* 카드의 폭 */
-  text-align: center;
+  width: 20%; /* 카드의 폭 */
+  text-align: start;
   box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 그림자 효과 */
   border-radius: 8px; /* 모서리 둥글게 */
   padding: 10px 20px;
@@ -195,6 +214,7 @@ input[type="text"]::placeholder {
 
 .team-img {
   width: 40%;
+  border: 1px solid #d9d9d9;
   height:40%; /* 높이를 자동으로 설정하여 원본 이미지 비율 유지 */
   aspect-ratio: 17 / 18; /* 18:9 비율로 설정 */
   object-fit: cover; /* 이미지가 지정된 비율에 맞도록 조정 */
@@ -207,6 +227,7 @@ input[type="text"]::placeholder {
   text-align: start;
   font-size: 1.3rem;
   color: #0F1035;
+  letter-spacing: 1px;
   font-family: MiSans-Heavy,sans-serif;
   width: 100%;
 }
