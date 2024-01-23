@@ -6,11 +6,14 @@ import com.example.playgroundmanage.dto.UserNicknameDto;
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.game.service.UserService;
+import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -25,6 +28,8 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+
+    private final UserDetailsServiceImpl userDetailsService;
 
     private final TestRepository testRepository;
 
@@ -47,8 +52,17 @@ public class UserController {
         return userService.getUserInfo(userDetails.getUser());
     }
 
+    @GetMapping("/user/logout")
+    @Transactional
+    public ResponseEntity<Boolean> logout(@AuthenticationPrincipal MyUserDetails myUserDetails) {
+        userDetailsService.logout(myUserDetails.getUser());
+
+        return ResponseEntity.ok(true);
+    }
+
     @GetMapping("/token/valid")
     public ResponseEntity<String> validToken() {
+
         return ResponseEntity.ok("valid");
     }
 

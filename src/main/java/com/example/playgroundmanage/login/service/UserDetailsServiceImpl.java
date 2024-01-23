@@ -2,9 +2,11 @@ package com.example.playgroundmanage.login.service;
 
 import com.example.playgroundmanage.login.dto.OAuth2UserProfile;
 import com.example.playgroundmanage.game.repository.UserRepository;
+import com.example.playgroundmanage.login.repository.TokenRepository;
 import com.example.playgroundmanage.type.OAuthAttributes;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.game.vo.User;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +23,8 @@ import org.springframework.stereotype.Service;
 public class UserDetailsServiceImpl implements UserDetailsService, OAuth2UserService<OAuth2UserRequest, OAuth2User> {
     private final UserRepository userRepository;
 
+    private final TokenRepository tokenRepository;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return userRepository.findByUsername(username).map(MyUserDetails::new).orElseThrow();
@@ -33,6 +37,21 @@ public class UserDetailsServiceImpl implements UserDetailsService, OAuth2UserSer
         User user = getUserInDatabase(oAuth2UserProfile);
 
         return new MyUserDetails(user, oAuth2UserProfile.getAttributes());
+    }
+
+    @Transactional
+    public void logout(User user) {
+        user.disable();
+        deleteRefreshToken(user.getUsername());
+        userRepository.save(user);
+    }
+
+    public boolean isValidUser(MyUserDetails myUserDetails) {
+        return myUserDetails.getUser().isEnable() && myUserDetails.getUser().isLoggedIn();
+    }
+
+    private void deleteRefreshToken(String username) {
+        tokenRepository.findByUsername(username).ifPresent(tokenRepository::delete);
     }
 
     public OAuth2UserProfile getOAuth2UserProfile(String registrationId, OAuth2User oAuth2User) {

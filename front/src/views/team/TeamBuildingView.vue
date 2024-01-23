@@ -196,9 +196,11 @@ const redirectToLogin = function () {
 
 <style scoped>
 .team-building-form-container {
-  max-width: 35%;
-  margin:  auto;
-  padding: 20px 30px;
+  min-width: 500px;
+  width: 35%;
+  height: 100%;
+  margin:  0 auto;
+  padding: 20px 30px 0 30px;
   border: 1px solid #ddd;
   background-color: var(--white);
   border-radius: 8px;
@@ -368,6 +370,7 @@ const redirectToLogin = function () {
 button {
   width: 100%;
   padding: 10px;
+  margin-bottom: 20px;
   background-color: #064183;
   color: white;
   border: none;

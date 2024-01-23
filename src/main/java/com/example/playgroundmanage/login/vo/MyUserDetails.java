@@ -54,7 +54,7 @@ public class MyUserDetails implements UserDetails, OAuth2User {
 
     @Override
     public boolean isAccountNonExpired() {
-        return user.isEnable();
+        return user.isLoggedIn();
     }
 
     @Override

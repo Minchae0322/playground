@@ -1,6 +1,4 @@
 <template>
-
-
   <div class="mx-auto max-w-md space-y-6 ">
     <div class=" text-center">
       <h1 class="login-container text-3xl">Sign In</h1>
@@ -83,7 +81,6 @@ const password = ref("");
 axios.defaults.withCredentials = true; // withCredentials 전역 설정
 
 const login_naver = function () {
-
   try {
     window.location.href = `${apiBaseUrl}/oauth2/authorization/naver`;
   } catch (error) {

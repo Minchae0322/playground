@@ -42,6 +42,8 @@ public class User implements Serializable{
 
     private boolean isEnable;
 
+    private boolean isLoggedIn;
+
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
@@ -75,7 +77,13 @@ public class User implements Serializable{
         this.gameParticipants = gameParticipants;
     }
 
+    public void enable() {
+        isLoggedIn = true;
+    }
 
+    public void disable() {
+        isLoggedIn = false;
+    }
 
     @Transactional
     public User update(UserEdit userEdit) {

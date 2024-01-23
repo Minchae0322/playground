@@ -2,6 +2,8 @@ package com.example.playgroundmanage.filter;
 
 import com.example.playgroundmanage.login.auth.JwtTokenProvider;
 import com.example.playgroundmanage.exception.TokenNotValidException;
+import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
+import com.example.playgroundmanage.login.vo.MyUserDetails;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import javax.security.sasl.AuthenticationException;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,6 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final UserDetailsServiceImpl userDetailsService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -36,6 +40,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         if (jwtTokenProvider.validateToken(accessToken)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
+
+            if (!userDetailsService.isValidUser((MyUserDetails) authentication.getPrincipal())) {
+                throw new AuthenticationException("권한이 없습니다.");
+            }
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
             filterChain.doFilter(request, response);
             return;

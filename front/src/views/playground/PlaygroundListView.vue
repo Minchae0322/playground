@@ -14,10 +14,10 @@
     </div>
     <div class="games">
       <div class="game-card" v-for="game in upcomingGames" :key="game.id">
-        <div class="upcoming-game-name">{{ game.gameName }}</div>
+        <div class="upcoming-game-name">{{ game.gameName }} ({{ game.gameStart }})</div>
         <div class="upcoming-game-info-container">
         <div>Host: {{ game.hostName }}</div>
-        <div>Start Time: {{ game.gameStart }} | Running Time: {{ game.runningTime }} </div>
+        <div>Running Time: {{ game.runningTime }} </div>
         </div>
       </div>
     </div>

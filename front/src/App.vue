@@ -14,19 +14,40 @@ const user = ref({
 })
 const isLoggedIn = ref(false);
 
-onMounted(async () => {
-  // Check if the initial page number is provided in the route query
-  await getUserInfo()
+const accessToken = ref(null);
+const refreshToken = ref(null);
+
+
+onMounted( async () => {
+  await setToken()
+  await getUserInfo();
 });
 
 const menuVisible = ref({
   playground: false,
   team: false,
   game: false,
-  // ... other menus
 });
 
+const setToken = async () => {
+  if (isLoggedIn.value) {
+    return
+  }
+  accessToken.value = (new URL(location.href)).searchParams.get('access_token');
+  refreshToken.value = (new URL(location.href)).searchParams.get('refresh_token');
 
+  console.log(accessToken.value)
+  // Store tokens in localStorage
+  if (accessToken.value && refreshToken.value) {
+    localStorage.setItem("accessToken", accessToken.value);
+    localStorage.setItem("refreshToken", refreshToken.value);
+    isLoggedIn.value = true;
+    await router.push({ path: '/home' });
+    return
+  }
+  isLoggedIn.value = true;
+
+};
 const toggleMenu = (menu) => {
   menuVisible.value[menu] = !menuVisible.value[menu];
 };
@@ -35,6 +56,24 @@ const clickUserInfo = function () {
   validateAccessToken();
   router.push({name: 'userInfo'})
 };
+
+const logout = async () => {
+  await validateAccessToken()
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/user/logout`, {
+      headers: {
+        'Authorization': getAccessToken()
+      }}
+    );
+    if (response.data === true) {
+      isLoggedIn.value = false
+      await router.push({ name: 'login'})
+    }
+  } catch (error) {
+    alert(error.response.data.message)
+  }
+}
 
 const getUserInfo = async () => {
   await validateAccessToken()
@@ -53,10 +92,10 @@ const getUserInfo = async () => {
   }
 };
 
-const validateAccessToken = async function () {
+const validateAccessToken = async ()  => {
   const accessToken = getAccessToken();
   if (!accessToken) {
-    redirectToLogin()
+    await redirectToLogin()
     return;
   }
 
@@ -75,7 +114,7 @@ const getAccessToken = function () {
 };
 
 const updateAccessToken = async function () {
-  const refreshToken = localStorage.getItem("refreshToken");
+  const refreshToken = getAccessToken()
   if (!refreshToken) return redirectToLogin();
 
   try {
@@ -88,13 +127,13 @@ const updateAccessToken = async function () {
       return newAccessToken;
     }
   } catch (error) {
-    redirectToLogin();
+    await redirectToLogin();
   }
 };
 
 
-const redirectToLogin = function () {
-  router.push("/login");
+const redirectToLogin = async () => {
+  await router.push({name: 'login'});
 };
 </script>
 
@@ -154,7 +193,7 @@ const redirectToLogin = function () {
           </li>
         </ul>
       </nav>
-      <div class="logout">logout</div>
+      <div @click="logout" class="logout">logout</div>
     </div>
     <div class="router-view-container">
     <RouterView />
@@ -177,7 +216,8 @@ a {
 .sidebar {
   flex: 1; /* sidebar 너비 설정 */
   min-width: 250px;
-  height: 100vh;
+  min-height: 100vh;
+  height: 100%;
   left: 0;
   top: 0;
   background-color: #fff;
@@ -260,7 +300,7 @@ a {
 
 .router-view-container {
   flex: 5; /* sidebar 너비 설정 */
-  height: 88vh; /* 원하는 높이로 설정 */
+  height: 100%; /* 원하는 높이로 설정 */
   margin-top: 20px;
   overflow-y: auto; /* 내용이 높이를 초과하면 스크롤바 생성 */
 }

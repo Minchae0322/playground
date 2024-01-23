@@ -1,13 +1,17 @@
 package com.example.playgroundmanage.login.handler;
 
+import com.example.playgroundmanage.game.repository.UserRepository;
+import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.login.auth.JwtTokenProvider;
 import com.example.playgroundmanage.login.auth.TokenInfo;
 import com.example.playgroundmanage.login.dto.TokenEdit;
 import com.example.playgroundmanage.login.service.TokenService;
+import com.example.playgroundmanage.login.vo.MyUserDetails;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -26,9 +30,13 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     private final TokenService tokenService;
 
+    private final UserRepository userRepository;
+
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException {
         TokenInfo tokenInfo = jwtTokenProvider.generateAccessAndRefreshTokens(authentication);
+
+        changeUserLoggedIn(authentication);
 
         TokenEdit tokenEdit = TokenEdit.builder()
                 .username(authentication.getName())
@@ -39,6 +47,13 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         response.setStatus(HttpServletResponse.SC_OK);
         redirect(request, response, tokenInfo.getAccessToken(), tokenInfo.getRefreshToken());
+    }
+
+    private void changeUserLoggedIn(Authentication authentication) {
+        MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
+        User user = myUserDetails.getUser();
+        user.enable();
+        userRepository.save(user);
     }
 
     private void redirect(HttpServletRequest request, HttpServletResponse response,
@@ -60,7 +75,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                 .scheme("http")
                 .host("localhost")
                 .port(FRONT_END_PORT_NUM)
-                .path("/oauth2/redirect")
+                .path("/app")
                 .queryParams(queryParams)
                 .build()
                 .toUri();

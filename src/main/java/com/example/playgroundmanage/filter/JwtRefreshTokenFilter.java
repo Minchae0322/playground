@@ -2,6 +2,7 @@ package com.example.playgroundmanage.filter;
 
 import com.example.playgroundmanage.exception.TokenNotValidException;
 import com.example.playgroundmanage.login.auth.JwtTokenProvider;
+import com.example.playgroundmanage.login.repository.TokenRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,8 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    private final TokenRepository tokenRepository;
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
        if(skipFilter(request.getRequestURI())) {
@@ -30,7 +33,7 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
             return;
        }
         String refreshToken = resolveRefreshToken(request);
-        if(jwtTokenProvider.validateToken(refreshToken)) {
+        if(jwtTokenProvider.validateToken(refreshToken) && isRefreshTokenExist(refreshToken)) {
             Authentication authentication = jwtTokenProvider.getAuthentication(refreshToken);
             String accessToken = jwtTokenProvider.generateToken(authentication, ACCESS_TOKEN_EXPIRATION);
             response.setHeader(ACCESS_TOKEN_HEADER_NAME, accessToken);
@@ -38,6 +41,10 @@ public class JwtRefreshTokenFilter extends OncePerRequestFilter {
             return;
         }
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+    }
+
+    private boolean isRefreshTokenExist(String refreshToken) {
+        return tokenRepository.existsRefreshTokenByRefreshToken(refreshToken);
     }
 
     private boolean skipFilter(String url) {

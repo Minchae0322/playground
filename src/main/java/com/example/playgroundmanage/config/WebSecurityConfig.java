@@ -8,6 +8,7 @@ import com.example.playgroundmanage.filter.UsernamePasswordCustomAuthenticationF
 import com.example.playgroundmanage.login.handler.LoginFailureHandler;
 import com.example.playgroundmanage.login.handler.LoginSuccessHandler;
 import com.example.playgroundmanage.game.repository.UserRepository;
+import com.example.playgroundmanage.login.repository.TokenRepository;
 import com.example.playgroundmanage.login.service.TokenService;
 import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -49,45 +50,40 @@ public class WebSecurityConfig {
 
     private final TokenService tokenService;
 
+    private final TokenRepository tokenRepository;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .cors(httpSecurityCorsConfigurer -> httpSecurityCorsConfigurer.configurationSource(corsConfigurationSource()))
-
                 .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtRefreshTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(jwtAuthenticationFilter(), JwtRefreshTokenFilter.class)
-
                 .formLogin(AbstractHttpConfigurer::disable)
-
                 .csrf(AbstractHttpConfigurer::disable)
-
                 .oauth2Login(httpSecurityOAuth2LoginConfigurer -> httpSecurityOAuth2LoginConfigurer
-                        .successHandler(new LoginSuccessHandler(jwtTokenProvider, tokenService))
+                        .successHandler(new LoginSuccessHandler(jwtTokenProvider, tokenService, userRepository))
                         .failureHandler(new LoginFailureHandler())
                         .userInfoEndpoint(userInfoEndpointConfig -> userInfoEndpointConfig.userService(userDetailsService))
                 )
-
                 .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
 
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(jwtTokenProvider);
+        return new JwtAuthenticationFilter(jwtTokenProvider, userDetailsService);
     }
-
-
 
     @Bean
     public JwtRefreshTokenFilter jwtRefreshTokenFilter() {
-        return new JwtRefreshTokenFilter(jwtTokenProvider);
+        return new JwtRefreshTokenFilter(jwtTokenProvider, tokenRepository);
     }
 
     @Bean
     public UsernamePasswordCustomAuthenticationFilter usernamePasswordCustomAuthenticationFilter() {
         UsernamePasswordCustomAuthenticationFilter filter = new UsernamePasswordCustomAuthenticationFilter();
-        filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(jwtTokenProvider, tokenService));
+        filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(jwtTokenProvider, tokenService, userRepository));
         filter.setAuthenticationFailureHandler(new LoginFailureHandler());
         filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
         filter.setAuthenticationManager(authenticationManage());
@@ -99,7 +95,7 @@ public class WebSecurityConfig {
     @Bean
     public AuthenticationManager authenticationManage() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(new UserDetailsServiceImpl(userRepository));
+        provider.setUserDetailsService(new UserDetailsServiceImpl(userRepository, tokenRepository));
         //provider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(provider);
     }

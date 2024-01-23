@@ -65,13 +65,13 @@ const teams = ref([{
 
 }]);
 
-onMounted(() => {
+onMounted(async () => {
   // Check if the initial page number is provided in the route query
-  getUserInfo()
+  await getUserInfo()
   getTeams()
 });
-const getUserInfo = function () {
-  validateAccessToken()
+const getUserInfo = async () => {
+  await validateAccessToken()
   axios.get(`${apiBaseUrl}/user/info`,
       {
         headers: {

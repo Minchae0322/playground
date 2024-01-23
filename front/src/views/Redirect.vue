@@ -18,27 +18,18 @@ const router = useRouter();
 const accessToken = ref(null);
 const refreshToken = ref(null);
 
-// Extract tokens from URL parameters
-onMounted(() => {
+
+onMounted(async () => {
   accessToken.value = (new URL(location.href)).searchParams.get('access_token');
   refreshToken.value = (new URL(location.href)).searchParams.get('refresh_token');
 
+  console.log(accessToken.value)
   // Store tokens in localStorage
   if (accessToken.value && refreshToken.value) {
     localStorage.setItem("accessToken", accessToken.value);
     localStorage.setItem("refreshToken", refreshToken.value);
   }
-});
-
-// Check if the token exists, redirect accordingly
-onMounted(() => {
-  if (accessToken.value) {
-    sessionStorage.setItem('accessToken', accessToken.value);
-    window.alert('로그인하였습니다');
-    router.push({ path: '/home' });
-  } else {
-    router.replace('/login');
-  }
+  await router.push({ path: '/home' });
 });
 </script>
 
