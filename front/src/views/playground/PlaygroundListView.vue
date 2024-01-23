@@ -53,7 +53,7 @@
 
   </div>
   <div v-else>
-    <div class="playground-notExist">활성화된 운동장이 존재하지 않습니다.</div>
+    <div class="teamRequest-notExist">활성화된 운동장이 존재하지 않습니다.</div>
   </div>
 </template>
 
@@ -282,7 +282,7 @@ body {
 }
 
 
-.playground-notExist {
+.teamRequest-notExist {
   text-align: center;
   width: 100%;
   margin-top: 200px;

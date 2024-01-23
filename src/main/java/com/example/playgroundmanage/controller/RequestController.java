@@ -12,7 +12,10 @@ import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.request.RequestServiceFinder;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
+import jakarta.persistence.LockModeType;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -106,10 +109,10 @@ public class RequestController {
         requestService.acceptRequest(requestId);
     }
     @PreAuthorize("hasPermission(#requestId,'requestAccept_team','UPDATE')")
-    @PatchMapping("/team/rejuect/{requestId}/{requestType}")
+    @PatchMapping("/team/reject/{requestId}/{requestType}")
     public void rejectTeamRequest(@PathVariable Long requestId, @PathVariable("requestType") String type) {
         RequestService requestService = requestServiceFinder.find(type);
 
-        requestService.acceptRequest(requestId);
+        requestService.declineRequest(requestId);
     }
 }

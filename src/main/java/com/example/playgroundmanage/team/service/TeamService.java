@@ -23,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -144,6 +146,7 @@ public class TeamService {
         return teamingRepository.save(Teaming.builder()
                 .team(team)
                 .user(user)
+                .createdTime(LocalDate.now())
                 .role("Member")
                 .build()).getId();
     }

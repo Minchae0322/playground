@@ -14,8 +14,11 @@ import com.example.playgroundmanage.team.service.TeamService;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.request.vo.TeamRequest;
 import com.example.playgroundmanage.request.vo.impl.TeamJoinRequest;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.Version;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -78,19 +81,20 @@ public class TeamJoinRequestService implements RequestService {
 
     @Override
     @Transactional
+    @Version
     public Long acceptRequest(Long requestId) {
         TeamRequest teamRequest = (TeamRequest) teamRequestRepository.findById(requestId)
                 .orElseThrow(RequestNotExistException::new);
+        teamRequestRepository.delete(teamRequest);
 
-        return teamService.joinTeam(teamRequest.getId(), teamRequest.getUser());
+        return teamService.joinTeam(teamRequest.getTeam().getId(), teamRequest.getUser());
     }
 
     @Override
     @Transactional
     public void declineRequest(Long requestId) {
-        TeamRequest teamRequest = (TeamRequest) teamRequestRepository.findById(requestId)
-                .orElseThrow(RequestNotExistException::new);
-
-        teamRequestRepository.delete(teamRequest);
+        teamRequestRepository.findById(requestId).ifPresent(teamRequestRepository::delete);
     }
+
+
 }

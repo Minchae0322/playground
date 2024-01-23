@@ -78,7 +78,7 @@ const router = createRouter({
 
     {
       path: '/makeTeam',
-      name: 'makeTeam',
+      name: 'teamBuilding',
       component: teamBuilding
     },
 

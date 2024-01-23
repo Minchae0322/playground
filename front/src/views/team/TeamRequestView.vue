@@ -6,22 +6,21 @@
     <p>Check out our teams request</p>
     <div class="info-container-border"></div>
   </div>
-  <div class="team-requests-container">
-
+  <div v-if="joinRequests" class="team-requests-container">
     <div v-for="(requests, teamName) in joinRequests" :key="teamName" class="team-request-group">
       <h3>{{ teamName }}</h3>
-      <div v-for="request in requests" :key="request.requestId" class="request" @click="toggleIntroduction(request)">
+      <div v-for="request in requests" :key="request.requestId" class="request">
         <div class="request-info-container">
           <div class="user-avatar">
           </div>
-          <div class="user-info">
+          <div class="user-info" @click="toggleIntroduction(request)">
             <div class="user-name">{{ request.userName }}</div>
             <div class="user-requestTime">{{ request.requestTime }}</div>
           </div>
-          <div class="toggle-info">눌러서 설명보기</div>
+          <div class="toggle-info" @click="toggleIntroduction(request)">눌러서 설명보기</div>
           <div class="actions">
-            <button class="reject">Reject</button>
-            <button class="accept">Accept</button>
+            <button @click="rejectRequest(request.requestId)" class="reject">Reject</button>
+            <button @click="acceptRequest(request.requestId)" class="accept">Accept</button>
           </div>
         </div>
         <div v-if="request.isExpanded" class="introduction">
@@ -29,6 +28,10 @@
         </div>
       </div>
     </div>
+  </div>
+  <div v-else>
+
+    <div class="teamRequest-notExist">팀 요청이 존재하지 않습니다.</div>
   </div>
 </template>
 
@@ -75,6 +78,7 @@ const fetchPendingRequests = async (requestType) => {
       return acc;
     }, {});
     joinRequests.value = groupedRequests;
+    console.log(joinRequests.value)
   } catch (error) {
     console.error("There was an error fetching the pending requests: ", error);
     // Handle error appropriately
@@ -84,6 +88,43 @@ const fetchPendingRequests = async (requestType) => {
 const toggleIntroduction = (request) => {
   request.isExpanded = !request.isExpanded;
 };
+
+const acceptRequest = async (requestId) => {
+  await validateAccessToken()
+
+  try {
+    const response = await axios.patch(`${apiBaseUrl}/team/accept/${requestId}/teamJoin`, {
+    }, {
+      headers: {
+        'Authorization': getAccessToken()
+      }
+    });
+    alert("success")
+    await fetchPendingRequests("teamJoin");
+  } catch (error) {
+    alert(error.response.data.message)
+    // Handle error appropriately
+  }
+};
+
+const rejectRequest = async (requestId) => {
+  await validateAccessToken()
+
+  try {
+    const response = await axios.patch(`${apiBaseUrl}/team/reject/${requestId}/teamJoin`, {
+    }, {
+      headers: {
+        'Authorization': getAccessToken()
+      }
+    });
+    alert("success")
+    await fetchPendingRequests("teamJoin");
+  } catch (error) {
+    alert(error.response.data.message)
+    // Handle error appropriately
+  }
+};
+
 
 const validateAccessToken = async function () {
   const accessToken = getAccessToken();
@@ -190,7 +231,7 @@ h2 {
   flex-direction: column;
   align-items: center;
   margin-bottom: 10px;
-  padding-bottom: 10px;
+  padding: 0 20px 20px 20px;
   border-bottom: 1px solid #ececec;
 }
 
@@ -248,7 +289,6 @@ h2 {
   width: 100%;
   margin-top: 10px;
   background-color: var(--background-color-gray);
-
   border-radius: 5px;
   color: var(--text-hint-dark);
   font-size: 12px;
@@ -281,5 +321,15 @@ h2 {
 
 .actions button:hover {
   opacity: 0.6;
+}
+
+
+.teamRequest-notExist {
+  text-align: center;
+  width: 100%;
+  color: var(--text-black);
+  margin-top: 250px;
+  align-content: center;
+  justify-content: center;
 }
 </style>

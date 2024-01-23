@@ -19,12 +19,10 @@ onMounted(async () => {
   await getUserInfo()
 });
 
-
-
 const subMenuVisible = ref({
   playground: false,
-  home: false,
-  matches: false,
+  team: false,
+  game: false,
   // ... other menus
 });
 
@@ -108,12 +106,15 @@ const redirectToLogin = function () {
   <main class="main-content">
     <div v-if="$route.name !== 'login'" class="sidebar">
       <div>
-        <img :src="user.userProfileImg || defaultImage" @click="clickUserInfo">
+        <img class="user-profile-img" :src="user.userProfileImg || defaultImage" @click="clickUserInfo">
       </div>
       <nav class="navigation">
         <ul class="nav-links">
           <li>
-            <div @click="toggleSubMenu('playground')" class="nav-item">Playground</div>
+            <div @click="toggleSubMenu('playground')" class="menu-container" :class="{'active-menu-container': subMenuVisible.playground}">
+              <img class="icon" src='../src/assets/playground-icon.png'>
+              <div  class="nav-item">运动场</div>
+            </div>
             <ul v-if="subMenuVisible.playground" class="sub-menu">
               <li><RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" class="sub-nav-item">SOCCER</RouterLink></li>
               <li><RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}"  class="sub-nav-item">BASKET BALL</RouterLink></li>
@@ -121,16 +122,25 @@ const redirectToLogin = function () {
             </ul>
           </li>
           <li>
-            <div @click="toggleSubMenu('home')" class="nav-item">Team</div>
-            <ul v-if="subMenuVisible.home" class="sub-menu">
-              <li><RouterLink :to="{ name:'myTeam'}" class="sub-nav-item">My Team</RouterLink></li>
+            <div @click="toggleSubMenu('team')" class="menu-container" :class="{'active-menu-container': subMenuVisible.team}">
+              <img class="icon" src='../src/assets/team-icon.png'>
+              <div  class="nav-item">队伍</div>
+            </div>
+            <ul v-if="subMenuVisible.team" class="sub-menu">
+              <li>
+                <RouterLink :to="{ name:'myTeam'}" class="sub-nav-item">My Team</RouterLink>
+              </li>
               <li><RouterLink  :to="{ name:'teamList'}" class="sub-nav-item">Team Join</RouterLink></li>
               <li><RouterLink :to="{ name:'teamRequest'}" class="sub-nav-item">Team Request</RouterLink></li>
+              <li><RouterLink  :to="{ name:'teamBuilding'}" class="sub-nav-item">Make Team</RouterLink></li>
             </ul>
           </li>
           <li>
-            <div @click="toggleSubMenu('matches')" class="nav-item">Game</div>
-            <ul v-if="subMenuVisible.matches" class="sub-menu">
+            <div @click="toggleSubMenu('game')" class="menu-container" :class="{'active-menu-container': subMenuVisible.game}">
+              <img class="icon" src='../src/assets/game-icon.png'>
+              <div  class="nav-item">比赛</div>
+            </div>
+            <ul v-if="subMenuVisible.game" class="sub-menu">
               <li><RouterLink :to="{name: 'gameRequest'}" class="sub-nav-item">Game Request</RouterLink></li>
               <li><RouterLink :to="{name: 'myGame'}"  class="sub-nav-item">My Game</RouterLink></li>
               <li><RouterLink :to="{name: 'hostGame'}"  class="sub-nav-item">Host Game</RouterLink></li>
@@ -167,6 +177,29 @@ const redirectToLogin = function () {
   flex-direction: column;
 }
 
+.menu-container {
+  display: flex;
+  opacity: 0.6;
+ border-radius: 8px;
+  margin: 10px;
+  padding: 10px 20px;
+}
+
+.menu-container:hover {
+  background-color: #f0f0f0;
+  opacity: 1;
+}
+
+.active-menu-container {
+  opacity: 1 !important;
+  background-color: #f0f0f0;
+
+}
+
+.active-menu-container .nav-item {
+  font-family: MiSans-Semibold,sans-serif;
+}
+
 .router-view-container {
   flex: 5; /* sidebar 너비 설정 */
   height: 88vh; /* 원하는 높이로 설정 */
@@ -181,9 +214,15 @@ header {
   height: 8vh;
   justify-content: end;
 }
+.icon {
+  width: 40px;
+  height: 40px;
+  margin-right: 10px;
+  background-color: transparent;
+}
 
-img {
-  margin:  5px 10px;
+.user-profile-img {
+  margin:  70px 10px;
   width: 50px;
   height: 50px;
   background-color: #eee;
@@ -218,10 +257,12 @@ img {
 
 .nav-item {
   display: block;
-  padding: 10px 20px;
+  margin: auto 5px;
   text-decoration: none;
-  color: #333;
-  font-weight: bold;
+  color: var(--text-black);
+  letter-spacing: 1px;
+  font-size: 16px;
+  font-family: MiSans-Normal,sans-serif;
 }
 
 .nav-item:hover,

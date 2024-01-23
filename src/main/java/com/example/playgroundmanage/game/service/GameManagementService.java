@@ -49,6 +49,7 @@ public class GameManagementService {
                 .ifPresent(gameRequestRepository::delete);
     }
 
+
     @Transactional
     public List<RequestInfoDto> getPendingGameRequests(User user) {
         List<GameRequest> pendingRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(user, LocalDateTime.now());

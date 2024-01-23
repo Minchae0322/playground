@@ -116,7 +116,7 @@ const clickJoinTeam = async () => {
           }
         }
     );
-    alert("가입에 성공하였습니다.");
+    alert("가입 요청을 보냈습니다.");
   } catch (error) {
     alert(error.response.data.message);
   }
@@ -248,7 +248,7 @@ const redirectToLogin = function () {
 }
 
 .team-img {
-  border-radius: 50%;
+  border-radius: 25%;
   width: 100px;
   height: 100px;
   margin-right: 20px;

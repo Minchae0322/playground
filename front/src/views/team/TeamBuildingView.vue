@@ -1,13 +1,13 @@
 <template>
   <div class="team-building-form-container">
-    <h1>Team Building Form</h1>
-    <p>Create your dream team. Complete the form below and hit submit when you're ready.</p>
+    <h2>Team Building Form</h2>
+    <div class="form-info">make your team</div>
 
     <form @submit.prevent="submitForm">
     <div class="image-preview">
       <img :src="team.imagePreview || defaultImage" @click="triggerFileInput" class="profile-image" />
       <input type="file" ref="fileInput" @change="handleFileChange" style="display:none" />
-      <h4>사진을 클릭하여 프로필을 변경하세요.</h4>
+      <div class="chang-profile-info">사진을 클릭하여 프로필을 변경하세요.</div>
     </div>
 
       <div class="form-group">
@@ -18,8 +18,8 @@
         <h4 class="">Sports Type</h4>
         <img src="../../assets/soccer-ball.png" alt="" :class="{ 'selected': sportsEvent === 'Soccer' }"
              @click="selectCategory('Soccer')">
-        <img src="../../assets/baseball-ball.png" alt="" :class="{ 'selected': sportsEvent === 'Baseball' }"
-             @click="selectCategory('Baseball')">
+        <img src="../../assets/baseball-ball.png" alt="" :class="{ 'selected': sportsEvent === 'Basketball' }"
+             @click="selectCategory('Basketball')">
       </div>
 
 
@@ -27,7 +27,7 @@
         <label for="teamLeader">Team Leader</label>
         <div class="leader-container">
         <img class="leaderImg" :src=leader.userProfileImg >
-        <h3  id="teamLeader" >{{leader.userNickname}}</h3>
+        <div class="leader-name" >{{leader.userNickname}}</div>
         </div>
       </div>
       <div class="form-group">
@@ -128,7 +128,7 @@ const write = function () {
         const teamId = response.data.teamId
         // 성공 시 처리 로직
        alert("팀 생성에 성공하였습니다.")
-           router.replace({name: 'timePicker', params: {teamId: teamId}})
+
       })
       .catch(error => {
         // 에러 메시지 처리
@@ -198,21 +198,32 @@ const redirectToLogin = function () {
 .team-building-form-container {
   max-width: 35%;
   margin:  auto;
-  padding: 20px 40px;
+  padding: 20px 30px;
   border: 1px solid #ddd;
+  background-color: var(--white);
   border-radius: 8px;
+  color: var(--text-black);
+}
+
+.form-info {
+  color: var(--text-hint);
+  font-size: 12px;
+  font-family: MiSans-Normal,sans-serif;
+}
+
+.chang-profile-info {
+  font-size: 8px;
+  color: var(--text-hint);
+
 }
 
 .leaderImg {
-
   width: 40px;
   height: 40px;
-  margin: 10px 20px;
-
-  border-radius: 25%;
-  border: 2px solid #c2c2c2;
+  margin: 5px 10px;
+  border-radius: 50%;
+  border: 1px solid var(--text-hint-light);
   cursor: pointer;
-
 }
 
 .team-name {
@@ -234,9 +245,14 @@ const redirectToLogin = function () {
 }
 
 .leader-container {
-  margin-left: 10px;
   display: flex;
   margin-bottom: 10px;
+}
+
+.leader-name {
+  margin: auto 5px;
+  font-family: MiSans-Medium,sans-serif;
+  font-size: 14px;
 }
 
 .file-upload-wrapper {
@@ -314,6 +330,7 @@ const redirectToLogin = function () {
   border-radius: 4px;
   margin-bottom: 10px;
 }
+
 .image-preview {
   display: flow;
   text-align: center;
@@ -327,15 +344,15 @@ const redirectToLogin = function () {
   height: 35px;
 }
 
-.image-preview img {
+.profile-image {
   width: 100px;
   height: 100px;
   background-color: #eee;
-  border-radius: 50%;
-  border: 2px solid #c2c2c2;
+  border-radius: 25%;
+  border: 2px solid var(--text-hint-light);
   display: inline-block;
-
 }
+
 .image-preview h4 {
   font-size: 10px;
   color: #838383;
