@@ -17,10 +17,10 @@ public class PendingTeamRequest {
 
     private Long userId;
 
-    private LocalDateTime requestTime;
+    private String requestTime;
 
     @Builder
-    public PendingTeamRequest(Long requestId, String introduction, String teamName, String userName, Long userId, LocalDateTime requestTime) {
+    public PendingTeamRequest(Long requestId, String introduction, String teamName, String userName, Long userId, String requestTime) {
         this.requestId = requestId;
         this.introduction = introduction;
         this.teamName = teamName;

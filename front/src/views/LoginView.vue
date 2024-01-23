@@ -4,7 +4,7 @@
   <div class="mx-auto max-w-md space-y-6 ">
     <div class=" text-center">
       <h1 class="login-container text-3xl">Sign In</h1>
-      <div class="font">Enter your email and password to sign in</div>
+      <div class="font" style="color: var(--text-hint)">Enter your email and password to sign in</div>
     </div>
     <div class="space-y-4">
       <div class="space-id">
@@ -124,7 +124,16 @@ const write = async function () {
 /* General Styles */
 body {
   background-color: #f5f5f5;
-  color: #333;
+  color: #000000;
+
+}
+
+h1 {
+  color: var(--text-black);
+}
+
+div {
+  color: var(--text-black);
 }
 .login-container {
   margin-top: 50px;

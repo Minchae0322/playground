@@ -101,18 +101,14 @@ const redirectToLogin = function () {
 
 <template>
 
-  <header v-if="$route.name !== 'login'" >
-    <div>
-      <img :src="user.userProfileImg || defaultImage" @click="clickUserInfo">
-    </div>
-  </header>
+
 
 
 
   <main class="main-content">
     <div v-if="$route.name !== 'login'" class="sidebar">
-      <div class="logo-container">
-        <img src="../src/assets/img.png" alt="Logo" class="logo">
+      <div>
+        <img :src="user.userProfileImg || defaultImage" @click="clickUserInfo">
       </div>
       <nav class="navigation">
         <ul class="nav-links">
@@ -162,7 +158,7 @@ const redirectToLogin = function () {
 .sidebar {
   flex: 1; /* sidebar 너비 설정 */
   width: 250px;
-  height: 92vh;
+  height: 100vh;
   left: 0;
   top: 0;
   background-color: #fff;

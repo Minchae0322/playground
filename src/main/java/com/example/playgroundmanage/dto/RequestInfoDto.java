@@ -59,7 +59,7 @@ public class RequestInfoDto {
                 .userId(user.getId())
                 .introduction(introduction)
                 .requestId(requestId)
-                .requestTime(requestTime)
+                .requestTime(DateFormat.dateFormatYYYYMMDDHHMM(requestTime))
                 .build();
     }
 

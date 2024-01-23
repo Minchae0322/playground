@@ -266,7 +266,7 @@ body {
   width: 70px;
   height: 30px;
   padding: 5px 20px;
-  color: var(--text-not-active);
+  color: var(--text-hint-dark);
   cursor: pointer;
   font-size: 10px;
   font-family: MiSans-Medium, sans-serif;
@@ -306,7 +306,7 @@ body {
   margin-left: auto;
   margin-right: 100px;
   width: 70%;
-  border-bottom: 1px solid var(--text-secondary);
+  border-bottom: 1px solid var(--text-hint);
 }
 
 .upcoming-games-container p {
@@ -393,7 +393,7 @@ body {
 
 .playground-info-container {
   font-size: 13px;
-  color: var(--text-secondary);
+  color: var(--text-hint);
 
 }
 

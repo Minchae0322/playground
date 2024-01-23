@@ -1,22 +1,31 @@
 
 <template>
+
+  <div class="info-container">
+    <h2>团队请求</h2>
+    <p>Check out our teams request</p>
+    <div class="info-container-border"></div>
+  </div>
   <div class="team-requests-container">
-    <h2>Team Join Requests</h2>
-    <!-- teamName 별로 반복 -->
+
     <div v-for="(requests, teamName) in joinRequests" :key="teamName" class="team-request-group">
       <h3>{{ teamName }}</h3>
-      <!-- 해당 teamName의 요청들을 반복 -->
-      <div v-for="request in requests" :key="request.requestId" class="request">
-        <div class="user-avatar">
-          <span class="avatar-label">{{ request.userId }}</span>
+      <div v-for="request in requests" :key="request.requestId" class="request" @click="toggleIntroduction(request)">
+        <div class="request-info-container">
+          <div class="user-avatar">
+          </div>
+          <div class="user-info">
+            <div class="user-name">{{ request.userName }}</div>
+            <div class="user-requestTime">{{ request.requestTime }}</div>
+          </div>
+          <div class="toggle-info">눌러서 설명보기</div>
+          <div class="actions">
+            <button class="reject">Reject</button>
+            <button class="accept">Accept</button>
+          </div>
         </div>
-        <div class="user-info">
-          <div class="user-name">{{ request.userName }}</div>
-          <div class="user-role">{{ request.role }}</div>
-        </div>
-        <div class="actions">
-          <button class="accept">Accept</button>
-          <button class="reject">Reject</button>
+        <div v-if="request.isExpanded" class="introduction">
+          <p>소개 : {{ request.introduction }}</p>
         </div>
       </div>
     </div>
@@ -42,7 +51,6 @@ const joinRequests = ref([{
   userName: '',
   userId: '',
   requestTime: '',
-
 }]);
 
 onMounted(() => {
@@ -63,7 +71,7 @@ const fetchPendingRequests = async (requestType) => {
       if (!acc[request.teamName]) {
         acc[request.teamName] = [];
       }
-      acc[request.teamName].push(request);
+      acc[request.teamName].push({...request,  isExpanded: false});
       return acc;
     }, {});
     joinRequests.value = groupedRequests;
@@ -73,6 +81,9 @@ const fetchPendingRequests = async (requestType) => {
   }
 };
 
+const toggleIntroduction = (request) => {
+  request.isExpanded = !request.isExpanded;
+};
 
 const validateAccessToken = async function () {
   const accessToken = getAccessToken();
@@ -120,9 +131,37 @@ const redirectToLogin = function () {
 
 
 <style scoped>
+
+.info-container {
+  margin: 10px 30px;
+}
+.info-container h2 {
+  font-size: 1.8rem;
+  color: #333;
+  text-align: start;
+  font-family: MiSans-Heavy, sans-serif;
+}
+
+.info-container-border {
+  margin-left: auto;
+  margin-right: 100px;
+  width: 70%;
+  border-bottom: 1px solid var(--text-hint);
+}
+
+.info-container p {
+  font-size: 0.8rem;
+  color: #666;
+  margin-right: auto;
+  margin-left: 100px;
+  margin-bottom: 20px;
+  font-family: MiSans-Normal,sans-serif;
+}
+
 .team-requests-container {
-  max-width: 800px;
-  margin: auto;
+  min-width: 1100px;
+  width: 90%;
+  margin: 0 0 40px 40px;
   padding: 20px;
   background: #fff;
   border-radius: 8px;
@@ -139,17 +178,25 @@ h2 {
   padding-top: 20px;
 }
 
-h3 {
-  color: #333;
-  margin-bottom: 10px;
+.team-request-group h3 {
+  color: var(--text-black);
+  margin-bottom: 20px;
+  font-size: 21px;
+  font-family: MiSans-Heavy,sans-serif;
 }
 
 .request {
   display: flex;
+  flex-direction: column;
   align-items: center;
   margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #ececec;
+}
+
+.request-info-container {
+  width: 100%;
+  display: flex;
 }
 
 .user-avatar {
@@ -175,33 +222,64 @@ h3 {
 }
 
 .user-name {
-  font-weight: bold;
+  font-family: MiSans-Semibold,sans-serif;
+  color: var(--text-black);
 }
 
-.user-role {
-  color: #666;
+.user-requestTime {
+  color: var(--text-hint);
+  font-size: 12px;
+  font-family: MiSans-Normal,sans-serif;
 }
+
+.toggle-info {
+  font-size: 9px;
+  color: var(--text-hint);
+  display: flex;
+  margin-top: auto; /* 상단 여백을 자동으로 설정하여 하단에 바짝 붙게 함 */
+  margin-right: 10px; /* 우측 여백 추가 */
+  text-align: right; /* 텍스트 우측 정렬 */
+  flex-grow: 1.2;
+  justify-content: left;
+}
+
+.introduction {
+  padding: 10px 10px 10px 20px;
+  width: 100%;
+  margin-top: 10px;
+  background-color: var(--background-color-gray);
+
+  border-radius: 5px;
+  color: var(--text-hint-dark);
+  font-size: 12px;
+  font-family: MiSans-Medium,sans-serif;
+}
+
 
 .actions button {
-  padding: 10px 20px;
+  width: 70px;
+  height: 35px;
+  text-align: center;
+  justify-content: center;
   margin-right: 10px;
-  border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 16px;
+  font-size: 12px;
 }
 
 .accept {
-  background-color: #5cb85c;
+  background-color: var(--primary-color);
   color: white;
+  border: none;
 }
 
 .reject {
-  background-color: #d9534f;
-  color: white;
+  background-color: white;
+  color: black;
+  border: 1px solid var(--text-hint-light);
 }
 
 .actions button:hover {
-  opacity: 0.8;
+  opacity: 0.6;
 }
 </style>

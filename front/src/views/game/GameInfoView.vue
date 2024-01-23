@@ -407,7 +407,7 @@ const redirectToLogin = function () {
                 <div class="member-marker">队员</div>
                 <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
                 <p class="user-nickname">{{ participant.userNickname }}</p>
-                <p class="user-role">{{ participant.userRole }}</p>
+                <p class="user-requestTime">{{ participant.userRole }}</p>
               </div>
             </div>
             <button class="add-button" @click="sendTeamJoinRequest(team.subTeamId, team.teamId)"> 参加</button>
@@ -804,7 +804,7 @@ a {
 
 }
 
-.team-member .user-role {
+.team-member .user-requestTime {
   font-size: 9px;
   color: #838383;
 }

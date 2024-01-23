@@ -160,7 +160,7 @@ const redirectToLogin = function () {
 
 a {
   text-decoration: none;
-  color: var(--text-not-active);
+  color: var(--text-hint-dark);
 }
 
 .info-container {
@@ -178,7 +178,7 @@ a {
   margin-left: auto;
   margin-right: 100px;
   width: 70%;
-  border-bottom: 1px solid var(--text-secondary);
+  border-bottom: 1px solid var(--text-hint);
 }
 
 .info-container p {

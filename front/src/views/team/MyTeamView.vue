@@ -205,7 +205,7 @@ button:hover {
 }
 .team-sportsEvent {
   font-size: 14px; /* 적절한 크기 설정 */
-  color: var(--text-not-active);
+  color: var(--text-hint-dark);
   font-family: MiSans-Light,sans-serif;
 }
 
