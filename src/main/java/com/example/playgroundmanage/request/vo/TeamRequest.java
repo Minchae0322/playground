@@ -3,6 +3,7 @@ package com.example.playgroundmanage.request.vo;
 
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.team.vo.Team;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -46,12 +47,13 @@ public abstract class TeamRequest extends Request {
         this.requestTime = requestTime;
     }
 
-    public RequestInfoDto toTeamRequestInfoDto() {
+    public RequestInfoDto toTeamRequestInfoDto(InMemoryMultipartFile userProfileImg) {
         return RequestInfoDto.builder()
                 .user(user)
                 .leader(leader)
                 .team(team)
                 .requestId(id)
+                .userProfileImg(userProfileImg)
                 .introduction(introduction)
                 .requestTime(requestTime)
                 .build();

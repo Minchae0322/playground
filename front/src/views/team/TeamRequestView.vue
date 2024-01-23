@@ -12,6 +12,7 @@
       <div v-for="request in requests" :key="request.requestId" class="request">
         <div class="request-info-container">
           <div class="user-avatar">
+            <img class="user-profile-img" :src="request.userProfileImg">
           </div>
           <div class="user-info" @click="toggleIntroduction(request)">
             <div class="user-name">{{ request.userName }}</div>
@@ -41,6 +42,7 @@ import axios from 'axios';
 import {useRouter} from "vue-router";
 import router from "@/router";
 import UserInfoView from '../UserInfoView.vue'
+import defaultImage from "@/assets/img.png";
 
 
 const apiBaseUrl = "http://localhost:8080";
@@ -54,6 +56,7 @@ const joinRequests = ref([{
   userName: '',
   userId: '',
   requestTime: '',
+
 }]);
 
 onMounted(() => {
@@ -74,7 +77,11 @@ const fetchPendingRequests = async (requestType) => {
       if (!acc[request.teamName]) {
         acc[request.teamName] = [];
       }
-      acc[request.teamName].push({...request,  isExpanded: false});
+      acc[request.teamName].push({
+        ...request,
+        userProfileImg: request.userProfileImg ? `data:image/jpeg;base64, ${request.userProfileImg}` : defaultImage,
+        isExpanded: false
+      });
       return acc;
     }, {});
     joinRequests.value = groupedRequests;
@@ -240,22 +247,14 @@ h2 {
   display: flex;
 }
 
-.user-avatar {
+
+.user-profile-img {
   width: 50px;
   height: 50px;
   background-color: #ddd;
   border-radius: 50%;
-  text-align: center;
   line-height: 50px;
-  margin-right: 10px;
-  font-weight: bold;
-  color: #333;
-}
-
-.avatar-label {
-  display: inline-block;
-  vertical-align: middle;
-  line-height: normal;
+  margin-right: 15px;
 }
 
 .user-info {

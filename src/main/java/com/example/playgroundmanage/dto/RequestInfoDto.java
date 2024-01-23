@@ -4,6 +4,7 @@ import com.example.playgroundmanage.dto.response.PendingGameRequest;
 import com.example.playgroundmanage.dto.response.PendingTeamRequest;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.SubTeam;
+import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.game.vo.User;
 import com.example.playgroundmanage.type.MatchTeamSide;
@@ -20,6 +21,7 @@ public class RequestInfoDto {
     private Long requestId;
     private LocalDateTime requestTime;
     private User user;
+    private InMemoryMultipartFile userProfileImg;
 
     // GameRequestInfoDto 관련 필드
     private Game game;
@@ -59,6 +61,7 @@ public class RequestInfoDto {
                 .userId(user.getId())
                 .introduction(introduction)
                 .requestId(requestId)
+                .userProfileImg(userProfileImg)
                 .requestTime(DateFormat.dateFormatYYYYMMDDHHMM(requestTime))
                 .build();
     }

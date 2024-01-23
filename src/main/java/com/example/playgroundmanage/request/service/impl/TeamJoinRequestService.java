@@ -10,6 +10,7 @@ import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
 import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.request.service.RequestService;
+import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.team.service.TeamService;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.request.vo.TeamRequest;
@@ -37,6 +38,8 @@ public class TeamJoinRequestService implements RequestService {
     private final GameManagementService gameManagementService;
 
     private final TeamService teamService;
+
+    private final FileHandler fileHandler;
 
     @Override
     @Transactional
@@ -72,10 +75,11 @@ public class TeamJoinRequestService implements RequestService {
     public List<RequestInfoDto> getPendingRequests(PendingRequestParams pendingRequestParams) {
         List<TeamRequest> teamRequests = teamRequestRepository.findAllByLeader(pendingRequestParams.getHost());
 
+
         return teamRequests.stream()
                 .filter(TeamJoinRequest.class::isInstance)
                 .map(TeamJoinRequest.class::cast)
-                .map(TeamRequest::toTeamRequestInfoDto)
+                .map(teamJoinRequest -> teamJoinRequest.toTeamRequestInfoDto(fileHandler.extractFile(teamJoinRequest.getUser().getProfileImg())))
                 .toList();
     }
 
