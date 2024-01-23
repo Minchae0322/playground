@@ -19,15 +19,16 @@ onMounted(async () => {
   await getUserInfo()
 });
 
-const subMenuVisible = ref({
+const menuVisible = ref({
   playground: false,
   team: false,
   game: false,
   // ... other menus
 });
 
-const toggleSubMenu = (menu) => {
-  subMenuVisible.value[menu] = !subMenuVisible.value[menu];
+
+const toggleMenu = (menu) => {
+  menuVisible.value[menu] = !menuVisible.value[menu];
 };
 
 const clickUserInfo = function () {
@@ -105,28 +106,33 @@ const redirectToLogin = function () {
 
   <main class="main-content">
     <div v-if="$route.name !== 'login'" class="sidebar">
-      <div>
-        <img class="user-profile-img" :src="user.userProfileImg || defaultImage" @click="clickUserInfo">
+      <div class="school-info-container">
+        <img class="school-profile-img" src="../src/assets/school-profile.jpeg" >
+        <div class="school-name">哈尔滨工业大学</div>
+      </div>
+      <div class="user-info-container" @click="clickUserInfo">
+        <img class="user-profile-img" :src="user.userProfileImg || defaultImage" >
+        <div class="user-name">{{user.userNickname}}</div>
       </div>
       <nav class="navigation">
         <ul class="nav-links">
           <li>
-            <div @click="toggleSubMenu('playground')" class="menu-container" :class="{'active-menu-container': subMenuVisible.playground}">
+            <div @click="toggleMenu('playground')" class="menu-container" :class="{'active-menu-container': menuVisible.playground}">
               <img class="icon" src='../src/assets/playground-icon.png'>
               <div  class="nav-item">运动场</div>
             </div>
-            <ul v-if="subMenuVisible.playground" class="sub-menu">
-              <li><RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" class="sub-nav-item">SOCCER</RouterLink></li>
+            <ul v-if="menuVisible.playground" class="sub-menu">
+              <li><RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" class="sub-nav-item">Soccer</RouterLink></li>
               <li><RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}"  class="sub-nav-item">BASKET BALL</RouterLink></li>
               <li><RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BADMINTON'}}"  class="sub-nav-item">BADMINTON</RouterLink></li>
             </ul>
           </li>
           <li>
-            <div @click="toggleSubMenu('team')" class="menu-container" :class="{'active-menu-container': subMenuVisible.team}">
+            <div @click="toggleMenu('team')" class="menu-container" :class="{'active-menu-container': menuVisible.team}">
               <img class="icon" src='../src/assets/team-icon.png'>
               <div  class="nav-item">队伍</div>
             </div>
-            <ul v-if="subMenuVisible.team" class="sub-menu">
+            <ul v-if="menuVisible.team" class="sub-menu">
               <li>
                 <RouterLink :to="{ name:'myTeam'}" class="sub-nav-item">My Team</RouterLink>
               </li>
@@ -136,19 +142,19 @@ const redirectToLogin = function () {
             </ul>
           </li>
           <li>
-            <div @click="toggleSubMenu('game')" class="menu-container" :class="{'active-menu-container': subMenuVisible.game}">
+            <div @click="toggleMenu('game')" class="menu-container" :class="{'active-menu-container': menuVisible.game}">
               <img class="icon" src='../src/assets/game-icon.png'>
               <div  class="nav-item">比赛</div>
             </div>
-            <ul v-if="subMenuVisible.game" class="sub-menu">
+            <ul v-if="menuVisible.game" class="sub-menu">
               <li><RouterLink :to="{name: 'gameRequest'}" class="sub-nav-item">Game Request</RouterLink></li>
               <li><RouterLink :to="{name: 'myGame'}"  class="sub-nav-item">My Game</RouterLink></li>
               <li><RouterLink :to="{name: 'hostGame'}"  class="sub-nav-item">Host Game</RouterLink></li>
             </ul>
           </li>
-          <!-- ... 다른 메뉴 아이템 ... -->
         </ul>
       </nav>
+      <div class="logout">logout</div>
     </div>
     <div class="router-view-container">
     <RouterView />
@@ -163,11 +169,14 @@ const redirectToLogin = function () {
   justify-content: start;
 
 }
+a {
+  text-decoration: none
 
+}
 
 .sidebar {
   flex: 1; /* sidebar 너비 설정 */
-  width: 250px;
+  min-width: 250px;
   height: 100vh;
   left: 0;
   top: 0;
@@ -175,6 +184,51 @@ const redirectToLogin = function () {
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+}
+
+.school-info-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-content: center;
+}
+
+.school-profile-img {
+  width: 90px;
+  height: 85px;
+  padding-right: 5px;
+  margin: 20px auto 10px auto;
+}
+
+.school-name {
+  text-align: center;
+  color: #4c8ba8;
+  font-size: 20px;
+}
+
+.user-info-container {
+  display: flex;
+  margin:  20px 10px 10px 10px;
+  padding: 10px;
+  border-radius: 8px;
+  background-color: var(--accent-color);
+
+}
+
+.user-profile-img {
+  width: 40px;
+  height: 40px;
+  background-color: #eee;
+  border-radius: 50%;
+
+}
+
+.user-name {
+  font-size: 17px;
+  font-family: MiSans-Normal,sans-serif;
+  margin: auto 0px auto 20px;
+  color: var(--white);
 }
 
 .menu-container {
@@ -193,11 +247,15 @@ const redirectToLogin = function () {
 .active-menu-container {
   opacity: 1 !important;
   background-color: #f0f0f0;
-
 }
 
 .active-menu-container .nav-item {
   font-family: MiSans-Semibold,sans-serif;
+}
+
+.router-link-active {
+  font-family: MiSans-Semibold,sans-serif;
+  color: black;
 }
 
 .router-view-container {
@@ -219,30 +277,6 @@ header {
   height: 40px;
   margin-right: 10px;
   background-color: transparent;
-}
-
-.user-profile-img {
-  margin:  70px 10px;
-  width: 50px;
-  height: 50px;
-  background-color: #eee;
-  border-radius: 50%;
-  display: flex;
-  align-items: end;
-  justify-content: end;
-  box-shadow: 0 3px 6px 0 rgba(29,34,53,.08);
-}
-
-
-
-.logo-container {
-  padding: 20px;
-  text-align: center;
-}
-
-.logo {
-  max-width: 100%;
-  height: auto;
 }
 
 .navigation {
@@ -270,5 +304,37 @@ header {
   background-color: #f0f0f0;
 }
 
+.sub-menu li{
+  margin: 15px 0px 15px 0px;
+  list-style-type: none;
+  width: 80%;
+  padding: 5px;
+  font-size: 14px;
+  border-bottom: 1px solid #838383;
+}
+.sub-menu li:hover {
+  color: black;
+}
 
+a {
+  font-family: MiSans-Medium,sans-serif;
+  color: var(--text-hint);
+}
+
+a:hover {
+  font-family: MiSans-Semibold,sans-serif;
+  color: black;
+}
+
+.logout {
+  color: #d70000;
+  text-align: end;
+  margin: 20px;
+  text-decoration: underline;
+  font-family: MiSans-Light,sans-serif;
+}
+
+.logout:hover {
+  cursor: pointer;
+}
 </style>

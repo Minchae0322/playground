@@ -7,9 +7,11 @@
   </div>
 
   <div class="upcoming-games-container">
-    <h2>即将开始比赛</h2>
-    <p>Check out our upcoming games.</p>
-    <div class="upcoming-games-border"></div>
+    <div class="info-container">
+      <h2>即将开始比赛</h2>
+      <p>Check out our teams</p>
+      <div class="info-container-border"></div>
+    </div>
     <div class="games">
       <div class="game-card" v-for="game in upcomingGames" :key="game.id">
         <div class="upcoming-game-name">{{ game.gameName }}</div>
@@ -292,9 +294,14 @@ body {
 
 .upcoming-games-container {
   margin: 10px 40px;
+  min-width: 1100px;
+  width: 90%;
 }
 
-.upcoming-games-container h2 {
+.info-container {
+  margin: 10px 30px;
+}
+.info-container h2 {
   font-size: 1.8rem;
   color: #333;
 
@@ -302,14 +309,14 @@ body {
   font-family: MiSans-Heavy, sans-serif;
 }
 
-.upcoming-games-border {
+.info-container-border {
   margin-left: auto;
   margin-right: 100px;
   width: 70%;
   border-bottom: 1px solid var(--text-hint);
 }
 
-.upcoming-games-container p {
+.info-container p {
   font-size: 0.8rem;
   color: #666;
   margin-right: auto;
@@ -317,6 +324,7 @@ body {
   margin-bottom: 20px;
   font-family: MiSans-Normal,sans-serif;
 }
+
 
 .games {
   display: flex;
