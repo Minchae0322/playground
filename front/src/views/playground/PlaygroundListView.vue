@@ -16,6 +16,7 @@
       <div class="game-card" v-for="game in upcomingGames" :key="game.id">
         <div class="upcoming-game-name">{{ game.gameName }} ({{ game.gameStart }})</div>
         <div class="upcoming-game-info-container">
+          <div class="campus-name">地点 : {{ game.campusName }}</div>
         <div>Host: {{ game.hostName }}</div>
         <div>Running Time: {{ game.runningTime }} </div>
         </div>
@@ -325,6 +326,11 @@ body {
   font-family: MiSans-Normal,sans-serif;
 }
 
+.campus-name {
+  font-size: 14px;
+  color: #4c8ba8;
+}
+
 
 .games {
   display: flex;
@@ -346,6 +352,7 @@ body {
 
 .upcoming-game-name {
   margin-bottom: 5px;
+  letter-spacing: 1px;
   color: var(--text-primary);
 }
 

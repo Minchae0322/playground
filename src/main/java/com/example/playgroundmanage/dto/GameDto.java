@@ -2,6 +2,7 @@ package com.example.playgroundmanage.dto;
 
 import com.example.playgroundmanage.date.DateTime;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
+import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.game.vo.User;
@@ -14,10 +15,11 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public class GameDto {
 
-
     private Long gameId;
 
     private User host;
+
+    private Playground playground;
 
     private String gameName;
 
@@ -29,11 +31,11 @@ public class GameDto {
 
     private boolean isFriendly;
 
-
     @Builder
-    public GameDto(Long gameId, User host, String gameName, DateTime startDateTime, SportsEvent sportsEvent, Integer runningTime, boolean isFriendly) {
+    public GameDto(Long gameId, User host, Playground playground, String gameName, DateTime startDateTime, SportsEvent sportsEvent, Integer runningTime, boolean isFriendly) {
         this.gameId = gameId;
         this.host = host;
+        this.playground = playground;
         this.gameName = gameName;
         this.startDateTime = startDateTime;
         this.sportsEvent = sportsEvent;
@@ -41,12 +43,16 @@ public class GameDto {
         this.isFriendly = isFriendly;
     }
 
+
+
+
     public GameThumbnail toGameThumbnail() {
         return GameThumbnail.builder()
                 .gameStart(Util.localDateToYearMonthDateTimeString(startDateTime.getLocalDateTime()))
                 .hostName(host.getNickname())
                 .runningTime(runningTime)
                 .gameName(gameName)
+                .campusName(playground.getCampus().getCampusName())
                 .sportsEvent(sportsEvent)
                 .gameId(gameId)
                 .build();

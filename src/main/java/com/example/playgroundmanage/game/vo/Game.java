@@ -83,6 +83,7 @@ public class Game {
     public GameDto toGameDto() {
         return GameDto.builder()
                 .host(host)
+                .playground(playground)
                 .gameName(gameName)
                 .gameId(id)
                 .startDateTime(MyDateTimeLocal.initMyDateTime(gameStartDateTime))
