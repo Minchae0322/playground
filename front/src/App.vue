@@ -1,9 +1,10 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import {RouterLink, RouterView} from 'vue-router'
 import axios from "axios";
 import {onMounted, ref} from "vue";
 import defaultImage from '../src/assets/img.png';
 import {useRouter} from "vue-router";
+
 const router = useRouter();
 
 const apiBaseUrl = "http://localhost:8080";
@@ -18,7 +19,7 @@ const accessToken = ref(null);
 const refreshToken = ref(null);
 
 
-onMounted( async () => {
+onMounted(async () => {
   await setToken()
   await getUserInfo();
 });
@@ -42,7 +43,7 @@ const setToken = async () => {
     localStorage.setItem("accessToken", accessToken.value);
     localStorage.setItem("refreshToken", refreshToken.value);
     isLoggedIn.value = true;
-    await router.push({ path: '/home' });
+    await router.push({path: '/home'});
     return
   }
   isLoggedIn.value = true;
@@ -62,13 +63,14 @@ const logout = async () => {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/user/logout`, {
-      headers: {
-        'Authorization': getAccessToken()
-      }}
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
     );
     if (response.data === true) {
       isLoggedIn.value = false
-      await router.push({ name: 'login'})
+      await router.push({name: 'login'})
     }
   } catch (error) {
     alert(error.response.data.message)
@@ -80,9 +82,10 @@ const getUserInfo = async () => {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/user/info`, {
-      headers: {
-        'Authorization': localStorage.getItem("accessToken"),
-      }}
+          headers: {
+            'Authorization': localStorage.getItem("accessToken"),
+          }
+        }
     );
     isLoggedIn.value = true;
     user.value.userNickname = response.data.userNickname;
@@ -92,7 +95,7 @@ const getUserInfo = async () => {
   }
 };
 
-const validateAccessToken = async ()  => {
+const validateAccessToken = async () => {
   const accessToken = getAccessToken();
   if (!accessToken) {
     await redirectToLogin()
@@ -119,7 +122,7 @@ const updateAccessToken = async function () {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
-      headers: { 'RefreshToken': refreshToken }
+      headers: {'RefreshToken': refreshToken}
     });
     if (response.status === 200) {
       const newAccessToken = response.headers['authorization'];
@@ -138,57 +141,79 @@ const redirectToLogin = async () => {
 </script>
 
 <template>
-
-
-
-
-
   <main class="main-content">
     <div v-if="$route.name !== 'login'" class="sidebar">
       <div class="school-info-container">
-        <img class="school-profile-img" src="../src/assets/school-profile.jpeg" >
+        <img class="school-profile-img" src="../src/assets/school-profile.jpeg">
         <div class="school-name">哈尔滨工业大学</div>
       </div>
       <div class="user-info-container" @click="clickUserInfo">
-        <img class="user-profile-img" :src="user.userProfileImg || defaultImage" >
-        <div class="user-name">{{user.userNickname}}</div>
+        <img class="user-profile-img" :src="user.userProfileImg || defaultImage">
+        <div class="user-name">{{ user.userNickname }}</div>
       </div>
       <nav class="navigation">
         <ul class="nav-links">
           <li>
-            <div @click="toggleMenu('playground')" class="menu-container" :class="{'active-menu-container': menuVisible.playground}">
+            <div @click="toggleMenu('playground')" class="menu-container"
+                 :class="{'active-menu-container': menuVisible.playground}">
               <img class="icon" src='../src/assets/playground-icon.png'>
-              <div  class="nav-item">运动场</div>
+              <div class="nav-item">运动场</div>
             </div>
             <ul v-if="menuVisible.playground" class="sub-menu">
-              <li><RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" class="sub-nav-item">Soccer</RouterLink></li>
-              <li><RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}"  class="sub-nav-item">BASKET BALL</RouterLink></li>
-              <li><RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BADMINTON'}}"  class="sub-nav-item">BADMINTON</RouterLink></li>
+              <li>
+                <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" class="sub-nav-item">
+                  Soccer
+                </RouterLink>
+              </li>
+              <li>
+                <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}" class="sub-nav-item">
+                  BASKET BALL
+                </RouterLink>
+              </li>
+              <li>
+                <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BADMINTON'}}" class="sub-nav-item">
+                  BADMINTON
+                </RouterLink>
+              </li>
             </ul>
           </li>
           <li>
-            <div @click="toggleMenu('team')" class="menu-container" :class="{'active-menu-container': menuVisible.team}">
+            <div @click="toggleMenu('team')" class="menu-container"
+                 :class="{'active-menu-container': menuVisible.team}">
               <img class="icon" src='../src/assets/team-icon.png'>
-              <div  class="nav-item">队伍</div>
+              <div class="nav-item">队伍</div>
             </div>
             <ul v-if="menuVisible.team" class="sub-menu">
               <li>
                 <RouterLink :to="{ name:'myTeam'}" class="sub-nav-item">My Team</RouterLink>
               </li>
-              <li><RouterLink  :to="{ name:'teamList'}" class="sub-nav-item">Team Join</RouterLink></li>
-              <li><RouterLink :to="{ name:'teamRequest'}" class="sub-nav-item">Team Request</RouterLink></li>
-              <li><RouterLink  :to="{ name:'teamBuilding'}" class="sub-nav-item">Make Team</RouterLink></li>
+              <li>
+                <RouterLink :to="{ name:'teamList'}" class="sub-nav-item">Team Join</RouterLink>
+              </li>
+              <li>
+                <RouterLink :to="{ name:'teamRequest'}" class="sub-nav-item">Team Request</RouterLink>
+              </li>
+              <li>
+                <RouterLink :to="{ name:'teamBuilding'}" class="sub-nav-item">Make Team</RouterLink>
+              </li>
             </ul>
           </li>
           <li>
-            <div @click="toggleMenu('game')" class="menu-container" :class="{'active-menu-container': menuVisible.game}">
+            <div @click="toggleMenu('game')" class="menu-container"
+                 :class="{'active-menu-container': menuVisible.game}">
               <img class="icon" src='../src/assets/game-icon.png'>
-              <div  class="nav-item">比赛</div>
+              <div class="nav-item">比赛</div>
             </div>
             <ul v-if="menuVisible.game" class="sub-menu">
-              <li><RouterLink :to="{name: 'gameRequest'}" class="sub-nav-item">Game Request</RouterLink></li>
-              <li><RouterLink :to="{name: 'myGame'}"  class="sub-nav-item">My Game</RouterLink></li>
-              <li><RouterLink :to="{name: 'hostGame'}"  class="sub-nav-item">Host Game</RouterLink></li>
+              <li>
+                <RouterLink :to="{name: 'gameRequest'}" class="sub-nav-item">Game Request</RouterLink>
+              </li>
+              <li>
+                <RouterLink :to="{name: 'myGame'}" class="sub-nav-item">My Game</RouterLink>
+              </li>
+              <li>
+                <RouterLink :to="{name: 'hostGame'}" class="sub-nav-item">Host Game</RouterLink>
+              </li>
             </ul>
           </li>
         </ul>
@@ -196,7 +221,7 @@ const redirectToLogin = async () => {
       <div @click="logout" class="logout">logout</div>
     </div>
     <div class="router-view-container">
-    <RouterView />
+      <RouterView/>
     </div>
   </main>
 </template>
@@ -208,6 +233,7 @@ const redirectToLogin = async () => {
   justify-content: start;
 
 }
+
 a {
   text-decoration: none
 
@@ -215,16 +241,19 @@ a {
 
 .sidebar {
   flex: 1; /* sidebar 너비 설정 */
-  min-width: 250px;
+  min-width: 270px;
   min-height: 100vh;
   height: 100%;
+  position: fixed; /* 화면에 고정 */
   left: 0;
   top: 0;
   background-color: #fff;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
+  overflow-y: auto; /* 사이드바 내용이 많을 경우 스크롤 가능 */
 }
+
 
 .school-info-container {
   display: flex;
@@ -249,9 +278,8 @@ a {
 
 .user-info-container {
   display: flex;
-  margin:  20px 10px 10px 10px;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 20px 10px;
+  margin: 10px 0;
   background-color: var(--accent-color);
 
 }
@@ -266,7 +294,7 @@ a {
 
 .user-name {
   font-size: 17px;
-  font-family: MiSans-Normal,sans-serif;
+  font-family: MiSans-Normal, sans-serif;
   margin: auto 0px auto 20px;
   color: var(--white);
 }
@@ -274,7 +302,7 @@ a {
 .menu-container {
   display: flex;
   opacity: 0.6;
- border-radius: 8px;
+  border-radius: 8px;
   margin: 10px;
   padding: 10px 20px;
 }
@@ -290,11 +318,11 @@ a {
 }
 
 .active-menu-container .nav-item {
-  font-family: MiSans-Semibold,sans-serif;
+  font-family: MiSans-Semibold, sans-serif;
 }
 
 .router-link-active {
-  font-family: MiSans-Semibold,sans-serif;
+  font-family: MiSans-Semibold, sans-serif;
   color: black;
 }
 
@@ -302,7 +330,9 @@ a {
   flex: 5; /* sidebar 너비 설정 */
   height: 100%; /* 원하는 높이로 설정 */
   margin-top: 20px;
+  margin-left: 270px; /* 사이드바 너비만큼 여백 추가 */
   overflow-y: auto; /* 내용이 높이를 초과하면 스크롤바 생성 */
+  width: calc(100% - 250px);
 }
 
 header {
@@ -312,6 +342,7 @@ header {
   height: 8vh;
   justify-content: end;
 }
+
 .icon {
   width: 40px;
   height: 40px;
@@ -336,7 +367,7 @@ header {
   color: var(--text-black);
   letter-spacing: 1px;
   font-size: 16px;
-  font-family: MiSans-Normal,sans-serif;
+  font-family: MiSans-Normal, sans-serif;
 }
 
 .nav-item:hover,
@@ -344,7 +375,7 @@ header {
   background-color: #f0f0f0;
 }
 
-.sub-menu li{
+.sub-menu li {
   margin: 15px 0px 15px 0px;
   list-style-type: none;
   width: 80%;
@@ -352,17 +383,18 @@ header {
   font-size: 14px;
   border-bottom: 1px solid #838383;
 }
+
 .sub-menu li:hover {
   color: black;
 }
 
 a {
-  font-family: MiSans-Medium,sans-serif;
+  font-family: MiSans-Medium, sans-serif;
   color: var(--text-hint);
 }
 
 a:hover {
-  font-family: MiSans-Semibold,sans-serif;
+  font-family: MiSans-Semibold, sans-serif;
   color: black;
 }
 
@@ -371,7 +403,7 @@ a:hover {
   text-align: end;
   margin: 20px;
   text-decoration: underline;
-  font-family: MiSans-Light,sans-serif;
+  font-family: MiSans-Light, sans-serif;
 }
 
 .logout:hover {

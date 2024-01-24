@@ -1,8 +1,12 @@
 <template>
   <div class="button-group">
-    <button :class="{ active: activeCampus === null }" @click="getWholePlaygroundAndUpcomingGames(props.sportsEvent)">ALL</button>
+    <button :class="{ active: activeCampus === null }" @click="getWholePlaygroundAndUpcomingGames(props.sportsEvent)">
+      ALL
+    </button>
     <div v-for="campus in campusInfo" :key="campus.campusId">
-      <button :class="{ active: activeCampus === campus.campusId }" @click="getCampusPlaygroundAndUpcomingGames(campus.campusId, props.sportsEvent)"> {{ campus.campusName }} </button>
+      <button :class="{ active: activeCampus === campus.campusId }"
+              @click="getCampusPlaygroundAndUpcomingGames(campus.campusId, props.sportsEvent)"> {{ campus.campusName }}
+      </button>
     </div>
   </div>
 
@@ -16,9 +20,9 @@
       <div class="game-card" v-for="game in upcomingGames" :key="game.id">
         <div class="upcoming-game-name">{{ game.gameName }} ({{ game.gameStart }})</div>
         <div class="upcoming-game-info-container">
-          <div class="campus-name">地点 : {{ game.campusName }}</div>
-        <div>Host: {{ game.hostName }}</div>
-        <div>Running Time: {{ game.runningTime }} </div>
+          <div class="campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
+          <div>Host: {{ game.hostName }}</div>
+          <div>Running Time: {{ game.runningTime }}</div>
         </div>
       </div>
     </div>
@@ -65,7 +69,7 @@ import {onMounted, ref, watch} from 'vue';
 import axios from "axios";
 import GameBuilderModal from '../game/GameBuilderView.vue';
 import {useRouter} from "vue-router";
-import { defineEmits } from 'vue';
+import {defineEmits} from 'vue';
 
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
@@ -80,7 +84,7 @@ const activeCampus = ref(null);
 const props = defineProps({
   sportsEvent: {
     type: String,
-    required:true,
+    required: true,
   }
 });
 
@@ -155,7 +159,7 @@ const getPlaygrounds = async (sportsEvent) => {
     }));
     isPlaygroundExist.value = true;
 
-    } catch (error) {
+  } catch (error) {
     isPlaygroundExist.value = false;
   }
   activeCampus.value = null;
@@ -164,9 +168,11 @@ const getPlaygrounds = async (sportsEvent) => {
 const getUpcomingGames = async (sportsEvent) => {
   await validateAccessToken()
   await axios.get(`${apiBaseUrl}/school/1/upcoming/${sportsEvent}`,
-      {  headers: {
+      {
+        headers: {
           'Authorization': getAccessToken()
-        }}
+        }
+      }
   ).then(response => {
     upcomingGames.value = response.data.map(game => ({
       ...game,
@@ -215,7 +221,7 @@ const updateAccessToken = async function () {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
-      headers: { 'RefreshToken': refreshToken }
+      headers: {'RefreshToken': refreshToken}
     });
     if (response.status === 200) {
       const newAccessToken = response.headers['authorization'];
@@ -233,9 +239,9 @@ const redirectToLogin = function () {
 
 watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
   if (newSportsEvent !== oldSportsEvent) {
-   getWholePlaygroundAndUpcomingGames(newSportsEvent)
+    getWholePlaygroundAndUpcomingGames(newSportsEvent)
   }
-}, { immediate: true });
+}, {immediate: true});
 </script>
 
 <style scoped>
@@ -302,6 +308,7 @@ body {
 .info-container {
   margin: 10px 30px;
 }
+
 .info-container h2 {
   font-size: 1.8rem;
   color: #333;
@@ -323,7 +330,7 @@ body {
   margin-right: auto;
   margin-left: 100px;
   margin-bottom: 20px;
-  font-family: MiSans-Normal,sans-serif;
+  font-family: MiSans-Normal, sans-serif;
 }
 
 .campus-name {
@@ -363,7 +370,7 @@ body {
 }
 
 .game-card:hover {
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* 약간의 그림자 효과 추가 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 추가 */
   transition: transform 0.3s ease; /* 호버 효과를 위한 전환 설정 */
 }
 
@@ -382,7 +389,7 @@ body {
   border-radius: 8px; /* 모서리 둥글게 */
   margin-bottom: 20px; /* 카드 간 간격 */
   width: 250px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 그림자 효과 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }
 
 
@@ -393,7 +400,7 @@ body {
 
 .game-image {
   width: 100%;
-  height:100%; /* 높이를 자동으로 설정하여 원본 이미지 비율 유지 */
+  height: 100%; /* 높이를 자동으로 설정하여 원본 이미지 비율 유지 */
   aspect-ratio: 18 / 10; /* 18:9 비율로 설정 */
   object-fit: cover; /* 이미지가 지정된 비율에 맞도록 조정 */
   opacity: 0.7; /* 이미지 투명도 */

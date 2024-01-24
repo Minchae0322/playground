@@ -15,20 +15,20 @@
     <button @click="getTeams('sportsEvent','Tennis')">网球</button>
   </div>
 
-  <input type="text" v-model="searchQuery" placeholder="..." />
+  <input type="text" v-model="searchQuery" placeholder="..."/>
   <div class="team-width">
-  <div class="team-container">
-    <div v-for="team in filteredTeams" :key="team.teamId" class="team-card">
-      <router-link :to="{name:'teamInfo', params:{teamId: team.teamId}}">
-      <img :src=team.teamProfileImg class="team-img" :alt=defaultImage>
-      <div class="team-name">{{ team.teamName }}</div>
-      <div class="team-info-container">
-        <div>{{team.sportsEvent}}</div>
+    <div class="team-container">
+      <div v-for="team in filteredTeams" :key="team.teamId" class="team-card">
+        <router-link :to="{name:'teamInfo', params:{teamId: team.teamId}}">
+          <img :src=team.teamProfileImg class="team-img" :alt=defaultImage>
+          <div class="team-name">{{ team.teamName }}</div>
+          <div class="team-info-container">
+            <div>{{ team.sportsEvent }}</div>
+          </div>
+        </router-link>
       </div>
-      </router-link>
-    </div>
 
-  </div>
+    </div>
   </div>
 </template>
 
@@ -50,16 +50,16 @@ const teams = ref([{
 }]);
 
 onMounted(async () => {
-  await getTeams('school','');
+  await getTeams('school', '');
 });
 
 const getTeams = async (type, sportsEvent) => {
   await validateAccessToken()
-  
+
   try {
     const response = await axios.post(`${apiBaseUrl}/team/list/${type}`, {
       sportsEvent: sportsEvent,
-    },{
+    }, {
       headers: {
         'Authorization': getAccessToken(),
       }
@@ -77,9 +77,7 @@ const getTeamsBySportsEvent = async () => {
   await validateAccessToken()
 
   try {
-    const response = await axios.post(`${apiBaseUrl}/team/list/${type}`, {
-
-    },{
+    const response = await axios.post(`${apiBaseUrl}/team/list/${type}`, {}, {
       headers: {
         'Authorization': getAccessToken(),
       }
@@ -138,7 +136,7 @@ const updateAccessToken = async function () {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
-      headers: { 'RefreshToken': refreshToken }
+      headers: {'RefreshToken': refreshToken}
     });
     if (response.status === 200) {
       const newAccessToken = response.headers['authorization'];
@@ -166,6 +164,7 @@ a {
 .info-container {
   margin: 10px 30px;
 }
+
 .info-container h2 {
   font-size: 1.8rem;
   color: #333;
@@ -187,7 +186,7 @@ a {
   margin-right: auto;
   margin-left: 100px;
   margin-bottom: 20px;
-  font-family: MiSans-Normal,sans-serif;
+  font-family: MiSans-Normal, sans-serif;
 }
 
 input[type="text"] {
@@ -197,14 +196,14 @@ input[type="text"] {
   box-sizing: border-box; /* 패딩과 테두리가 너비에 포함되도록 설정 */
   border: 1px solid #ccc; /* 테두리 설정 */
   border-radius: 5px; /* 모서리를 둥글게 */
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1); /* 내부 그림자 */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* 내부 그림자 */
   outline: none; /* 포커스 시 기본 윤곽선 제거 */
   transition: border-color 0.3s ease-in-out; /* 부드러운 테두리 색상 변화 */
 }
 
 input[type="text"]:focus {
   border-color: #7FC7D9; /* 포커스 시 테두리 색상 변경 */
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.2), 0 0 8px rgba(74,144,226,0.5); /* 포커스 시 그림자 강조 */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 8px rgba(74, 144, 226, 0.5); /* 포커스 시 그림자 강조 */
 }
 
 input[type="text"]::placeholder {
@@ -217,7 +216,7 @@ input[type="text"]::placeholder {
   margin-left: 20px;
 }
 
-.sports-event-container button{
+.sports-event-container button {
   text-align: center;
   width: 80px;
   height: 30px;
@@ -226,7 +225,7 @@ input[type="text"]::placeholder {
   color: white;
   border: none;
   border-radius: 4px;
-  font-family: MiSans-Semibold,sans-serif;
+  font-family: MiSans-Semibold, sans-serif;
 }
 
 .sports-event-container button:hover {
@@ -258,23 +257,24 @@ input[type="text"]::placeholder {
   position: relative;
   width: 24%; /* 카드의 폭 */
   text-align: start;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* 그림자 효과 */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
   border-radius: 8px; /* 모서리 둥글게 */
   padding: 10px 20px;
   border-bottom: 5px solid var(--primary-color);
   background-color: #fff;
 
 }
+
 .team-card:hover {
   background-color: #DCF2F1; /* 배경색 변경 */
-  box-shadow: 0 8px 12px rgba(0,0,0,0.2); /* 그림자 효과 강조 */
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* 그림자 효과 강조 */
   transform: translateY(-3px); /* 조금 위로 움직임 */
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
 }
 
 .team-card::after {
   content: '\f054'; /* Font Awesome 오른쪽 화살표 아이콘 */
-  font-family: 'Font Awesome 5 Free',serif; /* Font Awesome 폰트 설정 */
+  font-family: 'Font Awesome 5 Free', serif; /* Font Awesome 폰트 설정 */
   font-weight: 900; /* Font Awesome 아이콘을 위한 폰트 두께 */
   position: absolute; /* 절대 위치 설정 */
   right: 10px; /* 오른쪽에서 10px 떨어진 곳에 위치 */
@@ -286,7 +286,7 @@ input[type="text"]::placeholder {
 .team-img {
   width: 40%;
   border: 1px solid #d9d9d9;
-  height:40%; /* 높이를 자동으로 설정하여 원본 이미지 비율 유지 */
+  height: 40%; /* 높이를 자동으로 설정하여 원본 이미지 비율 유지 */
   aspect-ratio: 17 / 18; /* 18:9 비율로 설정 */
   object-fit: cover; /* 이미지가 지정된 비율에 맞도록 조정 */
   border-radius: 8px;
@@ -299,7 +299,7 @@ input[type="text"]::placeholder {
   font-size: 1.3em;
   color: #0F1035;
   letter-spacing: 1px;
-  font-family: MiSans-Heavy,sans-serif;
+  font-family: MiSans-Heavy, sans-serif;
   width: 100%;
 }
 
@@ -307,7 +307,7 @@ input[type="text"]::placeholder {
   text-align: start;
   width: 100%;
 
-  font-family: MiSans-Normal,sans-serif;
+  font-family: MiSans-Normal, sans-serif;
 
 }
 

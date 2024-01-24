@@ -31,18 +31,21 @@ public class GameThumbnail {
 
     private String campusName;
 
+    private String playgroundName;
+
     private String hostProfileImg;
 
     private String hostName;
 
     @Builder
-    public GameThumbnail(Long gameId, String gameName, String gameStart, String campusName, Integer runningTime, SportsEvent sportsEvent, InMemoryMultipartFile hostProfileImg, String hostName) {
+    public GameThumbnail(Long gameId, String gameName, String gameStart, String playgroundName, String campusName, Integer runningTime, SportsEvent sportsEvent, InMemoryMultipartFile hostProfileImg, String hostName) {
         this.gameId = gameId;
         this.gameName = gameName;
         this.gameStart = gameStart;
         this.runningTime = runningTime;
         this.sportsEvent = sportsEvent;
         this.campusName = campusName;
+        this.playgroundName = playgroundName;
         this.hostProfileImg = multipartFileToString(hostProfileImg);
         this.hostName = hostName;
     }

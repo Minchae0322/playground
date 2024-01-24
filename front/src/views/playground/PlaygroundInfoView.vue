@@ -1,17 +1,5 @@
 <template>
   <div id="gameView-container">
-    <component :is="currentView" :game="selectedGame" key="selectedGame.gameId"></component>
-    <div class="game-info-container">
-      <div v-if="currentGame">
-        <div><strong>Host</strong> {{ currentGame.hostName }}</div>
-        <div><strong>StartTime</strong> {{ currentGame.gameStart }}</div>
-        <div><strong>Running Time</strong> {{ currentGame.time }}</div>
-      </div>
-      <div v-else>
-        <div>No current game in progress</div>
-      </div>
-    </div>
-
     <div class="upcoming-games">
       <h3>Upcoming Games</h3>
       <ul >
@@ -30,8 +18,8 @@
         </li>
       </ul>
     </div>
-    <button class="join-button" @click="openGameBuilder">Join Game</button>
-    <GameBuilderModal v-if="isGameBuilderModalOpen" :some-data="data" @closeGameBuilder=closeModal></GameBuilderModal>
+
+
   </div>
 
 </template>
@@ -67,15 +55,6 @@ function handleGameClick(game) {
 
 
 
-const openGameBuilder = function () {
-  isGameBuilderModalOpen.value = !isGameBuilderModalOpen.value;
-};
-
-
-const closeModal = () => {
-  isGameBuilderModalOpen.value = false;
-  getUpcomingGames()
-};
 
 
 
@@ -215,24 +194,9 @@ div {
 .game-info-container:hover {
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Slightly larger shadow on hover */
 }
-.join-button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 20px;
-  background-color: #000;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
 
-.join-button:hover {
-  background-color: #444;
-}
 
 .upcoming-games {
-  margin-top: 20px;
   padding: 15px;
   background-color: #fff; /* 배경색을 흰색으로 설정 */
   border-radius: 8px;

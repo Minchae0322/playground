@@ -1,21 +1,35 @@
 <template>
   <div class="game-container">
-    <div class="game-image">
-      <!-- Your image goes here -->
-      <img :src="playgroundInfo.playgroundProfileImg" alt="Game Image">
-      <div class="overlay">
-        <h1>{{ playgroundInfo.playgroundName }}</h1>
-        <div class="playground-info-container">
-        <p>{{ playgroundInfo.schoolName }} | {{playgroundInfo.campusName}}</p>
-        <p>{{ playgroundInfo.sportsEvent }}</p>
+    <div class="playground-container">
+      <div class="game-image">
+        <img :src="playgroundInfo.playgroundProfileImg" alt="Game Image">
+        <div class="overlay">
+          <div class="playground-name">{{ playgroundInfo.playgroundName }}</div>
+          <div class="playground-info-container">
+            <p>{{ playgroundInfo.schoolName }} | {{ playgroundInfo.campusName }}</p>
+            <p>{{ playgroundInfo.sportsEvent }}</p>
+          </div>
         </div>
       </div>
+      <div class="game-info-container">
+        <div v-if="currentGame">
+          <div><strong>Host</strong> {{ currentGame.hostName }}</div>
+          <div><strong>StartTime</strong> {{ currentGame.gameStart }}</div>
+          <div><strong>Running Time</strong> {{ currentGame.time }}</div>
+        </div>
+        <div v-else>
+          <div>No current game in progress</div>
+        </div>
+      </div>
+
+      <button class="join-button" @click="openGameBuilder">Join Game</button>
     </div>
-    <div id="gameView-container">
+    <div class="upcoming-container" id="gameView-container">
       <component :is="currentView" :game="selectedGame" key="selectedGame.gameId"
                  @gameSelected="handleGameSelected"
                  @goBack="handleGoBack"></component>
     </div>
+    <GameBuilderModal v-if="isGameBuilderModalOpen" :some-data="data" @closeGameBuilder=closeModal></GameBuilderModal>
   </div>
 </template>
 
@@ -37,15 +51,14 @@ const playgroundInfo = ref({
 const props = defineProps({
   playgroundId: {
     type: Number,
-    required:true,
+    required: true,
   }
 })
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
 const currentView = ref(PlaygroundInfoView); // 초기 뷰 설정
 const selectedGame = ref(null); // 선택된 게임
-
-
+const isGameBuilderModalOpen = ref(false);
 
 onMounted(async () => {
   await getPlaygroundInfo()
@@ -69,6 +82,14 @@ const getPlaygroundInfo = async () => {
     alert("운동장 정보를 불러오는데 실패했습니다.")
     router.go(-1);
   }
+};
+
+const openGameBuilder = function () {
+  isGameBuilderModalOpen.value = !isGameBuilderModalOpen.value;
+};
+
+const closeModal = () => {
+  isGameBuilderModalOpen.value = false;
 };
 
 function handleGameSelected(game) {
@@ -106,7 +127,7 @@ const updateAccessToken = async function () {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
-      headers: { 'RefreshToken': refreshToken }
+      headers: {'RefreshToken': refreshToken}
     });
     if (response.status === 200) {
       const newAccessToken = response.headers['authorization'];
@@ -125,29 +146,37 @@ const redirectToLogin = function () {
 </script>
 
 <style scoped>
-
-
 .game-container {
-  max-width: 70vw; /* Adjust the maximum width to your preference */
-  width: 77vw; /* This will make the container take up 100% of its parent up to max-width */
-  margin: auto auto 0;
-  padding: 0; /* Padding 제거 */
+  display: flex;
+  flex-direction: row;
+  width: 96%; /* Adjust the maximum width to your preference */
+  min-width: 1100px; /* This will make the container take up 100% of its parent up to max-width */
+  margin: auto auto auto auto;
+  padding: 20px; /* Padding 제거 */
   border-radius: 10px;
+  height: 100%;
+}
 
+.playground-container {
+  display: flex;
+  flex-direction: column;
+  min-width: 500px;
+  width: 50%;
+  height: 100%;
 }
 
 .game-image {
   position: relative;
   width: 100%;
-  height: auto; /* 이미지의 높이를 자동으로 조정 */
-
+  height: 45%;
 }
+
 /* ... other styles ... */
 
 .game-image img {
   width: 100%;
-  height:100%; /* 높이를 자동으로 설정하여 원본 이미지 비율 유지 */
-  aspect-ratio: 18 / 7; /* 18:9 비율로 설정 */
+  height: 100%; /* 높이를 자동으로 설정하여 원본 이미지 비율 유지 */
+  aspect-ratio: 18 / 12; /* 18:9 비율로 설정 */
   object-fit: cover; /* 이미지가 지정된 비율에 맞도록 조정 */
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
@@ -159,128 +188,63 @@ const redirectToLogin = function () {
   bottom: 0;
   background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
   color: white;
-  width: 30%;
+  width: 40%;
   padding: 10px 10px 10px 10px;
   text-align: center;
+}
+
+.game-info-container {
+  height: 200px;
+  border: 1px solid #ddd; /* Add a border */
+  padding: 15px; /* Add some padding inside the card */
+  margin-top: 20px; /* Add some space above the card */
+  background-color: #fff; /* Set a background color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+  border-radius: 8px; /* Optional: rounded corners */
+  cursor: pointer; /* Indicates it's clickable */
+  transition: box-shadow 0.3s; /* Smooth transition for hover effect */
+}
+
+.game-info-container:hover {
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Slightly larger shadow on hover */
 }
 
 .playground-info-container {
   margin-left: 10px;
   text-align: start;
-  font-family: MiSans-Normal,sans-serif;
+  font-size: 10px;
+  font-family: MiSans-Normal, sans-serif;
 }
 
-.upcoming-games {
+.playground-name {
+  font-size: 15px;
+}
+.join-button {
+  display: block;
+  width: 100%;
+  padding: 10px;
   margin-top: 20px;
-  padding: 15px;
-  background-color: #fff; /* 배경색을 흰색으로 설정 */
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-.upcoming-games h3 {
-  margin: 0 0 10px 0;
-  color: #333;
-  font-size: 1.25rem; /* 크기를 조정하여 가독성을 높임 */
+.join-button:hover {
+  background-color: #444;
 }
 
-.upcoming-games ul {
-  list-style: none;
-  padding: 0;
+.upcoming-container {
+  margin-left: 20px;
+  min-width: 500px;
+  width: 50%;
+  height: 90vh;
+  overflow-y: auto;
 }
 
-.upcoming-games li {
-  margin-bottom: 15px; /* 각 게임 카드 사이의 간격을 늘림 */
-  color: #555;
-}
-
-
-
-.host-info {
-  display: flex; /* Flexbox를 이용한 가로 정렬 */
-  align-items: center; /* 세로축 중앙 정렬 */
-  margin-bottom: 0.5rem; /* 아래쪽 여백 */
-}
-
-.host-info img {
-  border-radius: 50%;
-  background-color: #ddd; /* 아이콘 배경색 설정 */
-  display: inline-block;
-  width: 25px; /* 아이콘 크기 */
-  height: 25px;
-  margin-right: 10px; /* 아이콘과 텍스트 사이의 간격 */
-}
-
-.host-info h3 {
-  font-size: 1rem; /* 호스트 이름의 글씨 크기 */
-  color: #333; /* 호스트 이름의 글씨 색상 */
-  margin: 0; /* 여백 초기화 */
-}
-.game-card {
-  border: 1px solid #ddd;
-  padding: 15px;
-  background-color: #fff;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 그림자를 더 부드럽게 조정 */
-  border-radius: 8px;
-  transition: box-shadow 0.3s;
-}
-
-.game-card:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 강조 */
-}
-
-.game-card h2 {
-  color: #000;
-  font-size: 24px;
-  text-decoration: none;
-  margin-bottom: 10px;
-  font-family: "MS UI Gothic";
-}
-
-
-.game-card h3 {
-  font-size: 1rem;
-  color: #000;
-
-
-}
-
-.game-card p {
-
-}
-
-/* 아이콘 스타일링 */
-.game-card img {
-  border-radius: 50%;
-  background-color: #ddd; /* 아이콘 배경색 설정 */
-  display: inline-block;
-  width: 40px; /* 아이콘 크기 조정 */
-  height: 40px;
-  margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 조정 */
-  vertical-align: middle; /* 수직 정렬 */
-}
-
-/* 시간과 실행 시간 정보 스타일링 */
-.game-card .game-time {
-  font-size: 0.875rem;
-  color: #666;
-  margin-top: 0.5rem;
-}
-
-.game-card .running-time {
-  font-size: 0.875rem;
-  color: #666;
-  margin-top: 0.25rem;
-}
-
-/* 링크 스타일링 제거 */
-.game-card a {
-  text-decoration: none;
-  color: inherit;
-}
 
 a {
-
   text-decoration: none;
 }
 </style>
