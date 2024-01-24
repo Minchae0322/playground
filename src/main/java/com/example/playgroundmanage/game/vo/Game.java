@@ -86,6 +86,7 @@ public class Game {
                 .playground(playground)
                 .gameName(gameName)
                 .gameId(id)
+                .participantNum(gameParticipants.size())
                 .startDateTime(MyDateTimeLocal.initMyDateTime(gameStartDateTime))
                 .isFriendly(isFriendly)
                 .runningTime(runningTime)

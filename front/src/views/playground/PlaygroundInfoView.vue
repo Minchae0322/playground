@@ -1,17 +1,26 @@
 <template>
   <div id="gameView-container">
     <div class="upcoming-games">
-      <h3>Upcoming Games</h3>
-      <ul >
+      <h3>未开始比赛</h3>
+      <ul>
         <li v-for="(game,gameId) in upcomingGames" :key="gameId" @click="handleGameClick(game)">
-          <div v-if="game.gameId" >
-            <div  class="game-card">
-              <h2>{{ game.gameName }}</h2>
+          <div v-if="game.gameId">
+            <div class="game-card">
+              <div class="game-name">{{ game.gameName }}</div>
+              <div class="game-time">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                     class="time-icon">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                {{ game.gameStart }}
+              </div>
               <div class="host-info">
                 <img :src="game.hostProfileImg || defaultImage">
-                <h3>Host: {{ game.hostName }}</h3>
+                <div class="host-name">{{ game.hostName }}</div>
               </div>
-              <p class="game-time">Time: {{ game.gameStart }}</p>
+
               <p class="running-time">Running Time: {{ game.runningTime }}</p>
             </div>
           </div>
@@ -29,23 +38,21 @@ import {onMounted, ref} from 'vue';
 import axios from "axios";
 import GameBuilderModal from '../game/GameBuilderView.vue';
 import {useRouter} from "vue-router";
-import { defineEmits } from 'vue';
+import {defineEmits} from 'vue';
 
 
 const data = ref('이것은 부모로부터 온 데이터입니다.');
 const isGameBuilderModalOpen = ref(false);
-const currentGame = ref('')
-const upcomingGames = ref([{
 
-}]);
+const upcomingGames = ref([{}]);
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
 const emits = defineEmits(['gameSelected']);
 
 onMounted(async () => {
   // Check if the initial page number is provided in the route query
-  getInProgressGame();
-  getUpcomingGames();
+
+  await getUpcomingGames();
 });
 
 function handleGameClick(game) {
@@ -53,38 +60,21 @@ function handleGameClick(game) {
   emits('gameSelected', game);
 }
 
-
-
-
-
-
-const getInProgressGame = async function () {
-  await validateAccessToken()
-
-  await axios.get(`${apiBaseUrl}/playground/2/current`,
-        {  headers: {
-            'Authorization': getAccessToken()
-          }}
-    ).then(response => {
-      if (response.status === 200) {
-        currentGame.value = response.data;
-      }
-    });
-}
-
 const getUpcomingGames = async () => {
   await validateAccessToken()
-   await axios.get(`${apiBaseUrl}/playground/2/upComing`,
-        {  headers: {
-            'Authorization': getAccessToken()
-          }}
-    ).then(response => {
-      upcomingGames.value = response.data.map(game => ({
-        ...game,
-        hostProfileImg: game.hostProfileImg ? `data:image/jpeg;base64,${game.hostProfileImg}` : defaultImage,
-        onClick: () => showGameInfo(game.gameId)
-      }));
-    });
+  await axios.get(`${apiBaseUrl}/playground/2/upComing`,
+      {
+        headers: {
+          'Authorization': getAccessToken()
+        }
+      }
+  ).then(response => {
+    upcomingGames.value = response.data.map(game => ({
+      ...game,
+      hostProfileImg: game.hostProfileImg ? `data:image/jpeg;base64,${game.hostProfileImg}` : defaultImage,
+      onClick: () => showGameInfo(game.gameId)
+    }));
+  });
 
 };
 
@@ -114,7 +104,7 @@ const updateAccessToken = async function () {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
-      headers: { 'RefreshToken': refreshToken }
+      headers: {'RefreshToken': refreshToken}
     });
     if (response.status === 200) {
       const newAccessToken = response.headers['authorization'];
@@ -142,21 +132,6 @@ body {
 div {
   color: #333333;
 }
-.game-container {
-  max-width: 70vw; /* Adjust the maximum width to your preference */
-  width: 75vw; /* This will make the container take up 100% of its parent up to max-width */
-  margin: auto;
-  border: 1px solid #ccc;
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-}
-
-.game-image {
-  position: relative;
-  width: 100%;
-}
-/* ... other styles ... */
 
 .game-image img {
   width: 100%;
@@ -166,35 +141,6 @@ div {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
-
-.overlay {
-  position: absolute;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
-  color: white;
-  width: 30%;
-  padding: 10px;
-  text-align: center;
-}
-
-
-
-
-.game-info-container {
-  border: 1px solid #ddd; /* Add a border */
-  padding: 15px; /* Add some padding inside the card */
-  margin-top: 20px; /* Add some space above the card */
-  background-color: #fff; /* Set a background color */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
-  border-radius: 8px; /* Optional: rounded corners */
-  cursor: pointer; /* Indicates it's clickable */
-  transition: box-shadow 0.3s; /* Smooth transition for hover effect */
-}
-
-.game-info-container:hover {
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Slightly larger shadow on hover */
-}
-
 
 .upcoming-games {
   padding: 15px;
@@ -220,8 +166,8 @@ div {
 }
 
 
-
 .host-info {
+  margin-top: 5px;
   display: flex; /* Flexbox를 이용한 가로 정렬 */
   align-items: center; /* 세로축 중앙 정렬 */
   margin-bottom: 0.5rem; /* 아래쪽 여백 */
@@ -235,12 +181,10 @@ div {
   height: 25px;
   margin-right: 10px; /* 아이콘과 텍스트 사이의 간격 */
 }
-
-.host-info h3 {
-  font-size: 1rem; /* 호스트 이름의 글씨 크기 */
-  color: #333; /* 호스트 이름의 글씨 색상 */
-  margin: 0; /* 여백 초기화 */
+.host-name {
+  font-family: MiSans-Medium,sans-serif;
 }
+
 .game-card {
   border: 1px solid #ddd;
   padding: 15px;
@@ -254,24 +198,26 @@ div {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 강조 */
 }
 
-.game-card h2 {
-  color: #000;
-  font-size: 24px;
-  text-decoration: none;
-  margin-bottom: 10px;
-  font-family: "MS UI Gothic";
+
+.game-name {
+  font-size: 20px;
+  padding: 0 0 5px 0;
+  border-bottom: 1px solid var(--text-hint);
+  font-family: MiSans-Semibold,sans-serif;
 }
 
-
-.game-card h3 {
-  font-size: 1rem;
-  color: #000;
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
-
+.time-icon {
+  margin: auto 7px auto 0;
+  height: 15px;
 }
 
-.game-card p {
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif
+.game-time {
+  display: flex;
+  font-size: 15px;
+  align-content: center;
+  color: var(--text-hint-dark);
+  margin-top: 7px;
+  font-family: MiSans-Medium, sans-serif;
 }
 
 /* 아이콘 스타일링 */
@@ -286,7 +232,7 @@ div {
 }
 
 /* 시간과 실행 시간 정보 스타일링 */
-.game-card .game-time {
+.game-card {
   font-size: 0.875rem;
   color: #666;
   margin-top: 0.5rem;

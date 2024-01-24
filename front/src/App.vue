@@ -160,21 +160,17 @@ const redirectToLogin = async () => {
               <div class="nav-item">运动场</div>
             </div>
             <ul v-if="menuVisible.playground" class="sub-menu">
-              <li>
-                <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" class="sub-nav-item">
-                  Soccer
-                </RouterLink>
-              </li>
-              <li>
-                <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}" class="sub-nav-item">
-                  BASKET BALL
-                </RouterLink>
-              </li>
-              <li>
-                <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BADMINTON'}}" class="sub-nav-item">
-                  BADMINTON
-                </RouterLink>
-              </li>
+
+              <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" class="sub-nav-item">
+                <li>SOCCER</li>
+              </RouterLink>
+              <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}" class="sub-nav-item">
+                <li>BASKET BALL</li>
+              </RouterLink>
+              <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BADMINTON'}}" class="sub-nav-item">
+                <li>BADMINTON</li>
+              </RouterLink>
+
             </ul>
           </li>
           <li>
@@ -184,18 +180,20 @@ const redirectToLogin = async () => {
               <div class="nav-item">队伍</div>
             </div>
             <ul v-if="menuVisible.team" class="sub-menu">
-              <li>
-                <RouterLink :to="{ name:'myTeam'}" class="sub-nav-item">My Team</RouterLink>
-              </li>
-              <li>
-                <RouterLink :to="{ name:'teamList'}" class="sub-nav-item">Team Join</RouterLink>
-              </li>
-              <li>
-                <RouterLink :to="{ name:'teamRequest'}" class="sub-nav-item">Team Request</RouterLink>
-              </li>
-              <li>
-                <RouterLink :to="{ name:'teamBuilding'}" class="sub-nav-item">Make Team</RouterLink>
-              </li>
+
+              <RouterLink :to="{ name:'myTeam'}" class="sub-nav-item">
+                <li>My Team</li>
+              </RouterLink>
+              <RouterLink :to="{ name:'teamList'}" class="sub-nav-item">
+                <li>Team Join</li>
+              </RouterLink>
+              <RouterLink :to="{ name:'teamRequest'}" class="sub-nav-item">
+                <li>Team Request</li>
+              </RouterLink>
+              <RouterLink :to="{ name:'teamBuilding'}" class="sub-nav-item">
+                <li>Make Team</li>
+              </RouterLink>
+
             </ul>
           </li>
           <li>
@@ -205,15 +203,15 @@ const redirectToLogin = async () => {
               <div class="nav-item">比赛</div>
             </div>
             <ul v-if="menuVisible.game" class="sub-menu">
-              <li>
-                <RouterLink :to="{name: 'gameRequest'}" class="sub-nav-item">Game Request</RouterLink>
-              </li>
-              <li>
-                <RouterLink :to="{name: 'myGame'}" class="sub-nav-item">My Game</RouterLink>
-              </li>
-              <li>
-                <RouterLink :to="{name: 'hostGame'}" class="sub-nav-item">Host Game</RouterLink>
-              </li>
+              <RouterLink :to="{name: 'gameRequest'}" class="sub-nav-item">
+                <li>Game Request</li>
+              </RouterLink>
+              <RouterLink :to="{name: 'myGame'}" class="sub-nav-item">
+                <li>My Game</li>
+              </RouterLink>
+              <RouterLink :to="{name: 'hostGame'}" class="sub-nav-item">
+                <li>Host Game</li>
+              </RouterLink>
             </ul>
           </li>
         </ul>

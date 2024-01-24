@@ -33,7 +33,7 @@ public class PlaygroundController {
     public ResponseEntity<GameThumbnail> getOngoingGame(@PathVariable Long playgroundId) {
         GameDto gameDto =  playgroundService.getOngoingGame(playgroundId);
 
-        return ResponseEntity.ok(gameDto.toGameThumbnail());
+        return ResponseEntity.ok(gameDto.toGameThumbnail(userService.getUserProfileImg(gameDto.getHost())));
     }
 
 

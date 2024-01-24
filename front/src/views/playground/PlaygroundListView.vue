@@ -348,13 +348,11 @@ body {
 }
 
 .game-card {
-  margin-top: 10px;
+  margin: 10px;
   background-color: var(--white);
   border: 1px solid #ddd;
   padding: 12px 15px;
   border-radius: 4px;
-  width: 33%; /* 각 카드의 너비를 30%로 설정하여 가로로 3개가 들어갈 수 있도록 함 */
-  text-align: left; /* 텍스트를 왼쪽으로 정렬 */
 }
 
 .upcoming-game-name {

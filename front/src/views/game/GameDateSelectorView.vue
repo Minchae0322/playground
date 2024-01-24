@@ -2,37 +2,37 @@
   <div>
 
     <div class="modal-overlay">
-
       <div class="modal">
-
-          <div class="justify-center item-center userInfo-container " data-v0-t="card">
-
-            <div class="padding-20">
-              <a class="text-bold text-title primary-font">Time Selection</a>
-              <h4 class="text-color-gray primary-font">Select the start time and duration for your participation.</h4>
-              <div class="block">
-                <el-date-picker :disabled-date="disabledDate" v-model="dateValue" type="date" @change="pickDate" placeholder="Pick a date" :default-value="new Date()"/>
-              </div>
+        <div class="justify-center item-center userInfo-container " data-v0-t="card">
+          <div class="padding-20">
+            <a class="text-bold text-title primary-font">Time Selection</a>
+            <div class="hint">Select the start time and duration for your participation.</div>
+            <div class="block">
+              <el-date-picker :disabled-date="disabledDate" v-model="dateValue" type="date" @change="pickDate"
+                              placeholder="Pick a date" :default-value="new Date()"/>
             </div>
+          </div>
 
-            <hr color="#e7e7e7">
+          <hr color="#e7e7e7">
+          <div class="button-container">
             <div class="button-container">
-              <div class="button-container">
-                <div class="start-time-container">
+              <div class="start-time-container">
                 <a class="start-time" id="start-time">
                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
-                       stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" class="icon-style">
+                       stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
+                       class="icon-style">
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
                   Choose Start Time
                 </a>
-                  <div class="time-picker-container">
-                   <el-time-picker size="large" format="HH:mm" value-format="HH:mm" v-model="timeValue" @change="changeTime" placeholder="Select Time" />
-                  </div>
+                <div class="time-picker-container">
+                  <el-time-picker size="large" format="HH:mm" value-format="HH:mm" v-model="timeValue"
+                                  @change="changeTime" placeholder="Select Time"/>
                 </div>
-                <div class="start-time-container">
-                  <a class="start-time" id="start-time">
+              </div>
+              <div class="start-time-container">
+                <a class="start-time" id="start-time">
                   <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="15"
@@ -52,55 +52,56 @@
                   </svg>
                   Choose Duration
                 </a>
-                  <el-input-number v-model="runningTime" :min="1" :max="120" @change="handleChange" />
-              </div>
-              </div>
-              <div class="container-confirm-style">
-                <button class="button-cancel inline-flex items-center justify-center rounded-md text-sm font-medium  px-4 py-2"
-                        @click="closeModal">
-                  Cancel
-                </button>
-                <button class="button-confirm inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2"
-                @click="confirm">
-                  Confirm
-                </button>
+                <el-input-number v-model="runningTime" :min="1" :max="120" @change="handleChange"/>
               </div>
             </div>
+            <div class="container-confirm-style">
+              <button
+                  class="button-cancel inline-flex items-center justify-center rounded-md text-sm font-medium  "
+                  @click="closeModal">
+                Cancel
+              </button>
+              <button
+                  class="button-confirm inline-flex items-center justify-center"
+                  @click="confirm">
+                Confirm
+              </button>
             </div>
+          </div>
+        </div>
 
-          <div class="justify-center item-center userInfo-container margin-top" data-v0-t="card">
-            <div class="padding-20">
-              <a class="text-bold text-title primary-font">Occupied Time Slots</a>
-              <h4 class="text-color-gray primary-font">Select the start time and duration for your participation.</h4>
-            </div>
-            <div class="p-4 border-t">
-              <div class="space-y-2">
-                <div
-                    v-for="(occupiedSlot, index) in occupiedTimeSlots"
-                    :key="index"
-                    class="time-container px-2.5 py-0.5 inline-flex items-center"
-                    color="black"
+        <div class="justify-center item-center userInfo-container margin-top" data-v0-t="card">
+          <div class="padding-20">
+            <a class="text-bold text-title primary-font">Occupied Time Slots</a>
+            <div class="hint">Select the start time and duration for your participation.</div>
+          </div>
+          <div class="p-4 border-t">
+            <div class="space-y-2">
+              <div
+                  v-for="(occupiedSlot, index) in occupiedTimeSlots"
+                  :key="index"
+                  class="time-container px-2.5 py-0.5 inline-flex items-center"
+              >
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="15"
+                    height="15"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="margin-right"
                 >
-                  <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="15"
-                      height="15"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="3"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="margin-right"
-                  >
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                  {{ occupiedSlot.start + " ~ " + occupiedSlot.end}}
-                </div>
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                {{ occupiedSlot.start + " ~ " + occupiedSlot.end }}
               </div>
             </div>
           </div>
+        </div>
       </div>
     </div>
   </div>
@@ -109,7 +110,7 @@
 <script setup lang="js">
 import {computed, defineProps, onMounted, ref} from 'vue';
 import axios from "axios";
-import { defineEmits } from 'vue';
+import {defineEmits} from 'vue';
 
 const dateValue = ref(new Date())
 const timeValue = ref('')
@@ -117,7 +118,7 @@ const timeValue = ref('')
 const occupiedTimeSlots = ref([]); // Example occupied slots
 
 const apiBaseUrl = "http://localhost:8080";
-const runningTime = ref(1);
+const runningTime = ref(60);
 const emit = defineEmits(['dateTimeValue', 'close', 'runningTime']);
 
 
@@ -128,7 +129,7 @@ onMounted(() => {
 const confirm = async () => {
   const isValid = await validateStartTime(); // 비동기 함수를 기다립니다.
 
-  if(isValid) {
+  if (isValid) {
     emit('runningTime', runningTime.value);
     emit('dateTimeValue', dateValue.value);
     emit('close');
@@ -159,9 +160,11 @@ const validateStartTime = async function () {
     const response = await axios.post(`${apiBaseUrl}/playground/2/valid-start`, {
           gameStartDateTime: dateValue.value,
           runningTime: runningTime.value
-        },{  headers: {
+        }, {
+          headers: {
             'Authorization': getAccessToken()
-          }}
+          }
+        }
     );
     return response.data; // boolean 값을 반환
   } catch (error) {
@@ -174,10 +177,12 @@ const pickDate = function () {
   validateAccessToken()
 
   axios.post(`${apiBaseUrl}/playground/2/occupiedTime`, {
-    gameStartDateTime: dateValue.value
-  },{  headers: {
-      'Authorization': getAccessToken()
-    }}
+        gameStartDateTime: dateValue.value
+      }, {
+        headers: {
+          'Authorization': getAccessToken()
+        }
+      }
   ).then(response => {
     occupiedTimeSlots.value = response.data;
   });
@@ -215,7 +220,7 @@ const updateAccessToken = async function () {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
-      headers: { 'RefreshToken': refreshToken }
+      headers: {'RefreshToken': refreshToken}
     });
     if (response.status === 200) {
       const newAccessToken = response.headers['authorization'];
@@ -245,6 +250,7 @@ const redirectToLogin = function () {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: black;
 }
 
 .modal {
@@ -256,6 +262,11 @@ const redirectToLogin = function () {
   overflow-x: auto; /* Add this line to enable vertical scrolling if needed */
   height: 70vh; /* Adjust this value as needed */
   overflow-y: auto; /* Add this line to enable vertical scrolling if needed */
+}
+
+.hint {
+  font-family: MiSans-Normal,sans-serif;
+  color: var(--text-hint);
 }
 
 .text-bold {
@@ -273,6 +284,7 @@ const redirectToLogin = function () {
 svg {
   margin-bottom: 2px;
 }
+
 hr {
   color: #e7e7e7;
   margin-bottom: 10px;
@@ -281,11 +293,21 @@ hr {
 .item-center {
   align-items: center;
 }
+
 .column {
   display: flow;
 }
+
 .text-color-gray {
   color: #838383;
+}
+
+.inline-flex {
+  display: inline-flex;
+}
+
+.items-center {
+  align-items: center;
 }
 
 .primary-font {
@@ -310,11 +332,10 @@ hr {
   text-align: start;
   margin: 10px 10px;
   cursor: pointer; /* 포인터 모양 변경 */
-  font-family: primary-font,serif;
+  font-family: primary-font, serif;
   font-size: 14px;
   transition: background-color 0.3s, color 0.3s; /* 부드러운 전환 효과 */
 }
-
 
 
 .icon-style {
@@ -332,13 +353,23 @@ hr {
 
 .button-confirm {
   margin: 0px 20px;
+  border-radius: 4px;
+  padding: 10px 20px;
+  border: none;
+  width: 100px;
+  font-size: 12px;
+  background-color: var(--primary-color);
 }
 
 .button-cancel {
   background-color: white;
   color: black;
-  margin: 0px 20px;
-  border: white;
+  margin: 0 20px;
+  width: 100px;
+  font-size: 12px;
+  border-radius: 4px;
+  padding: 7px 20px;
+  border: 1px solid var(--text-hint-dark);
 }
 
 .button-cancel:hover {
@@ -357,7 +388,7 @@ hr {
 
 .userInfo-container {
   padding: 10px;
-  border: 2px #919191;/* 테두리 스타일 및 색상 지정 */
+  border: 2px #919191; /* 테두리 스타일 및 색상 지정 */
   box-shadow: 0 0 2px #b2b2b2;
   border-radius: 5px;
 }
@@ -371,11 +402,12 @@ hr {
   background-color: #ffffff; /* 흰색 배경 */
   border: 1px solid #e3e3e3; /* 연한 회색 테두리 */
   border-radius: 20px;
+
   padding: 0 10px;
   font-size: 13px;
   margin: 5px 5px;
   font-weight: bolder;
-  font-family: primary-font,sans-serif;
+  font-family: primary-font, sans-serif;
 }
 
 .margin-right {
@@ -399,5 +431,6 @@ hr {
   text-align: center;
   padding-top: 3px;
   margin: 0 19px 0px 12px;
+  font-family: MiSans-Medium,sans-serif;
 }
 </style>

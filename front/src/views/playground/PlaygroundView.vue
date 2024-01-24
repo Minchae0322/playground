@@ -12,20 +12,35 @@
         </div>
       </div>
       <div class="game-info-container">
-        <div v-if="currentGame">
-          <div><strong>Host</strong> {{ currentGame.hostName }}</div>
-          <div><strong>StartTime</strong> {{ currentGame.gameStart }}</div>
-          <div><strong>Running Time</strong> {{ currentGame.time }}</div>
+        <div class="ongoing-title">Ongoing game</div>
+        <div v-if="ongoingGame.gameId">
+          <div class="game-card">
+            <div class="game-name">{{ ongoingGame.gameName }}</div>
+            <div class="game-time">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                   class="time-icon">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              {{ calculateTimeRange()}}
+            </div>
+            <div class="host-info">
+              <img :src="ongoingGame.hostProfileImg || defaultImage">
+              <div class="host-name">{{ ongoingGame.hostName }}</div>
+            </div>
+
+          </div>
         </div>
-        <div v-else>
-          <div>No current game in progress</div>
+        <div v-else class="ongoing-not-exist" >
+          No current game in progress
         </div>
       </div>
 
       <button class="join-button" @click="openGameBuilder">Join Game</button>
     </div>
     <div class="upcoming-container" id="gameView-container">
-      <component :is="currentView" :game="selectedGame" key="selectedGame.gameId"
+      <component :is="currentView" :game="selectedGame" :key="componentKey"
                  @gameSelected="handleGameSelected"
                  @goBack="handleGoBack"></component>
     </div>
@@ -47,12 +62,16 @@ const playgroundInfo = ref({
   playgroundProfileImg: '',
 
 })
-
+const componentKey = ref(0);
 const props = defineProps({
   playgroundId: {
     type: Number,
     required: true,
   }
+})
+
+const ongoingGame = ref({
+  hostProfileImg: ''
 })
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
@@ -62,6 +81,7 @@ const isGameBuilderModalOpen = ref(false);
 
 onMounted(async () => {
   await getPlaygroundInfo()
+  await getOngoingGame();
 });
 
 const getPlaygroundInfo = async () => {
@@ -84,12 +104,65 @@ const getPlaygroundInfo = async () => {
   }
 };
 
+const getOngoingGame = async function () {
+  await validateAccessToken()
+  try {
+    const response = await axios.get(`${apiBaseUrl}/playground/2/current`,
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
+    )
+    ongoingGame.value = response.data
+    ongoingGame.value.hostProfileImg = `data:image/jpeg;base64,${ongoingGame.value.hostProfileImg}`;
+  } catch (error) {
+  }
+}
+
+const calculateTimeRange = function() {
+  if (!ongoingGame.value.gameStartDateTime || !ongoingGame.value.runningTime) {
+    return "시간 정보 없음";
+  }
+
+  // 시작 시간 파싱
+  const startTime = parseLocalDateTime(ongoingGame.value.gameStartDateTime);
+  const formattedStartTime = formatDate(startTime);
+
+  // 종료 시간 계산
+  const runningMinutes = parseInt(ongoingGame.value.runningTime);
+  const endTime = new Date(startTime.getTime() + runningMinutes * 60000);
+  const formattedEndTime = formatDate(endTime);
+
+  // 시작시간 ~ 종료시간 형태로 문자열 결합
+  return `${formattedStartTime} ~ ${formattedEndTime}`;
+};
+
+const parseLocalDateTime = function(localDateTime) {
+  const [datePart, timePart] = localDateTime.split('T');
+  const [year, month, day] = datePart.split('-');
+  const [hour, minute] = timePart.split(':');
+
+  return new Date(year, month - 1, day, hour, minute);
+};
+
+const formatDate = function(date) {
+  const year = date.getFullYear();
+  const month = (date.getMonth() + 1).toString().padStart(2, '0');
+  const day = date.getDate().toString().padStart(2, '0');
+  const hour = date.getHours().toString().padStart(2, '0');
+  const minute = date.getMinutes().toString().padStart(2, '0');
+
+  return `${year}-${month}-${day} ${hour}:${minute}`;
+};
 const openGameBuilder = function () {
   isGameBuilderModalOpen.value = !isGameBuilderModalOpen.value;
 };
 
 const closeModal = () => {
   isGameBuilderModalOpen.value = false;
+  componentKey.value++; // key 값을 변경하여 컴포넌트를 재생성
+
 };
 
 function handleGameSelected(game) {
@@ -193,11 +266,15 @@ const redirectToLogin = function () {
   text-align: center;
 }
 
+.ongoing-title {
+  font-family: MiSans-Semibold, sans-serif;
+  padding: 8px 0 0 10px;
+}
+
 .game-info-container {
-  height: 200px;
+  height: 220px;
   border: 1px solid #ddd; /* Add a border */
-  padding: 15px; /* Add some padding inside the card */
-  margin-top: 20px; /* Add some space above the card */
+  margin-top: 10px; /* Add some space above the card */
   background-color: #fff; /* Set a background color */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
   border-radius: 8px; /* Optional: rounded corners */
@@ -219,6 +296,90 @@ const redirectToLogin = function () {
 .playground-name {
   font-size: 15px;
 }
+.ongoing-not-exist {
+  margin: 50px auto 0 auto;
+  font-family: MiSans-Normal,sans-serif;
+  color: var(--text-hint-dark);
+  font-size: 12px;
+  justify-content: center;
+  text-align: center;
+}
+
+.host-info {
+  margin-top: 5px;
+  display: flex; /* Flexbox를 이용한 가로 정렬 */
+  align-items: center; /* 세로축 중앙 정렬 */
+  margin-bottom: 0.5rem; /* 아래쪽 여백 */
+}
+
+.host-info img {
+  border-radius: 50%;
+  background-color: #ddd; /* 아이콘 배경색 설정 */
+  display: inline-block;
+  width: 15px; /* 아이콘 크기 */
+  height: 15px;
+  margin-right: 10px; /* 아이콘과 텍스트 사이의 간격 */
+}
+
+.host-name {
+  font-family: MiSans-Medium, sans-serif;
+  font-size: 14px;
+}
+
+.game-card {
+  border: 1px solid #ddd;
+  padding: 10px 15px 5px 15px;
+  margin: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 그림자를 더 부드럽게 조정 */
+  border-radius: 8px;
+  transition: box-shadow 0.3s;
+}
+
+.game-card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 강조 */
+}
+
+
+.game-name {
+  font-size: 18px;
+  padding: 0 0 5px 0;
+  border-bottom: 1px solid var(--text-hint);
+  font-family: MiSans-Semibold, sans-serif;
+  color: black;
+}
+
+.time-icon {
+  margin: auto 7px auto 0;
+  height: 15px;
+}
+
+.game-time {
+  display: flex;
+  font-size: 13px;
+  align-content: center;
+  color: var(--text-hint-dark);
+  margin-top: 7px;
+  font-family: MiSans-Medium, sans-serif;
+}
+
+/* 아이콘 스타일링 */
+.game-card img {
+  border-radius: 50%;
+  background-color: #ddd; /* 아이콘 배경색 설정 */
+  display: inline-block;
+  width: 40px; /* 아이콘 크기 조정 */
+  height: 40px;
+  margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 조정 */
+  vertical-align: middle; /* 수직 정렬 */
+}
+
+
+a {
+
+  text-decoration: none;
+}
+
 .join-button {
   display: block;
   width: 100%;
@@ -242,7 +403,6 @@ const redirectToLogin = function () {
   height: 90vh;
   overflow-y: auto;
 }
-
 
 a {
   text-decoration: none;
