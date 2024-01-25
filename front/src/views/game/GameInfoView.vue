@@ -71,8 +71,8 @@ function goBack() {
 
 
 onMounted(async () => {
-  await getTeamData('HOME')
-  await getTeamData('AWAY')
+  await getTeamData('HOME','Competition')
+  await getTeamData('AWAY', 'Competition')
   await clickHomeTeam()
   await getLoggedUserId()
 });
@@ -108,11 +108,11 @@ const getLoggedUserId = async () => {
 };
 
 // 팀 데이터를 업데이트하는 함수
-const getTeamData = async (matchTeamSide) => {
+const getTeamData = async (matchTeamSide, gameType) => {
   await validateAccessToken();
 
   try {
-    const response = await axios.get(`${apiBaseUrl}/game/${props.game.gameId}/${matchTeamSide}`, {
+    const response = await axios.get(`${apiBaseUrl}/game/${props.game.gameId}/${gameType}/${matchTeamSide}`, {
       headers: {
         'Authorization': getAccessToken()
       }

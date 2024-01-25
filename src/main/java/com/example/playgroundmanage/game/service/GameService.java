@@ -66,30 +66,6 @@ public class GameService {
     }
 
 */
-    public List<SubTeamDto> getSubTeamsByTeamSide(Long gameId, GameTeamSide gameTeamSide) {
-        Game game = gameRepository.findById(gameId)
-                .orElseThrow(GameNotExistException::new);
-        CompetingTeam competingTeam = game.getCompetingTeamBySide(gameTeamSide).orElseThrow();
-
-        return competingTeam.getSubTeamsNotSoloTeam()
-                .stream()
-                .map(this::toSubTeamDto)
-                .toList();
-    }
-
-    @Transactional
-    public SubTeamDto getSoloTeamByTeamSide(Long gameId, GameTeamSide gameTeamSide) {
-        Game game = gameRepository.findById(gameId)
-                .orElseThrow(GameNotExistException::new);
-        SubTeam soloTeam = game.getCompetingTeamBySide(gameTeamSide).orElseThrow().getSoloTeam();
-
-        return SubTeamDto.builder()
-                .subTeamId(soloTeam.getId())
-                .users(soloTeam.getGameParticipants().stream()
-                        .map(gameParticipant -> userService.getUserInfo(gameParticipant.getUser()))
-                        .toList())
-                .build();
-    }
 
     @Transactional
     public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(User user) {
@@ -115,22 +91,6 @@ public class GameService {
 
         gameRepository.delete(game);
     }
-
-    private SubTeamDto toSubTeamDto(SubTeam subTeam) {
-        InMemoryMultipartFile teamProfileImg = fileHandler.extractFile(subTeam.getTeam().getTeamPic());
-
-        return SubTeamDto.builder()
-                .subTeamId(subTeam.getId())
-                .teamId(subTeam.getTeam().getId())
-                .teamName(subTeam.getTeam().getTeamName())
-                .teamProfileImg(teamProfileImg)
-                .teamDescription(subTeam.getTeam().getDescription())
-                .users(subTeam.getGameParticipants().stream()
-                        .map(gameParticipant -> userService.getUserInfoInTeam(subTeam.getTeam(), gameParticipant.getUser()))
-                        .toList())
-                .build();
-    }
-
 
     @Transactional
     public void userOutOfGame(Long gameId, User user) {

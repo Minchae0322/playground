@@ -8,6 +8,7 @@ import com.example.playgroundmanage.dto.SubTeamDto;
 import com.example.playgroundmanage.dto.response.TeamBySide;
 import com.example.playgroundmanage.game.GameGenerator;
 import com.example.playgroundmanage.game.GameGeneratorFactory;
+import com.example.playgroundmanage.game.dto.GameTeamResponseDto;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.SubTeamService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
@@ -38,16 +39,23 @@ public class GameController {
     private final GameGeneratorFactory gameGeneratorFactory;
 
 
-    @GetMapping("/game/{gameId}/{matchTeamSide}")
-    public TeamBySide getSubTeams(@PathVariable Long gameId, @PathVariable String matchTeamSide) {
-        List<SubTeamDto> subTeams =  gameService.getSubTeamsByTeamSide(gameId, GameTeamSide.valueOf(matchTeamSide));
-        SubTeamDto soloTeam = gameService.getSoloTeamByTeamSide(gameId, GameTeamSide.valueOf(matchTeamSide));
+    /*@GetMapping("/game/{gameId}/{gameTeamSide}")
+    public TeamBySide getSubTeams(@PathVariable Long gameId, @PathVariable String gameTeamSide) {
+        List<SubTeamDto> subTeams = gameService.getSubTeamsByTeamSide(gameId, GameTeamSide.valueOf(gameTeamSide));
+        SubTeamDto soloTeam = gameService.getSoloTeamByTeamSide(gameId, GameTeamSide.valueOf(gameTeamSide));
 
         return TeamBySide.builder()
                 .soloTeam(soloTeam)
                 .subTeams(subTeams)
-                .matchTeamSide(matchTeamSide)
+                .matchTeamSide(gameTeamSide)
                 .build();
+    }*/
+
+    @GetMapping("/game/{gameId}/{gameType}/{gameTeamSide}")
+    public GameTeamResponseDto getGameTeam(@PathVariable Long gameId, @PathVariable String gameType, @PathVariable String gameTeamSide) {
+        GameGenerator gameGenerator = gameGeneratorFactory.find(gameType);
+
+        return gameGenerator.getGameTeamInfos(gameId, GameTeamSide.valueOf(gameTeamSide));
     }
 
     @PostMapping("/game/generate")
@@ -62,7 +70,7 @@ public class GameController {
                 .sportsEvent(gameRegistration.getSportsEvent())
                 .build();
 
-        GameGenerator gameGenerator = gameGeneratorFactory.find(gameDto.getGameType().getValue());
+        GameGenerator gameGenerator = gameGeneratorFactory.find(GameType.COMPETITION.getValue());
 
         return ResponseEntity.ok(gameGenerator.generate(gameDto));
     }

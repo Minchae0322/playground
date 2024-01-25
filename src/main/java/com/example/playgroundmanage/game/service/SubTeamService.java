@@ -20,7 +20,6 @@ public class SubTeamService {
     private final GameRepository gameRepository;
 
     @Transactional
-    @Version
     public void generateSoloSubTeamInCompetingTeam(Long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow(MatchNotExistException::new);
 
