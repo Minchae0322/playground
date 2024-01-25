@@ -2,10 +2,8 @@ package com.example.playgroundmanage.dto;
 
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.game.vo.User;
-import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.type.GameTeamSide;
 import lombok.*;
-
-import java.time.LocalDateTime;
 
 
 @Getter
@@ -20,16 +18,16 @@ public class GameRequestDto extends RequestDto {
 
     private Long teamId;
 
-    private MatchTeamSide matchTeamSide;
+    private GameTeamSide gameTeamSide;
 
 
     @Builder
-    public GameRequestDto(User user, MyDateTime requestTime, String requestType, Long gameId, Long subTeamId, Long teamId, MatchTeamSide matchTeamSide) {
+    public GameRequestDto(User user, MyDateTime requestTime, String requestType, Long gameId, Long subTeamId, Long teamId, GameTeamSide gameTeamSide) {
         super(user, requestTime);
         this.requestType = requestType;
         this.gameId = gameId;
         this.subTeamId = subTeamId;
         this.teamId = teamId;
-        this.matchTeamSide = matchTeamSide;
+        this.gameTeamSide = gameTeamSide;
     }
 }

@@ -1,8 +1,8 @@
 package com.example.playgroundmanage.game.vo;
 
 import com.example.playgroundmanage.team.vo.Team;
+import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.MatchResult;
-import com.example.playgroundmanage.type.MatchTeamSide;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
@@ -21,24 +21,24 @@ public class CompetingTeam {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(mappedBy = "homeTeam", cascade = CascadeType.MERGE)
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Game game;
 
     @Enumerated
-    private MatchTeamSide matchTeamSide;
+    private GameTeamSide gameTeamSide;
 
     @OneToMany(mappedBy = "competingTeam", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private final List<SubTeam> subTeams = new ArrayList<>();
 
     @Enumerated
-    private MatchResult matchResult;
+    private MatchResult gameResult;
 
     @Builder
-    public CompetingTeam(Long id, Game game, MatchTeamSide matchTeamSide, MatchResult matchResult) {
+    public CompetingTeam(Long id, Game game, GameTeamSide gameTeamSide, MatchResult gameResult) {
         this.id = id;
         this.game = game;
-        this.matchTeamSide = matchTeamSide;
-        this.matchResult = matchResult;
+        this.gameTeamSide = gameTeamSide;
+        this.gameResult = gameResult;
     }
 
     public SubTeam getSoloTeam() {

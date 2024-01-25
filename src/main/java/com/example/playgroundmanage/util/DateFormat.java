@@ -1,19 +1,22 @@
 package com.example.playgroundmanage.util;
 
+import org.springframework.stereotype.Component;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
+@Component
 public class DateFormat {
 
     public static String dateFormatYYYYMMDDHHMM(LocalDateTime localDateTime) {
         return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
     }
 
-    public static String dateFormatYYYYMMDD(LocalDateTime localDateTime) {
+    public String dateFormatYYYYMMDD(LocalDateTime localDateTime) {
         return localDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     }
 
-    public static LocalDateTime dateFormatWith0Second(LocalDateTime localDateTime) {
+    public LocalDateTime dateFormatWith0Second(LocalDateTime localDateTime) {
         return localDateTime.withSecond(0).withNano(0);
     }
 }

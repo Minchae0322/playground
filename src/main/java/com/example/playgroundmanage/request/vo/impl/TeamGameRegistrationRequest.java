@@ -4,7 +4,7 @@ import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.team.vo.Team;
-import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
@@ -20,8 +20,8 @@ public class TeamGameRegistrationRequest extends GameRequest {
     private Team team;
 
     @Builder
-    public TeamGameRegistrationRequest(Long id, Game game, User user, User host, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, Team team) {
-        super(id, game, user, host, matchTeamSide, expiredTime, requestTime);
+    public TeamGameRegistrationRequest(Long id, Game game, User user, User host, GameTeamSide gameTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, Team team) {
+        super(id, game, user, host, gameTeamSide, expiredTime, requestTime);
         this.team = team;
     }
 
@@ -36,7 +36,7 @@ public class TeamGameRegistrationRequest extends GameRequest {
                 .requestType("teamGameRegistration")
                 .user(getUser())
                 .team(team)
-                .matchTeamSide(getMatchTeamSide())
+                .gameTeamSide(getGameTeamSide())
                 .requestTime(getRequestTime())
                 .build();
     }

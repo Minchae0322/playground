@@ -14,22 +14,39 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
+
+
 @Getter
 @Component
 @AllArgsConstructor
 public class GameFinder {
 
-    public static List<Game> getGamesForSelectedDate(List<Game> games, DateTime myDateTime) {
+    private final DateFormat dateFormat;
+
+    public List<Game> getGamesForSelectedDate(List<Game> games, DateTime myDateTime) {
         return Optional.ofNullable(games)
                 .orElse(Collections.emptyList()) // 빈 리스트 반환으로 NullPointException 방지
                 .stream()
-                .filter(g -> g.isGameDay(myDateTime.getLocalDateTime()))
+                .filter(g -> isGameOnDate(g, myDateTime.getLocalDateTime()))
                 .toList();
     }
 
-    public static boolean isGameOnSameDate(Game game, DateTime myDateTime) {
-        return game.isGameDay(myDateTime.getLocalDateTime());
+    public boolean isGameOnDate(Game game, LocalDateTime targetDateTime) {
+        LocalDateTime gameStartDateTime = game.getGameStartDateTime();
+
+        return dateFormat.dateFormatYYYYMMDD(gameStartDateTime).equals(dateFormat.dateFormatYYYYMMDD(targetDateTime));
     }
+
+    public boolean isDateTimeRangeOverlapping(Game game, LocalDateTime localDateTime, Integer gameRunningTime) {
+        LocalDateTime startDateTime = dateFormat.dateFormatWith0Second(localDateTime);
+        LocalDateTime endDateTime = dateFormat.dateFormatWith0Second(localDateTime).plusMinutes(gameRunningTime);
+
+        LocalDateTime gameStartDateTime = game.getGameStartDateTime();
+        LocalDateTime gameEndDateTime = gameStartDateTime.plusMinutes(game.getRunningTime());
+
+        return !(gameEndDateTime.isBefore(startDateTime) || gameStartDateTime.isAfter(endDateTime));
+    }
+
     public static Game findOngoingGame(List<Game> games, MyDateTime now) {
         return games.stream()
                 .filter(game -> game.isGameOngoing(now.getLocalDateTime()))

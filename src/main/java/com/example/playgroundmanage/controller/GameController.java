@@ -1,19 +1,19 @@
 package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.dto.UsersGameDto;
 import com.example.playgroundmanage.dto.reqeust.GameRegistration;
 import com.example.playgroundmanage.dto.SubTeamDto;
 import com.example.playgroundmanage.dto.response.TeamBySide;
+import com.example.playgroundmanage.game.GameGenerator;
+import com.example.playgroundmanage.game.GameGeneratorFactory;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.SubTeamService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.location.service.PlaygroundService;
-import com.example.playgroundmanage.type.MatchTeamSide;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.transaction.Transactional;
+import com.example.playgroundmanage.type.GameTeamSide;
+import com.example.playgroundmanage.type.GameType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,13 +35,13 @@ public class GameController {
     private final SubTeamService subTeamService;
 
     private final PlaygroundService playgroundService;
-
+    private final GameGeneratorFactory gameGeneratorFactory;
 
 
     @GetMapping("/game/{gameId}/{matchTeamSide}")
     public TeamBySide getSubTeams(@PathVariable Long gameId, @PathVariable String matchTeamSide) {
-        List<SubTeamDto> subTeams =  gameService.getSubTeamsByTeamSide(gameId, MatchTeamSide.valueOf(matchTeamSide));
-        SubTeamDto soloTeam = gameService.getSoloTeamByTeamSide(gameId, MatchTeamSide.valueOf(matchTeamSide));
+        List<SubTeamDto> subTeams =  gameService.getSubTeamsByTeamSide(gameId, GameTeamSide.valueOf(matchTeamSide));
+        SubTeamDto soloTeam = gameService.getSoloTeamByTeamSide(gameId, GameTeamSide.valueOf(matchTeamSide));
 
         return TeamBySide.builder()
                 .soloTeam(soloTeam)
@@ -55,15 +55,16 @@ public class GameController {
         GameDto gameDto = GameDto.builder()
                 .startDateTime(MyDateTime.initMyDateTime(gameRegistration.getGameStartDateTime()))
                 .host(userDetails.getUser())
+                .playgroundId(gameRegistration.getPlaygroundId())
+                .gameType(GameType.COMPETITION)
                 .gameName(gameRegistration.getGameName())
                 .runningTime(gameRegistration.getRunningTime())
                 .sportsEvent(gameRegistration.getSportsEvent())
                 .build();
 
-        Long generatedGameId = gameService.generateGame(gameRegistration.getPlaygroundId(), gameDto);
-        subTeamService.generateSoloSubTeamBothCompetingTeam(generatedGameId);
+        GameGenerator gameGenerator = gameGeneratorFactory.find(gameDto.getGameType().getValue());
 
-        return ResponseEntity.ok(generatedGameId);
+        return ResponseEntity.ok(gameGenerator.generate(gameDto));
     }
 
     @DeleteMapping("/game/{gameId}/{subTeamId}/out")

@@ -8,16 +8,19 @@ import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.MatchNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.exception.UserNotParticipantGameException;
+import com.example.playgroundmanage.game.GameGenerator;
+import com.example.playgroundmanage.game.GameGeneratorFactory;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
-import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.util.DateFormat;
 import com.example.playgroundmanage.util.GameParticipantFinder;
 import com.example.playgroundmanage.util.GameSorting;
+import com.example.playgroundmanage.util.GameValidation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +28,6 @@ import org.springframework.stereotype.Service;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.example.playgroundmanage.util.GameValidation.validateOverlappingGames;
 
 @Service
 @RequiredArgsConstructor
@@ -43,34 +45,31 @@ public class GameService {
 
     private final GameSorting gameSorting;
 
+
+
+    private final GameValidation gameValidation;
+
     private final GameParticipantRepository gameParticipantRepository;
 
     private final GameParticipantFinder gameParticipantFinder;
-    @Transactional
+
+   /* @Transactional
     public Long generateGame(Long playgroundId, GameDto gameDto) {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
 
-        validateOverlappingGames(playground.getGames(), gameDto.toGameDateDto());
+        gameValidation.validateOverlappingGames(playground.getGames(), gameDto.toGameDateDto());
 
-        Game game = Game.builder()
-                .gameName(gameDto.getGameName())
-                .host(gameDto.getHost())
-                .playground(playground)
-                .gameStartDateTime(gameDto.getStartDateTime().getLocalDateTime())
-                .sportsEvent(gameDto.getSportsEvent())
-                .isFriendly(gameDto.isFriendly())
-                .runningTime(gameDto.getRunningTime())
-                .build();
+        GameGenerator gameGenerator = gameGeneratorFactory.find(gameDto.getGameType().getValue());
 
-        return gameRepository.save(game).getId();
+        return gameGenerator.generate(playground, gameDto);
     }
 
-
-    public List<SubTeamDto> getSubTeamsByTeamSide(Long gameId, MatchTeamSide matchTeamSide) {
+*/
+    public List<SubTeamDto> getSubTeamsByTeamSide(Long gameId, GameTeamSide gameTeamSide) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
-        CompetingTeam competingTeam = game.getCompetingTeamBySide(matchTeamSide);
+        CompetingTeam competingTeam = game.getCompetingTeamBySide(gameTeamSide).orElseThrow();
 
         return competingTeam.getSubTeamsNotSoloTeam()
                 .stream()
@@ -79,10 +78,10 @@ public class GameService {
     }
 
     @Transactional
-    public SubTeamDto getSoloTeamByTeamSide(Long gameId, MatchTeamSide matchTeamSide) {
+    public SubTeamDto getSoloTeamByTeamSide(Long gameId, GameTeamSide gameTeamSide) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
-        SubTeam soloTeam = game.getCompetingTeamBySide(matchTeamSide).getSoloTeam();
+        SubTeam soloTeam = game.getCompetingTeamBySide(gameTeamSide).orElseThrow().getSoloTeam();
 
         return SubTeamDto.builder()
                 .subTeamId(soloTeam.getId())
@@ -117,7 +116,7 @@ public class GameService {
         gameRepository.delete(game);
     }
 
-    private SubTeamDto toSubTeamDto(SubTeam subTeam){
+    private SubTeamDto toSubTeamDto(SubTeam subTeam) {
         InMemoryMultipartFile teamProfileImg = fileHandler.extractFile(subTeam.getTeam().getTeamPic());
 
         return SubTeamDto.builder()
@@ -131,8 +130,6 @@ public class GameService {
                         .toList())
                 .build();
     }
-
-
 
 
     @Transactional
@@ -169,7 +166,6 @@ public class GameService {
     public Game getMatch(Long matchId) {
         return gameRepository.findById(matchId).orElseThrow(MatchNotExistException::new);
     }
-
 
 
 }

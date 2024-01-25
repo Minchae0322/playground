@@ -4,6 +4,7 @@ import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.game.vo.User;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -12,12 +13,14 @@ import java.util.List;
 import static com.example.playgroundmanage.util.Util.localDateToYearMonthDateTimeString;
 
 
+@RequiredArgsConstructor
+@Component
 public final class GameValidation {
+    private final GameFinder gameFinder;
 
-    public static void validateOverlappingGames(List<Game> games, GameTimeDto gameTimeDto) {
+    public void validateOverlappingGames(List<Game> games, GameTimeDto gameTimeDto) {
         boolean isOverlapping = games.stream()
-                .anyMatch(game -> GameFinder.isGameOnSameDate(game, gameTimeDto.getStartDateTime())
-                        && game.isTimeRangeOverlapping(gameTimeDto.getStartDateTime().getLocalDateTime(), gameTimeDto.getRunningTime()));
+                .anyMatch(game -> gameFinder.isDateTimeRangeOverlapping(game, gameTimeDto.getStartDateTime().getLocalDateTime(), gameTimeDto.getRunningTime()));
 
         if (isOverlapping) {
             throw new IllegalArgumentException("지정한 시간에 다른 게임이 이미 존재합니다: " + localDateToYearMonthDateTimeString(LocalDateTime.now()));

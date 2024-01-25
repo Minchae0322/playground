@@ -7,7 +7,7 @@ import com.example.playgroundmanage.game.vo.SubTeam;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.game.vo.User;
-import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.util.DateFormat;
 import lombok.Builder;
 import lombok.Data;
@@ -28,7 +28,7 @@ public class RequestInfoDto {
     private String requestType;
     private SubTeam subTeam;
     private Team team;
-    private MatchTeamSide matchTeamSide;
+    private GameTeamSide gameTeamSide;
 
     // TeamRequestInfoDto 관련 필드
     private String introduction;
@@ -49,7 +49,7 @@ public class RequestInfoDto {
                 .username(user.getNickname())
                 .userId(user.getId())
                 .subTeamName(subTeam == null ? "" : subTeam.getTeam().getTeamName())
-                .matchTeamSide(matchTeamSide.getValue())
+                .matchTeamSide(gameTeamSide.getValue())
                 .build();
     }
 

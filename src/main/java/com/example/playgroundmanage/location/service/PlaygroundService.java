@@ -19,6 +19,7 @@ import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.util.GameFinder;
+import com.example.playgroundmanage.util.GameValidation;
 import com.example.playgroundmanage.util.PlaygroundFinder;
 import com.example.playgroundmanage.util.Util;
 import com.example.playgroundmanage.location.vo.Campus;
@@ -31,7 +32,7 @@ import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
-import static com.example.playgroundmanage.util.GameValidation.validateOverlappingGames;
+
 import static com.example.playgroundmanage.util.GameValidation.validateStartBeforePresent;
 
 @Service
@@ -50,12 +51,14 @@ public class PlaygroundService {
 
     private final PlaygroundFinder playgroundFinder;
 
+    private final GameValidation gameValidation;
+
     @Transactional
     public boolean isValidGameStartTime(Long playgroundId, GameTimeDto gameTimeDto) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
 
         validateStartBeforePresent(gameTimeDto);
-        validateOverlappingGames(playground.getGames(), gameTimeDto);
+        gameValidation.validateOverlappingGames(playground.getGames(), gameTimeDto);
 
         return true;
     }
@@ -65,12 +68,12 @@ public class PlaygroundService {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
 
-        List<Game> gamesOnSelectedDate = GameFinder.getGamesForSelectedDate(playground.getGames(), gameTimeDto.getStartDateTime());
+        List<Game> gamesOnSelectedDate = gameFinder.getGamesForSelectedDate(playground.getGames(), gameTimeDto.getStartDateTime());
 
         return gamesOnSelectedDate.stream()
                 .map(g -> OccupiedTime.builder()
                         .start(g.getGameStartDateTime())
-                        .end(g.getGameEndDateTime())
+                        .end(g.getGameStartDateTime().plusMinutes(g.getRunningTime()))
                         .build())
                 .toList();
     }
@@ -132,7 +135,7 @@ public class PlaygroundService {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
         List<Game> games = playground.getGames();
         return games.stream()
-                .filter(g -> g.isTimeRangeOverlapping(day, runningTime))
+                .filter(g -> gameFinder.isDateTimeRangeOverlapping(g, day, runningTime))
                 .toList().size() != 0;
     }
 

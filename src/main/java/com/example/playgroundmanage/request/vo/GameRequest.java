@@ -3,7 +3,7 @@ package com.example.playgroundmanage.request.vo;
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.User;
-import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -32,7 +32,7 @@ public abstract class GameRequest extends Request {
     private User host;
 
 
-    protected MatchTeamSide matchTeamSide;
+    protected GameTeamSide gameTeamSide;
 
     protected LocalDateTime expiredTime;
 
@@ -40,12 +40,12 @@ public abstract class GameRequest extends Request {
     protected LocalDateTime requestTime;
 
 
-    public GameRequest(Long id, Game game, User user, User host, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
+    public GameRequest(Long id, Game game, User user, User host, GameTeamSide gameTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
         this.id = id;
         this.game = game;
         this.user = user;
         this.host = host;
-        this.matchTeamSide = matchTeamSide;
+        this.gameTeamSide = gameTeamSide;
         this.expiredTime = expiredTime;
         this.requestTime = requestTime;
     }

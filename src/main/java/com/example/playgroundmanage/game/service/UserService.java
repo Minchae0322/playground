@@ -133,15 +133,6 @@ public class UserService {
 
 
 
-    public List<SubTeam> getUnacceptedHomeSubTeams(List<Game> games) {
-        List<SubTeam> requestTeams = new ArrayList<>();
-        for (Game game : games) {
-            requestTeams.addAll(getUnacceptedSubTeams(game.getHomeTeam()));
-            requestTeams.addAll(getUnacceptedSubTeams(game.getAwayTeam()));
-        }
-        return requestTeams;
-    }
-
     public List<SubTeam> getUnacceptedSubTeams(CompetingTeam competingTeam) {
         return competingTeam.getSubTeams().stream()
                 .filter(t -> !t.isAccept())

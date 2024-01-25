@@ -90,7 +90,7 @@ public class TeamGameJoinRequestService implements RequestService {
                         .requestTime(gameRequestDto.getRequestTime().getLocalDateTime())
                         .user(gameRequestDto.getUser())
                         .expiredTime(game.getGameStartDateTime().plusMinutes(game.getRunningTime()))
-                        .matchTeamSide(gameRequestDto.getMatchTeamSide())
+                        .gameTeamSide(gameRequestDto.getGameTeamSide())
                         .build())
                 .getId();
     }

@@ -12,7 +12,7 @@ import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.request.vo.impl.SoloGameJoinRequest;
 import com.example.playgroundmanage.request.vo.GameRequest;
-import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -77,7 +77,7 @@ public class SoloGameJoinRequestService implements RequestService {
                         .expiredTime(game.getGameStartDateTime())
                         .user(gameRequestDto.getUser())
                         .expiredTime(game.getGameStartDateTime().plusMinutes(game.getRunningTime()))
-                        .matchTeamSide(gameRequestDto.getMatchTeamSide())
+                        .gameTeamSide(gameRequestDto.getGameTeamSide())
                         .build())
                 .getId();
     }
@@ -90,7 +90,7 @@ public class SoloGameJoinRequestService implements RequestService {
         SoloGameJoinRequest soloGameJoinRequest = (SoloGameJoinRequest) gameRequestRepository.findById(requestId)
                 .orElseThrow(RequestNotExistException::new);
 
-        SubTeam soloTeam = getSoloTeam(soloGameJoinRequest.getGame(), soloGameJoinRequest.getMatchTeamSide());
+        SubTeam soloTeam = getSoloTeam(soloGameJoinRequest.getGame(), soloGameJoinRequest.getGameTeamSide());
 
         validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(soloGameJoinRequest.getGame()), soloGameJoinRequest.getUser());
         gameManagementService.deleteRequest(soloGameJoinRequest.getId());
@@ -109,8 +109,8 @@ public class SoloGameJoinRequestService implements RequestService {
     }
 
 
-    private SubTeam getSoloTeam(Game game, MatchTeamSide matchTeamSide) {
-        CompetingTeam competingTeam = game.getCompetingTeamBySide(matchTeamSide);
+    private SubTeam getSoloTeam(Game game, GameTeamSide gameTeamSide) {
+        CompetingTeam competingTeam = game.getCompetingTeamBySide(gameTeamSide).orElseThrow();
         return competingTeam.getSoloTeam();
     }
 

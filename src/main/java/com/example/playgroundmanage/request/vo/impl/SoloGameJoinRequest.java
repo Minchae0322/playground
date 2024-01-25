@@ -5,7 +5,7 @@ import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.game.vo.User;
-import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.persistence.Entity;
 import lombok.*;
 
@@ -18,8 +18,8 @@ public class SoloGameJoinRequest extends GameRequest {
 
 
     @Builder
-    public SoloGameJoinRequest(Long id, Game game, User user, User host, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
-        super(id, game, user, host, matchTeamSide, expiredTime, requestTime);
+    public SoloGameJoinRequest(Long id, Game game, User user, User host, GameTeamSide gameTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
+        super(id, game, user, host, gameTeamSide, expiredTime, requestTime);
     }
 
 
@@ -31,7 +31,7 @@ public class SoloGameJoinRequest extends GameRequest {
                 .requestId(getId())
                 .requestType("soloGameJoin")
                 .user(getUser())
-                .matchTeamSide(getMatchTeamSide())
+                .gameTeamSide(getGameTeamSide())
                 .requestTime(getRequestTime())
                 .build();
     }

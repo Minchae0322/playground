@@ -7,7 +7,7 @@ import com.example.playgroundmanage.game.repository.TeamRequestRepository;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.team.vo.Team;
-import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,8 +38,8 @@ public class GameManagementService {
 
     @Transactional
     public List<GameParticipant> findGameParticipantsInGame(Game game) {
-        return Stream.of(MatchTeamSide.HOME, MatchTeamSide.AWAY)
-                .flatMap(side -> game.getCompetingTeamBySide(side).getSubTeams().stream())
+        return Stream.of(GameTeamSide.HOME, GameTeamSide.AWAY)
+                .flatMap(side -> game.getCompetingTeamBySide(side).orElseThrow().getSubTeams().stream())
                 .flatMap(g -> g.getGameParticipants().stream())
                 .toList();
     }

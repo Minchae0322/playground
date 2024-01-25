@@ -262,7 +262,6 @@ input[type="text"]::placeholder {
   padding: 10px 20px;
   border-bottom: 5px solid var(--primary-color);
   background-color: #fff;
-
 }
 
 .team-card:hover {
@@ -273,6 +272,7 @@ input[type="text"]::placeholder {
 }
 
 .team-card::after {
+
   content: '\f054'; /* Font Awesome 오른쪽 화살표 아이콘 */
   font-family: 'Font Awesome 5 Free', serif; /* Font Awesome 폰트 설정 */
   font-weight: 900; /* Font Awesome 아이콘을 위한 폰트 두께 */
@@ -297,7 +297,7 @@ input[type="text"]::placeholder {
 .team-name {
   text-align: start;
   font-size: 1.3em;
-  color: #0F1035;
+  color: var(--text-black);
   letter-spacing: 1px;
   font-family: MiSans-Heavy, sans-serif;
   width: 100%;

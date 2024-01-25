@@ -239,7 +239,7 @@ a {
 
 .sidebar {
   flex: 1; /* sidebar 너비 설정 */
-  min-width: 270px;
+  min-width: 250px;
   min-height: 100vh;
   height: 100%;
   position: fixed; /* 화면에 고정 */
@@ -328,7 +328,7 @@ a {
   flex: 5; /* sidebar 너비 설정 */
   height: 100%; /* 원하는 높이로 설정 */
   margin-top: 20px;
-  margin-left: 270px; /* 사이드바 너비만큼 여백 추가 */
+  margin-left: 250px; /* 사이드바 너비만큼 여백 추가 */
   overflow-y: auto; /* 내용이 높이를 초과하면 스크롤바 생성 */
   width: calc(100% - 250px);
 }

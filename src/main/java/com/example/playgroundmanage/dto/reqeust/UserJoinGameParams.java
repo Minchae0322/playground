@@ -3,7 +3,7 @@ package com.example.playgroundmanage.dto.reqeust;
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.dto.GameRequestDto;
 import com.example.playgroundmanage.game.vo.User;
-import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.type.GameTeamSide;
 import lombok.Builder;
 import lombok.Data;
 
@@ -39,7 +39,7 @@ public class UserJoinGameParams {
                 .teamId(teamId)
                 .subTeamId(subTeamId)
                 .requestTime(MyDateTime.initMyDateTime(ZonedDateTime.now()))
-                .matchTeamSide(MatchTeamSide.valueOf(matchTeamSide))
+                .gameTeamSide(GameTeamSide.valueOf(matchTeamSide))
                 .build();
     }
 

@@ -70,7 +70,7 @@ public class TeamGameRegistrationRequestService implements RequestService {
                         .requestTime(gameRequestDto.getRequestTime().getLocalDateTime())
                         .user(gameRequestDto.getUser())
                         .expiredTime(game.getGameStartDateTime().plusMinutes(game.getRunningTime()))
-                        .matchTeamSide(gameRequestDto.getMatchTeamSide())
+                        .gameTeamSide(gameRequestDto.getGameTeamSide())
                         .build())
                 .getId();
     }
@@ -102,7 +102,7 @@ public class TeamGameRegistrationRequestService implements RequestService {
         TeamGameRegistrationRequest teamGameRegistrationRequest = (TeamGameRegistrationRequest) gameRequestRepository.findById(requestId)
                 .orElseThrow(RequestNotExistException::new);
 
-        SubTeam subTeam = createSubTeam(teamGameRegistrationRequest.getTeam(), teamGameRegistrationRequest.getGame().getCompetingTeamBySide(teamGameRegistrationRequest.getMatchTeamSide()));
+        SubTeam subTeam = createSubTeam(teamGameRegistrationRequest.getTeam(), teamGameRegistrationRequest.getGame().getCompetingTeamBySide(teamGameRegistrationRequest.getGameTeamSide()).orElseThrow());
 
         validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(teamGameRegistrationRequest.getGame()), teamGameRegistrationRequest.getUser());
         gameManagementService.deleteRequest(teamGameRegistrationRequest.getId());

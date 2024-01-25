@@ -1,13 +1,13 @@
 package com.example.playgroundmanage.type;
 
-public enum MatchTeamSide {
+public enum GameTeamSide {
     HOME("HOME"),
     AWAY("AWAY"),
     NONE("NONE"),
     ;
 
     private final String value;
-    MatchTeamSide(String value) {
+    GameTeamSide(String value) {
         this.value = value;
     }
 

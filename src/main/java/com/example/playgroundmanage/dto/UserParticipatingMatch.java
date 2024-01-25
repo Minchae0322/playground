@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.dto;
 
-import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.game.vo.User;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,12 +14,12 @@ public class UserParticipatingMatch {
 
     private User user;
 
-    private MatchTeamSide matchTeamSide;
+    private GameTeamSide gameTeamSide;
 
     @Builder
-    public UserParticipatingMatch(Long matchId, User user, MatchTeamSide matchTeamSide) {
+    public UserParticipatingMatch(Long matchId, User user, GameTeamSide gameTeamSide) {
         this.matchId = matchId;
         this.user = user;
-        this.matchTeamSide = matchTeamSide;
+        this.gameTeamSide = gameTeamSide;
     }
 }

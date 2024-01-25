@@ -139,7 +139,7 @@ div {
   margin-top: 50px;
   width: 100%;
   max-width: 20rem;
-  margin-right: 270px;
+  margin-right: 250px;
   display: flex;
   flex-direction: column;
   justify-content: center;

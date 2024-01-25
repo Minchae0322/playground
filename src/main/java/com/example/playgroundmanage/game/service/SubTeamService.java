@@ -6,6 +6,7 @@ import com.example.playgroundmanage.game.repository.SubTeamRepository;
 import com.example.playgroundmanage.game.vo.CompetingTeam;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.SubTeam;
+import jakarta.persistence.Version;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,27 +20,19 @@ public class SubTeamService {
     private final GameRepository gameRepository;
 
     @Transactional
-    public void generateSoloSubTeamBothCompetingTeam(Long gameId) {
+    @Version
+    public void generateSoloSubTeamInCompetingTeam(Long gameId) {
         Game game = gameRepository.findById(gameId).orElseThrow(MatchNotExistException::new);
 
-        validateSoloTeamAlreadyExist(game);
-
-        subTeamRepository.save(buildSoloSubTeam(game.getHomeTeam()));
-        subTeamRepository.save(buildSoloSubTeam(game.getAwayTeam()));
+        game.getCompetingTeams().forEach(this::generateSoloSubTeam);
     }
 
-    private void validateSoloTeamAlreadyExist(Game game) {
-        if (game.getHomeTeam().isContainSoloTeam() || game.getAwayTeam().isContainSoloTeam()) {
-            throw new IllegalArgumentException("개인 팀이 이미 존재합니다.");
-        }
-    }
-
-    private SubTeam buildSoloSubTeam(CompetingTeam competingTeam) {
-        return SubTeam.builder()
+    private void generateSoloSubTeam(CompetingTeam competingTeam) {
+        subTeamRepository.save(SubTeam.builder()
                 .isSoloTeam(true)
                 .isAccept(true)
                 .competingTeam(competingTeam)
-                .build();
+                .build());
     }
 
     @Transactional

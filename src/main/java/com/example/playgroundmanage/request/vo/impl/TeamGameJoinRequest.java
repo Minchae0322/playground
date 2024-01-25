@@ -4,7 +4,7 @@ package com.example.playgroundmanage.request.vo.impl;
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.request.vo.GameRequest;
-import com.example.playgroundmanage.type.MatchTeamSide;
+import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import lombok.*;
@@ -20,8 +20,8 @@ public class TeamGameJoinRequest extends GameRequest {
     private SubTeam subTeam;
 
     @Builder
-    public TeamGameJoinRequest(Long id, Game game, User user, User host, MatchTeamSide matchTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, SubTeam subTeam) {
-        super(id, game, user, host, matchTeamSide, expiredTime, requestTime);
+    public TeamGameJoinRequest(Long id, Game game, User user, User host, GameTeamSide gameTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, SubTeam subTeam) {
+        super(id, game, user, host, gameTeamSide, expiredTime, requestTime);
         this.subTeam = subTeam;
     }
 
@@ -33,7 +33,7 @@ public class TeamGameJoinRequest extends GameRequest {
                 .requestType("teamGameJoin")
                 .user(getUser())
                 .subTeam(subTeam)
-                .matchTeamSide(getMatchTeamSide())
+                .gameTeamSide(getGameTeamSide())
                 .requestTime(getRequestTime())
                 .build();
     }
