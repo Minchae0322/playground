@@ -52,7 +52,7 @@
         </div>
       </div>
       <div class="card-footer">
-        <router-link :to="{ name: 'playground' , params : { playgroundId: info.playgroundId}}">
+        <router-link :to="{ name: 'playground' , params : { playgroundId: info.playgroundId, receivedGameId: 0}}">
           <button>view</button>
         </router-link>
       </div>

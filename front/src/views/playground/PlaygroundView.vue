@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {onMounted, onUpdated, ref} from 'vue';
 import axios from "axios";
 import GameBuilderModal from '../game/GameBuilderView.vue';
 import {useRouter} from "vue-router";
@@ -67,6 +67,10 @@ const props = defineProps({
   playgroundId: {
     type: Number,
     required: true,
+  },
+  receivedGameId: {
+    type: Number,
+    required: true,
   }
 })
 
@@ -82,7 +86,31 @@ const isGameBuilderModalOpen = ref(false);
 onMounted(async () => {
   await getPlaygroundInfo()
   await getOngoingGame();
+  await clickInfo();
 });
+
+
+const clickInfo = async () => {
+  console.log(props.receivedGameId)
+  if (props.receivedGameId !== '0') {
+    let game = ''
+    await validateAccessToken()
+    try {
+      const response = await axios.get(`${apiBaseUrl}/game/${props.receivedGameId}/info`,
+          {
+            headers: {
+              'Authorization': getAccessToken()
+            }
+          }
+      )
+      game = response.data;
+      game.hostProfileImg = `data:image/jpeg;base64,${response.data.hostProfileImg}`;
+    } catch (error) {
+
+    }
+    await handleGameSelected(game)
+  }
+}
 
 const getPlaygroundInfo = async () => {
   await validateAccessToken()

@@ -57,7 +57,7 @@ const router = createRouter({
 
     },
     {
-      path: '/playground/:playgroundId',
+      path: '/playground/:playgroundId/:receivedGameId',
       name: 'playground',
       component: playground,
       props: true

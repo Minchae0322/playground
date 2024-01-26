@@ -6,9 +6,11 @@ import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.dto.response.*;
 import com.example.playgroundmanage.exception.CampusNotExistException;
+import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.exception.SchoolNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
+import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
@@ -44,6 +46,8 @@ public class PlaygroundService {
     private final FileHandler fileHandler;
 
     private final SchoolRepository schoolRepository;
+
+    private final GameRepository gameRepository;
 
     private final CampusRepository campusRepository;
 
@@ -101,6 +105,8 @@ public class PlaygroundService {
                 .map(Game::toGameDto)
                 .toList();
     }
+
+
 
     @Transactional
     public PlaygroundDto getPlaygroundInfo(Long playgroundId) {

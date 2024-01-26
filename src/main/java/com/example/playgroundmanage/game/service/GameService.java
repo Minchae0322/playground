@@ -93,6 +93,14 @@ public class GameService {
     }
 
     @Transactional
+    public GameDto getGameInfo(Long gameId) {
+        Game game = gameRepository.findById(gameId)
+                .orElseThrow(GameNotExistException::new);
+
+        return game.toGameDto();
+    }
+
+    @Transactional
     public void userOutOfGame(Long gameId, User user) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);

@@ -5,12 +5,14 @@ import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.dto.UsersGameDto;
 import com.example.playgroundmanage.dto.reqeust.GameRegistration;
 import com.example.playgroundmanage.dto.SubTeamDto;
+import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.dto.response.TeamBySide;
 import com.example.playgroundmanage.game.GameGenerator;
 import com.example.playgroundmanage.game.GameGeneratorFactory;
 import com.example.playgroundmanage.game.dto.GameTeamResponseDto;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.SubTeamService;
+import com.example.playgroundmanage.game.service.UserService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.type.GameTeamSide;
@@ -32,7 +34,7 @@ public class GameController {
 
     private final GameService gameService;
 
-
+    private final UserService userService;
     private final SubTeamService subTeamService;
 
     private final PlaygroundService playgroundService;
@@ -56,6 +58,13 @@ public class GameController {
         GameGenerator gameGenerator = gameGeneratorFactory.find(gameType);
 
         return gameGenerator.getGameTeamInfos(gameId, GameTeamSide.valueOf(gameTeamSide));
+    }
+
+    @GetMapping("/game/{gameId}/info")
+    public GameThumbnail getGameInfo(@PathVariable Long gameId) {
+        GameDto gameDto = gameService.getGameInfo(gameId);
+
+        return gameDto.toGameThumbnail(userService.getUserProfileImg(gameDto.getHost()));
     }
 
     @PostMapping("/game/generate")

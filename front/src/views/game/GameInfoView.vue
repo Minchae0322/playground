@@ -252,13 +252,6 @@ const toggleJoinMenu = async function () {
 
 const clickScroll = async () => {
   await toggleJoinMenu()
-  const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
-  console.log(currentScroll, window.innerHeight)
-  // 한 페이지 아래로 스크롤
-  window.scrollTo({
-    top: currentScroll + window.innerHeight, // 현재 스크롤 위치에 한 화면 높이를 더함
-    behavior: 'smooth'  // 부드러운 스크롤 효과
-  });
 };
 
 const toggleUserTeamDropdown = () => {
@@ -351,7 +344,7 @@ const redirectToLogin = function () {
 
 
 <template>
-  <div class="game-container">
+  <div  class="game-container">
     <div class="game-info-container">
 
       <div class="game-details">
@@ -567,26 +560,8 @@ a {
   background: var(--white);
 }
 
-.game-info {
-  display: flex;
-  align-items: center;
-  background-image: linear-gradient(to right, #6a85b6 0%, #bac8e0 100%);
-  color: white;
-  margin-top: 10px;
-  padding: 10px 10px 10px 20px;
-  font-size: 130%;
-  letter-spacing: 4px;
-  font-weight: bold;
-  width: 100%;
-  border-radius: 8px 8px 0 0;
-  text-align: left;
-
-}
-
-/* 뒤로 가기 버튼 스타일 */
 
 
-/* 탭 컨테이너 스타일 */
 
 .button-goBack {
 
