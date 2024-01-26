@@ -34,10 +34,11 @@ const setToken = async () => {
   if (isLoggedIn.value) {
     return
   }
-  accessToken.value = (new URL(location.href)).searchParams.get('access_token');
-  refreshToken.value = (new URL(location.href)).searchParams.get('refresh_token');
+   accessToken.value = (new URL(location.href)).searchParams.get('access_token');
+   refreshToken.value = (new URL(location.href)).searchParams.get('refresh_token');
 
   console.log(accessToken.value)
+  console.log(refreshToken.value)
   // Store tokens in localStorage
   if (accessToken.value && refreshToken.value) {
     localStorage.setItem("accessToken", accessToken.value);
@@ -117,12 +118,12 @@ const getAccessToken = function () {
 };
 
 const updateAccessToken = async function () {
-  const refreshToken = getAccessToken()
+  const refreshToken = localStorage.getItem("refreshToken");
   if (!refreshToken) return redirectToLogin();
 
   try {
     const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
-      headers: {'RefreshToken': refreshToken}
+      headers: {'refreshToken': refreshToken}
     });
     if (response.status === 200) {
       const newAccessToken = response.headers['authorization'];

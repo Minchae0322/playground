@@ -18,6 +18,7 @@ import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.GameTeamSide;
+import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.util.GameValidation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -99,7 +100,7 @@ public class CompetitionGameGenerator implements GameGenerator {
         return SubTeamDto.builder()
                 .subTeamId(subTeam.getId())
                 .users(subTeam.getGameParticipants().stream()
-                        .map(gameParticipant -> userService.getUserInfoInTeam(subTeam.getTeam(), gameParticipant.getUser()))
+                        .map(gameParticipant -> userService.getUserInfo(gameParticipant.getUser()))
                         .toList())
                 .build();
     }
@@ -114,6 +115,7 @@ public class CompetitionGameGenerator implements GameGenerator {
                 .gameName(gameDto.getGameName())
                 .host(gameDto.getHost())
                 .playground(playground)
+                .gameType(GameType.COMPETITION)
                 .gameStartDateTime(gameDto.getStartDateTime().getLocalDateTime())
                 .sportsEvent(gameDto.getSportsEvent())
                 .runningTime(gameDto.getRunningTime())

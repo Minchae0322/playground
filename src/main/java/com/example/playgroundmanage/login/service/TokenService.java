@@ -15,7 +15,8 @@ public class TokenService {
     @Transactional
     public RefreshToken updateRefreshToken(TokenEdit tokenEdit) {
         return tokenRepository.save(tokenRepository.findByUsername(tokenEdit.getUsername())
-                .orElse(tokenEdit.toEntity()).update(tokenEdit.getRefreshToken()));
+                .orElse(tokenEdit.toEntity())
+                .update(tokenEdit.getRefreshToken()));
     }
 
     public RefreshToken getRefreshToken(String username) {

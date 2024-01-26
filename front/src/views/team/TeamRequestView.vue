@@ -266,7 +266,7 @@ h2 {
   color: var(--text-black);
 }
 
-.user-requestTime {
+.user-role {
   color: var(--text-hint);
   font-size: 12px;
   font-family: MiSans-Normal,sans-serif;

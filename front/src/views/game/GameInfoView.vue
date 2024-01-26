@@ -1,10 +1,10 @@
 <script setup>
 import {onMounted, onUpdated, ref} from "vue";
 import axios from "axios";
-import { defineEmits } from 'vue';
+import {defineEmits} from 'vue';
 import {useRouter} from "vue-router";
 import defaultImage from "@/assets/img.png";
-import { defineProps } from 'vue';
+import {defineProps} from 'vue';
 import PlaygroundInfoView from "@/views/playground/PlaygroundInfoView.vue";
 
 const apiBaseUrl = "http://localhost:8080";
@@ -15,12 +15,12 @@ const homeTeams = ref({
   subTeams: [{
     teamProfileImg: '',
     users: [{
-      userProfileImg:''
+      userProfileImg: ''
     }]
   }],
   soloTeam: {
     users: [{
-      userProfileImg:''
+      userProfileImg: ''
     }]
   }
 })
@@ -29,12 +29,12 @@ const awayTeams = ref({
   subTeams: [{
     teamProfileImg: '',
     users: [{
-      userProfileImg:''
+      userProfileImg: ''
     }]
   }],
   soloTeam: {
     users: [{
-      userProfileImg:''
+      userProfileImg: ''
     }]
   }
 })
@@ -71,7 +71,7 @@ function goBack() {
 
 
 onMounted(async () => {
-  await getTeamData('HOME','Competition')
+  await getTeamData('HOME', 'Competition')
   await getTeamData('AWAY', 'Competition')
   await clickHomeTeam()
   await getLoggedUserId()
@@ -95,11 +95,11 @@ const getLoggedUserId = async () => {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/user/profile`,
-     {
-      headers: {
-        'Authorization': getAccessToken()
-      }
-    });
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        });
     loggedInUserId.value = response.data.userId;
     // 서버에서 성공 응답을 받았을 때의 처리를 이곳에 추가할 수 있습니다.
   } catch (error) {
@@ -128,9 +128,17 @@ const getTeamData = async (matchTeamSide, gameType) => {
       const transformedSoloTeamUsers = transformUsers(response.data.soloTeam.users);
 
       if (matchTeamSide === 'HOME') {
-        homeTeams.value = { ...homeTeams.value, subTeams: transformedSubTeams, soloTeam: { users: transformedSoloTeamUsers } };
+        homeTeams.value = {
+          ...homeTeams.value,
+          subTeams: transformedSubTeams,
+          soloTeam: {users: transformedSoloTeamUsers}
+        };
       } else if (matchTeamSide === 'AWAY') {
-        awayTeams.value = { ...awayTeams.value, subTeams: transformedSubTeams, soloTeam: { users: transformedSoloTeamUsers } };
+        awayTeams.value = {
+          ...awayTeams.value,
+          subTeams: transformedSubTeams,
+          soloTeam: {users: transformedSoloTeamUsers}
+        };
       }
     }
   } catch (error) {
@@ -145,18 +153,19 @@ const sendSoloGameJoinRequest = async () => {
   }
   await validateAccessToken();
   try {
-    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/soloGameJoin`,{
+    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/soloGameJoin`, {
           matchTeamSide: homeAndAwayTeams.value.matchTeamSide,
         },
-        {  headers: {
+        {
+          headers: {
             'Authorization': getAccessToken()
-          }}
+          }
+        }
     )
   } catch (error) {
     showErrorMessage(error)
   }
 };
-
 
 
 const sendTeamRegistrationRequest = async () => {
@@ -272,17 +281,22 @@ const cancel = () => {
 const clickOutOfGame = async (subTeamId) => {
   await validateAccessToken();
   await axios.delete(`${apiBaseUrl}/game/${props.game.gameId}/${subTeamId}/out`,
-      {  headers: {
-          'Authorization': getAccessToken()}}
+      {
+        headers: {
+          'Authorization': getAccessToken()
+        }
+      }
   )
 };
 
 const getTeamsUserBelongTo = function () {
   validateAccessToken();
   axios.get(`${apiBaseUrl}/user/teams`,
-      {  headers: {
+      {
+        headers: {
           'Authorization': getAccessToken()
-        }}
+        }
+      }
   ).then(response => {
     teamsUserBelongTo.value = response.data.map(team => ({
       teamName: team.teamName,
@@ -319,7 +333,7 @@ const updateAccessToken = async function () {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
-      headers: { 'RefreshToken': refreshToken }
+      headers: {'RefreshToken': refreshToken}
     });
     if (response.status === 200) {
       const newAccessToken = response.headers['authorization'];
@@ -340,8 +354,27 @@ const redirectToLogin = function () {
   <div class="game-container">
     <div class="game-info-container">
 
+      <div class="game-details">
+        <div class="game-details-name">{{ props.game.gameName }} ( {{props.game.gameType}} )</div>
+        <div class="game-details-startTime">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+               class="time-icon">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          {{ props.game.gameStart }} 进行时间 {{ props.game.runningTime }}分
+        </div>
+        <div class="host-info-container">
+          <img class="host-info" :src="game.hostProfileImg || defaultImage">
+          <div class="host-name">{{ game.hostName }}</div>
+        </div>
+      </div>
+
+      <button class="button-goBack" @click="goBack"></button>
+
+
       <div class="tab-container">
-        <button class="button-goBack" @click="goBack">Back</button>
         <div
             role="tablist"
             aria-orientation="horizontal"
@@ -372,77 +405,74 @@ const redirectToLogin = function () {
           >客队 <span class="checkmark" v-show="activeName === 'second'">✔</span>
           </button>
         </div>
-    </div>
-
-  </div>
-
-    <div class="game-info">{{ homeAndAwayTeams.matchTeamSide}}
-      <div class="game-details">
-
-        <div>{{props.game.gameName}}</div>
-        <div class="game-details-title">시작 시간</div>
-        <div>{{props.game.gameStart}}</div>
-        <div class="game-details-title">진행 시간</div>
-        <div>{{props.game.runningTime}}</div>
       </div>
 
     </div>
-    <div class="teams-container">
 
+
+    <div class="teams-container">
       <div class="team">
-        <div v-if="homeAndAwayTeams.subTeams">
+        <div>
           <div class="team-details" v-for="(team, index) in homeAndAwayTeams.subTeams" :key="index">
             <router-link :to="{ name:'teamInfo', params: { teamId: team.teamId } }" class="team-info-container">
               <img class="team-image" :src="team.teamProfileImg || defaultImage">
               <div class="team-info">
                 <div class="team-name">{{ team.teamName }}</div>
-                <div class="team-more"> > </div>
+                <div class="team-more"> ></div>
               </div>
             </router-link>
             <div class="line"></div>
-            <div class="participants-num">参与人数 {{team.users.length}}</div>
+            <div class="participants-num">参与人数 {{ team.users.length }}</div>
             <div class="team-member-container">
               <div class="team-member" v-for="(participant, index) in team.users" :key="index">
-                <div v-if="participant.userId === loggedInUserId" class="close-marker" @click="clickOutOfGame(team.subTeamId)">X</div>
-                <div class="member-marker">队员</div>
+                <div v-if="participant.userId === loggedInUserId" class="close-marker"
+                     @click="clickOutOfGame(team.subTeamId)">X
+                </div>
                 <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
                 <p class="user-nickname">{{ participant.userNickname }}</p>
-                <p class="user-requestTime">{{ participant.userRole }}</p>
+                <p class="user-role">{{ participant.userRole }}</p>
               </div>
             </div>
             <button class="add-button" @click="sendTeamJoinRequest(team.subTeamId, team.teamId)"> 参加</button>
           </div>
         </div>
-        <div  v-if="homeAndAwayTeams.soloTeam">
-        <div class="team-details" v-for="(participant, index) in homeAndAwayTeams.soloTeam.users" :key="index">
-          <div class="team-member">
-            <div v-if="participant.userId === loggedInUserId" class="close-marker" @click="clickOutOfGame">X</div>
-            <div class="member-marker">个人</div>
-            <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
-            <p class="user-nickname">{{ participant.userNickname }}</p>
-          </div>
 
-        </div>
-        </div>
-
-
-          <div id="app" class="flex justify-center items-center h-screen">
-            <div class="relative">
-              <div v-if="menuVisible" ref="menu"  class="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                <div @click="sendSoloGameJoinRequest" class="menu-item" role="menuitem">个人</div>
-                <div @click="clickTeamRegistration"  class="menu-item" role="menuitem">팀으로 참가하기</div>
-              </div>
-              <button
-                  class="select-team-solo-button"
-                  @click="clickScroll"
-                  aria-haspopup="menu"
-                  :aria-expanded="menuVisible.toString()"
-              >
-                {{ buttonText }}
-              </button>
-
+        <div v-if="homeAndAwayTeams.soloTeam">
+          <div class="title-soloTeam">个人参加</div>
+          <div v-if="homeAndAwayTeams.soloTeam.users && homeAndAwayTeams.soloTeam.users.length > 0">
+          <div class="team-details" v-for="(participant, index) in homeAndAwayTeams.soloTeam.users" :key="index">
+            <div class="team-member">
+              <div v-if="participant.userId === loggedInUserId" class="close-marker" @click="clickOutOfGame">X</div>
+              <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
+              <p class="user-nickname">{{ participant.userNickname }}</p>
+              <p class="user-role">个人</p>
             </div>
           </div>
+          </div>
+          <div class="no-participants" v-else>
+            <p >개인팀원이 없습니다.</p>
+          </div>
+        </div>
+
+
+        <div id="app" class="flex justify-center items-center h-screen">
+          <div class="relative">
+            <div v-if="menuVisible" ref="menu" class="py-1" role="menu" aria-orientation="vertical"
+                 aria-labelledby="options-menu">
+              <div @click="sendSoloGameJoinRequest" class="menu-item" role="menuitem">个人</div>
+              <div @click="clickTeamRegistration" class="menu-item" role="menuitem">팀으로 참가하기</div>
+            </div>
+            <button
+                class="select-team-solo-button"
+                @click="clickScroll"
+                aria-haspopup="menu"
+                :aria-expanded="menuVisible.toString()"
+            >
+              {{ buttonText }}
+            </button>
+
+          </div>
+        </div>
 
       </div>
 
@@ -472,8 +502,14 @@ const redirectToLogin = function () {
         <a>{{ selectedTeam.teamName }}</a>
       </div>
       <div class="container-confirm-style">
-      <button @click="cancel" class="button-cancel inline-flex items-center justify-center rounded-md text-sm font-medium  px-4 py-2">Cancel</button>
-      <button @click="sendTeamRegistrationRequest" class="button-confirm inline-flex items-center justify-center rounded-md text-sm font-medium  px-4 py-2">Confirm</button>
+        <button @click="cancel"
+                class="button-cancel inline-flex items-center justify-center rounded-md text-sm font-medium  px-4 py-2">
+          Cancel
+        </button>
+        <button @click="sendTeamRegistrationRequest"
+                class="button-confirm inline-flex items-center justify-center rounded-md text-sm font-medium  px-4 py-2">
+          Confirm
+        </button>
       </div>
     </div>
   </div>
@@ -542,14 +578,40 @@ a {
   letter-spacing: 4px;
   font-weight: bold;
   width: 100%;
-  border-radius: 8px 8px 0  0;
+  border-radius: 8px 8px 0 0;
   text-align: left;
 
 }
+
 /* 뒤로 가기 버튼 스타일 */
 
 
 /* 탭 컨테이너 스타일 */
+
+.button-goBack {
+
+  padding: 10px 20px;
+  color: black;
+  border-radius: 4px;
+  margin: 10px auto 10px 25px;
+  text-align: left;
+  position: relative; /* 상대 위치 설정 */
+}
+
+.button-goBack::before {
+  content: '←'; /* 화살표 문자 */
+  position: absolute; /* 절대 위치 설정 */
+  left: 10px; /* 왼쪽 패딩과 일치하도록 설정 */
+  top: 50%; /* 버튼 중앙에 위치하도록 설정 */
+  transform: translateY(-50%); /* Y축 기준으로 50%만큼 이동하여 중앙 정렬 */
+  font-size: 1.2em; /* 화살표 크기 조정 */
+
+}
+
+.button-goBack span {
+  visibility: hidden; /* 버튼 내 기존 텍스트 숨김 */
+}
+
 .tab-container {
   display: flex;
   flex-direction: column;
@@ -557,19 +619,8 @@ a {
   align-items: center;
   background: var(--white);
   width: 100%;
-  margin: auto;
+  margin: 10px 0;
   height: auto;
-}
-
-.button-goBack {
-  background: var(--accent-color);
-  border: 1px solid rgba(50, 58, 65, 0.9); /* Solid blue border for contrast */
-  padding: 10px 20px; /* 버튼 패딩 조정 */
-
-  color: white; /* 텍스트 색상 */
-  border-radius: 4px;
-  margin: 10px auto 10px 25px;
-  text-align: left; /* 왼쪽 정렬 */
 }
 
 /* 탭 리스트 스타일 */
@@ -580,7 +631,6 @@ a {
   background: var(--background-color-gray);
   border-radius: 8px;
   width: 95%;
-  margin-bottom: 10px;
 }
 
 /* 탭 버튼 기본 스타일 */
@@ -588,14 +638,13 @@ a {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  white-space: nowrap;
-  border-radius:8px;
-  font-size: 1.2rem;
-  font-family: MiSans-Light,sans-serif;
-  padding: 10px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-family: MiSans-Light, sans-serif;
   cursor: pointer;
-  width: 50%;
-  border: 1px solid #bac0c4;
+  width: 40%;
+  margin: 5px 0;
+  border: none;
   background-color: transparent;
   color: #989898;
   outline: none;
@@ -613,9 +662,10 @@ a {
 .tab-button.active .checkmark {
   display: inline; /* 활성화 상태일 때만 보이도록 설정 */
 }
+
 /* 탭 버튼 활성화 시 스타일 */
 .tab-button.active {
-  font-family: MiSans-Semibold, sans-serif;
+  font-family: MiSans-Heavy, sans-serif;
   background-color: #ffffff; /* 활성화 배경 */
   color: #3f3f3f; /* 활성화 텍스트 색상 */
 }
@@ -637,14 +687,56 @@ a {
 }
 
 .game-details {
-  margin-left: 200px;
-  font-family: MiSans-Light,sans-serif;
-  font-size: 14px;
-  letter-spacing: 2px;
+  font-family: MiSans-Medium, sans-serif;
+  color: white;
+  border-radius: 8px;
+  text-align: start;
+  font-size: 12px;
+
+  padding: 10px 15px;
+  background-color: var(--accent-color);
+  letter-spacing: 1px;
 }
 
-.game-details-title {
-  font-size: 9px;
+.game-details-name {
+  font-family: MiSans-Medium, sans-serif;
+  font-size: 22px;
+
+}
+
+.game-details-startTime {
+  display: flex;
+  align-content: center;
+}
+
+.time-icon {
+  align-content: center;
+  justify-content: center;
+  margin: auto 5px auto 0;
+  height: 14px;
+}
+
+.host-info-container {
+  display: flex;
+  align-content: center;
+  text-align: center;
+  margin: 10px 5px 0 5px;
+}
+
+.host-info {
+  border-radius: 50%;
+  background-color: #ddd; /* 아이콘 배경색 설정 */
+  display: inline-block;
+  width: 40px; /* 아이콘 크기 조정 */
+  height: 40px;
+  margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 조정 */
+  vertical-align: middle; /* 수직 정렬 */
+}
+
+.host-name {
+  margin: auto 0;
+  font-family: MiSans-Medium, sans-serif;
+  font-size: 14px;
 }
 
 .teams-container {
@@ -652,11 +744,10 @@ a {
   width: 100%;
   align-items: center; /* 가로축을 기준으로 중앙 정렬합니다. */
   margin: 0 0 0;
-  padding: 10px 0;
-  border-radius: 8px;
+  padding: 5px 0;
+
   transition: box-shadow 0.3s ease;
 }
-
 
 
 .team {
@@ -669,24 +760,39 @@ a {
 
 .line {
   width: 100%;
-  padding: 0 0 15px 0;
+  padding: 0 0 5px 0;
   border-bottom: 1px solid #c7c7c7;
 }
 
 .participants-num {
   font-size: 11px;
-  font-family: MiSans-Medium,sans-serif;
+  font-family: MiSans-Medium, sans-serif;
   padding: 10px 10px 0 10px;
   color: #838383;
   letter-spacing: 1px;
 }
+.no-participants {
+  padding: 40px;
+  margin: 10px 0;
+  background-color: white;
+  border-radius: 8px;
+
+  text-align: center;
+}
+
+.no-participants p{
+  text-align: center;
+  margin: auto;
+  background-color: white;
+  border-radius: 8px;
+}
+
 
 .team-details {
   background: #ffffff; /* Light grey background */
-  border-radius: 4px; /* Rounded corners */
-
-  padding: 12px;
-  margin: 10px auto 20px auto;
+  border-radius: 8px; /* Rounded corners */
+  padding: 7px;
+  margin: 10px auto 10px auto;
   display: flex;
   width: 100%;
   flex-direction: column;
@@ -696,22 +802,27 @@ a {
 
 .team-details:hover {
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  flex-direction: column;
+  transition: box-shadow 0.3s ease;
+}
+
+.not-exist-container {
+  background-color: white;
+  width: 100%;
+  height: 50px;
 }
 
 .team-info-container {
   display: flex;
-
   align-items: center;
   padding: 5px 10px 5px 10px;
   border-radius: 5px;
 }
 
 
-
 .team-image {
-  width: 50px;
-  height: 50px;
-
+  width: 40px;
+  height: 40px;
   border-radius: 15%;
   margin-right: 15px;
 }
@@ -727,7 +838,7 @@ a {
 
 .team-name {
   text-align: start;
-  font-size: 21px;
+  font-size: 18px;
   letter-spacing: 4px;
 
   font-weight: 600;
@@ -743,6 +854,7 @@ a {
   border: 2px solid #838383;
   color: #838383;
 }
+
 .team-description {
   text-align: start;
   font-size: 13px;
@@ -758,6 +870,7 @@ a {
   align-items: center;
   position: relative; /* 상대 위치 설정 */
 }
+
 .close-marker {
   position: absolute; /* 절대 위치 설정 */
   top: 0; /* 상단에 붙임 */
@@ -765,25 +878,18 @@ a {
   cursor: pointer; /* 마우스 포인터 스타일 변경 */
   /* 필요한 추가 스타일 */
 }
-.member-marker {
-  font-size: 12px;
-  font-family: MiSans-Light,sans-serif;
-  color: var(--accent-color);
-}
 
 .team-member {
   display: flex;
-  margin: 10px 4px 10px 10px;
   flex-direction: column;
   background: white;
   padding: 10px 5px 5px 5px;
-  width: 90px;
-  height: 110px;
+  width: 10%;
+  min-width: 70px;
+  height: 90px;
   text-align: center;
-  border: 1px solid #cccccc;
-  line-height: 1.1; /* 1.2는 글꼴 크기의 120%를 의미합니다 */
+  line-height: 1.1;
   border-radius: 6px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 이미지에 그림자 추가 */
 }
 
 .team-member-photo {
@@ -791,7 +897,7 @@ a {
   height: 35px; /* 이미지 크기 조절 */
   object-fit: cover; /* 이미지 비율을 유지하면서 요소에 맞게 조정 */
   border-radius: 50%;
-  margin: 4px auto 10px;
+  margin: 4px auto 3px;
 }
 
 .team-member .user-nickname {
@@ -804,11 +910,16 @@ a {
 
 }
 
-.team-member .user-requestTime {
+.team-member .user-role {
   font-size: 9px;
   color: #838383;
 }
 
+.title-soloTeam {
+  text-align: start;
+  margin-left: 5px;
+  color: black;
+}
 
 
 .add-button {
@@ -901,35 +1012,9 @@ a {
 
 
 
-
-
-
-.select-container {
-  text-align: center;
-  margin-top: 10px;
-}
-
 .select-container select {
   padding: 10px;
   margin-right: 5px;
-}
-
-
-
-
-
-
-.participants-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px; /* Creates a gap between participant items */
-  margin-bottom: 15px;
-}
-
-
-
-.team-member:hover {
-  background-color: #f8f8f8;
 }
 
 
@@ -1021,7 +1106,7 @@ a {
   position: absolute;
   background-color: #f9f9f9;
   min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
 
 }
@@ -1032,9 +1117,6 @@ a {
   padding: 12px 16px;
   cursor: pointer;
 }
-
-
-
 
 
 .dropdown-content .dropdown-item:hover {
@@ -1056,9 +1138,6 @@ a {
 .selected-team-container a {
   margin-right: 10px;
 }
-
-
-
 
 
 /* User Profile Image Style */
@@ -1091,8 +1170,6 @@ a {
   background-color: var(--secondary-color); /* 마우스 오버 시 배경색 변경 */
   color: #ffffff; /* 마우스 오버 시 글자색 변경 */
 }
-
-
 
 
 @media (max-width: 768px) {
