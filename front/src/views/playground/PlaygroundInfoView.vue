@@ -21,7 +21,7 @@
                 <div class="host-name">{{ game.hostName }}</div>
               </div>
 
-              <p class="running-time">{{game.gameType }}</p>
+              <p class="running-time">{{ game.gameType }}</p>
             </div>
           </div>
         </li>
@@ -36,19 +36,20 @@
 <script setup>
 import {onMounted, ref} from 'vue';
 import axios from "axios";
-import GameBuilderModal from '../game/GameBuilderView.vue';
+
 import {useRouter} from "vue-router";
 import {defineEmits} from 'vue';
 
 
-const data = ref('이것은 부모로부터 온 데이터입니다.');
-const isGameBuilderModalOpen = ref(false);
+
 
 const upcomingGames = ref([{}]);
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
 const emits = defineEmits(['gameSelected']);
-
+const props = defineProps({
+  playgroundId: Number,
+})
 onMounted(async () => {
   // Check if the initial page number is provided in the route query
 
@@ -62,7 +63,7 @@ function handleGameClick(game) {
 
 const getUpcomingGames = async () => {
   await validateAccessToken()
-  await axios.get(`${apiBaseUrl}/playground/2/upComing`,
+  await axios.get(`${apiBaseUrl}/playground/${props.playgroundId}/upComing`,
       {
         headers: {
           'Authorization': getAccessToken()
@@ -144,6 +145,7 @@ div {
 
 .upcoming-games {
   padding: 15px;
+  min-height: 90vh;
   background-color: #fff; /* 배경색을 흰색으로 설정 */
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

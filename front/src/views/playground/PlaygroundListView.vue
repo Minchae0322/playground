@@ -72,6 +72,7 @@ import axios from "axios";
 import GameBuilderModal from '../game/GameBuilderView.vue';
 import {useRouter} from "vue-router";
 import {defineEmits} from 'vue';
+import defaultImage from '../../assets/img.png';
 
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
@@ -382,7 +383,9 @@ body {
 }
 
 .playground-list {
+  display: flex;
   width: 1200px;
+  flex-wrap: wrap; /* 내용이 넘치면 다음 줄로 넘깁니다. */
   margin: 20px auto; /* 중앙 정렬 */
   padding: 20px;
 }
@@ -391,6 +394,7 @@ body {
   background-color: #fff; /* 카드 배경색 */
   border-radius: 8px; /* 모서리 둥글게 */
   margin-bottom: 20px; /* 카드 간 간격 */
+  margin-right: 20px;
   width: 250px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
 }

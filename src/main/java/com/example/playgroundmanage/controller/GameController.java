@@ -73,13 +73,13 @@ public class GameController {
                 .startDateTime(MyDateTime.initMyDateTime(gameRegistration.getGameStartDateTime()))
                 .host(userDetails.getUser())
                 .playgroundId(gameRegistration.getPlaygroundId())
-                .gameType(GameType.COMPETITION)
+                .gameType(GameType.fromString(gameRegistration.getGameType()))
                 .gameName(gameRegistration.getGameName())
                 .runningTime(gameRegistration.getRunningTime())
                 .sportsEvent(gameRegistration.getSportsEvent())
                 .build();
 
-        GameGenerator gameGenerator = gameGeneratorFactory.find(GameType.COMPETITION.getValue());
+        GameGenerator gameGenerator = gameGeneratorFactory.find(gameRegistration.getGameType());
 
         return ResponseEntity.ok(gameGenerator.generate(gameDto));
     }

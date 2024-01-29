@@ -18,6 +18,19 @@
         </div>
       </div>
     </div>
+
+
+    <div>
+      <div class="team-details" v-for="(participant, userId) in participants" :key="participant.userId">
+        <div class="team-member">
+          <div v-if="participant.userId === loggedInUserId" class="close-marker" @click="clickOutOfGame">X</div>
+          <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
+          <p class="user-nickname">{{ participant.userNickname }}</p>
+          <p class="user-role">个人</p>
+        </div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -40,7 +53,9 @@ const props = defineProps({
   }
 });
 const buttonText = ref("+")
-
+const participants = ref([{
+  userProfileImg: '',
+}])
 const emits = defineEmits(['goBack']);
 
 onMounted(async () => {
@@ -56,11 +71,19 @@ const getTeamData = async (matchTeamSide, gameType) => {
         'Authorization': getAccessToken()
       }
     });
+
+    participants.value = response.data.participants.map(user => ({
+      ...user,
+      userProfileImg: user.userProfileImg ? `data:image/jpeg;base64,${user.userProfileImg}` : defaultImage,
+    }));
+    console.log(participants.value)
   } catch (error) {
     console.error(`Failed to fetch ${matchTeamSide} teams data:`, error);
     // 에러 처리 로직을 추가할 수 있습니다.
   }
 };
+
+
 
 function goBack() {
   emits('goBack'); // 부모 컴포넌트에게 뒤로가기 이벤트 전달
@@ -192,5 +215,67 @@ const redirectToLogin = function () {
   font-size: 14px;
 }
 
+
+
+.team-details {
+  background: #ffffff; /* Light grey background */
+  border-radius: 8px; /* Rounded corners */
+  padding: 7px;
+  margin: 10px auto 10px auto;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  transition: box-shadow 0.3s ease;
+  align-items: flex-start; /* Align items to the start of the flex container */
+}
+
+.team-details:hover {
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  flex-direction: column;
+  transition: box-shadow 0.3s ease;
+}
+
+
+.team-member {
+  display: flex;
+  flex-direction: column;
+  background: white;
+  padding: 10px 5px 5px 5px;
+  width: 10%;
+  min-width: 70px;
+  height: 90px;
+  text-align: center;
+  line-height: 1.1;
+  border-radius: 6px;
+}
+
+.team-member-photo {
+  width: 35px; /* 이미지 크기 조절 */
+  height: 35px; /* 이미지 크기 조절 */
+  object-fit: cover; /* 이미지 비율을 유지하면서 요소에 맞게 조정 */
+  border-radius: 50%;
+  margin: 4px auto 3px;
+}
+
+.team-member .user-nickname {
+  font-size: 12px;
+  font-weight: 600;
+  color: black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.team-member .user-role {
+  font-size: 9px;
+  color: #838383;
+}
+
+.title-soloTeam {
+  text-align: start;
+  margin-left: 5px;
+  color: black;
+}
 
 </style>

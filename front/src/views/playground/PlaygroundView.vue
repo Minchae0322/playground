@@ -40,11 +40,11 @@
       <button class="join-button" @click="openGameBuilder">Join Game</button>
     </div>
     <div class="upcoming-container" id="gameView-container">
-      <component :is="currentView" :game="selectedGame" :key="componentKey"
+      <component :is="currentView" :game="selectedGame" :key="componentKey" :playground-id="props.playgroundId"
                  @gameSelected="handleGameSelected"
                  @goBack="handleGoBack"></component>
     </div>
-    <GameBuilderModal v-if="isGameBuilderModalOpen" :some-data="data" @closeGameBuilder=closeModal></GameBuilderModal>
+    <GameBuilderModal v-if="isGameBuilderModalOpen" :playground-id="props.playgroundId" @closeGameBuilder=closeModal></GameBuilderModal>
   </div>
 </template>
 
@@ -58,7 +58,7 @@ import PlaygroundInfoView from "@/views/playground/PlaygroundInfoView.vue";
 import GameInfoView from '../game/GameInfoView.vue';
 import FriendlyGameInfoView from "@/views/game/FriendlyGameInfoView.vue";
 
-const data = ref('이것은 부모로부터 온 데이터입니다.');
+
 const playgroundInfo = ref({
   playgroundProfileImg: '',
 
@@ -437,6 +437,7 @@ a {
   min-width: 500px;
   width: 50%;
   height: 90vh;
+  min-height: 350px;
   overflow-y: auto;
 }
 

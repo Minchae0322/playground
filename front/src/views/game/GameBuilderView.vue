@@ -29,9 +29,12 @@
           </ModalComponent>
         </div>
 
-        <div class="form-group checkbox-container">
-          <input type="checkbox" id="friendlyMatch" name="friendlyMatch">
+        <div class="form-group radio-container">
+          <input type="radio" id="friendlyMatch" name="matchType" v-model="gameRegistration.gameType" value="Friendly" checked>
           <label for="friendlyMatch">Friendly Match</label>
+
+          <input type="radio" id="competitionMatch" name="matchType" v-model="gameRegistration.gameType" value="Competition">
+          <label for="competitionMatch">Competition</label>
         </div>
 
 
@@ -64,7 +67,12 @@ const startTime = ref(new Date())
 const runningTime = ref(1)
 const gameRegistration = ref({
   gameName: '',
+  gameType: 'Friendly',
+});
 
+const props = defineProps({
+  someData: String,
+  playgroundId: Number // 여기에 playgroundId를 추가합니다.
 });
 const selectedDuration = ref(null);
 const occupiedTimeSlots = ref([]); // Example occupied slots
@@ -97,10 +105,10 @@ const generateGame = () => {
   validateAccessToken()
   axios.post(`${apiBaseUrl}/game/generate`, {
         gameName: gameRegistration.value.gameName,
-        playgroundId: 2,
+        playgroundId: props.playgroundId,
         gameStartDateTime: startTime.value,
         runningTime: runningTime.value,
-
+        gameType: gameRegistration.value.gameType,
       }, {
         headers: {
           'Authorization': getAccessToken()
@@ -114,9 +122,7 @@ const generateGame = () => {
 
 };
 
-const props = defineProps({
-  playgroundId: String
-});
+
 
 
 const playgroundInfo = ref({
@@ -128,7 +134,7 @@ const playgroundInfo = ref({
 
 const getPlaygroundInfo = function () {
   validateAccessToken()
-  axios.get(`${apiBaseUrl}/playground/2/info`,  {
+  axios.get(`${apiBaseUrl}/playground/${props.playgroundId}/info`,  {
         headers: {
           'Authorization': localStorage.getItem("accessToken")
         }
@@ -248,13 +254,28 @@ body {
 .form-container {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 10px;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
   margin-bottom: 20px; /* 각 폼 그룹 사이의 간격 */
+}
+
+.radio-container {
+  display: flex;
+  align-items: start;
+}
+
+.radio-container input[type="radio"] {
+  margin-right: 8px; /* 라디오 버튼과 라벨 사이의 간격 */
+  cursor: pointer; /* 마우스 오버시 커서 변경 */
+}
+
+.radio-container label {
+  margin-right: 20px; /* 라벨 사이의 간격 */
+  cursor: pointer; /* 라벨에 마우스 오버시 커서 변경 */
 }
 
 .max-people-container {
