@@ -56,6 +56,7 @@ import {useRouter} from "vue-router";
 import defaultImage from '../../assets/img.png';
 import PlaygroundInfoView from "@/views/playground/PlaygroundInfoView.vue";
 import GameInfoView from '../game/GameInfoView.vue';
+import FriendlyGameInfoView from "@/views/game/FriendlyGameInfoView.vue";
 
 const data = ref('이것은 부모로부터 온 데이터입니다.');
 const playgroundInfo = ref({
@@ -195,7 +196,14 @@ const closeModal = () => {
 
 function handleGameSelected(game) {
   selectedGame.value = game; // 선택된 게임 업데이트
-  currentView.value = GameInfoView; // 뷰를 GameInfoView로 변경
+  if (game.gameType === 'Competition') {
+    currentView.value = GameInfoView; // 뷰를 GameInfoView로 변경
+  } else {
+    currentView.value = FriendlyGameInfoView; // 뷰를 GameInfoView로 변경
+  }
+
+
+
 }
 
 function handleGoBack() {

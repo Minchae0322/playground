@@ -545,7 +545,6 @@ a {
 
 /* 게임 정보 컨테이너 및 기본 스타일 */
 .game-container {
-
   text-align: center;
   align-items: center;
   justify-content: center;
@@ -556,7 +555,6 @@ a {
 
 .game-info-container {
   width: 100%;
-
   background: var(--white);
 }
 
@@ -667,7 +665,6 @@ a {
   border-radius: 8px;
   text-align: start;
   font-size: 12px;
-
   padding: 10px 15px;
   background-color: var(--accent-color);
   letter-spacing: 1px;

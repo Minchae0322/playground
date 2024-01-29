@@ -14,14 +14,14 @@
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
-                {{ game.gameStart }}
+                {{ game.gameStart }}（ {{ game.runningTime }}分 ）
               </div>
               <div class="host-info">
                 <img :src="game.hostProfileImg || defaultImage">
                 <div class="host-name">{{ game.hostName }}</div>
               </div>
 
-              <p class="running-time">Running Time: {{ game.runningTime }}</p>
+              <p class="running-time">{{game.gameType }}</p>
             </div>
           </div>
         </li>

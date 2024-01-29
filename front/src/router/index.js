@@ -20,6 +20,7 @@ import hostGame from '../views/HostGameView.vue'
 import playgroundList from '../views/playground/PlaygroundListView.vue'
 import teamList from '../views/team/TeamListView.vue';
 import App from "@/App.vue";
+import friendlyGameInfo from "@/views/game/FriendlyGameInfoView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -81,7 +82,12 @@ const router = createRouter({
       component: gameInfo,
       props: true
     },
-
+    {
+      path: '/friendlyGameInfo/:gameId',
+      name: 'friendlyGameInfo',
+      component: friendlyGameInfo,
+      props: true
+    },
     {
       path: '/makeTeam',
       name: 'teamBuilding',

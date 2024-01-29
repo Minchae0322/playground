@@ -1,7 +1,24 @@
-
 <template>
-
-
+  <div class="game-container">
+    <div class="game-info-container">
+      <div class="game-details">
+        <div class="game-details-name">{{ props.game.gameName }} ( {{ props.game.gameType }} )</div>
+        <div class="game-details-startTime">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+               class="time-icon">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          {{ props.game.gameStart }} 进行时间 {{ props.game.runningTime }}分
+        </div>
+        <div class="host-info-container">
+          <img class="host-info" :src="game.hostProfileImg || defaultImage">
+          <div class="host-name">{{ game.hostName }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -11,7 +28,7 @@ import {defineEmits} from 'vue';
 import {useRouter} from "vue-router";
 import defaultImage from "@/assets/img.png";
 import {defineProps} from 'vue';
-import PlaygroundInfoView from "@/views/playground/PlaygroundInfoView.vue";
+
 
 const apiBaseUrl = "http://localhost:8080";
 const router = useRouter();
@@ -27,7 +44,7 @@ const buttonText = ref("+")
 const emits = defineEmits(['goBack']);
 
 onMounted(async () => {
-  await getTeamData("", 'Friendly')
+  await getTeamData("NONE", 'Friendly')
 });
 
 const getTeamData = async (matchTeamSide, gameType) => {
@@ -39,30 +56,6 @@ const getTeamData = async (matchTeamSide, gameType) => {
         'Authorization': getAccessToken()
       }
     });
-
-    if (response.status === 200) {
-      const transformedSubTeams = response.data.subTeams.map(subTeam => ({
-        ...subTeam,
-        teamProfileImg: encodeImageToBase64(subTeam.teamProfileImg),
-        users: transformUsers(subTeam.users)
-      }));
-
-      const transformedSoloTeamUsers = transformUsers(response.data.soloTeam.users);
-
-      if (matchTeamSide === 'HOME') {
-        homeTeams.value = {
-          ...homeTeams.value,
-          subTeams: transformedSubTeams,
-          soloTeam: {users: transformedSoloTeamUsers}
-        };
-      } else if (matchTeamSide === 'AWAY') {
-        awayTeams.value = {
-          ...awayTeams.value,
-          subTeams: transformedSubTeams,
-          soloTeam: {users: transformedSoloTeamUsers}
-        };
-      }
-    }
   } catch (error) {
     console.error(`Failed to fetch ${matchTeamSide} teams data:`, error);
     // 에러 처리 로직을 추가할 수 있습니다.
@@ -80,8 +73,7 @@ const sendFriendlyGameJoinRequest = async () => {
   }
   await validateAccessToken();
   try {
-    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/FriendlyGameJoin`, {
-        },
+    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/FriendlyGameJoin`, {},
         {
           headers: {
             'Authorization': getAccessToken()
@@ -135,3 +127,70 @@ const redirectToLogin = function () {
   router.push("/login");
 };
 </script>
+
+<style scoped>
+
+
+
+.game-info-container {
+  width: 100%;
+
+  background: var(--white);
+}
+
+
+.game-details {
+  font-family: MiSans-Medium, sans-serif;
+  color: white;
+  border-radius: 8px;
+  text-align: start;
+  font-size: 12px;
+
+  padding: 10px 15px;
+  background-color: var(--accent-color);
+  letter-spacing: 1px;
+}
+
+.game-details-name {
+  font-family: MiSans-Medium, sans-serif;
+  font-size: 22px;
+
+}
+
+.game-details-startTime {
+  display: flex;
+  align-content: center;
+}
+
+.time-icon {
+  align-content: center;
+  justify-content: center;
+  margin: auto 5px auto 0;
+  height: 14px;
+}
+
+.host-info-container {
+  display: flex;
+  align-content: center;
+  text-align: center;
+  margin: 10px 5px 0 5px;
+}
+
+.host-info {
+  border-radius: 50%;
+  background-color: #ddd; /* 아이콘 배경색 설정 */
+  display: inline-block;
+  width: 40px; /* 아이콘 크기 조정 */
+  height: 40px;
+  margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 조정 */
+  vertical-align: middle; /* 수직 정렬 */
+}
+
+.host-name {
+  margin: auto 0;
+  font-family: MiSans-Medium, sans-serif;
+  font-size: 14px;
+}
+
+
+</style>
