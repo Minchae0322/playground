@@ -31,21 +31,17 @@ public abstract class GameRequest extends Request {
     @ManyToOne
     private User host;
 
-
-    protected GameTeamSide gameTeamSide;
-
     protected LocalDateTime expiredTime;
 
 
     protected LocalDateTime requestTime;
 
 
-    public GameRequest(Long id, Game game, User user, User host, GameTeamSide gameTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime) {
+    public GameRequest(Long id, Game game, User user, User host, LocalDateTime expiredTime, LocalDateTime requestTime) {
         this.id = id;
         this.game = game;
         this.user = user;
         this.host = host;
-        this.gameTeamSide = gameTeamSide;
         this.expiredTime = expiredTime;
         this.requestTime = requestTime;
     }

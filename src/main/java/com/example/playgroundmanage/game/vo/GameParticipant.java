@@ -2,6 +2,8 @@ package com.example.playgroundmanage.game.vo;
 
 
 import com.example.playgroundmanage.dto.UsersGameDto;
+import com.example.playgroundmanage.dto.response.UserInfoDto;
+import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,6 +48,14 @@ public class GameParticipant {
                 .subTeamName(subTeam.getTeamName())
                 .localDateStartTime(game.getGameStartDateTime())
                 .gameName(game.getGameName())
+                .build();
+    }
+
+    public UserInfoDto toUserInfoDto(InMemoryMultipartFile inMemoryMultipartFile) {
+        return UserInfoDto.builder()
+                .userNickname(user.getNickname())
+                .userId(id)
+                .userProfileImg(inMemoryMultipartFile)
                 .build();
     }
 

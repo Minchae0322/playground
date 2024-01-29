@@ -19,10 +19,14 @@ public class TeamGameJoinRequest extends GameRequest {
     @ManyToOne
     private SubTeam subTeam;
 
+    private GameTeamSide gameTeamSide;
+
+
     @Builder
     public TeamGameJoinRequest(Long id, Game game, User user, User host, GameTeamSide gameTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, SubTeam subTeam) {
-        super(id, game, user, host, gameTeamSide, expiredTime, requestTime);
+        super(id, game, user, host,  expiredTime, requestTime);
         this.subTeam = subTeam;
+        this.gameTeamSide = gameTeamSide;
     }
 
     @Override
@@ -33,7 +37,7 @@ public class TeamGameJoinRequest extends GameRequest {
                 .requestType("teamGameJoin")
                 .user(getUser())
                 .subTeam(subTeam)
-                .gameTeamSide(getGameTeamSide())
+                .gameTeamSide(gameTeamSide)
                 .requestTime(getRequestTime())
                 .build();
     }

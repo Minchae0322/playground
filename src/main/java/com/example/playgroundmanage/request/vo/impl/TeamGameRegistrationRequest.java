@@ -19,10 +19,13 @@ public class TeamGameRegistrationRequest extends GameRequest {
     @ManyToOne
     private Team team;
 
+    private GameTeamSide gameTeamSide;
+
     @Builder
     public TeamGameRegistrationRequest(Long id, Game game, User user, User host, GameTeamSide gameTeamSide, LocalDateTime expiredTime, LocalDateTime requestTime, Team team) {
-        super(id, game, user, host, gameTeamSide, expiredTime, requestTime);
+        super(id, game, user, host, expiredTime, requestTime);
         this.team = team;
+        this.gameTeamSide = gameTeamSide;
     }
 
 
@@ -36,7 +39,7 @@ public class TeamGameRegistrationRequest extends GameRequest {
                 .requestType("teamGameRegistration")
                 .user(getUser())
                 .team(team)
-                .gameTeamSide(getGameTeamSide())
+                .gameTeamSide(gameTeamSide)
                 .requestTime(getRequestTime())
                 .build();
     }

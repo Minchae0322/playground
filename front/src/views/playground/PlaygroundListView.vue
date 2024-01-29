@@ -18,12 +18,14 @@
     </div>
     <div class="games">
       <div class="game-card" v-for="game in upcomingGames" :key="game.id">
-        <div class="upcoming-game-name">{{ game.gameName }} ({{ game.gameStart }})</div>
-        <div class="upcoming-game-info-container">
-          <div class="campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
-          <div>Host: {{ game.hostName }}</div>
-          <div>Running Time: {{ game.runningTime }}</div>
-        </div>
+        <router-link :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
+          <div class="upcoming-game-name">{{ game.gameName }} ({{ game.gameStart }})</div>
+          <div class="upcoming-game-info-container">
+            <div class="campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
+            <div>Host: {{ game.hostName }}</div>
+            <div>Running Time: {{ game.runningTime }}</div>
+          </div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -77,7 +79,10 @@ const isPlaygroundExist = ref(true);
 const playgroundInfoList = ref([{
   playgroundId: 1,
 }]);
-const upcomingGames = ref([{}]);
+const upcomingGames = ref([{
+  playgroundId: 1,
+  gameId: 1,
+}]);
 const campusInfo = ref([{}]);
 const activeCampus = ref(null);
 

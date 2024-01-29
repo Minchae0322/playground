@@ -39,6 +39,8 @@ public class GameThumbnail {
 
     private String playgroundName;
 
+    private Long playgroundId;
+
     private String hostProfileImg;
 
     private String gameType;
@@ -46,7 +48,7 @@ public class GameThumbnail {
     private String hostName;
 
     @Builder
-    public GameThumbnail(Long gameId, String gameName, String gameType, Integer participantNum, LocalDateTime gameStartDateTime , String gameStart, String playgroundName, String campusName, Integer runningTime, SportsEvent sportsEvent, InMemoryMultipartFile hostProfileImg, String hostName) {
+    public GameThumbnail(Long gameId, String gameName, Long playgroundId, String gameType, Integer participantNum, LocalDateTime gameStartDateTime , String gameStart, String playgroundName, String campusName, Integer runningTime, SportsEvent sportsEvent, InMemoryMultipartFile hostProfileImg, String hostName) {
         this.gameId = gameId;
         this.gameName = gameName;
         this.gameStart = gameStart;
@@ -54,6 +56,7 @@ public class GameThumbnail {
         this.gameType = gameType;
         this.sportsEvent = sportsEvent;
         this.campusName = campusName;
+        this.playgroundId = playgroundId;
         this.participantNum = participantNum;
         this.gameStartDateTime = gameStartDateTime;
         this.playgroundName = playgroundName;
