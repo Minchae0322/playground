@@ -58,6 +58,7 @@ public class GameDto {
                 .hostName(host.getNickname())
                 .runningTime(runningTime)
                 .gameName(gameName)
+                .gameType(gameType.getValue())
                 .playgroundId(playground.getId())
                 .playgroundName(playground.getName())
                 .campusName(playground.getCampus().getCampusName())
