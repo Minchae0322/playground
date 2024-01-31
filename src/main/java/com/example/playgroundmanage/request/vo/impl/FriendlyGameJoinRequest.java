@@ -19,10 +19,12 @@ import java.time.LocalDateTime;
 @Getter
 public class FriendlyGameJoinRequest extends GameRequest {
 
+    protected GameTeamSide gameTeamSide;
 
     @Builder
-    public FriendlyGameJoinRequest(Long id, Game game, User user, User host, LocalDateTime expiredTime, LocalDateTime requestTime) {
+    public FriendlyGameJoinRequest(Long id, Game game, User user, User host, LocalDateTime expiredTime, LocalDateTime requestTime, GameTeamSide gameTeamSide) {
         super(id, game, user, host, expiredTime, requestTime);
+        this.gameTeamSide = gameTeamSide;
     }
 
     @Override
@@ -30,6 +32,7 @@ public class FriendlyGameJoinRequest extends GameRequest {
         return RequestInfoDto.builder()
                 .game(getGame())
                 .requestId(getId())
+                .gameTeamSide(gameTeamSide)
                 .requestType("FriendlyGameJoin")
                 .user(getUser())
                 .requestTime(getRequestTime())

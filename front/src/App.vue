@@ -142,6 +142,11 @@ const redirectToLogin = async () => {
 </script>
 
 <template>
+
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>dd</title>
+  </head>
   <main class="main-content">
     <div v-if="$route.name !== 'login'" class="sidebar">
       <div class="school-info-container">
@@ -240,7 +245,9 @@ a {
 
 .sidebar {
   flex: 1; /* sidebar 너비 설정 */
-  min-width: 250px;
+  min-width: 230px;
+  max-width: 260px;
+  width: 17%;
   min-height: 100vh;
   height: 100%;
   position: fixed; /* 화면에 고정 */
@@ -330,6 +337,7 @@ a {
   height: 100%; /* 원하는 높이로 설정 */
   margin-top: 20px;
   margin-left: 250px; /* 사이드바 너비만큼 여백 추가 */
+
   overflow-y: auto; /* 내용이 높이를 초과하면 스크롤바 생성 */
   width: calc(100% - 250px);
 }

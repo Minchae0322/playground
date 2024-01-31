@@ -154,7 +154,7 @@ const sendSoloGameJoinRequest = async () => {
   await validateAccessToken();
   try {
     await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/soloGameJoin`, {
-          matchTeamSide: homeAndAwayTeams.value.matchTeamSide,
+          gameTeamSide: homeAndAwayTeams.value.matchTeamSide,
         },
         {
           headers: {
@@ -184,7 +184,7 @@ const sendTeamRegistrationRequest = async () => {
   try {
     await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameRegistration`, {
       teamId: selectedTeam.value.teamId,
-      matchTeamSide: homeAndAwayTeams.value.matchTeamSide
+      gameTeamSide: homeAndAwayTeams.value.matchTeamSide
     }, {
       headers: {
         'Authorization': getAccessToken()
@@ -207,7 +207,7 @@ const sendTeamJoinRequest = async (subTeamId, teamId) => {
         {
           subTeamId: subTeamId,
           teamId: teamId,
-          matchTeamSide: homeAndAwayTeams.value.matchTeamSide
+          gameTeamSide: homeAndAwayTeams.value.matchTeamSide
         }, {
           headers: {
             'Authorization': getAccessToken()
@@ -364,10 +364,11 @@ const redirectToLogin = function () {
         </div>
       </div>
 
-      <button class="button-goBack" @click="goBack"></button>
+
 
 
       <div class="tab-container">
+        <button class="button-goBack" @click="goBack"></button>
         <div
             role="tablist"
             aria-orientation="horizontal"
@@ -562,23 +563,24 @@ a {
 
 
 .button-goBack {
+  background: none; /* 배경 없음 */
+  border: none; /* 테두리 없음 */
+  color: black; /* 아이콘 색상 */
+  font-size: 24px; /* 아이콘 크기 */
+  cursor: pointer; /* 마우스 오버 시 커서 변경 */
 
-  padding: 10px 20px;
-  color: black;
-  border-radius: 4px;
-  margin: 10px auto 10px 25px;
   text-align: left;
   position: relative; /* 상대 위치 설정 */
 }
 
 .button-goBack::before {
-  content: '←'; /* 화살표 문자 */
-  position: absolute; /* 절대 위치 설정 */
-  left: 10px; /* 왼쪽 패딩과 일치하도록 설정 */
-  top: 50%; /* 버튼 중앙에 위치하도록 설정 */
-  transform: translateY(-50%); /* Y축 기준으로 50%만큼 이동하여 중앙 정렬 */
-  font-size: 1.2em; /* 화살표 크기 조정 */
-
+  content: ''; /* 내용 없음 */
+  border-top: 2px solid black; /* 위쪽 테두리 */
+  border-left: 2px solid black; /* 왼쪽 테두리 */
+  width: 15px; /* 가로 길이 */
+  height: 15px; /* 세로 길이 */
+  transform: rotate(-45deg); /* 45도 회전 */
+  display: block; /* 블록 요소로 설정 */
 }
 
 .button-goBack span {
@@ -587,7 +589,7 @@ a {
 
 .tab-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
   background: var(--white);
@@ -603,7 +605,7 @@ a {
   align-items: center;
   background: var(--background-color-gray);
   border-radius: 8px;
-  width: 95%;
+  width: 90%;
 }
 
 /* 탭 버튼 기본 스타일 */
@@ -612,10 +614,10 @@ a {
   align-items: center;
   justify-content: center;
   border-radius: 8px;
-  font-size: 13px;
+  font-size: 15px;
   font-family: MiSans-Light, sans-serif;
   cursor: pointer;
-  width: 40%;
+  width: 45%;
   margin: 5px 0;
   border: none;
   background-color: transparent;

@@ -63,9 +63,7 @@ onMounted(() => {
 const fetchPendingRequests = async (requestType) => {
   await validateAccessToken()
   try {
-    const response = await axios.post(`${apiBaseUrl}/user/pending/request/game/${requestType}`, {
-      teamId: 1
-    }, {
+    const response = await axios.get(`${apiBaseUrl}/user/pending/request`, {
       headers: {
         'Authorization': getAccessToken()
       }

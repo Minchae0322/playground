@@ -49,7 +49,7 @@ public class RequestInfoDto {
                 .username(user.getNickname())
                 .userId(user.getId())
                 .subTeamName(subTeam == null ? "" : subTeam.getTeam().getTeamName())
-                .matchTeamSide(gameTeamSide.getValue())
+                .gameTeamSide(gameTeamSide.getValue())
                 .build();
     }
 

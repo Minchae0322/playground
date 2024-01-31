@@ -19,14 +19,14 @@ public class UserJoinGameParams {
     private Long teamId;
 
 
-    private String matchTeamSide;
+    private String gameTeamSide;
 
 
     @Builder
-    public UserJoinGameParams(Long subTeamId, Long teamId, String matchTeamSide) {
+    public UserJoinGameParams(Long subTeamId, Long teamId, String gameTeamSide) {
         this.subTeamId = subTeamId;
         this.teamId = teamId;
-        this.matchTeamSide = matchTeamSide;
+        this.gameTeamSide = gameTeamSide;
     }
 
 
@@ -39,7 +39,7 @@ public class UserJoinGameParams {
                 .teamId(teamId)
                 .subTeamId(subTeamId)
                 .requestTime(MyDateTime.initMyDateTime(ZonedDateTime.now()))
-                .gameTeamSide(GameTeamSide.valueOf(matchTeamSide))
+                .gameTeamSide(GameTeamSide.valueOf(gameTeamSide))
                 .build();
     }
 

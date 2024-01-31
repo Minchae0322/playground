@@ -57,9 +57,11 @@ public class FriendlyGameJoinRequestService implements RequestService {
 
     @Transactional
     private Long saveJoinRequest(Game game, GameRequestDto gameRequestDto) {
-        return gameRequestRepository.save(SoloGameJoinRequest.builder()
+        return gameRequestRepository.save(FriendlyGameJoinRequest.builder()
                         .game(game)
                         .host(game.getHost())
+                        .gameTeamSide(gameRequestDto.getGameTeamSide())
+                        .gameTeamSide(gameRequestDto.getGameTeamSide())
                         .requestTime(gameRequestDto.getRequestTime().getLocalDateTime())
                         .expiredTime(game.getGameStartDateTime())
                         .user(gameRequestDto.getUser())

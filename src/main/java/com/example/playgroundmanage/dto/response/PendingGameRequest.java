@@ -1,12 +1,7 @@
 package com.example.playgroundmanage.dto.response;
 
-import com.example.playgroundmanage.game.vo.SubTeam;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Data
 public class PendingGameRequest {
@@ -22,7 +17,7 @@ public class PendingGameRequest {
 
     private String subTeamName;
 
-    private String matchTeamSide;
+    private String gameTeamSide;
 
     private Long userId;
 
@@ -33,14 +28,14 @@ public class PendingGameRequest {
     private String requestType;
 
     @Builder
-    public PendingGameRequest(Long requestId, Long gameId, String gameName, Long teamId, String teamName, String subTeamName, String matchTeamSide, Long userId, String username, String requestTime, String requestType) {
+    public PendingGameRequest(Long requestId, Long gameId, String gameName, Long teamId, String teamName, String subTeamName, String gameTeamSide, Long userId, String username, String requestTime, String requestType) {
         this.requestId = requestId;
         this.gameId = gameId;
         this.gameName = gameName;
         this.teamId = teamId;
         this.teamName = teamName;
         this.subTeamName = subTeamName;
-        this.matchTeamSide = matchTeamSide;
+        this.gameTeamSide = gameTeamSide;
         this.userId = userId;
         this.username = username;
         this.requestTime = requestTime;

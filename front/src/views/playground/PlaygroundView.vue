@@ -1,4 +1,8 @@
 <template>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>dd</title>
+  </head>
   <div class="game-container">
     <div class="playground-container">
       <div class="game-image">
@@ -434,6 +438,7 @@ a {
 
 .upcoming-container {
   margin-left: 20px;
+
   min-width: 500px;
   width: 50%;
   height: 90vh;

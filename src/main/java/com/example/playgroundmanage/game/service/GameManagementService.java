@@ -38,10 +38,7 @@ public class GameManagementService {
 
     @Transactional
     public List<GameParticipant> findGameParticipantsInGame(Game game) {
-        return Stream.of(GameTeamSide.HOME, GameTeamSide.AWAY)
-                .flatMap(side -> game.getCompetingTeamBySide(side).orElseThrow().getSubTeams().stream())
-                .flatMap(g -> g.getGameParticipants().stream())
-                .toList();
+        return game.getGameParticipants();
     }
 
     public void deleteRequest(Long requestId) {
@@ -51,8 +48,8 @@ public class GameManagementService {
 
 
     @Transactional
-    public List<RequestInfoDto> getPendingGameRequests(User user) {
-        List<GameRequest> pendingRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(user, LocalDateTime.now());
+    public List<RequestInfoDto> getPendingGameRequests(User host) {
+        List<GameRequest> pendingRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(host, LocalDateTime.now());
 
         return pendingRequests.stream()
                 .map(GameRequest::toGameRequestInfoDto)

@@ -9,13 +9,11 @@ import com.example.playgroundmanage.dto.reqeust.UserJoinTeamParams;
 import com.example.playgroundmanage.dto.response.PendingGameRequest;
 import com.example.playgroundmanage.dto.response.PendingTeamRequest;
 import com.example.playgroundmanage.game.service.GameManagementService;
+import com.example.playgroundmanage.request.service.RequestManageService;
 import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.request.RequestServiceFinder;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
-import jakarta.persistence.LockModeType;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +27,8 @@ public class RequestController {
     private final RequestServiceFinder requestServiceFinder;
 
     private final GameManagementService gameManagementService;
+
+    private final RequestManageService requestManageService;
 
     @PostMapping("/game/{gameId}/join/{requestType}")
     public void generateJoinGameRequest(@RequestBody UserJoinGameParams userJoinGameParams, @AuthenticationPrincipal MyUserDetails userDetails, @PathVariable Long gameId, @PathVariable("requestType") String type) {
@@ -57,7 +57,7 @@ public class RequestController {
     }
 
     @GetMapping("/user/pending/request")
-    public List<PendingGameRequest> getPendingGameRequests(@AuthenticationPrincipal MyUserDetails myUserDetails) {
+    public List<PendingGameRequest> getAllPendingGameRequests(@AuthenticationPrincipal MyUserDetails myUserDetails) {
         List<RequestInfoDto> pendingRequest = gameManagementService.getPendingGameRequests(myUserDetails.getUser());
 
         return pendingRequest.stream()
@@ -66,7 +66,7 @@ public class RequestController {
     }
 
     @PostMapping("/user/pending/request/game/{requestType}")
-    public List<PendingGameRequest> getPendingGameRequests(@RequestBody PendingRequestParams pendingRequestParams, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable String requestType) {
+    public List<PendingGameRequest> getAllPendingGameRequestsByRequestType(@RequestBody PendingRequestParams pendingRequestParams, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable String requestType) {
 
         RequestService requestService = requestServiceFinder.find(requestType);
 
@@ -90,7 +90,6 @@ public class RequestController {
                 .map(RequestInfoDto::toPendingTeamRequest)
                 .toList();
     }
-
     @PostMapping("/team/join/{requestType}")
     public void createTeamJoinRequest(@RequestBody UserJoinTeamParams userJoinTeamParams, @PathVariable("requestType") String type,
                                       @AuthenticationPrincipal MyUserDetails myUserDetails) {
