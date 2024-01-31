@@ -6,24 +6,26 @@
         <li v-for="(game,gameId) in upcomingGames" :key="gameId" @click="handleGameClick(game)">
           <div v-if="game.gameId">
             <div class="game-card">
-              <div class="game-name">{{ game.gameName }}</div>
-              <div class="game-time">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                     stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
-                     class="time-icon">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <polyline points="12 6 12 12 16 14"></polyline>
-                </svg>
-                {{ game.gameStart }}（ {{ game.runningTime }}分 ）
-              </div>
-              <div class="host-info">
-                <img :src="game.hostProfileImg || defaultImage">
-                <div class="host-name">{{ game.hostName }}</div>
-              </div>
               <div class="game-type-container">
                 <img v-if="game.gameType === '竞争'" :src="rankingIcon">
                 <img v-else :src="friendlyIcon">
-                <p class="running-time">{{ game.gameType }}</p>
+                <p class="game-type">{{ game.gameType }}</p>
+              </div>
+              <div class="game-info">
+                <div class="game-name">{{ game.gameName }}</div>
+                <div class="game-time">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                       stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                       class="time-icon">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                  </svg>
+                  {{ game.gameStart }}（ {{ game.runningTime }}分 ）
+                </div>
+                <div class="host-info">
+                  <img :src="game.hostProfileImg || defaultImage">
+                  <div class="host-name">{{ game.hostName }}</div>
+                </div>
               </div>
             </div>
           </div>
@@ -37,7 +39,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref} from 'vue';
+import {onMounted, ref} from 'vue';
 import axios from "axios";
 import {useRouter} from "vue-router";
 import {defineEmits} from 'vue';
@@ -170,20 +172,21 @@ div {
 }
 
 
-.host-info {
-  margin-top: 5px;
-  display: flex; /* Flexbox를 이용한 가로 정렬 */
-  align-items: center; /* 세로축 중앙 정렬 */
-  margin-bottom: 0.5rem; /* 아래쪽 여백 */
-}
 
-.host-name {
-  font-family: MiSans-Medium,sans-serif;
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  align-content: end;
+  justify-content: end;
+  flex-basis: 67%;
+  margin-left: auto;
 }
 
 .game-card {
+  display: flex;
   border: 1px solid #ddd;
-  padding: 15px 40px;
+  padding: 15px 20px;
   font-size: 0.875rem;
   color: #666;
   margin-top: 0.5rem;
@@ -199,10 +202,8 @@ div {
 
 
 .game-name {
-  font-size: 20px;
-  padding: 0 0 5px 0;
-
-  font-family: MiSans-Semibold,sans-serif;
+  font-size: 19px;
+  font-family: MiSans-Semibold, sans-serif;
 }
 
 .time-icon {
@@ -212,10 +213,21 @@ div {
 
 .game-time {
   display: flex;
-  font-size: 15px;
+  font-size: 13px;
   align-content: center;
   color: var(--text-hint-dark);
   margin-top: 7px;
+  font-family: MiSans-Medium, sans-serif;
+}
+
+.host-info {
+  margin-top: 10px;
+  display: flex; /* Flexbox를 이용한 가로 정렬 */
+  align-items: center; /* 세로축 중앙 정렬 */
+  margin-bottom: 0.5rem; /* 아래쪽 여백 */
+}
+
+.host-name {
   font-family: MiSans-Medium, sans-serif;
 }
 
@@ -224,18 +236,22 @@ div {
   border-radius: 50%;
   background-color: #ddd; /* 아이콘 배경색 설정 */
   display: inline-block;
-  width: 40px; /* 아이콘 크기 조정 */
-  height: 40px;
+  width: 35px; /* 아이콘 크기 조정 */
+  height: 35px;
+
   margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 조정 */
   vertical-align: middle; /* 수직 정렬 */
 }
 
 /* 시간과 실행 시간 정보 스타일링 */
 
-.running-time {
+.game-type {
   font-size: 0.875rem;
   color: #666;
-  margin: auto 0;
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+
 }
 
 /* 링크 스타일링 제거 */
@@ -251,13 +267,17 @@ a {
 
 .game-type-container {
   display: flex;
+  flex-basis: 20%;
+  flex-direction: column;
 }
 
 .game-type-container img {
   background: none;
-  width: 30px; /* 아이콘 크기 */
-  height: 30px;
+  width: 80px; /* 아이콘 크기 */
+  height: 80px;
   border-radius: 4px;
-  margin: 0 10px 0 0;
+  margin: 0 auto;
 }
+
+
 </style>
