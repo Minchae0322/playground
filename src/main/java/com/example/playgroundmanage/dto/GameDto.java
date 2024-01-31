@@ -37,9 +37,9 @@ public class GameDto {
     private Integer runningTime;
 
 
-
     @Builder
     public GameDto(Long gameId, Long playgroundId, User host, GameType gameType, Playground playground, String gameName, Integer participantNum, DateTime startDateTime, SportsEvent sportsEvent, Integer runningTime) {
+        validate(startDateTime, gameName, runningTime);
         this.gameId = gameId;
         this.playgroundId = playgroundId;
         this.host = host;
@@ -50,6 +50,18 @@ public class GameDto {
         this.startDateTime = startDateTime;
         this.sportsEvent = sportsEvent;
         this.runningTime = runningTime;
+    }
+
+    private void validate(DateTime startDateTime, String gameName, Integer runningTime) {
+        if (startDateTime == null) {
+            throw new IllegalArgumentException("wrong time");
+        }
+        if (gameName.length() > 20) {
+            throw new IllegalArgumentException("too long game name");
+        }
+        if (runningTime > 120 || runningTime < 1) {
+            throw new IllegalArgumentException("wrong running time");
+        }
     }
 
     public GameThumbnail toGameThumbnail() {

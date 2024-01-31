@@ -168,7 +168,7 @@ const validateStartTime = async function () {
     );
     return response.data; // boolean 값을 반환
   } catch (error) {
-    await alert(error.response.data.message)
+    alert(error.response.data.message)
     return false; // 오류가 발생했다면, 유효하지 않음으로 처리
   }
 };

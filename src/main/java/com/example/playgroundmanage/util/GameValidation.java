@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.util;
 
 import com.example.playgroundmanage.dto.GameTimeDto;
+import com.example.playgroundmanage.exception.TimeOverlappingException;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.game.vo.User;
@@ -23,13 +24,13 @@ public final class GameValidation {
                 .anyMatch(game -> gameFinder.isDateTimeRangeOverlapping(game, gameTimeDto.getStartDateTime().getLocalDateTime(), gameTimeDto.getRunningTime()));
 
         if (isOverlapping) {
-            throw new IllegalArgumentException("지정한 시간에 다른 게임이 이미 존재합니다: " + localDateToYearMonthDateTimeString(LocalDateTime.now()));
+            throw new TimeOverlappingException(localDateToYearMonthDateTimeString(LocalDateTime.now()));
         }
     }
 
     public static void validateStartBeforePresent(GameTimeDto gameTimeDto) {
         if (gameTimeDto.getStartDateTime().getLocalDateTime().isBefore(LocalDateTime.now().plusMinutes(1))) {
-            throw new IllegalArgumentException("현재시간 +1분 보다 전에 시작할 수 없습니다. 현재시간 : " + localDateToYearMonthDateTimeString(LocalDateTime.now()));
+            throw new RuntimeException("현재시간 +1분 보다 전에 시작할 수 없습니다. 현재시간 : " + localDateToYearMonthDateTimeString(LocalDateTime.now()));
         }
     }
 

@@ -1,54 +1,62 @@
 <template>
   <div class="modal-overlay">
     <div class="event-details-container">
-      <h1>게임 만들기</h1>
-      <h3>Please enter the details about the sporting events.</h3>
+      <div class="title">创新比赛</div>
+      <div class="title-description">Please enter the details about the sporting events.</div>
 
       <div class="form-container">
         <div class="form-group">
           <label for="eventName">Game Name</label>
-          <input type="text" v-model="gameRegistration.gameName" id="eventName" name="eventName" placeholder="Name of the event">
+          <input type="text" v-model="gameRegistration.gameName" id="eventName" name="eventName"
+                 placeholder="Name of the event">
         </div>
 
         <div class="form-group">
           <label for="venue">Venue</label>
-          <h2>{{playgroundInfo.sportsEvent}}</h2>
-        </div>
-
-        <div class="max-people-container">
-          <label for="maxMatches">Maximum Number of Matches</label>
-          <input type="number" id="maxMatches" name="maxMatches" placeholder="max">
+          <div>{{ playgroundInfo.sportsEvent }}</div>
         </div>
 
         <div class="form-group">
-          <a>Event Date</a>
+          <label>Event Date</label>
           <button type="button" id="eventDate" class="date-button" @click="clickSelectDate">
-            {{ isStartTimeSelected ? formattedStartTime : 'Select a date' }}</button>
+            {{ isStartTimeSelected ? formattedStartTime : 'Select a date' }}
+          </button>
 
-          <ModalComponent v-if="isModalOpen" @close="isModalOpen = false"  @updateValue="handleUpdateStartTime">
+          <ModalComponent v-if="isModalOpen" @close="isModalOpen = false" @updateValue="handleUpdateStartTime">
           </ModalComponent>
         </div>
 
         <div class="form-group radio-container">
-          <input type="radio" id="friendlyMatch" name="matchType" v-model="gameRegistration.gameType" value="Friendly" checked>
-          <label for="friendlyMatch">Friendly Match</label>
-
-          <input type="radio" id="competitionMatch" name="matchType" v-model="gameRegistration.gameType" value="Competition">
-          <label for="competitionMatch">Competition</label>
+          <div class="checkbox">
+            <input type="radio" id="friendlyMatch" name="matchType" v-model="gameRegistration.gameType" value="Friendly"
+                   checked>
+            <label for="friendlyMatch">Friendly Match</label>
+          </div>
+          <div class="checkbox">
+            <input type="radio" id="competitionMatch" name="matchType" v-model="gameRegistration.gameType"
+                   value="Competition">
+            <label for="competitionMatch">Competition</label>
+          </div>
         </div>
 
 
-
         <div class="action-container">
-          <button type="button" @click="close" class="button-cancel inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2">Cancel</button>
-          <button type="submit" @click="generateGame" class="button-confirm inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2">Save</button>
+          <button type="button" @click="close"
+                  class="button-cancel inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2">
+            Cancel
+          </button>
+          <button type="submit" @click="generateGame"
+                  class="button-confirm inline-flex items-center justify-center rounded-md text-sm font-medium px-4 py-2">
+            Save
+          </button>
         </div>
       </div>
     </div>
   </div>
   <div>
-    <button id="eventDate" @click="clickSelectDate">select date</button>
-    <ModalComponent v-if="isModalOpen" @close="isModalOpen = false"  @dateTimeValue="handleUpdateStartTime" @runningTime="handleUpdateRunningTime">
+
+    <ModalComponent v-if="isModalOpen" @close="isModalOpen = false" @dateTimeValue="handleUpdateStartTime"
+                    @runningTime="handleUpdateRunningTime">
     </ModalComponent>
   </div>
 
@@ -57,13 +65,13 @@
 import {computed, onMounted, ref} from 'vue';
 import axios from "axios";
 import ModalComponent from './GameDateSelectorView.vue';
-import { defineProps, defineEmits } from 'vue';
+import {defineProps, defineEmits} from 'vue';
 
 const timeValue = ref('')
 const isModalOpen = ref(false);
 const isTimeSlotOccupied = ref(false);
 const isStartTimeSelected = ref(false);
-const startTime = ref(new Date())
+const startTime = ref('')
 const runningTime = ref(1)
 const gameRegistration = ref({
   gameName: '',
@@ -81,7 +89,7 @@ const apiBaseUrl = "http://localhost:8080";
 
 onMounted(() => {
   // Check if the initial page number is provided in the route query
- getPlaygroundInfo()
+  getPlaygroundInfo()
 });
 
 const formattedStartTime = computed(() => {
@@ -101,28 +109,38 @@ const close = () => {
   emit('closeGameBuilder');
 };
 
-const generateGame = () => {
-  validateAccessToken()
-  axios.post(`${apiBaseUrl}/game/generate`, {
-        gameName: gameRegistration.value.gameName,
-        playgroundId: props.playgroundId,
-        gameStartDateTime: startTime.value,
-        runningTime: runningTime.value,
-        gameType: gameRegistration.value.gameType,
-      }, {
-        headers: {
-          'Authorization': getAccessToken()
+const generateGame = async () => {
+  const isValid = await validate();
+  if (!isValid) {
+    return;
+  }
+  await validateAccessToken();
+  try {
+    const response = await axios.post(`${apiBaseUrl}/game/generate`, {
+          gameName: gameRegistration.value.gameName,
+          playgroundId: props.playgroundId,
+          gameStartDateTime: startTime.value,
+          runningTime: runningTime.value,
+          gameType: gameRegistration.value.gameType,
+        }, {
+          headers: {
+            'Authorization': getAccessToken()
+          }
         }
-      }
-  ).then(response => {
+    )
     emit('closeGameBuilder');
-  }).catch(error => {
+  } catch (error) {
     alert(error.response.data.message)
-  });
-
+  }
 };
 
-
+const validate = async () => {
+  if (!startTime.value) {
+    alert("시간을 입력해주세요.")
+    return false;
+  }
+  return true;
+};
 
 
 const playgroundInfo = ref({
@@ -134,7 +152,7 @@ const playgroundInfo = ref({
 
 const getPlaygroundInfo = function () {
   validateAccessToken()
-  axios.get(`${apiBaseUrl}/playground/${props.playgroundId}/info`,  {
+  axios.get(`${apiBaseUrl}/playground/${props.playgroundId}/info`, {
         headers: {
           'Authorization': localStorage.getItem("accessToken")
         }
@@ -157,10 +175,6 @@ const clickSelectDate = () => {
   isModalOpen.value = true;
   isTimeSlotOccupied.value = false; // Reset the occupied state when opening the modal
 };
-
-
-
-
 
 
 const validateAccessToken = async function () {
@@ -189,7 +203,7 @@ const updateAccessToken = async function () {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
-      headers: { 'RefreshToken': refreshToken }
+      headers: {'RefreshToken': refreshToken}
     });
     if (response.status === 200) {
       const newAccessToken = response.headers['authorization'];
@@ -207,11 +221,11 @@ const redirectToLogin = function () {
 </script>
 
 
-
 <style scoped>
 body {
   font-family: gothic, sans-serif;
 }
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -226,29 +240,31 @@ body {
 }
 
 .event-details-container {
-  max-width: 50%;
+  min-width: 550px;
   margin: auto;
-  width: 50%; /* 너비를 50%로 설정 */
+  width: 40%; /* 너비를 50%로 설정 */
   border: 1px solid #ccc;
   border-radius: 10px;
-  padding: 40px;
-  box-shadow: 5px 1px 8px 0 rgba(0,0,0,.06);
-  border-left: 1px solid rgba(0,0,0,.08);;
+  padding: 20px;
+  box-shadow: 5px 1px 8px 0 rgba(0, 0, 0, .06);
+  border-left: 1px solid rgba(0, 0, 0, .08);;
   font-family: 'Arial', sans-serif;
   background: #fff; /* 카드의 배경색 */
   overflow: auto; /* 내용이 넘칠 때 스크롤바를 보여줌 */
 
 }
 
-.event-details-container h1 {
-  font-size: 24px;
-  font-family: gothic-bold,sans-serif;
+.title {
+  font-size: 27px;
+  color: black;
+  font-family: MiSans-Heavy, sans-serif;
 }
 
-.event-details-container h3 {
+.title-description {
   color: #949494;
-  font-family: gothic,sans-serif;
+  font-family: MiSans-Light, sans-serif;
   font-size: 12px;
+  margin-bottom: 10px;
 }
 
 .form-container {
@@ -260,7 +276,12 @@ body {
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 20px; /* 각 폼 그룹 사이의 간격 */
+  margin-bottom: 10px; /* 각 폼 그룹 사이의 간격 */
+}
+
+.form-group label {
+  font-family: MiSans-Semibold, sans-serif;
+  color: black;
 }
 
 .radio-container {
@@ -278,10 +299,6 @@ body {
   cursor: pointer; /* 라벨에 마우스 오버시 커서 변경 */
 }
 
-.max-people-container {
-  display: flex;
-  flex-direction: column;
-}
 
 .max-people-container input {
   width: 20%;
@@ -292,41 +309,52 @@ body {
 }
 
 .form-group label {
-  font-size: 14px; /* 레이블 글꼴 크기 */
+  font-size: 17px; /* 레이블 글꼴 크기 */
   color: #333; /* 레이블 글꼴 색상 */
   margin-bottom: 5px; /* 레이블과 입력 필드 사이의 간격 */
 }
 
-.form-group input[type="text"],
+.form-group input[type="text"] {
+  padding: 12px; /* Adjust padding to match the image */
+  border: 1px solid #ccc; /* Adjust border color to match the image */
+  border-radius: 4px; /* Rounded corners for inputs and button */
+  font-size: 12px; /* Match input font size to the image */
+  font-family: MiSans-Medium, sans-serif;
+}
 .date-button {
   padding: 12px; /* Adjust padding to match the image */
   border: 1px solid #ccc; /* Adjust border color to match the image */
   border-radius: 4px; /* Rounded corners for inputs and button */
-  font-size: 14px; /* Match input font size to the image */
-}
-
-.date-button {
+  font-size: 12px; /* Match input font size to the image */
+  font-family: MiSans-Medium, sans-serif;
   width: 40%;
   background-color: #f5f5f5; /* Background color for the date button */
   text-align: left; /* Align text to the left */
   color: #000; /* Text color for the date button */
 }
 
+
+
 .date-button:hover {
   background-color: #ebebeb; /* Hover effect for the date button */
 }
 
-.checkbox-container {
-  flex-direction: row;
-  align-items: center;
-  margin-top: 0; /* Remove margin top */
-}
 
 .checkbox-container input[type="checkbox"] {
   margin-right: 8px; /* Space between checkbox and label */
 }
 
+.checkbox {
+  display: flex;
+  margin: 5px;
+}
 
+.checkbox label {
+  font-family: MiSans-Medium, sans-serif;
+  color: black;
+  margin: auto 0;
+  font-size: 13px;
+}
 
 .action-container {
   display: flex;
@@ -334,26 +362,35 @@ body {
   justify-content: space-between;
 }
 
-.button-confirm {
-  margin: 0px 20px;
-}
-
+.button-confirm,
 .button-cancel {
-  background-color: white;
-  color: black;
-  margin: 0px 20px;
-  border: white;
+  padding: 10px 20px; /* 버튼 패딩 조정 */
+  border: none; /* 기본 테두리 제거 */
+  font-weight: bold; /* 글꼴 굵기 */
+  transition: background-color 0.2s, color 0.2s; /* 배경색과 글자색 변화 애니메이션 */
+  cursor: pointer; /* 마우스 오버 시 커서 변경 */
 }
 
-.button-cancel:hover {
-  background-color: #f3f3f3; /* 마우스 오버 시 배경색 변경 */
-  color: #000000; /* 마우스 오버 시 글자색 변경 */
+.button-confirm {
+  background-color: #030000; /* 확인 버튼 배경색 */
+  color: white; /* 확인 버튼 글자색 */
+  border-radius: 8px;
 }
 
 .button-confirm:hover {
-  background-color: rgba(0, 0, 0, 0.85); /* 마우스 오버 시 배경색 변경 */
-  color: #ffffff; /* 마우스 오버 시 글자색 변경 */
+  background-color: #565656; /* 마우스 오버 시 배경색 어둡게 */
 }
+
+.button-cancel {
+  border-radius: 8px;
+  background-color: #f44336; /* 취소 버튼 배경색 */
+  color: white; /* 취소 버튼 글자색 */
+}
+
+.button-cancel:hover {
+  background-color: #d32f2f; /* 마우스 오버 시 배경색 어둡게 */
+}
+
 /* 날짜 선택 필드에 대한 특별한 스타일 */
 input[type="date"]:valid {
   background-color: #e8f0fe;
