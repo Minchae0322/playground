@@ -86,7 +86,7 @@ public class GameDto {
                 .runningTime(runningTime)
                 .gameName(gameName)
                 .playgroundId(playground.getId())
-                .gameType(gameType.getValue())
+                .gameType(gameType.getValue_cn())
                 .participantNum(participantNum)
                 .gameStartDateTime(startDateTime.getLocalDateTime())
                 .playgroundName(playground.getName())

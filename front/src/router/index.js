@@ -5,7 +5,7 @@ import oauth2 from '../views/Redirect.vue'
 import searchSchool from '../views/SerchSchoolView.vue'
 import playground from '../views/playground/PlaygroundView.vue'
 import timePickerDialog from '../views/game/GameBuilderView.vue'
-import game from '../views/game/GameDateSelectorView.vue'
+import gameDateSelector from '../views/game/GameDateSelectorView.vue'
 import gameInfo from '../views/game/GameInfoView.vue'
 import teamBuilding from '../views/team/TeamBuildingView.vue'
 import userInfo from '../views/UserInfoView.vue'
@@ -71,9 +71,11 @@ const router = createRouter({
     },
 
     {
-      path: '/game',
-      name: 'game',
-      component: game
+      path: '/gameDateSelect',
+      name: 'gameDateSelector',
+      component: gameDateSelector,
+      props: true,
+
     },
 
     {

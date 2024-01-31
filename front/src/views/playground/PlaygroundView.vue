@@ -140,7 +140,7 @@ const getPlaygroundInfo = async () => {
 const getOngoingGame = async function () {
   await validateAccessToken()
   try {
-    const response = await axios.get(`${apiBaseUrl}/playground/2/current`,
+    const response = await axios.get(`${apiBaseUrl}/playground/${props.playgroundId}/current`,
         {
           headers: {
             'Authorization': getAccessToken()

@@ -246,7 +246,7 @@ input[type="text"]::placeholder {
   display: flex;
   width: 95%;
   min-width: 1050px;
-  justify-content: space-between;
+  justify-content: start;
   align-items: center;
   flex-wrap: wrap;
   gap: 10px;

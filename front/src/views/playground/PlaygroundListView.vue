@@ -256,7 +256,9 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
   padding: 0;
   box-sizing: border-box;
 }
-
+a {
+  text-decoration: none;
+}
 body {
   font-family: 'Arial', sans-serif; /* 기본 글꼴 */
 
@@ -355,6 +357,7 @@ body {
 
 .game-card {
   margin: 10px;
+  max-width: 30%;
   background-color: var(--white);
   border: 1px solid #ddd;
   padding: 12px 15px;
@@ -363,6 +366,7 @@ body {
 
 .upcoming-game-name {
   margin-bottom: 5px;
+  overflow-wrap: break-word; /* 긴 단어가 컨테이너 너비를 초과할 경우 줄바꿈 */
   letter-spacing: 1px;
   color: var(--text-primary);
 }

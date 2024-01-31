@@ -40,7 +40,7 @@ public class PlaygroundController {
 
     @GetMapping("/playground/{playgroundId}/upComing")
     public List<GameThumbnail> getUpcomingGames(@PathVariable Long playgroundId) {
-        List<GameDto> upcomingThreeGames = playgroundService.getUpcomingGames(playgroundId, 5);
+        List<GameDto> upcomingThreeGames = playgroundService.getUpcomingGames(playgroundId);
 
         return upcomingThreeGames.stream()
                 .map(gameDto -> gameDto.toGameThumbnail(userService.getUserProfileImg(gameDto.getHost())))

@@ -70,7 +70,9 @@ const props = defineProps({
   game: {
     type: Object,
     required: true
-  }
+  },
+
+
 });
 const buttonText = ref("+")
 const participants = ref([{

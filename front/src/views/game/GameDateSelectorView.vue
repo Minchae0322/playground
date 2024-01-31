@@ -120,7 +120,11 @@ const occupiedTimeSlots = ref([]); // Example occupied slots
 const apiBaseUrl = "http://localhost:8080";
 const runningTime = ref(60);
 const emit = defineEmits(['dateTimeValue', 'close', 'runningTime']);
+const props = defineProps({
+  playgroundId: Number
 
+
+});
 
 onMounted(() => {
   pickDate()
@@ -157,7 +161,7 @@ const closeModal = () => {
 const validateStartTime = async function () {
   await validateAccessToken()
   try {
-    const response = await axios.post(`${apiBaseUrl}/playground/2/valid-start`, {
+    const response = await axios.post(`${apiBaseUrl}/playground/${props.playgroundId}/valid-start`, {
           gameStartDateTime: dateValue.value,
           runningTime: runningTime.value
         }, {
@@ -176,7 +180,7 @@ const validateStartTime = async function () {
 const pickDate = function () {
   validateAccessToken()
 
-  axios.post(`${apiBaseUrl}/playground/2/occupiedTime`, {
+  axios.post(`${apiBaseUrl}/playground/${props.playgroundId}/occupiedTime`, {
         gameStartDateTime: dateValue.value
       }, {
         headers: {

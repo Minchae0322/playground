@@ -55,7 +55,7 @@
   </div>
   <div>
 
-    <ModalComponent v-if="isModalOpen" @close="isModalOpen = false" @dateTimeValue="handleUpdateStartTime"
+    <ModalComponent v-if="isModalOpen" @close="isModalOpen = false" :playground-id="props.playgroundId" @dateTimeValue="handleUpdateStartTime"
                     @runningTime="handleUpdateRunningTime">
     </ModalComponent>
   </div>

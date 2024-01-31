@@ -95,11 +95,11 @@ public class PlaygroundService {
     }
 
     @Transactional
-    public List<GameDto> getUpcomingGames(Long playgroundId, Integer numberOfGame) {
+    public List<GameDto> getUpcomingGames(Long playgroundId) {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
 
-        List<Game> upcomingGames = gameFinder.getUpcomingGames(playground.getGames(), numberOfGame, MyDateTime.initMyDateTime(ZonedDateTime.now()));
+        List<Game> upcomingGames = gameFinder.getUpcomingGames(playground.getGames(), playground.getGames().size(), MyDateTime.initMyDateTime(ZonedDateTime.now()));
 
         return upcomingGames.stream()
                 .map(Game::toGameDto)

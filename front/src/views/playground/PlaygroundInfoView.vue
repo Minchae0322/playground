@@ -20,8 +20,11 @@
                 <img :src="game.hostProfileImg || defaultImage">
                 <div class="host-name">{{ game.hostName }}</div>
               </div>
-
-              <p class="running-time">{{ game.gameType }}</p>
+              <div class="game-type-container">
+                <img v-if="game.gameType === '竞争'" :src="rankingIcon">
+                <img v-else :src="friendlyIcon">
+                <p class="running-time">{{ game.gameType }}</p>
+              </div>
             </div>
           </div>
         </li>
@@ -34,13 +37,12 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import { onMounted, ref} from 'vue';
 import axios from "axios";
-
 import {useRouter} from "vue-router";
 import {defineEmits} from 'vue';
-
-
+import friendlyIcon from '../../assets/icon-handshake.png'
+import rankingIcon from '../../assets/icon-ranking.png'
 
 
 const upcomingGames = ref([{}]);
@@ -175,21 +177,16 @@ div {
   margin-bottom: 0.5rem; /* 아래쪽 여백 */
 }
 
-.host-info img {
-  border-radius: 50%;
-  background-color: #ddd; /* 아이콘 배경색 설정 */
-  display: inline-block;
-  width: 25px; /* 아이콘 크기 */
-  height: 25px;
-  margin-right: 10px; /* 아이콘과 텍스트 사이의 간격 */
-}
 .host-name {
   font-family: MiSans-Medium,sans-serif;
 }
 
 .game-card {
   border: 1px solid #ddd;
-  padding: 15px;
+  padding: 15px 40px;
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.5rem;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 그림자를 더 부드럽게 조정 */
   border-radius: 8px;
@@ -204,7 +201,7 @@ div {
 .game-name {
   font-size: 20px;
   padding: 0 0 5px 0;
-  border-bottom: 1px solid var(--text-hint);
+
   font-family: MiSans-Semibold,sans-serif;
 }
 
@@ -223,7 +220,7 @@ div {
 }
 
 /* 아이콘 스타일링 */
-.game-card img {
+.host-info img {
   border-radius: 50%;
   background-color: #ddd; /* 아이콘 배경색 설정 */
   display: inline-block;
@@ -234,16 +231,11 @@ div {
 }
 
 /* 시간과 실행 시간 정보 스타일링 */
-.game-card {
-  font-size: 0.875rem;
-  color: #666;
-  margin-top: 0.5rem;
-}
 
-.game-card .running-time {
+.running-time {
   font-size: 0.875rem;
   color: #666;
-  margin-top: 0.25rem;
+  margin: auto 0;
 }
 
 /* 링크 스타일링 제거 */
@@ -255,5 +247,17 @@ div {
 a {
 
   text-decoration: none;
+}
+
+.game-type-container {
+  display: flex;
+}
+
+.game-type-container img {
+  background: none;
+  width: 30px; /* 아이콘 크기 */
+  height: 30px;
+  border-radius: 4px;
+  margin: 0 10px 0 0;
 }
 </style>

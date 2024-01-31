@@ -3,13 +3,19 @@ package com.example.playgroundmanage.type;
 import com.example.playgroundmanage.game.vo.Game;
 
 public enum GameType {
-    COMPETITION("Competition"),
-    FRIENDLY("Friendly");
+    COMPETITION("Competition", "竞争"),
+    FRIENDLY("Friendly", "友谊赛");
 
     private final String value;
+    private final String value2;
 
-    GameType(String value) {
+    GameType(String value, String value2) {
         this.value = value;
+        this.value2 = value2;
+    }
+
+    public String getValue_cn() {
+        return value2;
     }
 
     public String getValue() {
