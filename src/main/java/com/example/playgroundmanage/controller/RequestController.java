@@ -2,7 +2,7 @@ package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.dto.GameRequestDto;
 import com.example.playgroundmanage.dto.RequestInfoDto;
-import com.example.playgroundmanage.dto.TeamRequestDto;
+import com.example.playgroundmanage.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.dto.reqeust.UserJoinGameParams;
 import com.example.playgroundmanage.dto.reqeust.UserJoinTeamParams;
@@ -95,9 +95,9 @@ public class RequestController {
                                       @AuthenticationPrincipal MyUserDetails myUserDetails) {
         RequestService requestService = requestServiceFinder.find(type);
 
-        TeamRequestDto teamRequestDto = userJoinTeamParams.toTeamRequestDto(myUserDetails.getUser());
+        TeamJoinRequestDto teamJoinRequestDto = userJoinTeamParams.toTeamRequestDto(myUserDetails.getUser());
 
-        requestService.generateRequest(teamRequestDto);
+        requestService.generateRequest(teamJoinRequestDto);
     }
 
     @PreAuthorize("hasPermission(#requestId,'requestAccept_team','UPDATE')")

@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.dto.reqeust;
 
 import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.dto.TeamRequestDto;
+import com.example.playgroundmanage.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.game.vo.User;
 import lombok.Builder;
 import lombok.Data;
@@ -25,8 +25,8 @@ public class UserJoinTeamParams {
 
 
 
-    public TeamRequestDto toTeamRequestDto(User user) {
-        return TeamRequestDto.builder()
+    public TeamJoinRequestDto toTeamRequestDto(User user) {
+        return TeamJoinRequestDto.builder()
                 .user(user)
                 .introduction(introduction)
                 .requestTime(MyDateTime.initMyDateTime(ZonedDateTime.now()))

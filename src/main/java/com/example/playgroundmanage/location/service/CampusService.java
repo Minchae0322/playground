@@ -1,7 +1,6 @@
 package com.example.playgroundmanage.location.service;
 
 
-import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.exception.CampusNotExistException;
 import com.example.playgroundmanage.exception.SchoolNotExistException;
@@ -21,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,7 +47,7 @@ public class CampusService {
 
         List<Playground> playgrounds = playgroundFinder.getPlaygroundsBySportsEvent(campus.getPlaygrounds(), sportsEvent);
 
-        List<Game> games = gameSorting.sortGamesByLatest(getUpcomingGames(playgrounds));
+        List<Game> games = gameSorting.sortGamesByEarliest(getUpcomingGames(playgrounds));
 
         return games.stream()
                 .limit(3)

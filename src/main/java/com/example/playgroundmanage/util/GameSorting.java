@@ -9,15 +9,15 @@ import java.util.List;
 @Component
 public class GameSorting {
 
-    public List<Game> sortGamesByLatest(List<Game> games) {
+    public List<Game> sortGamesByEarliest(List<Game> games) {
         return games.stream()
-                .sorted(Comparator.comparing(Game::getGameStartDateTime).reversed())
+                .sorted(Comparator.comparing(Game::getGameStartDateTime))
                 .toList();
     }
 
     public List<Game> sortGamesByOldest(List<Game> games) {
         return games.stream()
-                .sorted(Comparator.comparing(Game::getGameStartDateTime))
+                .sorted(Comparator.comparing(Game::getGameStartDateTime).reversed())
                 .toList();
     }
 

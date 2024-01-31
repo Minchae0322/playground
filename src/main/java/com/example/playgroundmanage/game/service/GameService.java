@@ -2,21 +2,14 @@ package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.dto.GameDto;
 
-import com.example.playgroundmanage.dto.SubTeamDto;
 import com.example.playgroundmanage.dto.UsersGameDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.MatchNotExistException;
-import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.exception.UserNotParticipantGameException;
-import com.example.playgroundmanage.game.GameGenerator;
-import com.example.playgroundmanage.game.GameGeneratorFactory;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.store.FileHandler;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
-import com.example.playgroundmanage.type.GameTeamSide;
-import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.util.DateFormat;
 import com.example.playgroundmanage.util.GameParticipantFinder;
 import com.example.playgroundmanage.util.GameSorting;
@@ -70,7 +63,7 @@ public class GameService {
     @Transactional
     public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(User user) {
         List<Game> games = gameRepository.findAllByHost(user);
-        List<Game> gamesOrderedByLatest = gameSorting.sortGamesByLatest(games);
+        List<Game> gamesOrderedByLatest = gameSorting.sortGamesByOldest(games);
 
         return gamesOrderedByLatest.stream()
                 .map(game -> UsersGameDto.UsersGameResponseDto.builder()

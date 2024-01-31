@@ -1,29 +1,45 @@
 package com.example.playgroundmanage.dto;
 
-import com.example.playgroundmanage.date.MyDateTime;
+import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.game.vo.User;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 @Getter
-@Setter
-public class TeamRequestDto extends RequestDto {
+@RequiredArgsConstructor
+public class TeamRequestDto {
 
-    private Long teamId;
+    private String teamName;
 
-    private String introduction;
+    private MultipartFile teamPic;
 
-    private String type;
+    private User leader;
 
-    private String sportsEvent;
+    private SportsEvent sportsEvent;
+
+    private String teamDescription;
 
     @Builder
-    public TeamRequestDto(User user, MyDateTime requestTime, Long teamId, String introduction, String type, String sportsEvent) {
-        super(user, requestTime);
-        this.teamId = teamId;
-        this.introduction = introduction;
-        this.type = type;
+    public TeamRequestDto(String teamName, MultipartFile teamPic, User leader, SportsEvent sportsEvent, String teamDescription) {
+        validate(teamName, teamPic, sportsEvent);
+        this.teamName = teamName;
+        this.teamPic = teamPic;
+        this.leader = leader;
         this.sportsEvent = sportsEvent;
+        this.teamDescription = teamDescription;
+    }
+
+    private void validate(String teamName, MultipartFile teamPic, SportsEvent sportsEvent) {
+        if (teamName.length() < 1 || teamName.length() > 15) {
+            throw new IllegalArgumentException("wrong team name");
+        }
+        if (teamPic == null) {
+            throw new IllegalArgumentException("not exist team profile image");
+        }
+        if (sportsEvent == null) {
+            throw new IllegalArgumentException("wrong sports event");
+        }
     }
 }

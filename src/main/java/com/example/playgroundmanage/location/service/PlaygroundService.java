@@ -20,10 +20,7 @@ import com.example.playgroundmanage.location.vo.School;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.SportsEvent;
-import com.example.playgroundmanage.util.GameFinder;
-import com.example.playgroundmanage.util.GameValidation;
-import com.example.playgroundmanage.util.PlaygroundFinder;
-import com.example.playgroundmanage.util.Util;
+import com.example.playgroundmanage.util.*;
 import com.example.playgroundmanage.location.vo.Campus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -57,6 +54,8 @@ public class PlaygroundService {
 
     private final GameValidation gameValidation;
 
+    private final GameSorting gameSorting;
+
     @Transactional
     public boolean isValidGameStartTime(Long playgroundId, GameTimeDto gameTimeDto) {
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow(PlaygroundNotExistException::new);
@@ -73,8 +72,9 @@ public class PlaygroundService {
                 .orElseThrow(PlaygroundNotExistException::new);
 
         List<Game> gamesOnSelectedDate = gameFinder.getGamesForSelectedDate(playground.getGames(), gameTimeDto.getStartDateTime());
+        List<Game> orderedByEarliest = gameSorting.sortGamesByEarliest(gamesOnSelectedDate);
 
-        return gamesOnSelectedDate.stream()
+        return orderedByEarliest.stream()
                 .map(g -> OccupiedTime.builder()
                         .start(g.getGameStartDateTime())
                         .end(g.getGameStartDateTime().plusMinutes(g.getRunningTime()))

@@ -2,7 +2,7 @@ package com.example.playgroundmanage.request.service.impl;
 
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.dto.RequestDto;
-import com.example.playgroundmanage.dto.TeamRequestDto;
+import com.example.playgroundmanage.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.exception.TeamNotExistException;
@@ -15,11 +15,9 @@ import com.example.playgroundmanage.team.service.TeamService;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.request.vo.TeamRequest;
 import com.example.playgroundmanage.request.vo.impl.TeamJoinRequest;
-import jakarta.persistence.LockModeType;
 import jakarta.persistence.Version;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,22 +42,22 @@ public class TeamJoinRequestService implements RequestService {
     @Override
     @Transactional
     public Long generateRequest(RequestDto requestDto) {
-        TeamRequestDto teamRequestDto = (TeamRequestDto) requestDto;
-        Team team = teamRepository.findById(teamRequestDto.getTeamId())
+        TeamJoinRequestDto teamJoinRequestDto = (TeamJoinRequestDto) requestDto;
+        Team team = teamRepository.findById(teamJoinRequestDto.getTeamId())
                 .orElseThrow(TeamNotExistException::new);
 
         validateJoinTeam(team, requestDto.getUser());
         gameManagementService.deletePreviousTeamRequest(team, requestDto.getUser());
 
-        return saveJoinRequest(team, teamRequestDto);
+        return saveJoinRequest(team, teamJoinRequestDto);
     }
 
     @Transactional
-    private Long saveJoinRequest(Team team, TeamRequestDto teamRequestDto) {
+    private Long saveJoinRequest(Team team, TeamJoinRequestDto teamJoinRequestDto) {
         return teamRequestRepository.save(TeamJoinRequest.builder()
-                        .user(teamRequestDto.getUser())
-                        .requestTime(teamRequestDto.getRequestTime().getLocalDateTime())
-                        .introduction(teamRequestDto.getIntroduction())
+                        .user(teamJoinRequestDto.getUser())
+                        .requestTime(teamJoinRequestDto.getRequestTime().getLocalDateTime())
+                        .introduction(teamJoinRequestDto.getIntroduction())
                         .leader(team.getLeader())
                         .team(team)
                         .build())

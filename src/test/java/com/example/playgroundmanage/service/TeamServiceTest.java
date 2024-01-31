@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.service;
 
-import com.example.playgroundmanage.dto.TeamRegistration;
+import com.example.playgroundmanage.dto.TeamRequestDto;
 import com.example.playgroundmanage.team.service.TeamService;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.location.respository.TeamRepository;
@@ -56,12 +56,12 @@ class TeamServiceTest {
 
     @Test
     void generateTeam() throws IOException {
-        TeamRegistration teamRegistration = TeamRegistration.builder()
+        TeamRequestDto teamRequestDto = TeamRequestDto.builder()
                 .teamName("testTeam")
                 .sportsEvent(SportsEvent.SOCCER)
                 .leader(testUser)
                 .build();
-        Long teamId = teamService.generateTeam(teamRegistration);
+        Long teamId = teamService.generateTeam(teamRequestDto);
         Team team = teamRepository.findById(teamId).orElseThrow();
         assertEquals(1, teamRepository.count());
         assertEquals("test", team.getLeader().getUsername());
@@ -70,13 +70,13 @@ class TeamServiceTest {
 
     @Test
     void getMembers() throws IOException {
-        TeamRegistration teamRegistration = TeamRegistration.builder()
+        TeamRequestDto teamRequestDto = TeamRequestDto.builder()
                 .teamName("testTeam")
 
                 .sportsEvent(SportsEvent.SOCCER)
                 .leader(testUser)
                 .build();
-        Long teamId = teamService.generateTeam(teamRegistration);
+        Long teamId = teamService.generateTeam(teamRequestDto);
         Team team = teamRepository.findById(teamId).orElseThrow();
 
 
@@ -84,12 +84,12 @@ class TeamServiceTest {
 
     @Test
     void getTeamLeader() throws IOException {
-        TeamRegistration teamRegistration = TeamRegistration.builder()
+        TeamRequestDto teamRequestDto = TeamRequestDto.builder()
                 .teamName("testTeam")
                 .sportsEvent(SportsEvent.SOCCER)
                 .leader(testUser)
                 .build();
-        Long teamId = teamService.generateTeam(teamRegistration);
+        Long teamId = teamService.generateTeam(teamRequestDto);
         Team team = teamRepository.findById(teamId).orElseThrow();
 
         assertEquals("test", team.getLeader().getUsername());

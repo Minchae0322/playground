@@ -1,8 +1,8 @@
 package com.example.playgroundmanage.controller;
 
-import com.example.playgroundmanage.dto.TeamRegistration;
-import com.example.playgroundmanage.dto.TeamRegistrationRequest;
 import com.example.playgroundmanage.dto.TeamRequestDto;
+import com.example.playgroundmanage.dto.TeamRegistrationRequest;
+import com.example.playgroundmanage.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.dto.response.TeamMemberDto;
 import com.example.playgroundmanage.dto.response.TeamResponseDto;
@@ -11,6 +11,7 @@ import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.type.SportsEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -36,19 +37,25 @@ public class TeamController {
         return teamService.isTeamMember(teamId, myUserDetails.getUser());
     }
 
+    @PreAuthorize("hasPermission(#teamId,'delete_team','DELETE')")
+    @DeleteMapping("/user/team/{teamId}/delete")
+    public void deleteTeam(@PathVariable Long teamId) {
+        teamService.deleteTeam(teamId);
+    }
+
 
     @PostMapping(value = "/team/build", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public TeamInfoResponse generateTeam(@AuthenticationPrincipal MyUserDetails myUserDetails, @RequestPart("team") TeamRegistrationRequest params, @RequestPart(value = "imageFile", required = false) MultipartFile multipartFile) throws IOException {
-
-        TeamRegistration teamRegistration = TeamRegistration.builder()
+        TeamRequestDto teamRequestDto = TeamRequestDto.builder()
                 .teamPic(multipartFile)
                 .teamDescription(params.getTeamDescription())
                 .teamName(params.getTeamName())
                 .leader(myUserDetails.getUser())
                 .sportsEvent(SportsEvent.fromString(params.getSportsEvent()))
                 .build();
+
         return TeamInfoResponse.builder()
-                .teamId(teamService.generateTeam(teamRegistration))
+                .teamId(teamService.generateTeam(teamRequestDto))
                 .build();
     }
 
@@ -63,8 +70,8 @@ public class TeamController {
     }
 
     @PostMapping("/team/list/{type}")
-    public List<TeamResponseDto> getTeams(@RequestBody TeamRequestDto teamRequestDto, @PathVariable String type) {
-        return teamService.getTeams(teamRequestDto, type);
+    public List<TeamResponseDto> getTeams(@RequestBody TeamJoinRequestDto teamJoinRequestDto, @PathVariable String type) {
+        return teamService.getTeams(teamJoinRequestDto, type);
     }
 
 }

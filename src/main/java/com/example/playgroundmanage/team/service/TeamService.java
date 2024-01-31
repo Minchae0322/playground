@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.team.service;
 
-import com.example.playgroundmanage.dto.TeamRegistration;
 import com.example.playgroundmanage.dto.TeamRequestDto;
+import com.example.playgroundmanage.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.dto.response.TeamMemberDto;
 import com.example.playgroundmanage.dto.response.TeamResponseDto;
@@ -24,7 +24,6 @@ import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -50,16 +49,16 @@ public class TeamService {
 
 
     @Transactional
-    public Team saveTeam(TeamRegistration teamRegistration) throws IOException {
-        validateTeamName(teamRegistration.getTeamName());
+    public Team saveTeam(TeamRequestDto teamRequestDto) throws IOException {
+        validateTeamName(teamRequestDto.getTeamName());
         Team team = Team.builder()
-                .teamName(teamRegistration.getTeamName())
-                .leader(teamRegistration.getLeader())
-                .description(teamRegistration.getTeamDescription())
-                .sportsEvent(teamRegistration.getSportsEvent())
+                .teamName(teamRequestDto.getTeamName())
+                .leader(teamRequestDto.getLeader())
+                .description(teamRequestDto.getTeamDescription())
+                .sportsEvent(teamRequestDto.getSportsEvent())
                 .build();
-        if (teamRegistration.getTeamPic() != null) {
-            UploadFile uploadFile = fileHandler.storeFile(teamRegistration.getTeamPic());
+        if (teamRequestDto.getTeamPic() != null) {
+            UploadFile uploadFile = fileHandler.storeFile(teamRequestDto.getTeamPic());
             team.updateTeamPic(uploadFile);
         }
         return teamRepository.save(team);
@@ -67,10 +66,10 @@ public class TeamService {
 
 
     @Transactional
-    public List<TeamResponseDto> getTeams(TeamRequestDto teamRequestDto, String by) {
+    public List<TeamResponseDto> getTeams(TeamJoinRequestDto teamJoinRequestDto, String by) {
         TeamFinder teamFinder = teamFinderFactory.find(by);
 
-        return teamFinder.getTeams(teamRequestDto);
+        return teamFinder.getTeams(teamJoinRequestDto);
     }
 
     public void validateTeamName(String teamName) {
@@ -81,9 +80,9 @@ public class TeamService {
 
 
     @Transactional
-    public Long generateTeam(TeamRegistration teamRegistration) throws IOException {
-        Team team = saveTeam(teamRegistration);
-        teamingService.joinTeam(team, teamRegistration.getLeader());
+    public Long generateTeam(TeamRequestDto teamRequestDto) throws IOException {
+        Team team = saveTeam(teamRequestDto);
+        teamingService.joinTeam(team, teamRequestDto.getLeader());
         return team.getId();
     }
 
@@ -157,5 +156,10 @@ public class TeamService {
                 .orElseThrow(TeamNotExistException::new);
 
         return teamMemberFinder.isTeamMember(team, user);
+    }
+
+    @Transactional
+    public void deleteTeam(Long teamId) {
+        teamRepository.findById(teamId).ifPresent(teamRepository::delete);
     }
 }
