@@ -49,6 +49,10 @@ public class SubTeam {
                 .toList();
     }
 
+    public void delete() {
+        this.competingTeam = null;
+    }
+
     public boolean isSoloTeam() {
         return this.isSoloTeam;
     }

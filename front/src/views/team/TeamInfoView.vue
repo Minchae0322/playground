@@ -6,8 +6,9 @@
         <h1>{{ team.teamName }}</h1>
         <p class="team-type">{{ team.teamSportsEvent }}</p>
       </div>
-      <button v-if="!isTeamMember" class="button-teamJoin" @click="clickJoinTeam">加入</button>
-      <button v-else class="button-teamJoin" >已加入</button>
+      <button v-if="isTeamLeader" class="button-teamJoin" :class="{'button-teamLeader': isTeamLeader}" @click="deleteTeam">删除</button>
+      <button v-else-if="isTeamMember" class="button-teamJoin" >已加入</button>
+      <button v-else class="button-teamJoin" @click="clickJoinTeam">加入</button>
     </div>
     <div class="team-history">
       <h2>Team History</h2>
@@ -64,8 +65,9 @@ const team = ref({
   teamSportsEvent: ref(''),
   leaderName: '',
   leaderId: '',
-
 });
+
+const isTeamLeader = ref(false);
 
 const teamMembers = ref([{
   userProfileImg: ref(''),
@@ -84,9 +86,48 @@ const props = defineProps({
 })
 onMounted(async () => {
   await checkTeamMember();
+  await checkTeamLeader();
   getTeamInfo()
   getTeamMembers()
 });
+
+const checkTeamLeader = async () => {
+  await validateAccessToken()
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/team/${props.teamId}/check/leader`,
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
+    );
+    isTeamLeader.value = response.data;
+  } catch (error) {
+  }
+};
+
+const deleteTeam = async () => {
+  const isConfirm = confirm("团队所有的信息都会消失。\n" +
+      "确定要删除吗？")
+  if (!isConfirm) {
+    return
+  }
+  await validateAccessToken()
+
+  try {
+    const response = await axios.delete(`${apiBaseUrl}/team/${props.teamId}/delete`,
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
+    );
+    await router.replace({name: 'myTeam'})
+  } catch (error) {
+    alert(error.response.data.message)
+  }
+};
 
 const checkTeamMember = async () => {
   await validateAccessToken()
@@ -209,12 +250,27 @@ const redirectToLogin = function () {
 
 .button-teamJoin {
   background: var(--accent-color);
-  border: 1px solid rgba(50, 58, 65, 0.9); /* Solid blue border for contrast */
+  border: none;
   padding: 10px 40px; /* 버튼 패딩 조정 */
   color: white; /* 텍스트 색상 */
   border-radius: 4px;
   margin: 10px 18px 10px auto;
   text-align: left; /* 왼쪽 정렬 */
+}
+
+.button-teamJoin:hover {
+  border: none;
+  background: var(--secondary-color);
+}
+
+.button-teamLeader {
+  border: none;
+  background-color: #f44336; /* 빨간색 배경 */
+  color: white; /* 텍스트 색상 */
+}
+
+.button-teamLeader:hover {
+  background-color: #d32f2f; /* 마우스 오버시 어두운 빨간색 */
 }
 
 .team-history {

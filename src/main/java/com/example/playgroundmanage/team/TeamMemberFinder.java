@@ -13,4 +13,8 @@ public class TeamMemberFinder {
         return team.getMembers().stream()
                 .anyMatch(teamMember -> teamMember.getUser().equals(user));
     }
+
+    public boolean isTeamLeader(Team team, User user) {
+        return team.getLeader().equals(user);
+    }
 }

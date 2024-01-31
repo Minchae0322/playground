@@ -6,6 +6,8 @@ import com.example.playgroundmanage.dto.response.TeamInfoResponse;
 import com.example.playgroundmanage.dto.response.TeamMemberDto;
 import com.example.playgroundmanage.dto.response.TeamResponseDto;
 import com.example.playgroundmanage.exception.TeamNotExistException;
+import com.example.playgroundmanage.game.service.SubTeamService;
+import com.example.playgroundmanage.game.vo.SubTeam;
 import com.example.playgroundmanage.location.repository.TeamingRepository;
 import com.example.playgroundmanage.game.service.UserService;
 import com.example.playgroundmanage.team.TeamMemberFinder;
@@ -36,6 +38,8 @@ public class TeamService {
     private final TeamRepository teamRepository;
 
     private final TeamingService teamingService;
+
+    private final SubTeamService subTeamService;
 
     private final TeamFinderFactory teamFinderFactory;
 
@@ -159,7 +163,20 @@ public class TeamService {
     }
 
     @Transactional
+    public boolean isTeamLeader(Long teamId, User user) {
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(TeamNotExistException::new);
+
+        return teamMemberFinder.isTeamLeader(team, user);
+    }
+
+    @Transactional
     public void deleteTeam(Long teamId) {
-        teamRepository.findById(teamId).ifPresent(teamRepository::delete);
+        Team team = teamRepository.findById(teamId)
+                .orElseThrow(TeamNotExistException::new);
+
+        team.getSubTeams().forEach(subTeamService::deleteSubTeam);
+
+        teamRepository.delete(team);
     }
 }

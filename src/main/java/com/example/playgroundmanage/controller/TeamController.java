@@ -38,11 +38,15 @@ public class TeamController {
     }
 
     @PreAuthorize("hasPermission(#teamId,'delete_team','DELETE')")
-    @DeleteMapping("/user/team/{teamId}/delete")
+    @DeleteMapping("/team/{teamId}/delete")
     public void deleteTeam(@PathVariable Long teamId) {
         teamService.deleteTeam(teamId);
     }
 
+    @GetMapping("/team/{teamId}/check/leader")
+    public boolean isTeamLeader(@PathVariable Long teamId, @AuthenticationPrincipal MyUserDetails myUserDetails) {
+        return teamService.isTeamLeader(teamId, myUserDetails.getUser());
+    }
 
     @PostMapping(value = "/team/build", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
     public TeamInfoResponse generateTeam(@AuthenticationPrincipal MyUserDetails myUserDetails, @RequestPart("team") TeamRegistrationRequest params, @RequestPart(value = "imageFile", required = false) MultipartFile multipartFile) throws IOException {
