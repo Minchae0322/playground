@@ -6,7 +6,7 @@
   </head>
   <div class="info-container">
     <h2>队伍</h2>
-    <p>Check out our teams</p>
+    <p>Check out our playground</p>
     <div class="info-container-border"></div>
   </div>
   <div class="sports-event-container">
@@ -174,8 +174,8 @@ a {
 }
 
 .info-container-border {
-  margin-left: auto;
   margin-right: 100px;
+  margin-left: 200px;
   width: 70%;
   border-bottom: 1px solid var(--text-hint);
 }

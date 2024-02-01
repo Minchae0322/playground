@@ -5,8 +5,8 @@
       <div class="modal">
         <div class="justify-center item-center userInfo-container " data-v0-t="card">
           <div class="padding-20">
-            <a class="text-bold text-title primary-font">Time Selection</a>
-            <div class="hint">Select the start time and duration for your participation.</div>
+            <div class="text-title">选择时间</div>
+            <div class="hint">请输入比赛开始时间</div>
             <div class="block">
               <el-date-picker :disabled-date="disabledDate" v-model="dateValue" type="date" @change="pickDate"
                               placeholder="Pick a date" :default-value="new Date()"/>
@@ -24,7 +24,7 @@
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
-                  Choose Start Time
+                  开始时间
                 </a>
                 <div class="time-picker-container">
                   <el-time-picker size="large" format="HH:mm" value-format="HH:mm" v-model="timeValue"
@@ -50,7 +50,7 @@
                     <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22"></path>
                     <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path>
                   </svg>
-                  Choose Duration
+                  所需时间
                 </a>
                 <el-input-number v-model="runningTime" :min="1" :max="120" @change="handleChange"/>
               </div>
@@ -59,12 +59,12 @@
               <button
                   class="button-cancel inline-flex items-center justify-center rounded-md text-sm font-medium  "
                   @click="closeModal">
-                Cancel
+                取消
               </button>
               <button
                   class="button-confirm inline-flex items-center justify-center"
                   @click="confirm">
-                Confirm
+                确定
               </button>
             </div>
           </div>
@@ -72,7 +72,7 @@
 
         <div class="justify-center item-center userInfo-container margin-top" data-v0-t="card">
           <div class="padding-20">
-            <a class="text-bold text-title primary-font">Occupied Time Slots</a>
+            <div class="text-title">占用的时隙</div>
             <div class="hint">Select the start time and duration for your participation.</div>
           </div>
           <div class="p-4 border-t">
@@ -273,9 +273,7 @@ const redirectToLogin = function () {
   color: var(--text-hint);
 }
 
-.text-bold {
-  font-weight: bold;
-}
+
 
 .text-title {
   font-size: 24px;

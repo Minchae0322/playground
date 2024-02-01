@@ -1,4 +1,8 @@
 <template>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  </head>
+
   <div class="button-group">
     <button :class="{ active: activeCampus === null }" @click="getWholePlaygroundAndUpcomingGames(props.sportsEvent)">
       ALL
@@ -13,7 +17,7 @@
   <div class="upcoming-games-container">
     <div class="info-container">
       <h2>即将开始比赛</h2>
-      <p>Check out our teams</p>
+      <p>Check out our playground</p>
       <div class="info-container-border"></div>
     </div>
     <div class="games">
@@ -23,7 +27,7 @@
           <div class="upcoming-game-info-container">
             <div class="campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
             <div>主持人: {{ game.hostName }}</div>
-            <div>所需时间: {{ game.runningTime }}</div>
+            <div>所需时间: {{ game.runningTime }} 分</div>
           </div>
         </router-link>
       </div>
@@ -274,6 +278,7 @@ body {
   border-radius: 5px;
   margin-right: 20px;
   overflow: hidden;
+  max-width: 1100px;
   padding: 10px 20px;
 }
 
@@ -326,9 +331,10 @@ body {
 }
 
 .info-container-border {
-  margin-left: auto;
+  margin-left: 200px;
   margin-right: 100px;
   width: 70%;
+  max-width: 1200px;
   border-bottom: 1px solid var(--text-hint);
 }
 
@@ -390,7 +396,7 @@ body {
   display: flex;
   width: 1200px;
   flex-wrap: wrap; /* 내용이 넘치면 다음 줄로 넘깁니다. */
-  margin: 20px auto; /* 중앙 정렬 */
+  margin: 20px;/* 중앙 정렬 */
   padding: 20px;
 }
 

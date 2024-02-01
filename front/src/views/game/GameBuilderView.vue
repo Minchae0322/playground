@@ -2,24 +2,24 @@
   <div class="modal-overlay">
     <div class="event-details-container">
       <div class="title">创新比赛</div>
-      <div class="title-description">Please enter the details about the sporting events.</div>
+      <div class="title-description">请输入比赛事详情</div>
 
       <div class="form-container">
         <div class="form-group">
-          <label for="eventName">Game Name</label>
+          <label for="eventName">比赛名</label>
           <input type="text" v-model="gameRegistration.gameName" id="eventName" name="eventName"
-                 placeholder="Name of the event">
+                 placeholder="请输入比赛名">
         </div>
 
         <div class="form-group">
-          <label for="venue">Venue</label>
+          <label for="venue">项目</label>
           <div>{{ playgroundInfo.sportsEvent }}</div>
         </div>
 
         <div class="form-group">
-          <label>Event Date</label>
+          <label>开赛时间</label>
           <button type="button" id="eventDate" class="date-button" @click="clickSelectDate">
-            {{ isStartTimeSelected ? formattedStartTime : 'Select a date' }}
+            {{ isStartTimeSelected ? formattedStartTime : '选择时间' }}
           </button>
 
           <ModalComponent v-if="isModalOpen" @close="isModalOpen = false" @updateValue="handleUpdateStartTime">
@@ -30,12 +30,12 @@
           <div class="checkbox">
             <input type="radio" id="friendlyMatch" name="matchType" v-model="gameRegistration.gameType" value="Friendly"
                    checked>
-            <label for="friendlyMatch">Friendly Match</label>
+            <label for="friendlyMatch">友谊赛</label>
           </div>
           <div class="checkbox">
             <input type="radio" id="competitionMatch" name="matchType" v-model="gameRegistration.gameType"
                    value="Competition">
-            <label for="competitionMatch">Competition</label>
+            <label for="competitionMatch">竞争赛</label>
           </div>
         </div>
 
@@ -263,7 +263,7 @@ body {
 .title-description {
   color: #949494;
   font-family: MiSans-Light, sans-serif;
-  font-size: 12px;
+  font-size: 14px;
   margin-bottom: 10px;
 }
 
