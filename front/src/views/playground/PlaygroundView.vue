@@ -19,21 +19,27 @@
         <div class="ongoing-title">Ongoing game</div>
         <div v-if="ongoingGame.gameId">
           <div class="game-card">
-            <div class="game-name">{{ ongoingGame.gameName }}</div>
-            <div class="game-time">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                   stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
-                   class="time-icon">
-                <circle cx="12" cy="12" r="10"></circle>
-                <polyline points="12 6 12 12 16 14"></polyline>
-              </svg>
-              {{ calculateTimeRange()}}
+            <div class="game-type-container">
+              <img v-if="ongoingGame.gameType === '竞争'" :src="rankingIcon">
+              <img v-else :src="friendlyIcon">
+              <p class="game-type">{{ ongoingGame.gameType }}</p>
             </div>
-            <div class="host-info">
-              <img :src="ongoingGame.hostProfileImg || defaultImage">
-              <div class="host-name">{{ ongoingGame.hostName }}</div>
+            <div class="game-info">
+              <div class="game-name">{{ ongoingGame.gameName }}</div>
+              <div class="game-time">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                     stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
+                     class="time-icon">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+                {{ ongoingGame.gameStart }}（ {{ ongoingGame.runningTime }}分 ）
+              </div>
+              <div class="host-info">
+                <img :src="ongoingGame.hostProfileImg || defaultImage">
+                <div class="host-name">{{ ongoingGame.hostName }}</div>
+              </div>
             </div>
-
           </div>
         </div>
         <div v-else class="ongoing-not-exist" >
@@ -61,7 +67,8 @@ import defaultImage from '../../assets/img.png';
 import PlaygroundInfoView from "@/views/playground/PlaygroundInfoView.vue";
 import GameInfoView from '../game/GameInfoView.vue';
 import FriendlyGameInfoView from "@/views/game/FriendlyGameInfoView.vue";
-
+import friendlyIcon from '../../assets/icon-handshake.png'
+import rankingIcon from '../../assets/icon-ranking.png'
 
 const playgroundInfo = ref({
   playgroundProfileImg: '',
@@ -345,31 +352,22 @@ const redirectToLogin = function () {
   text-align: center;
 }
 
-.host-info {
-  margin-top: 5px;
-  display: flex; /* Flexbox를 이용한 가로 정렬 */
-  align-items: center; /* 세로축 중앙 정렬 */
-  margin-bottom: 0.5rem; /* 아래쪽 여백 */
-}
-
-.host-info img {
-  border-radius: 50%;
-  background-color: #ddd; /* 아이콘 배경색 설정 */
-  display: inline-block;
-  width: 15px; /* 아이콘 크기 */
-  height: 15px;
-  margin-right: 10px; /* 아이콘과 텍스트 사이의 간격 */
-}
-
-.host-name {
-  font-family: MiSans-Medium, sans-serif;
-  font-size: 14px;
+.game-info {
+  display: flex;
+  flex-direction: column;
+  align-content: end;
+  justify-content: end;
+  flex-basis: 67%;
+  margin-left: auto;
 }
 
 .game-card {
+  display: flex;
   border: 1px solid #ddd;
-  padding: 10px 15px 5px 15px;
-  margin: 10px;
+  padding: 15px 20px;
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.5rem;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 그림자를 더 부드럽게 조정 */
   border-radius: 8px;
@@ -382,11 +380,8 @@ const redirectToLogin = function () {
 
 
 .game-name {
-  font-size: 18px;
-  padding: 0 0 5px 0;
-  border-bottom: 1px solid var(--text-hint);
+  font-size: 19px;
   font-family: MiSans-Semibold, sans-serif;
-  color: black;
 }
 
 .time-icon {
@@ -403,21 +398,63 @@ const redirectToLogin = function () {
   font-family: MiSans-Medium, sans-serif;
 }
 
+.host-info {
+  margin-top: 10px;
+  display: flex; /* Flexbox를 이용한 가로 정렬 */
+  align-items: center; /* 세로축 중앙 정렬 */
+  margin-bottom: 0.5rem; /* 아래쪽 여백 */
+}
+
+.host-name {
+  font-family: MiSans-Medium, sans-serif;
+}
+
 /* 아이콘 스타일링 */
-.game-card img {
+.host-info img {
   border-radius: 50%;
   background-color: #ddd; /* 아이콘 배경색 설정 */
   display: inline-block;
-  width: 40px; /* 아이콘 크기 조정 */
-  height: 40px;
+  width: 35px; /* 아이콘 크기 조정 */
+  height: 35px;
+
   margin-right: 8px; /* 아이콘과 텍스트 사이의 간격 조정 */
   vertical-align: middle; /* 수직 정렬 */
 }
 
+/* 시간과 실행 시간 정보 스타일링 */
+
+.game-type {
+  font-size: 0.875rem;
+  color: #666;
+  text-align: center;
+  align-content: center;
+  justify-content: center;
+
+}
+
+/* 링크 스타일링 제거 */
+.game-card a {
+  text-decoration: none;
+  color: inherit;
+}
 
 a {
 
   text-decoration: none;
+}
+
+.game-type-container {
+  display: flex;
+  flex-basis: 20%;
+  flex-direction: column;
+}
+
+.game-type-container img {
+  background: none;
+  width: 80px; /* 아이콘 크기 */
+  height: 80px;
+  border-radius: 4px;
+  margin: 0 auto;
 }
 
 .join-button {

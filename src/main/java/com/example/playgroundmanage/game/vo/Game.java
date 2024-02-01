@@ -63,7 +63,7 @@ public class Game {
     @Builder
     public Game(String gameName, Playground playground, User host, SportsEvent sportsEvent, LocalDateTime gameStartDateTime, Integer runningTime, GameType gameType) {
         validate(runningTime, gameStartDateTime);
-        this.gameName = (gameName == null || gameName.trim().isEmpty()) ? host.getNickname() + "의 게임" : gameName;
+        this.gameName = (gameName == null || gameName.trim().isEmpty()) ? host.getNickname() + "的比赛" : gameName;
         this.playground = playground;
         this.host = host;
         this.sportsEvent = sportsEvent;

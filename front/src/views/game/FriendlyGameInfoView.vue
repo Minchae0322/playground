@@ -313,10 +313,7 @@ const redirectToLogin = function () {
   align-items: flex-start; /* Align items to the start of the flex container */
 }
 
-.team-details:hover {
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  transition: box-shadow 0.3s ease;
-}
+
 
 .line {
   width: 80%;
@@ -347,15 +344,15 @@ const redirectToLogin = function () {
 }
 
 .team-member-photo {
-  width: 35px; /* 이미지 크기 조절 */
-  height: 35px; /* 이미지 크기 조절 */
+  width: 50px; /* 이미지 크기 조절 */
+  height: 50px; /* 이미지 크기 조절 */
   object-fit: cover; /* 이미지 비율을 유지하면서 요소에 맞게 조정 */
   border-radius: 50%;
   margin: 4px auto 3px;
 }
 
 .team-member .user-nickname {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
   color: black;
   display: flex;
@@ -365,7 +362,7 @@ const redirectToLogin = function () {
 }
 
 .team-member .user-role {
-  font-size: 9px;
+  font-size: 11px;
   color: #838383;
 }
 

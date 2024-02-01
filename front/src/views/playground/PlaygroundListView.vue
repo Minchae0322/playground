@@ -22,8 +22,8 @@
           <div class="upcoming-game-name">{{ game.gameName }} ({{ game.gameStart }})</div>
           <div class="upcoming-game-info-container">
             <div class="campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
-            <div>Host: {{ game.hostName }}</div>
-            <div>Running Time: {{ game.runningTime }}</div>
+            <div>主持人: {{ game.hostName }}</div>
+            <div>所需时间: {{ game.runningTime }}</div>
           </div>
         </router-link>
       </div>
