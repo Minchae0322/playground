@@ -2,6 +2,7 @@ package com.example.playgroundmanage.dto;
 
 import com.example.playgroundmanage.date.DateTime;
 import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.type.GameType;
 import lombok.Builder;
 import lombok.Data;
 
@@ -30,6 +31,10 @@ public class UsersGameDto {
 
         private String gameName;
 
+        private String gameType;
+
+        private String location;
+
         private String hostName;
 
         private String gameStart;
@@ -40,13 +45,14 @@ public class UsersGameDto {
 
 
         @Builder
-        public UsersGameResponseDto(Long gameId, String subTeamName, String gameName, String hostName, String gameStart, Integer runningTime, LocalDateTime localDateStartTime) {
+        public UsersGameResponseDto(Long gameId, String subTeamName, GameType gameType, String location, String gameName, String hostName, String gameStart, Integer runningTime, LocalDateTime localDateStartTime) {
             this.gameId = gameId;
             this.subTeamName = subTeamName;
             this.gameName = gameName;
             this.hostName = hostName;
             this.gameStart = gameStart;
             this.runningTime = runningTime;
+            this.location = location;
             this.localDateStartTime = localDateStartTime;
         }
 

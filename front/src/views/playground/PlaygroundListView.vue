@@ -491,9 +491,6 @@ button:hover {
   background-color: #4cae4c; /* 버튼 호버 색상 */
 }
 
-/* 반응형 디자인: 화면 크기에 따라 스타일 조정 */
-@media (max-width: 768px) {
 
-}
 
 </style>

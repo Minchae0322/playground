@@ -168,7 +168,6 @@ a {
 .info-container h2 {
   font-size: 1.8rem;
   color: #333;
-
   text-align: start;
   font-family: MiSans-Heavy, sans-serif;
 }

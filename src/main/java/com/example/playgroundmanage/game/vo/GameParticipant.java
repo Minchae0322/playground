@@ -45,7 +45,8 @@ public class GameParticipant {
                 .hostName(game.getHost().getNickname())
                 .runningTime(game.getRunningTime())
                 .gameId(id)
-                .subTeamName(subTeam.getTeamName())
+                .location(game.getPlayground().getCampus().getCampusName() + " , " +  game.getPlayground().getName())
+                .subTeamName(subTeam == null ? "" : subTeam.getTeamName())
                 .localDateStartTime(game.getGameStartDateTime())
                 .gameName(game.getGameName())
                 .build();
