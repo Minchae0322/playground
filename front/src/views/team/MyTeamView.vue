@@ -108,11 +108,13 @@ body{
   justify-content: center;
   text-align: center;
   align-content: center;
+
 }
 .teams {
   padding: 20px;
   margin: 0 auto;
   width: 90%;
+  line-height: 1.2;
   min-width: 1100px;
   background: var(--background-color-gray); /* 배경색을 추가할 수도 있습니다 */
 }

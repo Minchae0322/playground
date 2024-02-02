@@ -148,7 +148,9 @@ div {
 }
 
 .upcoming-games {
+  line-height: 1.2;
   padding: 15px;
+
   min-height: 90vh;
   background-color: #fff; /* 배경색을 흰색으로 설정 */
   border-radius: 8px;
@@ -177,10 +179,10 @@ div {
 .game-info {
   display: flex;
   flex-direction: column;
-  align-content: end;
+  align-content: center;
   justify-content: end;
   flex-basis: 67%;
-  margin-left: auto;
+  margin: auto 0 auto auto;
 }
 
 .game-card {

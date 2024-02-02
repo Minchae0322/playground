@@ -1,24 +1,22 @@
 <template>
   <body>
-
-
   <div class="userInfo-container">
-    <h1>내 정보</h1>
+    <h1>我的信息</h1>
     <div class="header">
       <div class="userProfile-container">
         <img :src="user.userProfileImg || defaultImage" @click="triggerFileInput" class="profile-image" />
         <input type="file" ref="fileInput" @change="handleFileChange" style="display:none" />
-      <h4>사진을 클릭하여 프로필을 변경하세요.</h4>
+      <div class="profile-hint">点击照片更改头像</div>
       </div>
       <div class="nickname-container" v-if="!isEditing">
-        <h2>{{ user.userNickname }}</h2>
-        <button @click="clickChangeNickname">닉네임 변경</button>
+        <div class="user-nickname">{{ user.userNickname }}</div>
+        <button class="nickname-change-button" @click="clickChangeNickname">换昵称</button>
       </div>
       <div class="nickname-container" v-else>
         <input v-model="editedNickname" placeholder="Enter new nickname" />
         <div class="button-container">
-          <button @click="clickChangeNickname">취소</button>
-          <button @click="confirmEditNickname">확인</button>
+          <button @click="clickChangeNickname">取消</button>
+          <button @click="confirmEditNickname">确定</button>
         </div>
       </div>
     </div>
@@ -245,6 +243,12 @@ body {
   display: inline-block;
   box-shadow: 0 3px 6px 0 rgba(29,34,53,.08);
 }
+
+.profile-hint {
+  color: var(--text-hint);
+  font-family: MiSans-Light,sans-serif;
+  font-size: 11px;
+}
 .header {
   text-align: center;
   margin-bottom: 30px;
@@ -264,12 +268,23 @@ body {
   flex-direction: column; /* 아이템을 수직 방향으로 정렬 */
 }
 
-.nickname-container h2 {
-  margin-bottom: 10px; /* 요소 간의 여백 추가 */
-
-  line-height: 32px;
-
+.user-nickname {
+  font-size: 23px;
+  color: black;
 }
+
+.nickname-change-button{
+  font-family: MiSans-Medium, sans-serif;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f5f5f5;
+  cursor: pointer;
+}
+
 
 .nickname-container input {
   width: 40%; /* 크기를 40%로 설정 */
@@ -293,9 +308,13 @@ body {
   background: var(--accent-color);
   width: 20%;
   color: white;
-  font-family: gothic-bold,serif;
+  padding: 10px;
+  margin-top: 10px;
+  font-family: MiSans-Medium,sans-serif;
   overflow-y: hidden;
   overflow-x: hidden;
+  border: none;
+  border-radius: 5px;
 }
 .nickname-container .button-container {
   display: flex;
@@ -309,6 +328,7 @@ body {
 }
 .nickname-container input {
   width: 40%; /* 크기를 40%로 설정 */
+
   margin-bottom: 10px; /* 요소 간의 여백 추가 */
 }
 
@@ -341,20 +361,6 @@ body {
   text-align: start;
 }
 
-button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #f5f5f5;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #e1e1e1;
-}
 
 .teams h3 {
   display: flex;
@@ -407,6 +413,6 @@ button:hover {
 /* 추가적으로 반응형 디자인을 고려할 수 있습니다. */
 a {
   text-decoration: none;
-  font-family: gothic-bold;
+
 }
 </style>

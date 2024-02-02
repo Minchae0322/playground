@@ -10,6 +10,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import static com.example.playgroundmanage.util.DateFormat.dateFormatYYYYMMDDHHMM;
+import static com.example.playgroundmanage.util.LocationFormatter.getLocation;
 
 @Entity
 @Getter
@@ -44,8 +45,9 @@ public class GameParticipant {
                 .gameStart(dateFormatYYYYMMDDHHMM(game.getGameStartDateTime()))
                 .hostName(game.getHost().getNickname())
                 .runningTime(game.getRunningTime())
-                .gameId(id)
-                .location(game.getPlayground().getCampus().getCampusName() + " , " +  game.getPlayground().getName())
+                .gameId(game.getId())
+                .playgroundId(game.getPlayground().getId())
+                .location(getLocation(game))
                 .subTeamName(subTeam == null ? "" : subTeam.getTeamName())
                 .localDateStartTime(game.getGameStartDateTime())
                 .gameName(game.getGameName())

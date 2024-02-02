@@ -316,6 +316,7 @@ body {
   margin: 10px 40px;
   min-width: 1100px;
   width: 90%;
+  line-height: 1.4;
 }
 
 .info-container {
@@ -386,11 +387,9 @@ body {
 .game-card:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 추가 */
   transition: transform 0.3s ease; /* 호버 효과를 위한 전환 설정 */
-}
-
-.game-card:hover {
   transform: translateY(-5px); /* 호버 시 카드가 약간 위로 올라가는 효과 */
 }
+
 
 .playground-list {
   display: flex;
@@ -488,7 +487,7 @@ button {
 }
 
 button:hover {
-  background-color: #4cae4c; /* 버튼 호버 색상 */
+  background-color: var(--secondary-color); /* 버튼 호버 색상 */
 }
 
 

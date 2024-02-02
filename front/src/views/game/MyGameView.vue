@@ -11,7 +11,7 @@
   </div>
 
   <div class="content">
-    <div class="section past-games">
+    <div class="section">
       <div class="game-list-title">过去比赛</div>
       <div class="game" v-for="game in pastGames" :key="game.id">
         <div class="game-info">
@@ -37,31 +37,33 @@
       </div>
     </div>
 
-    <div class="section upcoming-games">
+    <div class="section">
       <div class="game-list-title">未来比赛</div>
-      <div class="game" v-for="game in upcomingGames" :key="game.id">
-        <div class="game-info">
-          <div class="game-title">{{ game.gameName }}</div>
+      <div v-for="game in upcomingGames" :key="game.gameId">
+        <router-link class="game" :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
+          <div class="game-info">
+            <div class="game-title">{{ game.gameName }}</div>
+            <div class="game-date">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                   class="time-icon">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              {{ formatDate(game.gameStart) }}
+            </div>
 
-          <div class="game-date">
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
-                 class="time-icon">
-              <circle cx="12" cy="12" r="10"></circle>
-              <polyline points="12 6 12 12 16 14"></polyline>
-            </svg>
-            {{ formatDate(game.gameStart) }}
+            <div class="game-description">
+              <div class="host"><img src="../../assets/icon-host.png">{{ game.hostName }}</div>
+              <div class="host"><img src="../../assets/icon-location.png">{{ game.location }}</div>
+            </div>
           </div>
 
-          <div class="game-description">
-            <div class="host"><img src="../../assets/icon-host.png">{{ game.hostName }}</div>
-            <div class="host"><img src="../../assets/icon-location.png">{{ game.location }}</div>
-          </div>
-        </div>
         <div class="game-time">{{ formatTime(game.gameStart) }} - {{
             formatEndTime(game.gameStart, game.runningTime)
           }}
         </div>
+        </router-link>
       </div>
     </div>
   </div>
@@ -76,7 +78,10 @@ import {onMounted, ref} from "vue";
 const apiBaseUrl = "http://localhost:8080";
 
 const pastGames = ref([]);
-const upcomingGames = ref([]);
+const upcomingGames = ref([{
+  playgroundId: 1,
+  gameId: 1,
+}]);
 const selectedMonth = ref(new Date().toISOString().substring(0, 7));
 
 
@@ -94,7 +99,8 @@ const selectThisMonth = () => {
 
 
 onMounted(async () => {
-  await getMyGame(2024, 2)
+  const now = new Date();
+  await getMyGame(now.getFullYear(), now.getMonth() + 1)
 });
 
 const getMyGame = async (year, month) => {
@@ -195,13 +201,19 @@ const redirectToLogin = function () {
 
 <style scoped>
 body {
+  display: flex;
   background-color: white;
+}
+
+a {
+  text-decoration: none;
 }
 
 
 .info-container {
   margin: 10px 30px;
 }
+
 .info-container h2 {
   font-size: 1.8rem;
   color: #333;
@@ -222,7 +234,7 @@ body {
   margin-right: auto;
   margin-left: 100px;
   margin-bottom: 20px;
-  font-family: MiSans-Normal,sans-serif;
+  font-family: MiSans-Normal, sans-serif;
 }
 
 .date-selector {
@@ -239,7 +251,7 @@ body {
   color: white; /* 버튼의 텍스트 색상을 설정합니다 */
   border: none; /* 버튼의 테두리를 제거합니다 */
   margin-left: 10px;
-  font-family: MiSans-Medium,sans-serif;
+  font-family: MiSans-Medium, sans-serif;
   border-radius: 5px; /* 버튼의 모서리를 둥글게 처리합니다 */
   cursor: pointer; /* 마우스를 올렸을 때 커서가 손가락 모양으로 변경되도록 설정합니다 */
   font-size: 14px; /* 텍스트 크기를 설정합니다 */
@@ -254,7 +266,7 @@ body {
   border: 1px solid #ccc; /* 입력 필드의 테두리를 설정합니다 */
   border-radius: 5px; /* 입력 필드의 모서리를 둥글게 처리합니다 */
   font-size: 14px; /* 텍스트 크기를 설정합니다 */
-  font-family: MiSans-Medium,sans-serif;
+  font-family: MiSans-Medium, sans-serif;
 
 }
 
@@ -264,11 +276,12 @@ body {
 }
 
 .game-list-title {
-  font-family: MiSans-Semibold,sans-serif;
+  font-family: MiSans-Semibold, sans-serif;
   color: #001a56;
   font-size: 21px;
   margin-bottom: 10px;
 }
+
 .navbar a {
   color: black;
   text-decoration: none;
@@ -279,26 +292,36 @@ body {
   display: flex;
   justify-content: space-between;
   padding: 20px;
+  flex-wrap: wrap; /* 내용이 넘치면 다음 줄로 넘깁니다 */
 }
 
 .section {
+  margin-bottom: 10px;
   background-color: #ffffff;
   padding: 20px;
   width: 48%;
+  min-width: 530px;
+  overflow: auto; /* 내용이 넘칠 경우 스크롤바 표시 */
+  height: auto;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 
-
 .game {
   display: flex;
+  margin-bottom: 20px;
   justify-content: space-between;
   align-items: center;
   border-radius: 8px;
   padding: 15px 25px;
   line-height: 1.2;
   border: 1px solid #e6e6e6;
+}
+
+.game:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 강조 */
+  transform: translateY(-5px); /* 호버 시 카드가 약간 위로 올라가는 효과 */
 }
 
 .game-info {

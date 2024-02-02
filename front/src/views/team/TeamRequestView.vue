@@ -31,7 +31,6 @@
     </div>
   </div>
   <div v-else>
-
     <div class="teamRequest-notExist">팀 요청이 존재하지 않습니다.</div>
   </div>
 </template>

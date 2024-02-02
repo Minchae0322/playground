@@ -16,7 +16,7 @@ import myTeam from '../views/team/MyTeamView.vue'
 import teamRequest from "@/views/team/TeamRequestView.vue";
 import home from "@/views/HomeView.vue";
 import myGame from '../views/game/MyGameView.vue'
-import hostGame from '../views/HostGameView.vue'
+import hostGame from '../views/game/HostGameView.vue'
 import playgroundList from '../views/playground/PlaygroundListView.vue'
 import teamList from '../views/team/TeamListView.vue';
 import App from "@/App.vue";

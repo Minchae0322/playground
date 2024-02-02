@@ -10,16 +10,15 @@ import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.store.FileHandler;
-import com.example.playgroundmanage.util.DateFormat;
-import com.example.playgroundmanage.util.GameParticipantFinder;
-import com.example.playgroundmanage.util.GameSorting;
-import com.example.playgroundmanage.util.GameValidation;
+import com.example.playgroundmanage.util.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.Comparator;
 import java.util.List;
+
+import static com.example.playgroundmanage.util.LocationFormatter.getLocation;
 
 
 @Service
@@ -38,7 +37,7 @@ public class GameService {
 
     private final GameSorting gameSorting;
 
-
+    private final LocationFormatter locationFormatter;
 
     private final GameValidation gameValidation;
 
@@ -68,6 +67,8 @@ public class GameService {
         return gamesOrderedByLatest.stream()
                 .map(game -> UsersGameDto.UsersGameResponseDto.builder()
                         .gameId(game.getId())
+                        .playgroundId(game.getPlayground().getId())
+                        .location(getLocation(game))
                         .localDateStartTime(game.getGameStartDateTime())
                         .gameStart(DateFormat.dateFormatYYYYMMDDHHMM(game.getGameStartDateTime()))
                         .hostName(game.getHost().getNickname())

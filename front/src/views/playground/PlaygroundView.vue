@@ -362,6 +362,7 @@ const redirectToLogin = function () {
 }
 
 .game-card {
+
   display: flex;
   border: 1px solid #ddd;
   padding: 15px 20px;
