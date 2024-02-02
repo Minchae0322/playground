@@ -32,7 +32,7 @@
         <div class="game-time">{{ formatTime(game.gameStart) }} - {{
             formatEndTime(game.gameStart, game.runningTime)
           }}
-          <button class="delete">删除</button>
+          <button @click="deleteGame(game.gameId)" class="delete">删除</button>
         </div>
 
       </div>

@@ -45,19 +45,6 @@ public class GameService {
 
     private final GameParticipantFinder gameParticipantFinder;
 
-   /* @Transactional
-    public Long generateGame(Long playgroundId, GameDto gameDto) {
-        Playground playground = playgroundRepository.findById(playgroundId)
-                .orElseThrow(PlaygroundNotExistException::new);
-
-        gameValidation.validateOverlappingGames(playground.getGames(), gameDto.toGameDateDto());
-
-        GameGenerator gameGenerator = gameGeneratorFactory.find(gameDto.getGameType().getValue());
-
-        return gameGenerator.generate(playground, gameDto);
-    }
-
-*/
 
     @Transactional
     public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(User user) {
@@ -118,16 +105,6 @@ public class GameService {
                 .toList();
     }
 
-    private void checkAndDeleteSubTeamIfEmpty(SubTeam subTeam) {
-        if (subTeam != null && subTeam.getGameParticipants().size() <= 1) {
-            subTeamRepository.delete(subTeam);
-        }
-    }
-
-
-    public Game getMatch(Long matchId) {
-        return gameRepository.findById(matchId).orElseThrow(MatchNotExistException::new);
-    }
 
 
 }
