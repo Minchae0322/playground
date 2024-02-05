@@ -131,8 +131,8 @@
 
   <div class="info-container">
     <div class="flex-box">
-      <img src="../assets/icon-tableTennisBall.png">
-      <h2>乒乓球</h2>
+      <img src="../assets/icon-basketballBall.png">
+      <h2>篮球</h2>
     </div>
     <div class="info-container-border"></div>
   </div>
