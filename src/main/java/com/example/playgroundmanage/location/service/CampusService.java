@@ -65,6 +65,21 @@ public class CampusService {
                 .toList();
     }
 
+    @Transactional
+    public List<GameDto> getUpcomingGamesBySchool(Long schoolId) {
+        School school = schoolRepository.findById(schoolId)
+                .orElseThrow(SchoolNotExistException::new);
+
+        List<Game> upcomingGames = school.getCampus().stream()
+                .flatMap(campus -> getUpcomingGames(campus.getPlaygrounds()).stream())
+                .toList();
+
+        return upcomingGames.stream()
+                .limit(3)
+                .map(Game::toGameDto)
+                .toList();
+    }
+
     private List<Game> getUpcomingGames(List<Playground> playgrounds) {
         LocalDateTime now = LocalDateTime.now();
         return playgrounds.stream()

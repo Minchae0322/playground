@@ -18,7 +18,7 @@
             <div class="user-name">{{ request.userName }}</div>
             <div class="user-requestTime">{{ request.requestTime }}</div>
           </div>
-          <div class="toggle-info" @click="toggleIntroduction(request)">눌러서 설명보기</div>
+          <div class="toggle-info" @click="toggleIntroduction(request)">눌러서 설명보기 ></div>
           <div class="actions">
             <button @click="rejectRequest(request.requestId)" class="reject">Reject</button>
             <button @click="acceptRequest(request.requestId)" class="accept">Accept</button>
@@ -280,6 +280,7 @@ h2 {
   text-align: right; /* 텍스트 우측 정렬 */
   flex-grow: 1.2;
   justify-content: left;
+  cursor: pointer;
 }
 
 .introduction {

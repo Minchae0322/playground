@@ -15,6 +15,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -27,25 +28,33 @@ public class GameService {
 
     private final GameRepository gameRepository;
 
-    private final SubTeamRepository subTeamRepository;
-
-    private final PlaygroundRepository playgroundRepository;
-
-    private final UserService userService;
-
-    private final FileHandler fileHandler;
-
     private final GameSorting gameSorting;
 
-    private final LocationFormatter locationFormatter;
-
-    private final GameValidation gameValidation;
+    private final GameFinder gameFinder;
 
     private final GameParticipantRepository gameParticipantRepository;
 
     private final GameParticipantFinder gameParticipantFinder;
 
+    @Transactional
+    public List<UsersGameDto.UsersGameResponseDto> getGamesUserHostByDate(User user, LocalDateTime localDateTime) {
+        List<Game> games = gameRepository.findAllByHost(user);
+        List<Game> gamesByDate = gameFinder.getGamesForYearMonth(games, localDateTime);
+        List<Game> gamesOrderedByLatest = gameSorting.sortGamesByOldest(gamesByDate);
 
+        return gamesOrderedByLatest.stream()
+                .map(game -> UsersGameDto.UsersGameResponseDto.builder()
+                        .gameId(game.getId())
+                        .playgroundId(game.getPlayground().getId())
+                        .location(getLocation(game))
+                        .localDateStartTime(game.getGameStartDateTime())
+                        .gameStart(DateFormat.dateFormatYYYYMMDDHHMM(game.getGameStartDateTime()))
+                        .hostName(game.getHost().getNickname())
+                        .gameName(game.getGameName())
+                        .runningTime(game.getRunningTime())
+                        .build())
+                .toList();
+    }
     @Transactional
     public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(User user) {
         List<Game> games = gameRepository.findAllByHost(user);

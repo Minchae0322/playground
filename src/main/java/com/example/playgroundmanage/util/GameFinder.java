@@ -31,6 +31,21 @@ public class GameFinder {
                 .toList();
     }
 
+    public List<Game> getGamesForYearMonth(List<Game> games, LocalDateTime localDateTime) {
+        return Optional.ofNullable(games)
+                .orElse(Collections.emptyList()) // 빈 리스트 반환으로 NullPointException 방지
+                .stream()
+                .filter(g -> isGameOnYearMonth(g, localDateTime))
+                .toList();
+    }
+
+    private boolean isGameOnYearMonth(Game game, LocalDateTime localDateTime) {
+        int targetYear = localDateTime.getYear();
+        int targetMonth = localDateTime.getMonthValue();
+
+        return game.getGameStartDateTime().getYear() == targetYear && game.getGameStartDateTime().getMonthValue() == targetMonth;
+    }
+
     public boolean isGameOnDate(Game game, LocalDateTime targetDateTime) {
         LocalDateTime gameStartDateTime = game.getGameStartDateTime();
 

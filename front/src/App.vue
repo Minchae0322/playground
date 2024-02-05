@@ -34,8 +34,8 @@ const setToken = async () => {
   if (isLoggedIn.value) {
     return
   }
-   accessToken.value = (new URL(location.href)).searchParams.get('access_token');
-   refreshToken.value = (new URL(location.href)).searchParams.get('refresh_token');
+  accessToken.value = (new URL(location.href)).searchParams.get('access_token');
+  refreshToken.value = (new URL(location.href)).searchParams.get('refresh_token');
 
   console.log(accessToken.value)
   console.log(refreshToken.value)
@@ -149,10 +149,12 @@ const redirectToLogin = async () => {
   </head>
   <main class="main-content">
     <div v-if="$route.name !== 'login'" class="sidebar">
-      <div class="school-info-container">
-        <img class="school-profile-img" src="../src/assets/school-profile.jpeg">
-        <div class="school-name">哈尔滨工业大学</div>
-      </div>
+      <router-link :to="{name : 'home'}">
+        <div class="school-info-container">
+          <img class="school-profile-img" src="../src/assets/school-profile.jpeg">
+          <div class="school-name">哈尔滨工业大学</div>
+        </div>
+      </router-link>
       <div class="user-info-container" @click="clickUserInfo">
         <img class="user-profile-img" :src="user.userProfileImg || defaultImage">
         <div class="user-name">{{ user.userNickname }}</div>

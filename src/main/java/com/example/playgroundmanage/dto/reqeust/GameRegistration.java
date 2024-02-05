@@ -19,14 +19,14 @@ public class GameRegistration {
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private ZonedDateTime gameStartDateTime;
 
-    private SportsEvent sportsEvent;
+    private String sportsEvent;
 
     private Integer runningTime;
 
     private String gameType;
 
     @Builder
-    public GameRegistration(Long playgroundId, String gameName, ZonedDateTime gameStartDateTime, SportsEvent sportsEvent, Integer runningTime, String gameType) {
+    public GameRegistration(Long playgroundId, String gameName, ZonedDateTime gameStartDateTime, String sportsEvent, Integer runningTime, String gameType) {
         this.playgroundId = playgroundId;
         this.gameName = gameName;
         this.gameStartDateTime = gameStartDateTime;

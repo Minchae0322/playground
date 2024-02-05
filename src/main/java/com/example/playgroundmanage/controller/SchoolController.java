@@ -45,4 +45,13 @@ public class SchoolController {
                 .toList();
     }
 
+    @GetMapping("/school/{schoolId}/upcoming")
+    public List<GameThumbnail> getUpcomingGamesBySchool( @PathVariable Long schoolId) {
+        List<GameDto> upcomingGames = campusService.getUpcomingGamesBySchool(schoolId);
+
+        return upcomingGames.stream()
+                .map(GameDto::toGameThumbnail)
+                .toList();
+    }
+
 }

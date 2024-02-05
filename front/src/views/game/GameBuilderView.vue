@@ -55,7 +55,8 @@
   </div>
   <div>
 
-    <ModalComponent v-if="isModalOpen" @close="isModalOpen = false" :playground-id="props.playgroundId" @dateTimeValue="handleUpdateStartTime"
+    <ModalComponent v-if="isModalOpen" @close="isModalOpen = false" :playground-id="props.playgroundId"
+                    @dateTimeValue="handleUpdateStartTime"
                     @runningTime="handleUpdateRunningTime">
     </ModalComponent>
   </div>
@@ -80,7 +81,8 @@ const gameRegistration = ref({
 
 const props = defineProps({
   someData: String,
-  playgroundId: Number // 여기에 playgroundId를 추가합니다.
+  playgroundId: Number,
+
 });
 const selectedDuration = ref(null);
 const occupiedTimeSlots = ref([]); // Example occupied slots
@@ -122,6 +124,7 @@ const generateGame = async () => {
           gameStartDateTime: startTime.value,
           runningTime: runningTime.value,
           gameType: gameRegistration.value.gameType,
+          sportsEvent: playgroundInfo.value.sportsEvent
         }, {
           headers: {
             'Authorization': getAccessToken()
@@ -321,6 +324,7 @@ body {
   font-size: 12px; /* Match input font size to the image */
   font-family: MiSans-Medium, sans-serif;
 }
+
 .date-button {
   padding: 12px; /* Adjust padding to match the image */
   border: 1px solid #ccc; /* Adjust border color to match the image */
@@ -332,7 +336,6 @@ body {
   text-align: left; /* Align text to the left */
   color: #000; /* Text color for the date button */
 }
-
 
 
 .date-button:hover {

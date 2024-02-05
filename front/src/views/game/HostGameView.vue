@@ -70,10 +70,9 @@
         <div class="game-time">{{ formatTime(game.gameStart) }} - {{
             formatEndTime(game.gameStart, game.runningTime)
           }}
-          <div class="action">
-            <button @click="deleteGame(game.gameId)" class="delete">删除</button>
+
             <button class="submit">提交</button>
-          </div>
+
         </div>
       </div>
     </div>
@@ -93,12 +92,12 @@ const upcomingGames = ref([]);
 const selectedMonth = ref(new Date().toISOString().substring(0, 7));
 
 onMounted(async () => {
-  selectThisMonth();
+  await getMyGames();
 });
 
 const monthChanged = async () => {
   const [year, month] = selectedMonth.value.split('-');
-  await getMyGame(parseInt(year), parseInt(month));
+  await getMyGameByYearMonth(parseInt(year), parseInt(month));
 };
 
 const selectThisMonth = () => {
@@ -108,11 +107,9 @@ const selectThisMonth = () => {
   monthChanged(); // 이 함수를 호출하여 선택된 달에 대한 데이터를 가져옵니다.
 };
 
-
-const getMyGame = async (year, month) => {
+const getMyGames = async () => {
   await validateAccessToken();
 
-  pastGames.value = [];
   upcomingGames.value = [];
 
   try {
@@ -133,6 +130,25 @@ const getMyGame = async (year, month) => {
       } else {
         upcomingGames.value.push(game);
       }
+    });
+  } catch (error) {
+    console.error('게임 정보를 가져오는데 실패했습니다.', error.response.data.message);
+  }
+}
+const getMyGameByYearMonth = async (year, month) => {
+  await validateAccessToken();
+
+  pastGames.value = [];
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/user/game/host/${year}/${month}`, {
+      headers: {
+        'Authorization': getAccessToken(),
+      }
+    });
+
+    response.data.forEach(game => {
+        pastGames.value.push(game);
     });
 
   } catch (error) {
@@ -417,7 +433,7 @@ a {
 .submit {
   width: 80px;
   height: 30px;
-  margin-left: 10px;
+  margin-left: auto;
   border-radius: 4px;
   border: none;
   background-color: #000000; /* 취소 버튼 배경색 */

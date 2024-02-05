@@ -54,7 +54,7 @@
                  @gameSelected="handleGameSelected"
                  @goBack="handleGoBack"></component>
     </div>
-    <GameBuilderModal v-if="isGameBuilderModalOpen" :playground-id="props.playgroundId" @closeGameBuilder=closeModal></GameBuilderModal>
+    <GameBuilderModal v-if="isGameBuilderModalOpen" :playground-id="props.playgroundId"  @closeGameBuilder=closeModal></GameBuilderModal>
   </div>
 </template>
 
@@ -83,7 +83,8 @@ const props = defineProps({
   receivedGameId: {
     type: Number,
     required: true,
-  }
+  },
+
 })
 
 const ongoingGame = ref({

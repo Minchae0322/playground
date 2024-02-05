@@ -17,6 +17,7 @@ import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;
+import com.example.playgroundmanage.type.SportsEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -76,7 +77,7 @@ public class GameController {
                 .gameType(GameType.fromString(gameRegistration.getGameType()))
                 .gameName(gameRegistration.getGameName())
                 .runningTime(gameRegistration.getRunningTime())
-                .sportsEvent(gameRegistration.getSportsEvent())
+                .sportsEvent(SportsEvent.fromString(gameRegistration.getSportsEvent()))
                 .build();
 
         GameGenerator gameGenerator = gameGeneratorFactory.find(gameRegistration.getGameType());
@@ -101,8 +102,12 @@ public class GameController {
         return gameService.getMonthGameAsc(usersGameRequestDto);
     }
 
-    @GetMapping("/user/game/host")
+    @GetMapping("/user/game/host/{year}/{month}")
+    public List<UsersGameDto.UsersGameResponseDto> getGamesUserHostByDate(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Integer year, @PathVariable Integer month) {
+        return gameService.getGamesUserHostByDate(myUserDetails.getUser(), LocalDateTime.of(year, month, 1, 0, 0));
+    }
 
+    @GetMapping("/user/game/host")
     public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(@AuthenticationPrincipal MyUserDetails myUserDetails) {
         return gameService.getGamesUserHost(myUserDetails.getUser());
     }

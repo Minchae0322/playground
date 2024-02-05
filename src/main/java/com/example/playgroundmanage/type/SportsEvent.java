@@ -5,7 +5,9 @@ public enum SportsEvent {
     SOCCER("Soccer"),
     BADMINTON("Badminton"),
 
-    TENNIS("Tennis");
+    TENNIS("Tennis"),
+
+    TABLE_TENNIS("Table_tennis");
 
     private final String value;
 
@@ -26,4 +28,4 @@ public enum SportsEvent {
         throw new IllegalArgumentException("No constant with value " + value + " found");
         // 또는 null 반환을 원하면 return null; 사용
     }
-}
+    }
