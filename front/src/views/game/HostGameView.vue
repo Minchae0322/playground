@@ -6,11 +6,49 @@
   </div>
 
 
-
   <div class="content">
     <div class="section ">
       <h2>Upcoming Games</h2>
-      <div class="game" v-for="game in upcomingGames" :key="game.id">
+      <div v-for="game in upcomingGames" :key="game.id">
+        <router-link class="game"
+                     :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
+          <div class="game-info">
+            <div class="game-title">{{ game.gameName }}</div>
+            <div class="game-date">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                   stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                   class="time-icon">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              {{ formatDate(game.gameStart) }}
+            </div>
+
+            <div class="game-description">
+              <div class="host"><img src="../../assets/icon-host.png">{{ game.hostName }}</div>
+              <div class="host"><img src="../../assets/icon-location.png">{{ game.location }}</div>
+            </div>
+          </div>
+
+          <div class="game-time">{{ formatTime(game.gameStart) }} - {{
+              formatEndTime(game.gameStart, game.runningTime)
+            }}
+            <button @click="deleteGame(game.gameId)" class="delete">删除</button>
+          </div>
+        </router-link>
+
+      </div>
+
+    </div>
+
+
+    <div class="date-selector">
+      <button @click="selectThisMonth">This Month</button>
+      <input type="month" v-model="selectedMonth" @change="monthChanged">
+    </div>
+    <div class="section">
+      <h2>Past Games</h2>
+      <div class="game" v-for="game in pastGames" :key="game.id">
         <div class="game-info">
           <div class="game-title">{{ game.gameName }}</div>
           <div class="game-date">
@@ -32,29 +70,10 @@
         <div class="game-time">{{ formatTime(game.gameStart) }} - {{
             formatEndTime(game.gameStart, game.runningTime)
           }}
-          <button @click="deleteGame(game.gameId)" class="delete">删除</button>
-        </div>
-
-      </div>
-
-    </div>
-
-
-    <div class="date-selector">
-      <button @click="selectThisMonth">This Month</button>
-      <input type="month" v-model="selectedMonth" @change="monthChanged">
-    </div>
-    <div class="section">
-      <h2>Past Games</h2>
-      <div class="game" v-for="game in pastGames" :key="game.id">
-        <div class="game-info">
-          <div class="game-title">{{ formatDate(game.gameStart) }}</div>
-          <div class="host">Hosted by {{ game.hostName }}</div>
-        </div>
-        <div class="game-time">{{ formatTime(game.gameStart) }} - {{ formatEndTime(game.gameStart, game.runningTime) }}</div>
-        <div class="game-actions">
-          <button class="submit">Submit</button>
-          <button class="delete">Delete</button>
+          <div class="action">
+            <button @click="deleteGame(game.gameId)" class="delete">删除</button>
+            <button class="submit">提交</button>
+          </div>
         </div>
       </div>
     </div>
@@ -88,8 +107,6 @@ const selectThisMonth = () => {
   selectedMonth.value = now.toISOString().substring(0, 7);
   monthChanged(); // 이 함수를 호출하여 선택된 달에 대한 데이터를 가져옵니다.
 };
-
-
 
 
 const getMyGame = async (year, month) => {
@@ -166,6 +183,7 @@ function formatEndTime(startTime, runningTime) {
     minute: '2-digit'
   });
 }
+
 const validateAccessToken = async function () {
   const accessToken = getAccessToken();
   if (!accessToken) {
@@ -192,7 +210,7 @@ const updateAccessToken = async function () {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
-      headers: { 'RefreshToken': refreshToken }
+      headers: {'RefreshToken': refreshToken}
     });
     if (response.status === 200) {
       const newAccessToken = response.headers['authorization'];
@@ -212,8 +230,13 @@ const redirectToLogin = function () {
 </script>
 
 
-
 <style scoped>
+
+a {
+  text-decoration: none;
+}
+
+
 .info-container {
   margin: 10px 30px;
 }
@@ -240,16 +263,8 @@ const redirectToLogin = function () {
   margin-bottom: 20px;
   font-family: MiSans-Normal, sans-serif;
 }
-.navbar {
-  background-color: #f2f2f2;
-  padding: 15px;
-  text-align: left;
-}
-.navbar a {
-  color: black;
-  text-decoration: none;
-  font-size: 24px;
-}
+
+
 
 .date-selector {
   display: flex; /* 요소들을 가로로 정렬합니다 */
@@ -291,7 +306,6 @@ const redirectToLogin = function () {
 }
 
 
-
 .content {
   display: flex;
   justify-content: center; /* 가운데 정렬 */
@@ -299,24 +313,30 @@ const redirectToLogin = function () {
   flex-direction: column;
   padding: 20px;
 }
+
 .section {
   background-color: #ffffff;
   padding: 20px;
   width: 100%;
   min-width: 1100px;
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
-}.game {
-   display: flex;
-   margin-bottom: 20px;
-   justify-content: space-between;
-   align-items: center;
-   border-radius: 8px;
-   padding: 15px 25px;
-   line-height: 1.2;
-   border: 1px solid #e6e6e6;
- }
+}
+
+.game {
+  display: flex;
+  margin-bottom: 20px;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 8px;
+  padding: 15px 25px;
+  line-height: 1.2;
+  border-bottom: 10px solid var(--accent-color);
+  border-left: 1px solid #e6e6e6;
+  border-top:  1px solid #e6e6e6;
+  border-right: 1px solid #e6e6e6;
+}
 
 .game:hover {
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 강조 */
@@ -379,11 +399,12 @@ const redirectToLogin = function () {
   font-family: MiSans-Normal, sans-serif;
 }
 
+
 .delete {
   width: 80px;
   height: 30px;
   margin-left: auto;
-  border-radius: 8px;
+  border-radius: 4px;
   border: none;
   background-color: #f44336; /* 취소 버튼 배경색 */
   color: white; /* 취소 버튼 글자색 */
@@ -391,5 +412,19 @@ const redirectToLogin = function () {
 
 .delete:hover {
   background-color: #d32f2f; /* 마우스 오버 시 배경색 어둡게 */
+}
+
+.submit {
+  width: 80px;
+  height: 30px;
+  margin-left: 10px;
+  border-radius: 4px;
+  border: none;
+  background-color: #000000; /* 취소 버튼 배경색 */
+  color: white; /* 취소 버튼 글자색 */
+}
+
+.submit:hover {
+  background-color: #606060; /* 마우스 오버 시 배경색 어둡게 */
 }
 </style>
