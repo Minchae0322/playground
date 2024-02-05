@@ -37,10 +37,12 @@ public class OAuth2UserProfile {
         Random random = new Random();
         int randomNum = random.nextInt(1000000) + 1;
         return User.builder()
+                .isEnable(true)
                 .role(UserRole.USER)
                 .username(this.username)
                 .provider(this.provider)
                 .nickname("USER" + randomNum)
                 .build();
     }
+
 }

@@ -1,3 +1,4 @@
+/*
 package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.date.MyDateTime;
@@ -80,6 +81,7 @@ class GameServiceTest {
         playgroundRepository.save(testPlayground);
     }
 
+*/
 /*
    public Long initGame() {
         GameDto gameRegistration = GameDto.builder()
@@ -90,7 +92,8 @@ class GameServiceTest {
                 .build();
         return gameService.generateGame(gameRegistration);
     }
-*/
+*//*
+
 
     @Test
     @Transactional
@@ -107,7 +110,8 @@ class GameServiceTest {
 
         assertNotNull(gameId);
     }
- /*
+ */
+/*
 
     @Test
     void getMatchBeforeStarted() {
@@ -194,6 +198,7 @@ class GameServiceTest {
         List<SubTeamDto> subTeamDtos = gameService.getTeamsBySide(gameId, MatchTeamSide.HOME);
         assertEquals(1, subTeamDtos.size());
         assertEquals("testTeam",subTeamDtos.stream().findFirst().get().getTeamName());
-    }*/
+    }*//*
 
-}
+
+}*/

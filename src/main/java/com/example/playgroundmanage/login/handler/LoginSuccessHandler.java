@@ -53,6 +53,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         MyUserDetails myUserDetails = (MyUserDetails) authentication.getPrincipal();
         User user = myUserDetails.getUser();
         user.enable();
+
         userRepository.save(user);
     }
 

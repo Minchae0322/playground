@@ -170,14 +170,21 @@ const redirectToLogin = async () => {
             <ul v-if="menuVisible.playground" class="sub-menu">
 
               <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" class="sub-nav-item">
-                <li>SOCCER</li>
+                <li>足球</li>
               </RouterLink>
               <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}" class="sub-nav-item">
-                <li>BASKET BALL</li>
+                <li>篮球</li>
               </RouterLink>
               <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'BADMINTON'}}" class="sub-nav-item">
-                <li>BADMINTON</li>
+                <li>羽毛球</li>
               </RouterLink>
+              <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'TABLE_TENNIS'}}" class="sub-nav-item">
+                <li>乒乓球</li>
+              </RouterLink>
+              <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'TENNIS'}}" class="sub-nav-item">
+                <li>网球</li>
+              </RouterLink>
+
 
             </ul>
           </li>

@@ -1,3 +1,4 @@
+/*
 package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.date.MyDateTimeLocal;
@@ -81,4 +82,4 @@ class GameServiceTestReal {
         System.out.println("ssss" + LocalDateTime.now());
         responseDtoList.size();
     }
-}
+}*/

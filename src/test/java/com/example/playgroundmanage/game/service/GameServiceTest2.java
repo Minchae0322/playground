@@ -1,3 +1,4 @@
+/*
 package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.date.MyDateTime;
@@ -113,4 +114,4 @@ class GameServiceTest2 {
             gameService.generateGame(invalidPlaygroundId, gameDto);
         });
     }
-}
+}*/

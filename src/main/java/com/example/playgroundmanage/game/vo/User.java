@@ -54,13 +54,13 @@ public class User implements Serializable{
     private List<GameRequest> gameRequests_host;
 
     @OneToMany(mappedBy = "host", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Game> hostGames = new ArrayList<>();
+    private List<Game> hostGames;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<Teaming> teams = new ArrayList<>();
+    private List<Teaming> teams;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<GameParticipant> gameParticipants = new ArrayList<>();
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<GameParticipant> gameParticipants;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<GameRequest> gameRequests;
@@ -76,8 +76,11 @@ public class User implements Serializable{
         this.nickname = nickname;
         this.isEnable = isEnable;
         this.role = role;
-        this.teams = teams;
-        this.gameParticipants = gameParticipants;
+        this.hostGames = new ArrayList<>();
+        this.teams = new ArrayList<>();
+        this.gameRequests = new ArrayList<>();
+        this.gameRequests_host = new ArrayList<>();
+        this.gameParticipants = new ArrayList<>();
     }
 
     public void enable() {

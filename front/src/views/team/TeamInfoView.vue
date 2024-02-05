@@ -11,9 +11,8 @@
       <button v-else class="button-teamJoin" @click="clickJoinTeam">加入</button>
     </div>
     <div class="team-history">
-      <h2>Team History</h2>
-      <p>The team was founded in 1900 and has a rich history of success and resilience. Over the years, they have won
-        numerous championships and produced many legendary players.</p>
+      <h2>队伍介绍</h2>
+      <p>{{team.description === null ? '没有介绍' : team.description}}</p>
     </div>
     <div class="team-players">
       <h2>Players</h2>
@@ -41,11 +40,10 @@
     <div class="team-achievements">
       <h2>Achievements</h2>
       <ul>
-        <li>10x League Champions</li>
-        <li>5x Cup Winners</li>
+        <li>准备中</li>
+
         <!-- More achievements as needed -->
       </ul>
-      <button class="learn-more">Learn more</button>
     </div>
   </div>
 </template>
@@ -188,12 +186,8 @@ const getTeamInfo = function () {
         }
       }
   ).then(response => {
-
-    team.value.teamId = response.data.teamId,
-        team.value.teamName = response.data.teamName,
-        team.value.teamSportsEvent = response.data.sportsEvent,
-        team.value.teamProfileImg = response.data.teamProfileImg ? `data:image/jpeg;base64,${response.data.teamProfileImg}` : defaultImage,
-        team.value.leaderName = response.data.leaderName
+    team.value = response.data
+    team.value.teamProfileImg = response.data.teamProfileImg ? `data:image/jpeg;base64,${response.data.teamProfileImg}` : defaultImage
   });
 
 };
