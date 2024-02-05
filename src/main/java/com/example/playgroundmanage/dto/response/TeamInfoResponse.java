@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.dto.response;
 
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
+import com.example.playgroundmanage.store.impl.FileHandlerImpl;
 import lombok.*;
 
 import java.io.IOException;
@@ -17,23 +18,20 @@ public class TeamInfoResponse {
 
     private String sportsEvent;
 
+    private String description;
+
     private Long leaderId;
 
     private String leaderName;
 
     @Builder
-    public TeamInfoResponse(Long teamId, String teamName, InMemoryMultipartFile teamProfileImg, String sportsEvent, Long leaderId, String leaderName) {
+    public TeamInfoResponse(Long teamId, String teamName, InMemoryMultipartFile teamProfileImg, String sportsEvent, Long leaderId, String leaderName, String description) {
         this.teamId = teamId;
         this.teamName = teamName;
-        if (teamProfileImg != null) {
-            try {
-                this.teamProfileImg = Base64.getEncoder().encodeToString(teamProfileImg.getBytes());
-            } catch (IOException e) {
-                throw new RuntimeException("이미지 변환 실패", e);
-            }
-        }
+        this.teamProfileImg = FileHandlerImpl.multipartFileToString(teamProfileImg);
         this.sportsEvent = sportsEvent;
         this.leaderId = leaderId;
         this.leaderName = leaderName;
+        this.description = description;
     }
 }

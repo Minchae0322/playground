@@ -131,6 +131,7 @@ public class TeamService {
         }
         return TeamInfoResponse.builder()
                 .teamName(team.getTeamName())
+                .description(team.getDescription())
                 .sportsEvent(team.getSportsEvent().getValue())
                 .leaderId(team.getLeader().getId())
                 .teamProfileImg(teamProfileImg)
