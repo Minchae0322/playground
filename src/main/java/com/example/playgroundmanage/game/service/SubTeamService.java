@@ -38,8 +38,9 @@ public class SubTeamService {
     public void deleteSubTeamIfParticipantZero(Long subTeamId) {
         SubTeam subTeam = subTeamRepository.findById(subTeamId)
                 .orElseThrow();
-        if (subTeam.getGameParticipants().size() == 0 && !subTeam.isSoloTeam()) {
+        if (subTeam.getGameParticipants().size() == 1 && !subTeam.isSoloTeam()) {
             subTeam.getCompetingTeam().getSubTeams().remove(subTeam);
+
             subTeamRepository.delete(subTeam);
         }
     }

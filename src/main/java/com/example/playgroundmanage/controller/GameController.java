@@ -18,6 +18,7 @@ import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -86,6 +87,7 @@ public class GameController {
     }
 
     @DeleteMapping("/game/{gameId}/{subTeamId}/out")
+    @Transactional
     public ResponseEntity<String> userOutOfGame(@PathVariable Long gameId, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Long subTeamId) {
         gameService.userOutOfGame(gameId, myUserDetails.getUser());
         subTeamService.deleteSubTeamIfParticipantZero(subTeamId);

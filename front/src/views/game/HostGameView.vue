@@ -8,12 +8,15 @@
 
   <div class="content">
     <div class="section ">
-      <h2>Upcoming Games</h2>
+      <div class="game-list-title">未来比赛</div>
       <div v-for="game in upcomingGames" :key="game.id">
         <router-link class="game"
                      :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
           <div class="game-info">
-            <div class="game-title">{{ game.gameName }}</div>
+            <div class="game-title">{{ game.gameName }}
+              <div class="game-type">{{ game.gameType }}</div>
+            </div>
+
             <div class="game-date">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                    stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
@@ -25,6 +28,7 @@
             </div>
 
             <div class="game-description">
+
               <div class="host"><img src="../../assets/icon-host.png">{{ game.hostName }}</div>
               <div class="host"><img src="../../assets/icon-location.png">{{ game.location }}</div>
             </div>
@@ -47,7 +51,7 @@
       <input type="month" v-model="selectedMonth" @change="monthChanged">
     </div>
     <div class="section">
-      <h2>Past Games</h2>
+      <div class="game-list-title">过去比赛</div>
       <div class="game" v-for="game in pastGames" :key="game.id">
         <div class="game-info">
           <div class="game-title">{{ game.gameName }}</div>
@@ -71,7 +75,7 @@
             formatEndTime(game.gameStart, game.runningTime)
           }}
 
-            <button class="submit">提交</button>
+          <button class="submit">提交</button>
 
         </div>
       </div>
@@ -146,9 +150,15 @@ const getMyGameByYearMonth = async (year, month) => {
         'Authorization': getAccessToken(),
       }
     });
+    const currentTime = new Date();
 
+    // response.data의 각 아이템에 대해 반복
     response.data.forEach(game => {
+      // game.startTime이 현재 시간 이전이라면 pastGames 배열에 추가
+      // game.startTime이 현재 시간 이후라면 upcomingGames 배열에 추가
+      if (new Date(game.localDateStartTime) < currentTime) {
         pastGames.value.push(game);
+      }
     });
 
   } catch (error) {
@@ -281,7 +291,6 @@ a {
 }
 
 
-
 .date-selector {
   display: flex; /* 요소들을 가로로 정렬합니다 */
   align-items: center; /* 요소들을 세로 중앙에 배치합니다 */
@@ -350,7 +359,7 @@ a {
   line-height: 1.2;
   border-bottom: 10px solid var(--accent-color);
   border-left: 1px solid #e6e6e6;
-  border-top:  1px solid #e6e6e6;
+  border-top: 1px solid #e6e6e6;
   border-right: 1px solid #e6e6e6;
 }
 
@@ -369,6 +378,7 @@ a {
   font-size: 22px;
   font-family: MiSans-Semibold, sans-serif;
   color: black;
+  display: flex;
 
 }
 
@@ -377,7 +387,7 @@ a {
   font-size: 16px;
   margin-bottom: 10px;
   color: var(--text-hint-dark);
-  font-family: MiSans-Normal, sans-serif;
+  font-family: MiSans-Medium, sans-serif;
 }
 
 .game-date svg {
@@ -389,6 +399,13 @@ a {
 .game-description {
   display: flex;
   gap: 10px;
+}
+
+.game-list-title {
+  font-family: MiSans-Semibold, sans-serif;
+  color: #001a56;
+  font-size: 21px;
+  margin-bottom: 10px;
 }
 
 .host {
@@ -404,6 +421,13 @@ a {
   height: 15px;
   margin: auto 2px auto 0;
 
+}
+
+.game-type {
+  color: #eab800;
+
+  font-size: 19px;
+  margin: auto 10px;
 }
 
 .game-time {

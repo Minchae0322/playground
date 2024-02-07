@@ -24,7 +24,7 @@ public class SubTeam {
     private Team team;
 
     @OneToMany(mappedBy = "subTeam", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<GameParticipant> gameParticipants = new ArrayList<>();
+    private List<GameParticipant> gameParticipants;
 
     private boolean isSoloTeam;
 
@@ -51,6 +51,7 @@ public class SubTeam {
 
     public void delete() {
         this.competingTeam = null;
+        this.gameParticipants = new ArrayList<>();
     }
 
     public boolean isSoloTeam() {

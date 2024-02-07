@@ -15,7 +15,9 @@
       <div class="game-list-title">过去比赛</div>
       <div class="game" v-for="game in pastGames" :key="game.id">
         <div class="game-info">
-          <div class="game-title">{{ game.gameName }}</div>
+          <div class="game-title">{{ game.gameName }}
+            <div class="game-type">{{ game.gameType }}</div>
+          </div>
           <div class="game-date">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
@@ -40,9 +42,12 @@
     <div class="section">
       <div class="game-list-title">未来比赛</div>
       <div v-for="game in upcomingGames" :key="game.gameId">
-        <router-link class="game" :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
+        <router-link class="game"
+                     :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
           <div class="game-info">
-            <div class="game-title">{{ game.gameName }}</div>
+            <div class="game-title">{{ game.gameName }}
+              <div class="game-type">{{ game.gameType }}</div>
+            </div>
             <div class="game-date">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                    stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
@@ -59,10 +64,10 @@
             </div>
           </div>
 
-        <div class="game-time">{{ formatTime(game.gameStart) }} - {{
-            formatEndTime(game.gameStart, game.runningTime)
-          }}
-        </div>
+          <div class="game-time">{{ formatTime(game.gameStart) }} - {{
+              formatEndTime(game.gameStart, game.runningTime)
+            }}
+          </div>
         </router-link>
       </div>
     </div>
@@ -332,6 +337,7 @@ a {
 
 .game-title {
   font-size: 22px;
+  display: flex;
   font-family: MiSans-Semibold, sans-serif;
   color: black;
 
@@ -370,6 +376,14 @@ a {
   margin: auto 2px auto 0;
 
 }
+
+.game-type {
+  color: #eab800;
+
+  font-size: 19px;
+  margin: auto 10px;
+}
+
 
 .game-time {
   font-size: 16px;

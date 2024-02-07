@@ -46,6 +46,7 @@ public class GameParticipant {
                 .hostName(game.getHost().getNickname())
                 .runningTime(game.getRunningTime())
                 .gameId(game.getId())
+                .gameType(game.getGameType())
                 .playgroundId(game.getPlayground().getId())
                 .location(getLocation(game))
                 .subTeamName(subTeam == null ? "" : subTeam.getTeamName())

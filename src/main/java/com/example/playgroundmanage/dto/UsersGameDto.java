@@ -52,6 +52,7 @@ public class UsersGameDto {
             this.subTeamName = subTeamName;
             this.gameName = gameName;
             this.hostName = hostName;
+            this.gameType = gameType.getValue_cn();
             this.gameStart = gameStart;
             this.playgroundId = playgroundId;
             this.runningTime = runningTime;

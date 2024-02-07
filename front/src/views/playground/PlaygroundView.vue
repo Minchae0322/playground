@@ -428,6 +428,7 @@ const redirectToLogin = function () {
 .game-type {
   font-size: 0.875rem;
   color: #666;
+
   text-align: center;
   align-content: center;
   justify-content: center;

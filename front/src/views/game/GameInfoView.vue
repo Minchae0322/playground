@@ -272,14 +272,26 @@ const cancel = () => {
 };
 
 const clickOutOfGame = async (subTeamId) => {
+  const isConfirm = confirm("确定要退出吗？")
+  if(!isConfirm) {
+    return
+  }
   await validateAccessToken();
-  await axios.delete(`${apiBaseUrl}/game/${props.game.gameId}/${subTeamId}/out`,
-      {
-        headers: {
-          'Authorization': getAccessToken()
+  try {
+    await axios.delete(`${apiBaseUrl}/game/${props.game.gameId}/${subTeamId}/out`,
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
         }
-      }
-  )
+    )
+    alert("退出成功")
+    await getTeamData('HOME', 'Competition')
+    await getTeamData('AWAY', 'Competition')
+    await clickHomeTeam()
+  } catch (error) {
+    alert(error.response.data.message)
+  }
 };
 
 const getTeamsUserBelongTo = function () {
@@ -454,7 +466,7 @@ const redirectToLogin = function () {
             <div v-if="menuVisible" ref="menu" class="py-1" role="menu" aria-orientation="vertical"
                  aria-labelledby="options-menu">
               <div @click="sendSoloGameJoinRequest" class="menu-item" role="menuitem">个人</div>
-              <div @click="clickTeamRegistration" class="menu-item" role="menuitem">팀으로 참가하기</div>
+              <div @click="clickTeamRegistration" class="menu-item" role="menuitem">参加小队</div>
             </div>
             <button
                 class="select-team-solo-button"

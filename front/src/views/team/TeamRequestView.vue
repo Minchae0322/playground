@@ -18,20 +18,20 @@
             <div class="user-name">{{ request.userName }}</div>
             <div class="user-requestTime">{{ request.requestTime }}</div>
           </div>
-          <div class="toggle-info" @click="toggleIntroduction(request)">눌러서 설명보기 ></div>
+          <div class="toggle-info" @click="toggleIntroduction(request)">点击看介绍 ></div>
           <div class="actions">
             <button @click="rejectRequest(request.requestId)" class="reject">Reject</button>
             <button @click="acceptRequest(request.requestId)" class="accept">Accept</button>
           </div>
         </div>
         <div v-if="request.isExpanded" class="introduction">
-          <p>소개 : {{ request.introduction }}</p>
+          <p>介绍 : {{ request.introduction }}</p>
         </div>
       </div>
     </div>
   </div>
   <div v-else>
-    <div class="teamRequest-notExist">팀 요청이 존재하지 않습니다.</div>
+    <div class="teamRequest-notExist">没有参加要求.</div>
   </div>
 </template>
 
@@ -275,6 +275,7 @@ h2 {
   font-size: 9px;
   color: var(--text-hint);
   display: flex;
+  font-family: MiSans-Medium,sans-serif;
   margin-top: auto; /* 상단 여백을 자동으로 설정하여 하단에 바짝 붙게 함 */
   margin-right: 10px; /* 우측 여백 추가 */
   text-align: right; /* 텍스트 우측 정렬 */
