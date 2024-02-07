@@ -13,6 +13,8 @@
     <button @click="getTeams('sportsEvent','Soccer')">足球</button>
     <button @click="getTeams('sportsEvent','Basketball')">篮球</button>
     <button @click="getTeams('sportsEvent','Tennis')">网球</button>
+    <button @click="getTeams('sportsEvent','Table_tennis')">乒乓球</button>
+    <button @click="getTeams('sportsEvent','Badminton')">羽毛球</button>
   </div>
 
   <input type="text" v-model="searchQuery" placeholder="..."/>

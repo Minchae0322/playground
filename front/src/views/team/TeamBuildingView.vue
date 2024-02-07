@@ -1,40 +1,46 @@
 <template>
   <div class="team-building-form-container">
-    <h2>Team Building Form</h2>
-    <div class="form-info">make your team</div>
+    <h2>创建队伍</h2>
+    <div class="form-info">组队</div>
 
     <form @submit.prevent="submitForm">
     <div class="image-preview">
       <img :src="team.imagePreview || defaultImage" @click="triggerFileInput" class="profile-image" />
       <input type="file" ref="fileInput" @change="handleFileChange" style="display:none" />
-      <div class="chang-profile-info">사진을 클릭하여 프로필을 변경하세요.</div>
+      <div class="chang-profile-info">点击换头像</div>
     </div>
 
       <div class="form-group">
-        <label for="teamName">Team Name</label>
+        <label for="teamName">队伍名</label>
         <input type="text" id="teamName" v-model="team.name" placeholder="Enter team name">
       </div>
       <div class="sports-category-container">
-        <h4 class="">Sports Type</h4>
-        <img src="../../assets/soccer-ball.png" alt="" :class="{ 'selected': sportsEvent === 'Soccer' }"
+        <h4 class="">项目</h4>
+        <img src="../../assets/icon-soccerball.png" alt="" :class="{ 'selected': sportsEvent === 'Soccer' }"
              @click="selectCategory('Soccer')">
-        <img src="../../assets/baseball-ball.png" alt="" :class="{ 'selected': sportsEvent === 'Basketball' }"
+        <img src="../../assets/icon-basketballBall.png" alt="" :class="{ 'selected': sportsEvent === 'Basketball' }"
              @click="selectCategory('Basketball')">
+        <img src="../../assets/icon-badmintonBall.png" alt="" :class="{ 'selected': sportsEvent === 'Badminton' }"
+             @click="selectCategory('Badminton')">
+        <img src="../../assets/icon-tennisBall.png" alt="" :class="{ 'selected': sportsEvent === 'Tennis' }"
+             @click="selectCategory('Tennis')">
+        <img src="../../assets/icon-tableTennisBall.png" alt="" :class="{ 'selected': sportsEvent === 'Table_tennis' }"
+             @click="selectCategory('Table_tennis')">
       </div>
 
 
       <div class="form-group">
-        <label for="teamLeader">Team Leader</label>
+        <label for="teamLeader">队长</label>
         <div class="leader-container">
         <img class="leaderImg" :src=leader.userProfileImg >
         <div class="leader-name" >{{leader.userNickname}}</div>
         </div>
       </div>
       <div class="form-group">
-        <label for="teamGoals">Team Description</label>
+        <label for="teamGoals">介绍</label>
         <textarea id="teamGoals" v-model="team.description" placeholder="Enter team goals"></textarea>
       </div>
-      <button type="submit" @click="write">Submit</button>
+      <button type="submit" @click="write">确定</button>
     </form>
   </div>
 </template>
@@ -99,7 +105,7 @@ const handleFileChange = (e) => {
   reader.readAsDataURL(file);
 };
 
-const write = function () {
+const write = async function () {
   // FormData 인스턴스 생성
   const formData = new FormData();
 
@@ -118,23 +124,20 @@ const write = function () {
   }
 
   // Axios로 POST 요청 보내기
-  axios.post(`${apiBaseUrl}/team/build`, formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      'Authorization': localStorage.getItem("accessToken")
-    },
-  })
-      .then(response => {
-        const teamId = response.data.teamId
-        // 성공 시 처리 로직
-       alert("팀 생성에 성공하였습니다.")
-
-      })
-      .catch(error => {
-        // 에러 메시지 처리
-        const errorMessage = extractErrorMessage(error);
-        alert(errorMessage);
-      });
+  try {
+    const response = await axios.post(`${apiBaseUrl}/team/build`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': localStorage.getItem("accessToken")
+      },
+    })
+    const teamId = response.data.teamId;
+    alert("成功")
+    router.replace({name: 'teamInfo', params: {teamId: teamId}})
+  } catch (e) {
+    const errorMessage = extractErrorMessage(error);
+    alert(errorMessage);
+  }
 };
 
 // 에러 메시지 추출 함수
@@ -206,6 +209,8 @@ const redirectToLogin = function () {
   border-radius: 8px;
   color: var(--text-black);
 }
+
+
 
 .form-info {
   color: var(--text-hint);
@@ -285,9 +290,7 @@ const redirectToLogin = function () {
   margin-bottom: 10px;
 }
 
-.file-upload-button:hover {
-  background-color: rgba(35, 83, 134, 0.74);
-}
+
 
 .sports-category-container {
   display: flow;

@@ -197,16 +197,16 @@ const redirectToLogin = async () => {
             <ul v-if="menuVisible.team" class="sub-menu">
 
               <RouterLink :to="{ name:'myTeam'}" class="sub-nav-item">
-                <li>My Team</li>
+                <li>我的队伍</li>
               </RouterLink>
               <RouterLink :to="{ name:'teamList'}" class="sub-nav-item">
-                <li>Team Join</li>
+                <li>加入队伍</li>
               </RouterLink>
               <RouterLink :to="{ name:'teamRequest'}" class="sub-nav-item">
-                <li>Team Request</li>
+                <li>队伍加入请求</li>
               </RouterLink>
               <RouterLink :to="{ name:'teamBuilding'}" class="sub-nav-item">
-                <li>Make Team</li>
+                <li>组队</li>
               </RouterLink>
 
             </ul>
@@ -219,13 +219,13 @@ const redirectToLogin = async () => {
             </div>
             <ul v-if="menuVisible.game" class="sub-menu">
               <RouterLink :to="{name: 'gameRequest'}" class="sub-nav-item">
-                <li>Game Request</li>
+                <li>比赛参加请求</li>
               </RouterLink>
               <RouterLink :to="{name: 'myGame'}" class="sub-nav-item">
-                <li>My Game</li>
+                <li>我的比赛</li>
               </RouterLink>
               <RouterLink :to="{name: 'hostGame'}" class="sub-nav-item">
-                <li>Host Game</li>
+                <li>我主办的比赛</li>
               </RouterLink>
             </ul>
           </li>

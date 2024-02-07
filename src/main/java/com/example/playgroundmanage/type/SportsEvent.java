@@ -1,22 +1,28 @@
 package com.example.playgroundmanage.type;
 
 public enum SportsEvent {
-    BASKETBALL("Basketball"),
-    SOCCER("Soccer"),
-    BADMINTON("Badminton"),
+    BASKETBALL("Basketball","篮球"),
+    SOCCER("Soccer","足球"),
+    BADMINTON("Badminton","羽毛球"),
 
-    TENNIS("Tennis"),
+    TENNIS("Tennis","网球"),
 
-    TABLE_TENNIS("Table_tennis");
+    TABLE_TENNIS("Table_tennis","乒乓球");
 
     private final String value;
+    private final String value_cn;
 
-    SportsEvent(String value) {
+    SportsEvent(String value, String value_cn) {
         this.value = value;
+        this.value_cn = value_cn;
     }
 
     public String getValue() {
         return value;
+    }
+
+    public String getValue_cn() {
+        return value_cn;
     }
 
     public static SportsEvent fromString(String value) {

@@ -28,7 +28,7 @@ public class SportsEventTeamFinder implements TeamFinder {
                         .teamId(team.getId())
                         .teamName(team.getTeamName())
                         .teamDescription(team.getDescription())
-                        .sportsEvent(team.getSportsEvent().getValue())
+                        .sportsEvent(team.getSportsEvent().getValue_cn())
                         .teamProfileImg(fileHandler.extractFile(team.getTeamPic()))
                         .build())
                 .toList();
