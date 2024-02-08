@@ -172,7 +172,7 @@ import axios from "axios";
 import {useRouter} from "vue-router";
 
 
-const apiBaseUrl = "http://localhost:8080";
+const apiBaseUrl = "http://13.125.38.164/api";
 const router = useRouter();
 const upcomingGames = ref([{
   playgroundId: 1,

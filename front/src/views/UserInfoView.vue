@@ -46,7 +46,7 @@ import defaultImage from '../assets/img.png';
 import {useRouter} from "vue-router";
 
 
-const apiBaseUrl = "http://localhost:8080";
+const apiBaseUrl = "http://13.125.38.164/api";
 const router = useRouter();
 const editedNickname = ref("")
 const isEditing = ref(false); // 닉네임 편집 상태를 추적하는 반응형 변수

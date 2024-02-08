@@ -76,7 +76,7 @@ import {ref, onMounted} from "vue";
 import {useRouter} from "vue-router";
 
 const router = useRouter();
-const apiBaseUrl = "http://localhost:8080";
+const apiBaseUrl = "http://13.125.38.164/api";
 const username = ref("")
 const password = ref("");
 
