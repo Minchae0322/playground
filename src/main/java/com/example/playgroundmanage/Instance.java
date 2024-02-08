@@ -9,5 +9,5 @@ public final class Instance {
 
     public final static String ACCESS_TOKEN_REFRESH_URL = "/token/refresh";
 
-    public final static String SERVER_URL = "13.125.38.164";
+    public final static String SERVER_URL = "localhost:8080";
 }

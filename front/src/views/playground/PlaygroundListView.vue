@@ -47,14 +47,7 @@
       </div>
       <div class="card-body">
         <div class="game-info-container">
-          <div v-if="currentGame">
-            <div><strong>Host</strong> {{ currentGame.hostName }}</div>
-            <div><strong>StartTime</strong> {{ currentGame.gameStart }}</div>
-            <div><strong>Running Time</strong> {{ currentGame.time }}</div>
-          </div>
-          <div v-else>
-            <div>No current game in progress</div>
-          </div>
+            <div>预定的比赛 : {{upcomingGames.length}}</div>
         </div>
       </div>
       <div class="card-footer">
@@ -437,12 +430,11 @@ body {
 }
 
 .game-info-container {
-  padding: 15px; /* Add some padding inside the card */
-
+  padding: 10px 15px; /* Add some padding inside the card */
   background-color: var(--background-color-gray); /* Set a background color */
   border-radius: 8px; /* Optional: rounded corners */
   cursor: pointer; /* Indicates it's clickable */
-  font-size: 0.6em;
+  font-size: 11px
 }
 
 
