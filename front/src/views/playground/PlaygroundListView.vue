@@ -71,14 +71,15 @@
 </template>
 
 <script setup>
-import {onMounted, ref, watch} from 'vue';
+import {getCurrentInstance, onMounted, ref, watch} from 'vue';
 import axios from "axios";
 import GameBuilderModal from '../game/GameBuilderView.vue';
 import {useRouter} from "vue-router";
 import {defineEmits} from 'vue';
 import defaultImage from '../../assets/img.png';
 
-const apiBaseUrl = "http://localhost:8080";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 const router = useRouter();
 const isPlaygroundExist = ref(true);
 const playgroundInfoList = ref([{

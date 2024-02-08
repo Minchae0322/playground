@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import {onMounted, onUpdated, ref} from 'vue';
+import {getCurrentInstance, onMounted, onUpdated, ref} from 'vue';
 import axios from "axios";
 import GameBuilderModal from '../game/GameBuilderView.vue';
 import {useRouter} from "vue-router";
@@ -90,7 +90,8 @@ const props = defineProps({
 const ongoingGame = ref({
   hostProfileImg: ''
 })
-const apiBaseUrl = "http://localhost:8080";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 const router = useRouter();
 const currentView = ref(PlaygroundInfoView); // 초기 뷰 설정
 const selectedGame = ref(null); // 선택된 게임

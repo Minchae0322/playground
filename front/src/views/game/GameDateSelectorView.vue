@@ -108,7 +108,7 @@
 </template>
 
 <script setup lang="js">
-import {computed, defineProps, onMounted, ref} from 'vue';
+import {computed, defineProps, getCurrentInstance, onMounted, ref} from 'vue';
 import axios from "axios";
 import {defineEmits} from 'vue';
 
@@ -117,7 +117,8 @@ const timeValue = ref('')
 
 const occupiedTimeSlots = ref([]); // Example occupied slots
 
-const apiBaseUrl = "http://localhost:8080";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 const runningTime = ref(60);
 const emit = defineEmits(['dateTimeValue', 'close', 'runningTime']);
 const props = defineProps({

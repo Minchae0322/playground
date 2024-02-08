@@ -46,7 +46,7 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {getCurrentInstance, onMounted, ref} from 'vue';
 import defaultImage from '../../assets/img.png';
 import axios from "axios";
 import router from "@/router";
@@ -55,7 +55,8 @@ const leader = ref({
   userNickname: '',
   userProfileImg: '',
 })
-const apiBaseUrl = "http://localhost:8080";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 const sportsEvent = ref("Soccer")
 const fileInput = ref(null);
 onMounted(() => {

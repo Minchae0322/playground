@@ -1,13 +1,13 @@
 <script setup>
 import {RouterLink, RouterView} from 'vue-router'
 import axios from "axios";
-import {onMounted, ref} from "vue";
+import {getCurrentInstance, onMounted, ref} from "vue";
 import defaultImage from '../src/assets/img.png';
 import {useRouter} from "vue-router";
 
 const router = useRouter();
-
-const apiBaseUrl = "http://13.125.38.164/api";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 
 const user = ref({
   userNickname: '',

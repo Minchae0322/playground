@@ -36,7 +36,7 @@
 
 
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, getCurrentInstance, onMounted, ref} from "vue";
 import axios from "axios";
 import {useRouter} from "vue-router";
 import defaultImage from "@/assets/img.png";
@@ -44,7 +44,8 @@ import Vibrant from 'node-vibrant'
 
 const searchQuery = ref(''); // 검색어를 위한 반응형 데이터
 const router = useRouter();
-const apiBaseUrl = "http://localhost:8080";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 
 const teams = ref([{
   teamId: 1,

@@ -40,14 +40,14 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import {getCurrentInstance, onMounted, ref} from 'vue';
 import axios from 'axios';
 import {useRouter} from "vue-router";
 import router from "@/router";
 import UserInfoView from '../UserInfoView.vue'
 
-
-const apiBaseUrl = "http://localhost:8080";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 
 // Ref for reactive data
 const pendingRequests = ref([]);

@@ -87,9 +87,9 @@
 import {useRouter} from "vue-router";
 import axios from "axios";
 import defaultImage from "@/assets/img.png";
-import {onMounted, ref} from "vue";
-
-const apiBaseUrl = "http://localhost:8080";
+import {getCurrentInstance, onMounted, ref} from "vue";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 
 const pastGames = ref([]);
 const upcomingGames = ref([]);

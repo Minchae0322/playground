@@ -72,13 +72,15 @@
 
 <script setup lang="js">
 import axios from "axios";
-import {ref, onMounted} from "vue";
+import {ref, onMounted, getCurrentInstance} from "vue";
 import {useRouter} from "vue-router";
 
 const router = useRouter();
-const apiBaseUrl = "http://13.125.38.164/api";
+
 const username = ref("")
 const password = ref("");
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 
 axios.defaults.withCredentials = true; // withCredentials 전역 설정
 

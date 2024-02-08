@@ -1,5 +1,5 @@
 <script setup>
-import {onMounted, onUpdated, ref} from "vue";
+import {getCurrentInstance, onMounted, onUpdated, ref} from "vue";
 import axios from "axios";
 import {defineEmits} from 'vue';
 import {useRouter} from "vue-router";
@@ -7,7 +7,8 @@ import defaultImage from "@/assets/img.png";
 import {defineProps} from 'vue';
 import PlaygroundInfoView from "@/views/playground/PlaygroundInfoView.vue";
 
-const apiBaseUrl = "http://localhost:8080";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 
 const router = useRouter();
 const homeTeams = ref({

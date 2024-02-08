@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from 'vue';
+import {getCurrentInstance, onMounted, ref} from 'vue';
 import axios from "axios";
 import {useRouter} from "vue-router";
 import {defineEmits} from 'vue';
@@ -48,7 +48,8 @@ import rankingIcon from '../../assets/icon-ranking.png'
 
 
 const upcomingGames = ref([{}]);
-const apiBaseUrl = "http://localhost:8080";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 const router = useRouter();
 const emits = defineEmits(['gameSelected']);
 const props = defineProps({

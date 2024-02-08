@@ -63,7 +63,7 @@
 
 </template>
 <script setup>
-import {computed, onMounted, ref} from 'vue';
+import {computed, getCurrentInstance, onMounted, ref} from 'vue';
 import axios from "axios";
 import ModalComponent from './GameDateSelectorView.vue';
 import {defineProps, defineEmits} from 'vue';
@@ -87,7 +87,8 @@ const props = defineProps({
 const selectedDuration = ref(null);
 const occupiedTimeSlots = ref([]); // Example occupied slots
 const emit = defineEmits(['close',]);
-const apiBaseUrl = "http://localhost:8080";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 
 onMounted(() => {
   // Check if the initial page number is provided in the route query

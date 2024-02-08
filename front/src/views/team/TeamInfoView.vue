@@ -49,7 +49,7 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from "vue";
+import {getCurrentInstance, onMounted, ref} from "vue";
 import axios from "axios";
 import {useRouter} from "vue-router";
 import defaultImage from "@/assets/img.png";
@@ -74,7 +74,8 @@ const teamMembers = ref([{
   userId: '',
 
 }])
-const apiBaseUrl = "http://localhost:8080";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 
 const props = defineProps({
   teamId: {

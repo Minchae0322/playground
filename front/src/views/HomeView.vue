@@ -167,12 +167,12 @@
 
 
 <script setup>
-import {computed, onMounted, ref} from "vue";
+import {computed, getCurrentInstance, onMounted, ref} from "vue";
 import axios from "axios";
 import {useRouter} from "vue-router";
 
-
-const apiBaseUrl = "http://13.125.38.164/api";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 const router = useRouter();
 const upcomingGames = ref([{
   playgroundId: 1,

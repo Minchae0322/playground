@@ -40,13 +40,14 @@
 </template>
 
 <script setup>
-import {onMounted, ref} from "vue";
+import {getCurrentInstance, onMounted, ref} from "vue";
 import axios from "axios";
 import defaultImage from '../assets/img.png';
 import {useRouter} from "vue-router";
 
 
-const apiBaseUrl = "http://13.125.38.164/api";
+const internalInstance = getCurrentInstance();
+const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 const router = useRouter();
 const editedNickname = ref("")
 const isEditing = ref(false); // 닉네임 편집 상태를 추적하는 반응형 변수

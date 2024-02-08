@@ -9,10 +9,10 @@ import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
 import {from} from "node-vibrant";
 const app = createApp(App)
-const apiBaseUrl = "http://localhost:8080/";
 
 
-app.config.globalProperties.$apiBaseUrl = apiBaseUrl;
+app.config.globalProperties.$apiBaseUrl = "http://13.125.38.164/api";
+
 app.use(createPinia())
 app.use(router)
 app.mount('#app')
