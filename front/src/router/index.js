@@ -21,6 +21,7 @@ import playgroundList from '../views/playground/PlaygroundListView.vue'
 import teamList from '../views/team/TeamListView.vue';
 import App from "@/App.vue";
 import friendlyGameInfo from "@/views/game/FriendlyGameInfoView.vue";
+import mSidebar from "@/views/mobile/sidebarView.vue"
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -148,6 +149,12 @@ const router = createRouter({
       path: '/user/request/team',
       name: 'teamRequest',
       component: teamRequest,
+    },
+
+    {
+      path: '/m/sidebar',
+      name: 'mSidebar',
+      component: mSidebar,
     },
   ]
 })

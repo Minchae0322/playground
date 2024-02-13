@@ -1,11 +1,14 @@
 <script setup>
 import {RouterLink, RouterView} from 'vue-router'
 import axios from "axios";
-import {getCurrentInstance, onMounted, ref} from "vue";
-import defaultImage from '../src/assets/img.png';
+import {getCurrentInstance, onMounted, onUnmounted, ref} from "vue";
+import defaultImage from '../src/assets/icon-default.png';
 import {useRouter} from "vue-router";
+import mSidebarView from "../src/views/mobile/sidebarView.vue"
 
 const router = useRouter();
+const isMobile = ref(window.innerWidth < 600);
+
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 
@@ -20,9 +23,18 @@ const refreshToken = ref(null);
 
 
 onMounted(async () => {
+  window.addEventListener('resize', updateWindowWidth);
   await setToken()
   await getUserInfo();
 });
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateWindowWidth);
+});
+
+const updateWindowWidth = async () => {
+  isMobile.value = window.innerWidth < 600;
+};
 
 const menuVisible = ref({
   playground: false,
@@ -147,7 +159,14 @@ const redirectToLogin = async () => {
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>dd</title>
   </head>
-  <main class="main-content">
+  <main v-if="isMobile">
+    <component :is="mSidebarView"></component>
+    <div class="router-view-container-m">
+      <RouterView/>
+    </div>
+  </main>
+
+  <main v-else class="main-content">
     <div v-if="$route.name !== 'login'" class="sidebar">
       <router-link :to="{name : 'home'}">
         <div class="school-info-container">
@@ -424,5 +443,10 @@ a:hover {
 
 .logout:hover {
   cursor: pointer;
+}
+
+.router-view-container-m {
+  max-width: 575px;
+  width: 575px;
 }
 </style>

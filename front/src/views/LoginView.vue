@@ -57,7 +57,7 @@
         />
 
         <img
-            src="../assets/img.png"
+            src="../assets/icon-github.jpg"
             alt="Your Image Alt Text"
             class="image-margin"
             width="50"

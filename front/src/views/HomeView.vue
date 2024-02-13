@@ -358,6 +358,8 @@ a {
   font-family: MiSans-Normal, sans-serif;
 }
 
+
+
 .campus-name {
   font-size: 14px;
   color: #4c8ba8;
@@ -447,4 +449,25 @@ a {
   font-family: MiSans-Normal, sans-serif;
 }
 
+@media (max-width: 600px) {
+  body {
+    max-width: 575px;
+    width: 575px;
+  }
+  .info-container {
+    max-width: 575px;
+    width: 575px;
+  }
+
+  .games {
+    max-width: 575px;
+    width: 575px;
+  }
+
+  .upcoming-games-container {
+    min-width: 400px;
+    max-width: 575px;
+    width: 575px;
+  }
+}
 </style>

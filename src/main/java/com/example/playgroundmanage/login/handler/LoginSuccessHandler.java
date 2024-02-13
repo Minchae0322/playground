@@ -75,7 +75,7 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
                 .newInstance()
                 .scheme("http")
                 .host(SERVER_URL)
-                //.port(FRONT_END_PORT_NUM)
+                .port(FRONT_END_PORT_NUM)
                 .path("/app")
                 .queryParams(queryParams)
                 .build()
