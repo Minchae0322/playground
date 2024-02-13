@@ -23,13 +23,16 @@ public class PlaygroundResponseDto {
 
     private String campusName;
 
+    private Integer upcomingGameNum;
+
     @Builder
-    public PlaygroundResponseDto(Long playgroundId, String playgroundName, String sportsEvent, InMemoryMultipartFile playgroundProfileImg, String schoolName, String campusName) {
+    public PlaygroundResponseDto(Long playgroundId, Integer upcomingGameNum, String playgroundName, String sportsEvent, InMemoryMultipartFile playgroundProfileImg, String schoolName, String campusName) {
         this.playgroundId = playgroundId;
         this.playgroundName = playgroundName;
         this.sportsEvent = sportsEvent;
         this.playgroundProfileImg = multipartFileToString(playgroundProfileImg);
         this.schoolName = schoolName;
         this.campusName = campusName;
+        this.upcomingGameNum = upcomingGameNum;
     }
 }

@@ -156,11 +156,10 @@ const redirectToLogin = async () => {
 <template>
 
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-    <title>dd</title>
+
   </head>
   <main v-if="isMobile">
-    <component :is="mSidebarView"></component>
+    <component class="under-bar" :is="mSidebarView"></component>
     <div class="router-view-container-m">
       <RouterView/>
     </div>
@@ -445,8 +444,11 @@ a:hover {
   cursor: pointer;
 }
 
-.router-view-container-m {
-  max-width: 575px;
-  width: 575px;
+.under-bar {
+  z-index: 10;
+}
+
+@media (max-width: 600px) {
+
 }
 </style>

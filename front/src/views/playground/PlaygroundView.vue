@@ -282,7 +282,7 @@ const redirectToLogin = function () {
 .playground-container {
   display: flex;
   flex-direction: column;
-  min-width: 500px;
+  min-width: 520px;
   width: 50%;
   height: 100%;
 }
@@ -479,7 +479,6 @@ a {
 
 .upcoming-container {
   margin-left: 20px;
-
   min-width: 500px;
   width: 50%;
   height: 90vh;
@@ -489,5 +488,30 @@ a {
 
 a {
   text-decoration: none;
+}
+
+@media (max-width: 600px) {
+ .game-container {
+   display: flex;
+   flex-direction: column;
+   min-width: 400px;
+   width: 100%;
+ }
+
+  .playground-container {
+    min-width: 400px;
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .upcoming-container {
+    min-width: 400px;
+    width: 100%;
+    margin-left: 0;
+    margin-bottom: 50px;
+  }
+
+
+
 }
 </style>

@@ -157,6 +157,7 @@ public class PlaygroundService {
                 .map(playground -> PlaygroundResponseDto.builder()
                         .playgroundId(playground.getId())
                         .playgroundName(playground.getName())
+                        .upcomingGameNum(playground.getGames().size())
                         .sportsEvent(playground.getSportsEvent().getValue())
                         .playgroundProfileImg(fileHandler.extractFile(playground.getImg()))
                         .campusName(playground.getCampus().getCampusName())

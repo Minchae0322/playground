@@ -240,7 +240,7 @@ input[type="text"]::placeholder {
 .team-width {
   display: flex;
   width: 100%;
-  min-width: 1150px;
+  min-width: 1045px;
   justify-content: center;
 }
 
@@ -254,6 +254,15 @@ input[type="text"]::placeholder {
   gap: 10px;
   padding: 10px;
 }
+
+.info-container-border {
+  min-width: 300px;
+  margin-left: 100px;
+  max-width: 300px;
+  width: 40%;
+}
+
+
 
 .team-card {
   position: relative;
@@ -308,9 +317,28 @@ input[type="text"]::placeholder {
 .team-info-container {
   text-align: start;
   width: 100%;
-
   font-family: MiSans-Normal, sans-serif;
 
+}
+@media (max-width: 600px) {
+  .team-width {
+    min-width: 400px;
+    width: 100%;
+
+  }
+  .team-container {
+    min-width: 400px;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 50px;
+  }
+  .team-card {
+    width: 45%;
+  }
+
+  .sports-event-container {
+    width: 95%;
+  }
 }
 
 </style>

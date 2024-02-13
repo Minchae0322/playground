@@ -3,7 +3,6 @@
     <div class="flex-box">
       <img src="../assets/icon-soccerball.png">
       <h2>足球</h2>
-
     </div>
     <div class="info-container-border"></div>
   </div>
@@ -132,7 +131,7 @@
 
   <div class="info-container">
     <div class="flex-box">
-      <img src="../assets/icon-basketballBall.png">
+      <img src="../assets/icon-tableTennisBall.png">
       <h2>篮球</h2>
     </div>
     <div class="info-container-border"></div>
@@ -369,17 +368,19 @@ a {
 .games {
   display: flex;
   width: 90%;
+  flex-wrap: wrap;
   min-width: 1100px;
   gap: 20px;
   justify-content: start;
 }
 
 .game-card {
-  margin: 10px;
-  max-width: 30%;
+  width: 30%;
+  margin-left: 10px;
   background-color: var(--white);
   border: 1px solid #ddd;
   padding: 12px 15px;
+  flex-wrap: wrap;
   border-radius: 4px;
 }
 
@@ -409,7 +410,7 @@ a {
 }
 
 .more-button {
-  width: 90%;
+  width: 80%;
   padding: 10px 20px; /* 버튼 내부 여백 조정 */
   margin: 10px 0; /* 버튼 상하 여백 조정 */
   background-color: var(--secondary-color); /* 버튼 배경색, 변수에 따라 다를 수 있음 */
@@ -430,7 +431,7 @@ a {
   justify-content: center;
   height: 100px; /* 또는 적절한 높이 */
   background-color: #fff; /* 흰색 배경 */
-  margin: 10px 40px;
+  margin: 10px 20px;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -450,24 +451,38 @@ a {
 }
 
 @media (max-width: 600px) {
-  body {
-    max-width: 575px;
-    width: 575px;
-  }
   .info-container {
-    max-width: 575px;
-    width: 575px;
+    min-width: 400px;
+    width: 90%;
   }
 
   .games {
-    max-width: 575px;
-    width: 575px;
+    min-width: 400px;
+    width: 90%;
+  }
+
+  .game-card {
+    width: 45%;
   }
 
   .upcoming-games-container {
     min-width: 400px;
-    max-width: 575px;
-    width: 575px;
+    width: 90%;
+    margin: 0 10px;
+  }
+
+  .info-container-border {
+    min-width: 300px;
+    margin-left: 100px;
+    max-width: 300px;
+    width: 40%;
+  }
+
+  .upcoming-game-name {
+    font-size: 12px;
+  }
+  .campus-name {
+    font-size: 12px;
   }
 }
 </style>

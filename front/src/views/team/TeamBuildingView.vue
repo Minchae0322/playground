@@ -200,10 +200,10 @@ const redirectToLogin = function () {
 
 <style scoped>
 .team-building-form-container {
-  min-width: 500px;
+  min-width: 400px;
   width: 35%;
-  height: 100%;
-  margin:  0 auto;
+  height: 90%;
+  margin: 0 auto 100px auto;
   padding: 20px 30px 0 30px;
   border: 1px solid #ddd;
   background-color: var(--white);

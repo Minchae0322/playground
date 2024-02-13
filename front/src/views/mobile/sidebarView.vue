@@ -16,7 +16,7 @@
           <img class="icon" src='@/assets/playground-icon.png'>
 
         </div>
-        <ul @click="clickRouter" :style="{ left: calculateLeftPosition(0.35) }" v-if="menu === 'playground'" class="sub-menu">
+        <ul @click="clickRouter" :style="{ left: calculateLeftPosition(1.2) }" v-if="menu === 'playground'" class="sub-menu">
           <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" class="sub-nav-item">
             <li>足球</li>
           </RouterLink>
@@ -40,7 +40,7 @@
           <img class="icon" src='@/assets/team-icon.png'>
 
         </div>
-        <ul @click="clickRouter" v-if="menu === 'team'" :style="{ left: calculateLeftPosition(1.1) }" class="sub-menu">
+        <ul @click="clickRouter" v-if="menu === 'team'" :style="{ left: calculateLeftPosition(2) }" class="sub-menu">
 
           <RouterLink :to="{ name:'myTeam'}" class="sub-nav-item">
             <li>我的队伍</li>
@@ -63,7 +63,7 @@
           <img class="icon" src='@/assets/game-icon.png'>
 
         </div>
-        <ul v-if="menu === 'game'" @click="clickRouter" :style="{ left: calculateLeftPosition(1.85) }" class="sub-menu">
+        <ul v-if="menu === 'game'" @click="clickRouter" :style="{ left: calculateLeftPosition(2.8) }" class="sub-menu">
           <RouterLink :to="{name: 'gameRequest'}" class="sub-nav-item">
             <li>比赛参加请求</li>
           </RouterLink>

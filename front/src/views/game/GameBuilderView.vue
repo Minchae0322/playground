@@ -252,7 +252,7 @@ body {
   padding: 20px;
   box-shadow: 5px 1px 8px 0 rgba(0, 0, 0, .06);
   border-left: 1px solid rgba(0, 0, 0, .08);;
-  font-family: 'Arial', sans-serif;
+
   background: #fff; /* 카드의 배경색 */
   overflow: auto; /* 내용이 넘칠 때 스크롤바를 보여줌 */
 
@@ -406,4 +406,18 @@ input[type="date"]:valid::after {
   padding-left: 10px;
   color: #4CAF50;
 }
+
+
+@media (max-width: 600px) {
+  .modal-overlay {
+    min-width: 400px;
+    width: 100%;
+  }
+
+  .event-details-container {
+    min-width: 400px;
+    width: 70%;
+  }
+}
+
 </style>

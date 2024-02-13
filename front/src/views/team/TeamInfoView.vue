@@ -238,7 +238,8 @@ const redirectToLogin = function () {
 
 <style scoped>
 .team-container {
-  width: 70%;
+  min-width: 1000px;
+  width: 80%;
   margin: 20px auto;
 
 }
@@ -417,5 +418,14 @@ const redirectToLogin = function () {
 
 .learn-more:hover {
   background-color: #0056b3;
+}
+
+@media (max-width: 600px) {
+  .team-container {
+    margin-bottom: 100px;
+    min-width: 400px;
+    width: 90%;
+  }
+
 }
 </style>

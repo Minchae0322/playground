@@ -436,4 +436,17 @@ hr {
   margin: 0 19px 0px 12px;
   font-family: MiSans-Medium,sans-serif;
 }
+
+@media (max-width: 600px) {
+  .modal-overlay {
+    min-width: 400px;
+    width: 100%;
+  }
+
+  .modal {
+    min-width: 400px;
+    width: 40%;
+  }
+}
+
 </style>

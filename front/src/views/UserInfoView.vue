@@ -213,25 +213,18 @@ const redirectToLogin = function () {
 
 <style scoped>
 body {
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
   background: var(--background-color-gray); /* 배경색을 추가할 수도 있습니다 */
 }
 
 .userInfo-container {
-  max-width: 50%;
-  margin: auto;
-  width: 50%; /* 너비를 50%로 설정 */
+  min-width: 1075px;
+  margin: 0 auto;
+  width: 80%; /* 너비를 50%로 설정 */
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
   box-shadow: 5px 1px 8px 0 rgba(0,0,0,.06);
   border-left: 1px solid rgba(0,0,0,.08);;
-
   background: #fff; /* 카드의 배경색 */
   overflow: auto; /* 내용이 넘칠 때 스크롤바를 보여줌 */
 }
@@ -328,8 +321,7 @@ body {
   margin: 5px; /* 버튼 사이의 간격 */
 }
 .nickname-container input {
-  width: 40%; /* 크기를 40%로 설정 */
-
+  width: 20%; /* 크기를 40%로 설정 */
   margin-bottom: 10px; /* 요소 간의 여백 추가 */
 }
 
@@ -414,6 +406,20 @@ body {
 /* 추가적으로 반응형 디자인을 고려할 수 있습니다. */
 a {
   text-decoration: none;
+
+}
+
+@media (max-width: 600px) {
+  .userInfo-container {
+    min-width: 400px;
+    width: 90%;
+  }
+  .nickname-container button {
+    width: 160px;
+  }
+  .nickname-container input {
+    width: 200px;
+  }
 
 }
 </style>

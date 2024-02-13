@@ -35,7 +35,6 @@
   </div>
   <div v-if="isPlaygroundExist" class="playground-list">
     <div v-for="info in playgroundInfoList" :key="info.playgroundId" class="playground-card">
-
       <div class="card-header">
         <img :src="info.playgroundProfileImg" alt="game image" class="game-image"/>
         <div class="playground-name">{{ info.playgroundName }}</div>
@@ -47,7 +46,7 @@
       </div>
       <div class="card-body">
         <div class="game-info-container">
-            <div>预定的比赛 : {{upcomingGames.length}}</div>
+            <div>预定的比赛 : {{info.upcomingGameNum}}</div>
         </div>
       </div>
       <div class="card-footer">
@@ -258,7 +257,6 @@ a {
   text-decoration: none;
 }
 body {
-  font-family: 'Arial', sans-serif; /* 기본 글꼴 */
 
   color: #333; /* 기본 텍스트 색상 */
 }
@@ -272,7 +270,7 @@ body {
   border-radius: 5px;
   margin-right: 20px;
   overflow: hidden;
-  max-width: 1100px;
+  min-width: 1100px;
   padding: 10px 20px;
 }
 
@@ -329,7 +327,6 @@ body {
   margin-left: 200px;
   margin-right: 100px;
   width: 70%;
-  max-width: 1200px;
   border-bottom: 1px solid var(--text-hint);
 }
 
@@ -357,8 +354,7 @@ body {
 }
 
 .game-card {
-  margin: 10px;
-  max-width: 30%;
+  width: 30%;
   background-color: var(--white);
   border: 1px solid #ddd;
   padding: 12px 15px;
@@ -387,9 +383,10 @@ body {
 
 .playground-list {
   display: flex;
-  width: 1200px;
+  min-width: 1045px;
+  width: 1100px;
   flex-wrap: wrap; /* 내용이 넘치면 다음 줄로 넘깁니다. */
-  margin: 20px;/* 중앙 정렬 */
+  margin: 0 20px 50px 20px;/* 중앙 정렬 */
   padding: 20px;
 }
 
@@ -483,6 +480,61 @@ button:hover {
   background-color: var(--secondary-color); /* 버튼 호버 색상 */
 }
 
+@media (max-width: 600px) {
+  .button-group {
+    min-width: 400px;
+    width: 95%;
+  }
+
+  .info-container {
+    min-width: 400px;
+    width: 90%;
+  }
+
+  .info-container-border {
+    min-width: 300px;
+    margin-left: 100px;
+    max-width: 300px;
+    width: 40%;
+  }
+
+  .upcoming-games-container {
+    min-width: 400px;
+    width: 90%;
+
+  }
+
+  .games {
+    min-width: 400px;
+    width: 95%;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .game-card {
+    width: 45%;
+
+  }
+
+
+  .playground-list {
+    min-width: 400px;
+    width: 95%;
+    padding: 0;
+  }
+
+  .playground-card {
+    width: 47%;
+    flex-wrap: wrap;
+  }
+
+  .upcoming-game-name {
+    font-size: 12px;
+  }
+  .campus-name {
+    font-size: 12px;
+  }
+}
 
 
 </style>
