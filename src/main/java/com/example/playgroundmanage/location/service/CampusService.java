@@ -75,7 +75,7 @@ public class CampusService {
                 .toList();
 
         return upcomingGames.stream()
-                .limit(3)
+                .limit(4)
                 .map(Game::toGameDto)
                 .toList();
     }

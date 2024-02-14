@@ -15,17 +15,17 @@
   </div>
 
   <div class="upcoming-games-container">
-    <div class="info-container">
+    <div class="page-title-container">
       <h2>即将开始比赛</h2>
       <p>Check out our playground</p>
-      <div class="info-container-border"></div>
+      <div class="page-title-container-border"></div>
     </div>
     <div class="games">
       <div class="game-card" v-for="game in upcomingGames" :key="game.id">
         <router-link :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="upcoming-game-name">{{ game.gameName }} ({{ game.gameStart }})</div>
-          <div class="upcoming-game-info-container">
-            <div class="campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
+          <div class="game-card-mini-title">{{ game.gameName }} ({{ game.gameStart }})</div>
+          <div class="game-card-mini-info-container">
+            <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
             <div>主持人: {{ game.hostName }}</div>
             <div>所需时间: {{ game.runningTime }} 分</div>
           </div>
@@ -248,18 +248,7 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
 </script>
 
 <style scoped>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-a {
-  text-decoration: none;
-}
-body {
 
-  color: #333; /* 기본 텍스트 색상 */
-}
 
 .button-group {
   display: flex; /* 이 부분을 변경하여 flex 컨테이너로 만듭니다. */
@@ -311,38 +300,7 @@ body {
   line-height: 1.4;
 }
 
-.info-container {
-  margin: 10px 30px;
-}
 
-.info-container h2 {
-  font-size: 1.8rem;
-  color: #333;
-
-  text-align: start;
-  font-family: MiSans-Heavy, sans-serif;
-}
-
-.info-container-border {
-  margin-left: 200px;
-  margin-right: 100px;
-  width: 70%;
-  border-bottom: 1px solid var(--text-hint);
-}
-
-.info-container p {
-  font-size: 0.8rem;
-  color: #666;
-  margin-right: auto;
-  margin-left: 100px;
-  margin-bottom: 20px;
-  font-family: MiSans-Normal, sans-serif;
-}
-
-.campus-name {
-  font-size: 14px;
-  color: #4c8ba8;
-}
 
 
 .games {
@@ -361,14 +319,8 @@ body {
   border-radius: 4px;
 }
 
-.upcoming-game-name {
-  margin-bottom: 5px;
-  overflow-wrap: break-word; /* 긴 단어가 컨테이너 너비를 초과할 경우 줄바꿈 */
-  letter-spacing: 1px;
-  color: var(--text-primary);
-}
 
-.upcoming-game-info-container {
+.game-card-mini-info-container {
   font-size: 11px;
   color: var(--text-primary);
   font-family: MiSans-Normal, sans-serif;
@@ -486,18 +438,6 @@ button:hover {
     width: 95%;
   }
 
-  .info-container {
-    min-width: 400px;
-    width: 90%;
-  }
-
-  .info-container-border {
-    min-width: 300px;
-    margin-left: 100px;
-    max-width: 300px;
-    width: 40%;
-  }
-
   .upcoming-games-container {
     min-width: 400px;
     width: 90%;
@@ -528,12 +468,7 @@ button:hover {
     flex-wrap: wrap;
   }
 
-  .upcoming-game-name {
-    font-size: 12px;
-  }
-  .campus-name {
-    font-size: 12px;
-  }
+
 }
 
 

@@ -1,22 +1,22 @@
 <template>
-
-  <nav class="navigation">
-    <ul class="nav-links">
+  <nav class="navigation-under-bar">
+    <ul class="nav-links-under-bar">
       <li>
-        <div @click="toggleMenu('home', $event)" class="menu-container"
-             :class="{'active-menu-container': menu === 'home'}">
+        <div @click="toggleMenu('home', $event)" class="menu-container-under-bar"
+             :class="{'active-menu-container-under-bar': menu === 'home'}">
           <RouterLink :to="{ name:'home'}" class="sub-nav-item">
-            <img class="icon" src='@/assets/icon-home.png'>
+            <img class="icon-under-bar" src='@/assets/icon-home.png'>
           </RouterLink>
         </div>
       </li>
       <li>
-        <div @click="toggleMenu('playground', $event)" class="menu-container"
-             :class="{'active-menu-container': menu === 'playground'}">
-          <img class="icon" src='@/assets/playground-icon.png'>
+        <div @click="toggleMenu('playground', $event)" class="menu-container-under-bar"
+             :class="{'active-menu-container-under-bar': menu === 'playground'}">
+          <img class="icon-under-bar" src='@/assets/playground-icon.png'>
 
         </div>
-        <ul @click="clickRouter" :style="{ left: calculateLeftPosition(1.2) }" v-if="menu === 'playground'" class="sub-menu">
+        <ul @click="clickRouter" :style="{ left: calculateLeftPosition(1.2) }" v-if="menu === 'playground'"
+            class="sub-menu-under-bar">
           <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" class="sub-nav-item">
             <li>足球</li>
           </RouterLink>
@@ -35,12 +35,12 @@
         </ul>
       </li>
       <li>
-        <div @click="toggleMenu('team', $event)" class="menu-container"
-             :class="{'active-menu-container': menu === 'team'}">
-          <img class="icon" src='@/assets/team-icon.png'>
+        <div @click="toggleMenu('team', $event)" class="menu-container-under-bar"
+             :class="{'active-menu-container-under-bar': menu === 'team'}">
+          <img class="icon-under-bar" src='@/assets/team-icon.png'>
 
         </div>
-        <ul @click="clickRouter" v-if="menu === 'team'" :style="{ left: calculateLeftPosition(2) }" class="sub-menu">
+        <ul @click="clickRouter" v-if="menu === 'team'" :style="{ left: calculateLeftPosition(2) }" class="sub-menu-under-bar">
 
           <RouterLink :to="{ name:'myTeam'}" class="sub-nav-item">
             <li>我的队伍</li>
@@ -58,12 +58,12 @@
         </ul>
       </li>
       <li>
-        <div @click="toggleMenu('game', $event)" class="menu-container"
-             :class="{'active-menu-container': menu === 'game'}">
-          <img class="icon" src='@/assets/game-icon.png'>
+        <div @click="toggleMenu('game', $event)" class="menu-container-under-bar"
+             :class="{'active-menu-container-under-bar': menu === 'game'}">
+          <img class="icon-under-bar" src='@/assets/game-icon.png'>
 
         </div>
-        <ul v-if="menu === 'game'" @click="clickRouter" :style="{ left: calculateLeftPosition(2.8) }" class="sub-menu">
+        <ul v-if="menu === 'game'" @click="clickRouter" :style="{ left: calculateLeftPosition(2.8) }" class="sub-menu-under-bar">
           <RouterLink :to="{name: 'gameRequest'}" class="sub-nav-item">
             <li>比赛参加请求</li>
           </RouterLink>
@@ -76,7 +76,7 @@
 
         </ul>
       </li>
-      <li class="user-info-container" @click="clickUserInfo">
+      <li class="user-info-container-under-bar" @click="clickUserInfo">
         <img class="user-profile-img" :src="user.userProfileImg || defaultImage">
       </li>
     </ul>
@@ -99,7 +99,7 @@ const user = ref({
 })
 const isLoggedIn = ref(false);
 
-const menuItems = ['home','playground', 'team', 'game']; // 메뉴 항목들
+const menuItems = ['home', 'playground', 'team', 'game']; // 메뉴 항목들
 const menuCount = menuItems.length;
 
 
@@ -119,7 +119,7 @@ const menu = ref("");
 
 const toggleMenu = (selectedMenu, event) => {
   event.stopPropagation();
-  if(menu.value === selectedMenu) {
+  if (menu.value === selectedMenu) {
     menu.value = "";
   } else {
     menu.value = selectedMenu;
@@ -194,19 +194,8 @@ const redirectToLogin = async () => {
 };
 </script>
 
-<style scoped>
-a {
-  text-decoration: none;
-  font-family: MiSans-Medium, sans-serif;
-  color: var(--text-hint);
-}
-
-a:hover {
-  font-family: MiSans-Semibold, sans-serif;
-  color: black;
-}
-
-.navigation {
+<style>
+.navigation-under-bar {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -217,52 +206,51 @@ a:hover {
   box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.nav-links {
+.nav-links-under-bar {
   display: flex; /* 항목들을 가로로 배치 */
   padding: 0;
   margin: 0;
   width: 100%; /* 전체 너비를 사용 */
 }
 
-li {
-  list-style: none;
-}
-
-.nav-links li {
+.nav-links-under-bar li {
   flex: 1; /* 모든 항목이 동일한 공간을 차지하도록 함 */
   text-align: center; /* 텍스트를 중앙으로 정렬 */
 }
 
-.icon {
-  width: 24px;
-  height: 24px;
-  display: block;
-  margin: 10px auto;
-  opacity: 0.4;
+.menu-container-under-bar {
+  display: flex;
+  justify-content: center;
+  opacity: 0.6;
+  padding: 20px;
+  border-radius: 8px;
 }
 
-.user-info-container {
-  margin: 10px auto;
-  display: block;
-}
-
-.user-profile-img {
-  width: 24px;
-  height: 24px;
-  background-color: #eee;
-  border-radius: 50%;
-
-}
-
-.menu-container {
-  position: relative; /* 이 요소를 기준점으로 설정 */
-}
-
-.active-menu-container .icon {
+.active-menu-container-under-bar .icon-under-bar {
   opacity: 1;
 }
 
-.sub-menu {
+.icon-under-bar {
+  width: 30px;
+  height: 30px;
+  display: block;
+  opacity: 0.4;
+}
+
+.user-info-container-under-bar {
+  display: flex;
+  justify-content: center;
+  margin: auto 0;
+}
+
+.user-info-container-under-bar img {
+  width: 30px;
+  height: 30px;
+  background-color: #eee;
+  border-radius: 50%;
+}
+
+.sub-menu-under-bar {
   position: absolute;
   left: 50%; /* 왼쪽에서 50% 떨어진 곳에 위치 */
   transform: translateX(-50%); /* X축 중앙 정렬 */
@@ -276,18 +264,20 @@ li {
   z-index: 100; /* 다른 요소들 위에 보이도록 z-index 설정 */
 }
 
-/* 서브메뉴를 보여주는 스타일 */
-.menu-container.active-menu-container + .sub-menu {
-  display: block;
+.sub-menu-under-bar li {
+  margin: 15px 0px 15px 0px;
+  list-style-type: none;
+  width: 80%;
+  padding: 5px;
+  font-size: 14px;
+  border-bottom: 1px solid #838383;
 }
 
-
-
-
-
-
-.router-link-active {
-  font-family: MiSans-Semibold, sans-serif;
+.sub-menu-under-bar li:hover {
   color: black;
+}
+
+.sub-menu-under-bar {
+  display: block;
 }
 </style>

@@ -1,43 +1,46 @@
 <template>
-  <div class="info-container">
+  <div class="page-title-container">
     <div class="flex-box">
       <img src="../assets/icon-soccerball.png">
       <h2>足球</h2>
     </div>
-    <div class="info-container-border"></div>
+    <div class="page-title-container-border"></div>
   </div>
+
   <div v-if="soccerGames.length === 0 || !soccerGames" class="empty-games-screen">
     <div class="empty-message">
       <h2>没有即将开始的比赛</h2>
       <p>目前没有安排的比赛。</p>
     </div>
   </div>
-  <div v-else class="upcoming-games-container">
-    <div class="games">
-      <div class="game-card" v-for="game in soccerGames" :key="game.gameId">
+
+
+  <div v-else class="upcoming-games-container-home">
+    <div class="games-home">
+      <div class="game-card-mini" v-for="game in soccerGames" :key="game.gameId">
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="upcoming-game-name">{{ game.gameName }} ({{ game.gameStart }})</div>
-          <div class="upcoming-game-info-container">
-            <div class="campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
-            <div>主持人: {{ game.hostName }}</div>
-            <div>所需时间: {{ game.runningTime }} 分</div>
+          <div class="game-card-mini-title">{{ game.gameName }} [{{ game.gameStart }}]</div>
+          <div class="game-card-mini-info-container">
+            <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
+            <div class="game-card-mini-info">主持人: {{ game.hostName }}</div>
+            <div class="game-card-mini-info">所需时间: {{ game.runningTime }} 分</div>
           </div>
         </router-link>
       </div>
     </div>
   </div>
-  <RouterLink class="more-button-container" :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" >
-    <button class="more-button">更多</button>
+  <RouterLink class="more-button-container-home" :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" >
+    <button class="more-button-home">更多</button>
   </RouterLink>
 
 
-  <div class="info-container">
+  <div class="page-title-container">
     <div class="flex-box">
       <img src="../assets/icon-basketballBall.png">
       <h2>篮球</h2>
     </div>
-    <div class="info-container-border"></div>
+    <div class="page-title-container-border"></div>
   </div>
   <div v-if="basketballGames.length === 0 || !basketballGames" class="empty-games-screen">
     <div class="empty-message">
@@ -50,9 +53,9 @@
       <div class="game-card" v-for="game in basketballGames" :key="game.gameId">
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="upcoming-game-name">{{ game.gameName }} ({{ game.gameStart }})</div>
-          <div class="upcoming-game-info-container">
-            <div class="campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
+          <div class="game-card-mini-title">{{ game.gameName }} ({{ game.gameStart }})</div>
+          <div class="game-card-mini-info-container">
+            <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
             <div>主持人: {{ game.hostName }}</div>
             <div>所需时间: {{ game.runningTime }} 分</div>
           </div>
@@ -60,16 +63,16 @@
       </div>
     </div>
   </div>
-  <RouterLink class="more-button-container" :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}" >
-    <button class="more-button">更多</button>
+  <RouterLink class="more-button-container-home" :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}" >
+    <button class="more-button-home">更多</button>
   </RouterLink>
 
-  <div class="info-container">
+  <div class="page-title-container">
     <div class="flex-box">
       <img src="../assets/icon-badmintonBall.png">
       <h2>羽毛球</h2>
     </div>
-    <div class="info-container-border"></div>
+    <div class="page-title-container-border"></div>
   </div>
   <div v-if="badmintonGames.length === 0 || !badmintonGames" class="empty-games-screen">
     <div class="empty-message">
@@ -78,14 +81,13 @@
     </div>
   </div>
   <div v-else class="upcoming-games-container">
-
     <div class="games">
       <div class="game-card" v-for="game in badmintonGames" :key="game.gameId">
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="upcoming-game-name">{{ game.gameName }} ({{ game.gameStart }})</div>
-          <div class="upcoming-game-info-container">
-            <div class="campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
+          <div class="game-card-mini-title">{{ game.gameName }} [{{ game.gameStart }}]</div>
+          <div class="game-card-mini-info-container">
+            <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
             <div>主持人: {{ game.hostName }}</div>
             <div>所需时间: {{ game.runningTime }} 分</div>
           </div>
@@ -93,16 +95,18 @@
       </div>
     </div>
   </div>
-  <RouterLink class="more-button-container" :to="{ name:'playgroundList', params: {sportsEvent : 'BADMINTON'}}" >
-    <button class="more-button">更多</button>
+
+
+  <RouterLink class="more-button-container-home" :to="{ name:'playgroundList', params: {sportsEvent : 'BADMINTON'}}" >
+    <button class="more-button-home">更多</button>
   </RouterLink>
 
-  <div class="info-container">
+  <div class="page-title-container">
     <div class="flex-box">
       <img src="../assets/icon-tennisBall.png">
       <h2>网球</h2>
     </div>
-    <div class="info-container-border"></div>
+    <div class="page-title-container-border"></div>
   </div>
   <div v-if="tennisGames.length === 0 || !tennisGames" class="empty-games-screen">
     <div class="empty-message">
@@ -115,9 +119,9 @@
       <div class="game-card" v-for="game in tennisGames" :key="game.gameId">
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="upcoming-game-name">{{ game.gameName }} ({{ game.gameStart }})</div>
-          <div class="upcoming-game-info-container">
-            <div class="campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
+          <div class="game-card-mini-title">{{ game.gameName }} ({{ game.gameStart }})</div>
+          <div class="game-card-mini-info-container">
+            <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
             <div>主持人: {{ game.hostName }}</div>
             <div>所需时间: {{ game.runningTime }} 分</div>
           </div>
@@ -125,16 +129,16 @@
       </div>
     </div>
   </div>
-  <RouterLink class="more-button-container" :to="{ name:'playgroundList', params: {sportsEvent : 'TENNIS'}}" >
-    <button class="more-button">更多</button>
+  <RouterLink class="more-button-container-home" :to="{ name:'playgroundList', params: {sportsEvent : 'TENNIS'}}" >
+    <button class="more-button-home">更多</button>
   </RouterLink>
 
-  <div class="info-container">
+  <div class="page-title-container">
     <div class="flex-box">
       <img src="../assets/icon-tableTennisBall.png">
       <h2>篮球</h2>
     </div>
-    <div class="info-container-border"></div>
+    <div class="page-title-container-border"></div>
   </div>
   <div v-if="tableTennisGames.length === 0 || !tableTennisGames" class="empty-games-screen">
     <div class="empty-message">
@@ -147,9 +151,9 @@
       <div class="game-card" v-for="game in tableTennisGames" :key="game.gameId">
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="upcoming-game-name">{{ game.gameName }} ({{ game.gameStart }})</div>
-          <div class="upcoming-game-info-container">
-            <div class="campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
+          <div class="game-card-mini-title">{{ game.gameName }} ({{ game.gameStart }})</div>
+          <div class="game-card-mini-info-container">
+            <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
             <div>主持人: {{ game.hostName }}</div>
             <div>所需时间: {{ game.runningTime }} 分</div>
           </div>
@@ -157,8 +161,8 @@
       </div>
     </div>
   </div>
-  <RouterLink class="more-button-container" :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}" >
-    <button class="more-button">更多</button>
+  <RouterLink class="more-button-container-home" :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}" >
+    <button class="more-button-home">更多</button>
   </RouterLink>
 
 
@@ -300,13 +304,8 @@ const redirectToLogin = async () => {
 
 </script>
 
-<style scoped>
-a {
-  text-decoration: none;
-
-}
-
-.upcoming-games-container {
+<style>
+.upcoming-games-container-home {
   margin: 0px 40px;
   min-width: 1100px;
   width: 90%;
@@ -328,27 +327,34 @@ a {
   color: var(--accent-color);
 }
 
-.info-container {
-  margin: 10px 30px;
+.page-title-container {
+  margin: 20px 30px;
 }
 
-.info-container h2 {
+.page-title-container img {
+  width: 40px;
+  height: 40px;
+  margin-left: 10px;
+}
+
+.page-title-container h2 {
   font-size: 1.8rem;
   color: #333;
-
   text-align: start;
   font-family: MiSans-Heavy, sans-serif;
 }
 
-.info-container-border {
+.page-title-container-border {
   margin-left: 200px;
   margin-right: 100px;
   width: 70%;
-  max-width: 1200px;
+  min-width: 400px;
+  margin-bottom: 30px;
+  max-width: 800px;
   border-bottom: 1px solid var(--text-hint);
 }
 
-.info-container p {
+.page-title-container p {
   font-size: 0.8rem;
   color: #666;
   margin-right: auto;
@@ -359,13 +365,14 @@ a {
 
 
 
-.campus-name {
-  font-size: 14px;
+.game-card-mini-campus-name {
+  font-size: 15px;
+  margin: 5px 0;
   color: #4c8ba8;
 }
 
 
-.games {
+.games-home {
   display: flex;
   width: 90%;
   flex-wrap: wrap;
@@ -374,9 +381,8 @@ a {
   justify-content: start;
 }
 
-.game-card {
+.game-card-mini {
   width: 30%;
-  margin-left: 10px;
   background-color: var(--white);
   border: 1px solid #ddd;
   padding: 12px 15px;
@@ -384,35 +390,29 @@ a {
   border-radius: 4px;
 }
 
-.upcoming-game-name {
-  margin-bottom: 5px;
+.game-card-mini-title {
+  font-size: 17px;
+  font-family: MiSans-Semibold, sans-serif;
   overflow-wrap: break-word; /* 긴 단어가 컨테이너 너비를 초과할 경우 줄바꿈 */
   letter-spacing: 1px;
   color: var(--text-primary);
 }
 
-.upcoming-game-info-container {
-  font-size: 11px;
-  color: var(--text-primary);
-  font-family: MiSans-Normal, sans-serif;
+.game-card-mini-info {
+  font-size: 12px;
+  font-family: MiSans-Medium,sans-serif;
 }
 
-.game-card:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 추가 */
-  transition: transform 0.3s ease; /* 호버 효과를 위한 전환 설정 */
-  transform: translateY(-5px); /* 호버 시 카드가 약간 위로 올라가는 효과 */
-}
-
-.more-button-container {
+.more-button-container-home {
   display: flex;
   justify-content: center; /* 가로 방향으로 중앙 정렬 */
   align-items: center; /* 세로 방향으로 중앙 정렬 */
 }
 
-.more-button {
-  width: 80%;
+.more-button-home {
+  width: 90%;
   padding: 10px 20px; /* 버튼 내부 여백 조정 */
-  margin: 10px 0; /* 버튼 상하 여백 조정 */
+  margin: 20px 0; /* 버튼 상하 여백 조정 */
   background-color: var(--secondary-color); /* 버튼 배경색, 변수에 따라 다를 수 있음 */
   color: #ffffff; /* 버튼 글자색 */
   border: none; /* 테두리 제거 */
@@ -421,7 +421,7 @@ a {
   cursor: pointer; /* 마우스 오버 시 커서 변경 */
 }
 
-.more-button:hover {
+.more-button-home:hover {
   background-color: skyblue/* 마우스 오버 시 버튼 배경색 변경 */
 }
 
@@ -431,7 +431,8 @@ a {
   justify-content: center;
   height: 100px; /* 또는 적절한 높이 */
   background-color: #fff; /* 흰색 배경 */
-  margin: 10px 20px;
+  margin: 10px auto;
+  width: 90%;
   border: 1px solid #ddd;
   border-radius: 4px;
 }
@@ -451,38 +452,48 @@ a {
 }
 
 @media (max-width: 600px) {
-  .info-container {
+  .page-title-container {
     min-width: 400px;
-    width: 90%;
+    margin: 10px 0;
+    width: 100%;
   }
 
-  .games {
+  .games-home {
     min-width: 400px;
-    width: 90%;
+    width: 100%;
+    justify-content: center;
   }
 
-  .game-card {
+  .game-card-mini {
     width: 45%;
   }
 
-  .upcoming-games-container {
+  .upcoming-games-container-home {
     min-width: 400px;
-    width: 90%;
-    margin: 0 10px;
+    width: 100%;
+    margin: 0;
   }
 
-  .info-container-border {
+  .page-title-container-border {
     min-width: 300px;
     margin-left: 100px;
+    margin-bottom: 10px;
     max-width: 300px;
-    width: 40%;
+    width: 50%;
   }
 
-  .upcoming-game-name {
+  .game-card-mini-title {
+    font-size: 14px;
+  }
+  .game-card-mini-campus-name {
+    font-size: 12px;
+    margin: 1px 0;
+  }
+  .game-card-mini-info {
     font-size: 12px;
   }
-  .campus-name {
-    font-size: 12px;
+  .more-button-home {
+    margin: 15px 0;
   }
 }
 </style>

@@ -257,7 +257,7 @@ const redirectToLogin = async () => {
   </main>
 </template>
 
-<style scoped>
+<style>
 .main-content {
   display: flex;
   align-items: start;
@@ -267,7 +267,10 @@ const redirectToLogin = async () => {
 
 a {
   text-decoration: none
+}
 
+li {
+  list-style: none;
 }
 
 .sidebar {
@@ -364,7 +367,6 @@ a {
   height: 100%; /* 원하는 높이로 설정 */
   margin-top: 20px;
   margin-left: 250px; /* 사이드바 너비만큼 여백 추가 */
-
   overflow-y: auto; /* 내용이 높이를 초과하면 스크롤바 생성 */
   width: calc(100% - 250px);
 }
@@ -446,6 +448,11 @@ a:hover {
 
 .under-bar {
   z-index: 10;
+}
+
+.router-view-container-m {
+  width: 100%;
+  overflow-y: auto; /* 내용이 높이를 초과하면 스크롤바 생성 */
 }
 
 @media (max-width: 600px) {

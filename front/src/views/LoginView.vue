@@ -1,6 +1,6 @@
 <template>
-  <div class=" max-w-md center space-y-6 ">
-    <div class="login-container">
+  <div class="login-container ">
+    <div class="login-container-2">
       <div class=" text-center">
         <h1 class="text-3xl">Sign In</h1>
         <div class="font" style="color: var(--text-hint)">Enter your email and password to sign in</div>
@@ -123,11 +123,7 @@ const write = async function () {
 
 <style scoped>
 /* General Styles */
-body {
-  background-color: #f5f5f5;
-  color: #000000;
 
-}
 
 h1 {
   color: var(--text-black);
@@ -139,42 +135,18 @@ div {
 
 .login-container {
   margin-top: 50px;
-  width: 100%;
-  max-width: 20rem;
-  margin-right: 250px;
+  width: 50%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-content: center;
 }
 
-.center {
-  width: 100vw;
-  display: flex;
-
-  justify-content: center;
-  align-content: center;
-}
 
 .font {
   font-family: MiSans-Light, sans-serif;
 }
 
-/* Container Styles */
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.max-w-md {
-  width: 100%;
-
-}
-
-.space-y-6 {
-
-  margin-bottom: 1rem;
-}
 
 /* Form Styles */
 .text-center {

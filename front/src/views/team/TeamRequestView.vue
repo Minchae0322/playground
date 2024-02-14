@@ -1,10 +1,10 @@
 
 <template>
 
-  <div class="info-container">
+  <div class="page-title-container">
     <h2>团队请求</h2>
     <p>Check out our teams request</p>
-    <div class="info-container-border"></div>
+    <div class="page-title-container-border"></div>
   </div>
   <div v-if="joinRequests" class="team-requests-container">
     <div v-for="(requests, teamName) in joinRequests" :key="teamName" class="team-request-group">
@@ -178,33 +178,6 @@ const redirectToLogin = function () {
 
 
 <style scoped>
-
-.info-container {
-  margin: 10px 30px;
-}
-.info-container h2 {
-  font-size: 1.8rem;
-  color: #333;
-  text-align: start;
-  font-family: MiSans-Heavy, sans-serif;
-}
-
-.info-container-border {
-  margin-left: auto;
-  margin-right: 100px;
-  width: 70%;
-  border-bottom: 1px solid var(--text-hint);
-}
-
-.info-container p {
-  font-size: 0.8rem;
-  color: #666;
-  margin-right: auto;
-  margin-left: 100px;
-  margin-bottom: 20px;
-  font-family: MiSans-Normal,sans-serif;
-}
-
 .team-requests-container {
   min-width: 1100px;
   width: 90%;
