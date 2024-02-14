@@ -3,7 +3,7 @@
 
     <div class="modal-overlay">
       <div class="modal">
-        <div class="justify-center item-center userInfo-container " data-v0-t="card">
+        <div class="justify-center item-center " data-v0-t="card">
           <div class="padding-20">
             <div class="text-title">选择时间</div>
             <div class="hint">请输入比赛开始时间</div>
@@ -70,7 +70,7 @@
           </div>
         </div>
 
-        <div class="justify-center item-center userInfo-container margin-top" data-v0-t="card">
+        <div class="justify-center item-center  margin-top" data-v0-t="card">
           <div class="padding-20">
             <div class="text-title">占用的时隙</div>
             <div class="hint">Select the start time and duration for your participation.</div>
@@ -389,12 +389,7 @@ hr {
   margin-top: 20px;
 }
 
-.userInfo-container {
-  padding: 10px;
-  border: 2px #919191; /* 테두리 스타일 및 색상 지정 */
-  box-shadow: 0 0 2px #b2b2b2;
-  border-radius: 5px;
-}
+
 
 .block {
   margin-top: 15px;

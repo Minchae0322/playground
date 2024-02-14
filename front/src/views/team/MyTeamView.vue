@@ -3,7 +3,7 @@
     <div class="teams-title">
       <h3>我的队伍</h3>
     </div>
-    <div v-for="team in teams" :key="team.teamId" class="team-item">
+    <div v-for="team in teams" :key="team.teamId" class="teams-item">
       <router-link class="team-container" :to="{ name:'teamInfo', params: { teamId: team.teamId } }">
         <div class="border"></div>
         <img :src="team.teamProfileImg || defaultImage" class="team-image"/>
@@ -183,7 +183,6 @@ button:hover {
   flex-basis: calc(33.333% - 10px); /* 3개의 아이템을 한 줄에 나타내고 싶을 때 */
 }
 .team-item:hover {
-
   box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* 그림자 효과 강조 */
   transform: translateY(-3px); /* 조금 위로 움직임 */
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */

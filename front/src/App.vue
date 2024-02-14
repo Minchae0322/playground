@@ -159,14 +159,14 @@ const redirectToLogin = async () => {
 
   </head>
   <main v-if="isMobile">
-    <component class="under-bar" :is="mSidebarView"></component>
+    <component v-if="$route.name !== 'login'"  :class="{'disable-sidebar': $route.name === 'login'}" class="under-bar" :is="mSidebarView"></component>
     <div class="router-view-container-m">
       <RouterView/>
     </div>
   </main>
 
   <main v-else class="main-content">
-    <div v-if="$route.name !== 'login'" class="sidebar">
+    <div v-if="$route.name !== 'login'"  :class="{'disable-sidebar': $route.name === 'login'}" class="sidebar">
       <router-link :to="{name : 'home'}">
         <div class="school-info-container">
           <img class="school-profile-img" src="../src/assets/school-profile.jpeg">
@@ -251,7 +251,7 @@ const redirectToLogin = async () => {
       </nav>
       <div @click="logout" class="logout">logout</div>
     </div>
-    <div class="router-view-container">
+    <div :class="{'login-router-view ': $route.name === 'login'}" class="router-view-container">
       <RouterView/>
     </div>
   </main>
@@ -266,7 +266,15 @@ const redirectToLogin = async () => {
 }
 
 a {
-  text-decoration: none
+  text-decoration: none;
+  font-family: MiSans-Medium, sans-serif;
+  color: var(--text-hint);
+}
+
+
+a:hover {
+  font-family: MiSans-Semibold, sans-serif;
+  color: black;
 }
 
 li {
@@ -424,15 +432,8 @@ header {
   color: black;
 }
 
-a {
-  font-family: MiSans-Medium, sans-serif;
-  color: var(--text-hint);
-}
 
-a:hover {
-  font-family: MiSans-Semibold, sans-serif;
-  color: black;
-}
+
 
 .logout {
   color: #d70000;
@@ -455,7 +456,18 @@ a:hover {
   overflow-y: auto; /* 내용이 높이를 초과하면 스크롤바 생성 */
 }
 
+
+.disable-sidebar {
+  display: none;
+}
+
+.login-router-view {
+  width: 100%;
+  margin: 0;
+}
 @media (max-width: 600px) {
 
 }
+
+
 </style>

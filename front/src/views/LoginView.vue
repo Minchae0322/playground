@@ -1,5 +1,5 @@
 <template>
-  <div class="login-container ">
+  <div class="login-container">
     <div class="login-container-2">
       <div class=" text-center">
         <h1 class="text-3xl">Sign In</h1>
@@ -57,7 +57,7 @@
         />
 
         <img
-            src="../assets/icon-github.jpg"
+            src="../assets/icon-github.png"
             alt="Your Image Alt Text"
             class="image-margin"
             width="50"
@@ -122,9 +122,6 @@ const write = async function () {
 </script>
 
 <style scoped>
-/* General Styles */
-
-
 h1 {
   color: var(--text-black);
 }
@@ -134,12 +131,14 @@ div {
 }
 
 .login-container {
-  margin-top: 50px;
-  width: 50%;
+  width: 100%;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-content: center;
+}
+
+.login-container-2 {
+  margin-top: 80px;
 }
 
 

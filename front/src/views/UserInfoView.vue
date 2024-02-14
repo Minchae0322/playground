@@ -1,42 +1,40 @@
 <template>
-  <body>
-  <div class="userInfo-container">
+  <div class="user-info-container-userInfo">
     <h1>我的信息</h1>
     <div class="header">
-      <div class="userProfile-container">
+      <div class="user-profile-container-userInfo">
         <img :src="user.userProfileImg || defaultImage" @click="triggerFileInput" class="profile-image" />
         <input type="file" ref="fileInput" @change="handleFileChange" style="display:none" />
       <div class="profile-hint">点击照片更改头像</div>
       </div>
-      <div class="nickname-container" v-if="!isEditing">
-        <div class="user-nickname">{{ user.userNickname }}</div>
+      <div class="nickname-container-userInfo" v-if="!isEditing">
+        <div class="nickname-container-nickname-userInfo">{{ user.userNickname }}</div>
         <button class="nickname-change-button" @click="clickChangeNickname">换昵称</button>
       </div>
-      <div class="nickname-container" v-else>
+      <div class="nickname-container-userInfo" v-else>
         <input v-model="editedNickname" placeholder="Enter new nickname" />
-        <div class="button-container">
+        <div class="button-container-userInfo">
           <button @click="clickChangeNickname">取消</button>
           <button @click="confirmEditNickname">确定</button>
         </div>
       </div>
     </div>
 
-    <div class="teams">
-      <div class="teams-title">
+    <div class="teams-userInfo">
+      <div class="teams-title-userInfo">
         <h3>Teams</h3>
       </div>
-      <div v-for="team in teams" :key="team.teamId" class="team-item">
-        <router-link class="team-container" :to="{ name:'teamInfo', params: { teamId: team.teamId } }">
+      <div v-for="team in teams" :key="team.teamId" class="teams-item-userInfo">
+        <router-link class="team-container-userInfo" :to="{ name:'teamInfo', params: { teamId: team.teamId } }">
           <img :src="team.teamProfileImg || defaultImage" class="team-image"/>
-          <div class="teams-info">
-            <h2 class=" team-name">{{ team.teamName }}</h2>
-            <h2 class="team-sportsEvent">종목: {{ team.teamSportsEvent }}</h2>
+          <div class="team-info-container-userInfo">
+            <div class="team-info-name-userInfo">{{ team.teamName }}</div>
+            <div class="team-info-sports-event-userInfo">项目: {{ team.teamSportsEvent }}</div>
           </div>
         </router-link>
       </div>
       </div>
     </div>
-  </body>
 </template>
 
 <script setup>
@@ -212,14 +210,10 @@ const redirectToLogin = function () {
 </script>
 
 <style scoped>
-body {
-  background: var(--background-color-gray); /* 배경색을 추가할 수도 있습니다 */
-}
-
-.userInfo-container {
-  min-width: 1075px;
+.user-info-container-userInfo {
+  min-width: 1045px;
   margin: 0 auto;
-  width: 80%; /* 너비를 50%로 설정 */
+  width: 90%; /* 너비를 50%로 설정 */
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
@@ -229,7 +223,7 @@ body {
   overflow: auto; /* 내용이 넘칠 때 스크롤바를 보여줌 */
 }
 
-.userProfile-container img {
+.user-profile-container-userInfo img {
   width: 100px;
   height: 100px;
   background-color: #eee;
@@ -243,6 +237,7 @@ body {
   font-family: MiSans-Light,sans-serif;
   font-size: 11px;
 }
+
 .header {
   text-align: center;
   margin-bottom: 30px;
@@ -255,14 +250,14 @@ body {
   margin-bottom: 10px;
 }
 
-.nickname-container {
+.nickname-container-userInfo {
   display: flex; /* flexbox 레이아웃 사용 */
   justify-content: center; /* 가운데 정렬 */
   align-items: center; /* 세로 중앙 정렬 */
   flex-direction: column; /* 아이템을 수직 방향으로 정렬 */
 }
 
-.user-nickname {
+.nickname-container-nickname-userInfo {
   font-size: 23px;
   color: black;
 }
@@ -279,8 +274,7 @@ body {
   cursor: pointer;
 }
 
-
-.nickname-container input {
+.nickname-container-userInfo input {
   width: 40%; /* 크기를 40%로 설정 */
   padding: 10px; /* 패딩 추가 */
   border: 1px solid #ccc; /* 테두리 스타일 */
@@ -290,12 +284,12 @@ body {
   background-color: #f5f5f5; /* 배경색 */
 }
 
-.nickname-container input:focus {
+.nickname-container-userInfo input:focus {
   outline: none; /* 포커스 시 외곽선 제거 */
   border-color: #4CAF50; /* 포커스 시 테두리 색상 변경 */
   box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* 포커스 시 그림자 효과 */
 }
-.nickname-container button {
+.nickname-container-userInfo button {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -310,52 +304,38 @@ body {
   border: none;
   border-radius: 5px;
 }
-.nickname-container .button-container {
+.nickname-container-userInfo .button-container-userInfo {
   display: flex;
   justify-content: center;
   width: 40%;
 }
 
-.nickname-container .button-container button {
+.nickname-container-userInfo .button-container button {
   flex: 1; /* 버튼의 크기를 같게 조정 */
   margin: 5px; /* 버튼 사이의 간격 */
 }
-.nickname-container input {
+.nickname-container-userInfo input {
   width: 20%; /* 크기를 40%로 설정 */
   margin-bottom: 10px; /* 요소 간의 여백 추가 */
 }
 
+.teams-title-userInfo{
+  display: flex;
+  align-items: center;
+  border-radius: 12px 12px 0 0;
+  background: var(--primary-gradient);
+  color: white;
+  font-family: MiSans-Semibold,sans-serif;
+  padding: 0 5px 10px;
+}
 
-.teams {
+
+.teams-userInfo {
   height: 100%;
   background: #f9fbfc; /* 배경색을 추가할 수도 있습니다 */
 }
-.router-link h2 {
-  font-family: gothic-bold;
-  text-decoration: none;
-}
 
-.team-container {
-  display: flex;
-  justify-content: start;
-  align-items: center;
-}
-
-.team-container img {
-  width: 50px; /* 적절한 크기 설정 */
-  height: 50px; /* 적절한 크기 설정 */
-  border-radius: 25%;
-  margin-right: 20px;
-}
-
-.teams-info {
-  display: flex;
-  flex-direction: column;
-  text-align: start;
-}
-
-
-.teams h3 {
+.teams-userInfo h3 {
   display: flex;
   margin-left: 10px;
   margin-top: 10px;
@@ -363,7 +343,7 @@ body {
   align-items: center;
 }
 
-.teams ul {
+.teams-userInfo ul {
   list-style: none;
   padding: 0;
   display: flex;
@@ -372,52 +352,61 @@ body {
   flex-wrap: wrap;
 }
 
-.team-item {
+
+.team-container-userInfo {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.team-container-userInfo img {
+  width: 50px; /* 적절한 크기 설정 */
+  height: 50px; /* 적절한 크기 설정 */
+  border-radius: 25%;
+  margin-right: 20px;
+}
+
+.team-info-container-userInfo {
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+}
+
+
+.teams-item-userInfo {
   background-color: #ffffff;
   padding: 10px;
   margin: 5px;
   border-radius: 5px;
   text-align: center;
-
   flex-basis: calc(33.333% - 10px); /* 3개의 아이템을 한 줄에 나타내고 싶을 때 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-
-
-.team-name {
+.team-info-name-userInfo {
   font-size: 14px; /* 적절한 크기 설정 */
   color: #333;
-
+  font-family: MiSans-Semibold,sans-serif;
 }
 
-.teams-title {
-  display: flex;
-  align-items: center;
-  border-radius: 12px 12px 0 0;
-  background: var(--primary-gradient);
+.team-info-sports-event-userInfo {
+  font-size: 12px; /* 적절한 크기 설정 */
+  font-family: MiSans-Normal,sans-serif;
+}
 
-  color: white;
-  padding: 0 5px 10px;
-}
-.team-sportsEvent {
-  font-size: 14px; /* 적절한 크기 설정 */
-}
-/* 추가적으로 반응형 디자인을 고려할 수 있습니다. */
-a {
-  text-decoration: none;
 
-}
+
 
 @media (max-width: 600px) {
-  .userInfo-container {
+  .user-info-container-userInfo {
     min-width: 400px;
+    margin-bottom: 80px;
     width: 90%;
   }
-  .nickname-container button {
+  .nickname-container-userInfo button {
     width: 160px;
   }
-  .nickname-container input {
+  .nickname-container-userInfo input {
     width: 200px;
   }
 

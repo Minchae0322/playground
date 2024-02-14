@@ -436,7 +436,7 @@ const redirectToLogin = function () {
                      @click="clickOutOfGame(team.subTeamId)">X
                 </div>
                 <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
-                <p class="user-nickname">{{ participant.userNickname }}</p>
+                <p class="nickname-container-nickname-userInfo">{{ participant.userNickname }}</p>
                 <p class="user-role">{{ participant.userRole }}</p>
               </div>
             </div>
@@ -451,7 +451,7 @@ const redirectToLogin = function () {
             <div class="team-member">
               <div v-if="participant.userId === loggedInUserId" class="close-marker" @click="clickOutOfGame">X</div>
               <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
-              <p class="user-nickname">{{ participant.userNickname }}</p>
+              <p class="nickname-container-nickname-userInfo">{{ participant.userNickname }}</p>
               <p class="user-role">个人</p>
             </div>
           </div>
@@ -887,7 +887,7 @@ a {
   margin: 4px auto 3px;
 }
 
-.team-member .user-nickname {
+.team-member .nickname-container-nickname-userInfo {
   font-size: 12px;
   font-weight: 600;
   color: black;

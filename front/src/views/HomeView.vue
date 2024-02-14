@@ -461,7 +461,8 @@ const redirectToLogin = async () => {
   .games-home {
     min-width: 400px;
     width: 100%;
-    justify-content: center;
+    padding-left: 10px;
+    justify-content: start;
   }
 
   .game-card-mini {

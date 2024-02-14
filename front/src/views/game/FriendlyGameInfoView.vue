@@ -32,7 +32,7 @@
           <div class="team-member" v-for="(participant, userId) in participants" :key="participant.userId">
             <div v-if="participant.userId === loggedInUserId" class="close-marker" @click="clickOutOfGame">X</div>
             <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
-            <p class="user-nickname">{{ participant.userNickname }}</p>
+            <p class="nickname-container-nickname-userInfo">{{ participant.userNickname }}</p>
             <p class="user-role">个人</p>
           </div>
         </div>
@@ -351,7 +351,7 @@ const redirectToLogin = function () {
   margin: 4px auto 3px;
 }
 
-.team-member .user-nickname {
+.team-member .nickname-container-nickname-userInfo {
   font-size: 13px;
   font-weight: 600;
   color: black;
