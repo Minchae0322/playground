@@ -455,6 +455,7 @@ const redirectToLogin = async () => {
   .page-title-container {
     min-width: 400px;
     margin: 10px auto;
+    padding-left: 10px;
     width: 95%;
   }
 

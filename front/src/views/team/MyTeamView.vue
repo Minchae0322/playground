@@ -102,7 +102,7 @@ const redirectToLogin = function () {
 
 </script>
 
-<style scoped>
+<style>
 .teams-myTeam {
   padding: 20px;
   margin: 0 auto;
@@ -193,7 +193,7 @@ button:hover {
 .teams-title-myTeam {
   display: flex;
   align-items: center;
-  border-radius: 4px 4px 0 0;
+  border-radius: 8px 8px 0 0;
   background: var(--primary-gradient);
   color: white;
   padding: 0 5px 10px;

@@ -130,10 +130,6 @@ const redirectToLogin = function () {
 </script>
 
 <style scoped>
-
-
-
-
 .game-image img {
   width: 100%;
   height: auto; /* 높이를 자동으로 설정하여 원본 이미지 비율 유지 */

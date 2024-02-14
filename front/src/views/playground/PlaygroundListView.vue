@@ -3,7 +3,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   </head>
 
-  <div class="button-group">
+  <div class="campus-button-container-playgroundList">
     <button :class="{ active: activeCampus === null }" @click="getWholePlaygroundAndUpcomingGames(props.sportsEvent)">
       ALL
     </button>
@@ -21,7 +21,7 @@
       <div class="page-title-container-border"></div>
     </div>
     <div class="games">
-      <div class="game-card" v-for="game in upcomingGames" :key="game.id">
+      <div class="game-card-mini" v-for="game in upcomingGames" :key="game.id">
         <router-link :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
           <div class="game-card-mini-title">{{ game.gameName }} ({{ game.gameStart }})</div>
           <div class="game-card-mini-info-container">
@@ -248,22 +248,20 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
 </script>
 
 <style scoped>
-
-
-.button-group {
+.campus-button-container-playgroundList {
   display: flex; /* 이 부분을 변경하여 flex 컨테이너로 만듭니다. */
   align-items: center; /* 버튼을 세로 중앙에 정렬합니다. 필요하지 않다면 제거 가능합니다. */
   justify-content: flex-start; /* 버튼을 가로 방향으로 왼쪽 정렬합니다. */
+  width: 90%;
   margin-left: 20px;
   background-color: var(--white);
   border-radius: 5px;
-  margin-right: 20px;
   overflow: hidden;
   min-width: 1100px;
-  padding: 10px 20px;
+  padding: 5px 20px;
 }
 
-.button-group button {
+.campus-button-container-playgroundList button {
   background-color: var(--background-color-gray);
   border: none;
   width: 70px;
@@ -275,11 +273,11 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
   font-family: MiSans-Medium, sans-serif;
 }
 
-.button-group button:hover {
+.campus-button-container-playgroundList button:hover {
   background-color: #f0f0f0;
 }
 
-.button-group button.active {
+.campus-button-container-playgroundList button.active {
   background-color: var(--white);
   color: #000;
 }
@@ -294,29 +292,18 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
 }
 
 .upcoming-games-container {
-  margin: 10px 40px;
   min-width: 1100px;
-  width: 90%;
+  width: 95%;
   line-height: 1.4;
 }
-
-
-
 
 .games {
   display: flex;
   width: 90%;
+  margin: 0 auto;
   min-width: 1100px;
   gap: 20px;
   justify-content: start;
-}
-
-.game-card {
-  width: 30%;
-  background-color: var(--white);
-  border: 1px solid #ddd;
-  padding: 12px 15px;
-  border-radius: 4px;
 }
 
 
@@ -326,19 +313,14 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
   font-family: MiSans-Normal, sans-serif;
 }
 
-.game-card:hover {
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 약간의 그림자 효과 추가 */
-  transition: transform 0.3s ease; /* 호버 효과를 위한 전환 설정 */
-  transform: translateY(-5px); /* 호버 시 카드가 약간 위로 올라가는 효과 */
-}
 
 
 .playground-list {
   display: flex;
   min-width: 1045px;
-  width: 1100px;
+  width: 95%;
   flex-wrap: wrap; /* 내용이 넘치면 다음 줄로 넘깁니다. */
-  margin: 0 20px 50px 20px;/* 중앙 정렬 */
+  margin: 10px auto;
   padding: 20px;
 }
 
@@ -433,29 +415,27 @@ button:hover {
 }
 
 @media (max-width: 600px) {
-  .button-group {
+  .campus-button-container-playgroundList {
     min-width: 400px;
     width: 95%;
+    margin:0 auto;
   }
 
   .upcoming-games-container {
     min-width: 400px;
-    width: 90%;
-
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0 auto;
   }
 
   .games {
+    margin: 0 auto;
     min-width: 400px;
     width: 95%;
     display: flex;
     flex-wrap: wrap;
   }
-
-  .game-card {
-    width: 45%;
-
-  }
-
 
   .playground-list {
     min-width: 400px;
