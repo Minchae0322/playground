@@ -158,8 +158,6 @@ const redirectToLogin = function () {
 
 
 <style>
-
-
 .sports-event-container-teamList {
   display: flex;
   margin-left: 20px;

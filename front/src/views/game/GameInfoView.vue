@@ -525,13 +525,6 @@ const redirectToLogin = function () {
 
 <style scoped>
 
-
-body {
-  background: var(--white);
-  color: #333333;
-
-}
-
 h1 {
   background-color: #333;
   padding: 10px;

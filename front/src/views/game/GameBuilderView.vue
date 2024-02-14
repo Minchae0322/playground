@@ -226,10 +226,6 @@ const redirectToLogin = function () {
 
 
 <style scoped>
-body {
-  font-family: gothic, sans-serif;
-}
-
 .modal-overlay {
   position: fixed;
   top: 0;

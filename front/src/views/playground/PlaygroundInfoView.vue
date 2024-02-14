@@ -131,9 +131,7 @@ const redirectToLogin = function () {
 
 <style scoped>
 
-body {
-  color: #333333;
-}
+
 
 
 .game-image img {

@@ -1,15 +1,15 @@
 <template>
-  <div class="teams">
-    <div class="teams-title">
+  <div class="teams-myTeam">
+    <div class="teams-title-myTeam">
       <h3>我的队伍</h3>
     </div>
-    <div v-for="team in teams" :key="team.teamId" class="teams-item">
-      <router-link class="team-container" :to="{ name:'teamInfo', params: { teamId: team.teamId } }">
+    <div v-for="team in teams" :key="team.teamId" class="teams-item-myTeam">
+      <router-link class="team-container-myTeam" :to="{ name:'teamInfo', params: { teamId: team.teamId } }">
         <div class="border"></div>
-        <img :src="team.teamProfileImg || defaultImage" class="team-image"/>
-        <div class="teams-info">
-          <div class=" team-name">{{ team.teamName }}</div>
-          <div class="team-sportsEvent">{{ team.teamSportsEvent }}</div>
+        <img :src="team.teamProfileImg || defaultImage" class="team-image-myTeam"/>
+        <div class="team-info-container-myTeam">
+          <div class="team-name-myTeam">{{ team.teamName }}</div>
+          <div class="team-sportsEvent-myTeam">{{ team.teamSportsEvent }}</div>
         </div>
       </router-link>
     </div>
@@ -103,40 +103,33 @@ const redirectToLogin = function () {
 </script>
 
 <style scoped>
-
-body{
-  display: flex;
-  justify-content: center;
-  text-align: center;
-  align-content: center;
-
-}
-.teams {
+.teams-myTeam {
   padding: 20px;
   margin: 0 auto;
   width: 90%;
   line-height: 1.2;
-  min-width: 1100px;
+  min-width: 1045px;
   background: var(--background-color-gray); /* 배경색을 추가할 수도 있습니다 */
 }
 .router-link h2 {
   text-decoration: none;
 }
 
-.team-container {
+.team-container-myTeam {
   display: flex;
+  height: 100%;
   justify-content: start;
   align-items: center;
 }
 
-.team-container img {
+.team-container-myTeam img {
   width: 50px; /* 적절한 크기 설정 */
   height: 50px; /* 적절한 크기 설정 */
   border-radius: 25%;
   margin-right: 20px;
 }
 
-.teams-info {
+.team-info-container-myTeam {
   display: flex;
   flex-direction: column;
   text-align: start;
@@ -157,7 +150,7 @@ button:hover {
   background-color: #e1e1e1;
 }
 
-.teams h3 {
+.teams-myTeam h3 {
   display: flex;
   margin-left: 10px;
   margin-top: 10px;
@@ -165,7 +158,7 @@ button:hover {
   align-items: center;
 }
 
-.teams ul {
+.teams-myTeam ul {
   list-style: none;
   padding: 0;
   display: flex;
@@ -174,7 +167,7 @@ button:hover {
   flex-wrap: wrap;
 }
 
-.team-item {
+.teams-item-myTeam {
   background-color: #ffffff;
   padding: 10px;
   margin: 5px;
@@ -182,14 +175,14 @@ button:hover {
   text-align: center;
   flex-basis: calc(33.333% - 10px); /* 3개의 아이템을 한 줄에 나타내고 싶을 때 */
 }
-.team-item:hover {
+.teams-item-myTeam:hover {
   box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* 그림자 효과 강조 */
   transform: translateY(-3px); /* 조금 위로 움직임 */
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
 }
 
 
-.team-name {
+.team-name-myTeam {
   font-family: MiSans-Heavy,sans-serif;
   letter-spacing: 1px;
   font-size: 18px; /* 적절한 크기 설정 */
@@ -197,7 +190,7 @@ button:hover {
 
 }
 
-.teams-title {
+.teams-title-myTeam {
   display: flex;
   align-items: center;
   border-radius: 4px 4px 0 0;
@@ -205,13 +198,18 @@ button:hover {
   color: white;
   padding: 0 5px 10px;
 }
-.team-sportsEvent {
+.team-sportsEvent-myTeam {
   font-size: 14px; /* 적절한 크기 설정 */
   color: var(--text-hint-dark);
   font-family: MiSans-Light,sans-serif;
 }
 
-
+@media (max-width: 600px) {
+  .teams-myTeam {
+    min-width: 400px;
+    width: 95%;
+  }
+}
 
 
 </style>
