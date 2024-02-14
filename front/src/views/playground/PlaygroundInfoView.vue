@@ -135,9 +135,6 @@ body {
   color: #333333;
 }
 
-div {
-  color: #333333;
-}
 
 .game-image img {
   width: 100%;

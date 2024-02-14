@@ -1,35 +1,39 @@
 <template>
-  <div class="team-container">
-    <div class="team-header">
-      <img :src= team.teamProfileImg class="team-img">
-      <div class="team-info">
+  <div class="team-container-teamInfo">
+    <div class="team-header-teamInfo">
+      <img :src=team.teamProfileImg class="team-header-img-teamInfo">
+      <div class="team-header-info-teamInfo">
         <h1>{{ team.teamName }}</h1>
-        <p class="team-type">{{ team.teamSportsEvent }}</p>
+        <p class="team-header-info-type-teamInfo">{{ team.teamSportsEvent }}</p>
       </div>
-      <button v-if="isTeamLeader" class="button-teamJoin" :class="{'button-teamLeader': isTeamLeader}" @click="deleteTeam">删除</button>
-      <button v-else-if="isTeamMember" class="button-teamJoin" >已加入</button>
-      <button v-else class="button-teamJoin" @click="clickJoinTeam">加入</button>
+      <button v-if="isTeamLeader" class="button-teamJoin-teamInfo" :class="{'button-teamLeader': isTeamLeader}"
+              @click="deleteTeam">删除
+      </button>
+      <button v-else-if="isTeamMember" class="button-teamJoin-teamInfo">已加入</button>
+      <button v-else class="button-teamJoin-teamInfo" @click="clickJoinTeam">加入</button>
     </div>
-    <div class="team-history">
+
+
+    <div class="team-history-teamInfo">
       <h2>队伍介绍</h2>
-      <p>{{team.description === null ? '没有介绍' : team.description}}</p>
+      <p>{{ team.description === null ? '没有介绍' : team.description }}</p>
     </div>
-    <div class="team-players">
-      <h2>Players</h2>
-      <div v-for="user in teamMembers" :key="user.userId" class="team-item">
+    <div class="team-players-teamInfo">
+      <h2>成员</h2>
+      <div v-for="user in teamMembers" :key="user.userId">
         <table>
           <thead>
           <tr>
-            <th>Player Profile</th>
-            <th>Player Name</th>
-            <th>Position</th>
+            <th>头像</th>
+            <th>队员名</th>
+            <th>角色</th>
           </tr>
           </thead>
           <tbody>
           <tr>
-            <img :src="user.userProfileImg || defaultImage" class=""/>
-            <td>{{ user.userNickname }}</td>
-            <td>{{user.userRole}}</td>
+              <img :src="user.userProfileImg || defaultImage" class="team-players-img-teamInfo"/>
+              <td>{{ user.userNickname }}</td>
+              <td>{{ user.userRole }}</td>
           </tr>
           <!-- More players as needed -->
           </tbody>
@@ -41,8 +45,6 @@
       <h2>Achievements</h2>
       <ul>
         <li>准备中</li>
-
-        <!-- More achievements as needed -->
       </ul>
     </div>
   </div>
@@ -80,7 +82,7 @@ const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseU
 const props = defineProps({
   teamId: {
     type: Number,
-    required:true,
+    required: true,
   }
 })
 onMounted(async () => {
@@ -148,7 +150,7 @@ const clickJoinTeam = async () => {
   await validateAccessToken()
   try {
     await axios.post(`${apiBaseUrl}/team/join/teamJoin`, {
-      teamId: props.teamId
+          teamId: props.teamId
         },
         {
           headers: {
@@ -174,7 +176,7 @@ const getTeamMembers = function () {
       userId: user.userId,
       userNickname: user.userNickname,
       userRole: user.userRole,
-      userProfileImg: user.userProfileImg ? `data:image/jpeg;base64,${ user.userProfileImg}` : defaultImage
+      userProfileImg: user.userProfileImg ? `data:image/jpeg;base64,${user.userProfileImg}` : defaultImage
     }));
   });
 };
@@ -219,7 +221,7 @@ const updateAccessToken = async function () {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
-      headers: { 'RefreshToken': refreshToken }
+      headers: {'RefreshToken': refreshToken}
     });
     if (response.status === 200) {
       const newAccessToken = response.headers['authorization'];
@@ -236,15 +238,44 @@ const redirectToLogin = function () {
 };
 </script>
 
-<style scoped>
-.team-container {
+<style>
+td {
+  font-family: MiSans-Normal,sans-serif;
+}
+.team-container-teamInfo {
   min-width: 1000px;
-  width: 80%;
+  width: 90%;
   margin: 20px auto;
 
 }
 
-.button-teamJoin {
+.team-header-teamInfo {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+
+.team-header-info-teamInfo h1 {
+  margin: 0;
+  font-size: 2em;
+}
+
+.team-header-info-type-teamInfo {
+  color: #666;
+  font-size: 1em;
+}
+
+
+.team-header-img-teamInfo {
+  border-radius: 25%;
+  width: 100px;
+  height: 100px;
+  margin-right: 20px;
+  background-color: #ddd;
+}
+
+.button-teamJoin-teamInfo {
   background: var(--accent-color);
   border: none;
   padding: 10px 40px; /* 버튼 패딩 조정 */
@@ -254,7 +285,7 @@ const redirectToLogin = function () {
   text-align: left; /* 왼쪽 정렬 */
 }
 
-.button-teamJoin:hover {
+.button-teamJoin-teamInfo:hover {
   border: none;
   background: var(--secondary-color);
 }
@@ -269,7 +300,7 @@ const redirectToLogin = function () {
   background-color: #d32f2f; /* 마우스 오버시 어두운 빨간색 */
 }
 
-.team-history {
+.team-history-teamInfo {
   background: var(--white); /* Light grey background */
   border: 1px solid #ddd; /* Light grey border */
   border-radius: 8px; /* Rounded corners */
@@ -279,43 +310,18 @@ const redirectToLogin = function () {
   font-family: MiSans-Medium, sans-serif;
 }
 
-.team-history h2 {
+.team-history-teamInfo h2 {
   font-size: 1.5em;
   color: #333; /* Darker text color for the title */
   margin-bottom: 10px;
 
 }
 
-.team-history p {
+.team-history-teamInfo p {
   font-size: 1em;
   font-family: MiSans-Light, sans-serif;
   color: #555; /* Slightly lighter text color for the paragraph */
   line-height: 1.6; /* More readable line height */
-}
-
-.team-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.team-img {
-  border-radius: 25%;
-  width: 100px;
-  height: 100px;
-  margin-right: 20px;
-  background-color: #ddd;
-}
-
-.team-info h1 {
-  margin: 0;
-
-  font-size: 2em;
-}
-
-.team-type {
-  color: #666;
-  font-size: 1em;
 }
 
 
@@ -327,7 +333,7 @@ const redirectToLogin = function () {
   padding: 20px;
 }
 
-.team-players {
+.team-players-teamInfo {
   margin-top: 20px;
   margin-bottom: 20px;
   padding: 20px;
@@ -335,14 +341,14 @@ const redirectToLogin = function () {
   background: var(--white);
 }
 
-.team-players h2 {
+.team-players-teamInfo h2 {
   font-size: 1.5em;
   color: #333;
   font-family: MiSans-Medium, sans-serif;
   margin-bottom: 10px;
 }
 
-.team-players table {
+.team-players-teamInfo table {
   width: 100%;
   border-collapse: collapse;
 
@@ -350,18 +356,18 @@ const redirectToLogin = function () {
 }
 
 
-.team-players th {
+.team-players-teamInfo th {
   font-family: MiSans-Light, sans-serif;
 }
 
-.team-players th,
-.team-players td {
+.team-players-teamInfo th,
+.team-players-teamInfo td {
   text-align: left;
   padding: 12px 8px; /* Adjust the padding to match the design */
   border-bottom: 1px solid #ddd; /* Light gray border for separation */
 }
 
-.team-players img {
+.team-players-teamInfo img {
   margin: 10px 0 10px 20px;
   width: 50px;
   height: 50px;
@@ -370,24 +376,25 @@ const redirectToLogin = function () {
   display: flex;
   align-items: end;
   justify-content: end;
-  box-shadow: 0 3px 6px 0 rgba(29,34,53,.08);
+  box-shadow: 0 3px 6px 0 rgba(29, 34, 53, .08);
 }
-.team-players th {
+
+.team-players-teamInfo th {
   background: var(--white); /* Light gray background for headers */
   border-bottom: 2px solid #eaeaea; /* Slightly darker border for headers */
 }
 
-.team-players tbody tr:hover {
+.team-players-teamInfo tbody tr:hover {
   background-color: #f2f2f2; /* Slightly darker background on hover */
 }
 
-.team-players tbody td {
+.team-players-teamInfo tbody td {
 
   color: #555; /* Slightly darker text color for content */
 }
 
 /* Remove the border from the last row to match the design */
-.team-players tr:last-child td {
+.team-players-teamInfo tr:last-child td {
   border-bottom: none;
 }
 
@@ -421,10 +428,15 @@ const redirectToLogin = function () {
 }
 
 @media (max-width: 600px) {
-  .team-container {
-    margin-bottom: 100px;
+  .team-container-teamInfo {
     min-width: 400px;
+    margin: 20px auto 100px auto;
     width: 90%;
+  }
+
+  .button-teamJoin-teamInfo {
+    padding: 10px 20px;
+    margin: 0 0 0 auto;
   }
 
 }

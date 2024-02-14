@@ -211,8 +211,6 @@ const redirectToLogin = function () {
   color: var(--text-black);
 }
 
-
-
 .form-info {
   color: var(--text-hint);
   font-size: 12px;
@@ -392,4 +390,15 @@ button:hover {
   align-items: center;
   justify-content: center;
 }
+
+@media (max-width: 600px) {
+  .team-building-form-container {
+    width: 90%;
+  }
+
+
+
+}
+
+
 </style>

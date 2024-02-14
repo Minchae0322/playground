@@ -2,14 +2,15 @@
   <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <title></title>
-
   </head>
+
   <div class="page-title-container">
     <h2>队伍</h2>
     <p>Check out our playground</p>
     <div class="page-title-container-border"></div>
   </div>
-  <div class="sports-event-container">
+
+  <div class="sports-event-container-teamList">
     <button @click="getTeams('sportsEvent','Soccer')">足球</button>
     <button @click="getTeams('sportsEvent','Basketball')">篮球</button>
     <button @click="getTeams('sportsEvent','Tennis')">网球</button>
@@ -17,21 +18,20 @@
     <button @click="getTeams('sportsEvent','Badminton')">羽毛球</button>
   </div>
 
-  <input type="text" v-model="searchQuery" placeholder="..."/>
-  <div class="team-width">
-    <div class="team-container">
-      <div v-for="team in filteredTeams" :key="team.teamId" class="team-card">
+  <input class="search-teamList" type="text" v-model="searchQuery" placeholder="..."/>
+
+    <div class="team-list-container-teamList">
+      <div class="team-card-teamList" v-for="team in filteredTeams" :key="team.teamId" >
         <router-link :to="{name:'teamInfo', params:{teamId: team.teamId}}">
-          <img :src=team.teamProfileImg class="team-img" :alt=defaultImage>
-          <div class="team-name">{{ team.teamName }}</div>
-          <div class="team-info-container">
+          <img :src=team.teamProfileImg class="team-card-img-teamList" :alt=defaultImage>
+          <div class="team-list-teamName">{{ team.teamName }}</div>
+          <div class="team-list-info-container">
             <div>{{ team.sportsEvent }}</div>
           </div>
         </router-link>
       </div>
 
     </div>
-  </div>
 </template>
 
 
@@ -157,41 +157,15 @@ const redirectToLogin = function () {
 </script>
 
 
-<style scoped>
+<style>
 
-a {
-  text-decoration: none;
-  color: var(--text-hint-dark);
-}
 
-input[type="text"] {
-  width: 95%; /* 전체 너비를 사용 */
-  padding: 10px 15px; /* 내부 여백 */
-  margin: 10px 10px; /* 외부 여백 */
-  box-sizing: border-box; /* 패딩과 테두리가 너비에 포함되도록 설정 */
-  border: 1px solid #ccc; /* 테두리 설정 */
-  border-radius: 5px; /* 모서리를 둥글게 */
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* 내부 그림자 */
-  outline: none; /* 포커스 시 기본 윤곽선 제거 */
-  transition: border-color 0.3s ease-in-out; /* 부드러운 테두리 색상 변화 */
-}
-
-input[type="text"]:focus {
-  border-color: #7FC7D9; /* 포커스 시 테두리 색상 변경 */
-  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 8px rgba(74, 144, 226, 0.5); /* 포커스 시 그림자 강조 */
-}
-
-input[type="text"]::placeholder {
-  color: #888; /* 플레이스홀더 텍스트 색상 */
-  font-style: italic; /* 플레이스홀더 텍스트 스타일 */
-}
-
-.sports-event-container {
+.sports-event-container-teamList {
   display: flex;
   margin-left: 20px;
 }
 
-.sports-event-container button {
+.sports-event-container-teamList button {
   text-align: center;
   width: 80px;
   height: 30px;
@@ -204,34 +178,48 @@ input[type="text"]::placeholder {
 }
 
 .sports-event-container button:hover {
-
   background-color: #365486;
-
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
 }
 
-.team-width {
+
+.search-teamList {
   display: flex;
-  width: 100%;
-  min-width: 1045px;
-  justify-content: center;
+  width: 95%; /* 전체 너비를 사용 */
+  padding: 10px 15px; /* 내부 여백 */
+  margin: 0 auto;
+  box-sizing: border-box; /* 패딩과 테두리가 너비에 포함되도록 설정 */
+  border: 1px solid #ccc; /* 테두리 설정 */
+  border-radius: 5px; /* 모서리를 둥글게 */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1); /* 내부 그림자 */
+  outline: none; /* 포커스 시 기본 윤곽선 제거 */
+  transition: border-color 0.3s ease-in-out; /* 부드러운 테두리 색상 변화 */
 }
 
-.team-container {
+.search-teamList:focus {
+  border-color: #7FC7D9; /* 포커스 시 테두리 색상 변경 */
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.2), 0 0 8px rgba(74, 144, 226, 0.5); /* 포커스 시 그림자 강조 */
+}
+
+.search-teamList::placeholder {
+  color: #888; /* 플레이스홀더 텍스트 색상 */
+  font-style: italic; /* 플레이스홀더 텍스트 스타일 */
+}
+
+.team-list-container-teamList {
   display: flex;
   width: 95%;
-  min-width: 1050px;
+  min-width: 1045px;
   justify-content: start;
   align-items: center;
   flex-wrap: wrap;
+  margin: 0 auto;
   gap: 10px;
   padding: 10px;
 }
 
 
-
-
-.team-card {
+.team-card-teamList {
   position: relative;
   width: 24%; /* 카드의 폭 */
   text-align: start;
@@ -242,14 +230,14 @@ input[type="text"]::placeholder {
   background-color: #fff;
 }
 
-.team-card:hover {
+.team-card-teamList:hover {
   background-color: #DCF2F1; /* 배경색 변경 */
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* 그림자 효과 강조 */
   transform: translateY(-3px); /* 조금 위로 움직임 */
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
 }
 
-.team-card::after {
+.team-card-teamList::after {
 
   content: '\f054'; /* Font Awesome 오른쪽 화살표 아이콘 */
   font-family: 'Font Awesome 5 Free', serif; /* Font Awesome 폰트 설정 */
@@ -261,7 +249,7 @@ input[type="text"]::placeholder {
   color: #0F1035; /* 아이콘 색상 */
 }
 
-.team-img {
+.team-card-img-teamList {
   width: 40%;
   border: 1px solid #d9d9d9;
   height: 40%; /* 높이를 자동으로 설정하여 원본 이미지 비율 유지 */
@@ -272,7 +260,7 @@ input[type="text"]::placeholder {
   display: block; /* 이미지를 블록 요소로 만들어 불필요한 여백 제거 */
 }
 
-.team-name {
+.team-list-teamName {
   text-align: start;
   font-size: 1.3em;
   color: var(--text-black);
@@ -281,30 +269,38 @@ input[type="text"]::placeholder {
   width: 100%;
 }
 
-.team-info-container {
+.team-list-info-container {
   text-align: start;
   width: 100%;
   font-family: MiSans-Normal, sans-serif;
 
 }
+
 @media (max-width: 600px) {
-  .team-width {
+  .team-list-container-teamList {
     min-width: 400px;
     width: 100%;
 
-  }
-  .team-container {
-    min-width: 400px;
-    width: 100%;
-    justify-content: center;
     margin-bottom: 50px;
   }
-  .team-card {
-    width: 45%;
+
+  .team-card-teamList {
+    width: 47%;
+    margin: 0 auto;
   }
 
-  .sports-event-container {
+  .sports-event-container-teamList {
     width: 95%;
+    margin: 0 auto;
+  }
+
+  .sports-event-container-teamList button {
+    width: 60px;
+    font-size: 11px;
+  }
+  .search-teamList {
+    width: 95%;
+
   }
 }
 

@@ -211,13 +211,7 @@ button:hover {
   font-family: MiSans-Light,sans-serif;
 }
 
-div {}
 
-
-/* 추가적으로 반응형 디자인을 고려할 수 있습니다. */
-a {
-  text-decoration: none;
-}
 
 
 </style>

@@ -486,9 +486,7 @@ a {
   overflow-y: auto;
 }
 
-a {
-  text-decoration: none;
-}
+
 
 @media (max-width: 600px) {
  .game-container {

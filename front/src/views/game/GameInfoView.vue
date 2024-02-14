@@ -423,7 +423,7 @@ const redirectToLogin = function () {
           <div class="team-details" v-for="(team, index) in homeAndAwayTeams.subTeams" :key="index">
             <router-link :to="{ name:'teamInfo', params: { teamId: team.teamId } }" class="team-info-container">
               <img class="team-image" :src="team.teamProfileImg || defaultImage">
-              <div class="team-info">
+              <div class="team-header-info-teamInfo">
                 <div class="team-name">{{ team.teamName }}</div>
                 <div class="team-more"> ></div>
               </div>
@@ -814,7 +814,7 @@ a {
   margin-right: 15px;
 }
 
-.team-info {
+.team-header-info-teamInfo {
   display: flex;
   flex-direction: row;
   text-align: center;

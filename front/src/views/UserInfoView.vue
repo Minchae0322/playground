@@ -209,7 +209,7 @@ const redirectToLogin = function () {
 };
 </script>
 
-<style scoped>
+<style>
 .user-info-container-userInfo {
   min-width: 1045px;
   margin: 0 auto;
@@ -294,7 +294,7 @@ const redirectToLogin = function () {
   justify-content: center;
   align-items: center;
   background: var(--accent-color);
-  width: 20%;
+  width: 30%;
   color: white;
   padding: 10px;
   margin-top: 10px;
@@ -310,7 +310,7 @@ const redirectToLogin = function () {
   width: 40%;
 }
 
-.nickname-container-userInfo .button-container button {
+.nickname-container-userInfo .button-container-userInfo button {
   flex: 1; /* 버튼의 크기를 같게 조정 */
   margin: 5px; /* 버튼 사이의 간격 */
 }
@@ -401,14 +401,16 @@ const redirectToLogin = function () {
   .user-info-container-userInfo {
     min-width: 400px;
     margin-bottom: 80px;
-    width: 90%;
+    width: 95%;
   }
   .nickname-container-userInfo button {
-    width: 160px;
+    width: 200px;
   }
   .nickname-container-userInfo input {
     width: 200px;
   }
+
+
 
 }
 </style>

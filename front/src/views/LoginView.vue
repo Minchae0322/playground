@@ -122,14 +122,6 @@ const write = async function () {
 </script>
 
 <style scoped>
-h1 {
-  color: var(--text-black);
-}
-
-div {
-  color: var(--text-black);
-}
-
 .login-container {
   width: 100%;
   display: flex;

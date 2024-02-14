@@ -454,8 +454,8 @@ const redirectToLogin = async () => {
 @media (max-width: 600px) {
   .page-title-container {
     min-width: 400px;
-    margin: 10px 0;
-    width: 100%;
+    margin: 10px auto;
+    width: 95%;
   }
 
   .games-home {
