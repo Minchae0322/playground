@@ -305,4 +305,18 @@ h2 {
   align-content: center;
   justify-content: center;
 }
+
+@media (max-width: 600px) {
+  .team-requests-container {
+    min-width: 400px;
+    width: 95%;
+    margin: 0 auto;
+  }
+
+  .toggle-info {
+    text-align: start;
+  }
+
+
+}
 </style>

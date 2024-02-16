@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="modal-overlay">
       <div class="modal">
         <div class="justify-center item-center " data-v0-t="card">
@@ -71,6 +70,7 @@
         </div>
 
         <div class="justify-center item-center  margin-top" data-v0-t="card">
+          <hr color="#e7e7e7">
           <div class="padding-20">
             <div class="text-title">占用的时隙</div>
             <div class="hint">Select the start time and duration for your participation.</div>
@@ -257,12 +257,18 @@ const redirectToLogin = function () {
   align-items: center;
   color: black;
 }
+a {
+  text-decoration: none;
+  color: black;
+  font-family: MiSans-Medium,sans-serif;
+}
 
 .modal {
   border: 1px #000000; /* 테두리 스타일 및 색상 지정 */
   box-shadow: 0 0 1px #bebebe;
   background: white;
   border-radius: 5px;
+  padding:10px;
   width: 35vw; /* Adjust this value as needed */
   overflow-x: auto; /* Add this line to enable vertical scrolling if needed */
   height: 70vh; /* Adjust this value as needed */
@@ -297,13 +303,7 @@ hr {
   align-items: center;
 }
 
-.column {
-  display: flow;
-}
 
-.text-color-gray {
-  color: #838383;
-}
 
 .inline-flex {
   display: inline-flex;
@@ -364,6 +364,8 @@ hr {
   background-color: var(--primary-color);
 }
 
+
+
 .button-cancel {
   background-color: white;
   color: black;
@@ -408,6 +410,7 @@ hr {
   font-family: primary-font, sans-serif;
 }
 
+
 .margin-right {
   margin-right: 5px;
   margin-top: 3px;
@@ -418,9 +421,8 @@ hr {
   display: flex;
   background-color: #ffffff; /* 흰색 배경 */
   color: #333333; /* 글자색 */
-  align-items: center;
-
   padding: 10px;
+  align-items: center;
   cursor: pointer; /* 포인터 모양 변경 */
   transition: background-color 0.3s, color 0.3s; /* 부드러운 전환 효과 */
 }
@@ -431,6 +433,7 @@ hr {
   margin: 0 19px 0px 12px;
   font-family: MiSans-Medium,sans-serif;
 }
+
 
 @media (max-width: 600px) {
   .modal-overlay {

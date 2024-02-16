@@ -287,14 +287,8 @@ a{
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
-  .search-and-sort {
-    flex-direction: column;
-  }
-
-  .search-input,
-  .sort-button {
+  .main-container {
     width: 100%;
-    margin-bottom: 8px;
   }
 }
 

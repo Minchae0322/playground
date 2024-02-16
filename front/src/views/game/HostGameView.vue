@@ -277,7 +277,8 @@ a {
   background-color: var(--primary-color); /* 버튼의 배경색을 설정합니다 */
   color: white; /* 버튼의 텍스트 색상을 설정합니다 */
   border: none; /* 버튼의 테두리를 제거합니다 */
-  margin-left: 10px;
+  width: 150px;
+  margin: auto 10px;
   font-family: MiSans-Medium, sans-serif;
   border-radius: 5px; /* 버튼의 모서리를 둥글게 처리합니다 */
   cursor: pointer; /* 마우스를 올렸을 때 커서가 손가락 모양으로 변경되도록 설정합니다 */
@@ -414,7 +415,6 @@ a {
 
 .delete {
   width: 80px;
-  height: 30px;
   margin-left: auto;
   border-radius: 4px;
   border: none;
@@ -428,7 +428,6 @@ a {
 
 .submit {
   width: 80px;
-  height: 30px;
   margin-left: auto;
   border-radius: 4px;
   border: none;
@@ -438,5 +437,14 @@ a {
 
 .submit:hover {
   background-color: #606060; /* 마우스 오버 시 배경색 어둡게 */
+}
+
+@media (max-width: 600px) {
+  .section {
+    min-width: 400px;
+    width: 100%;
+    margin: 15px auto;
+  }
+
 }
 </style>

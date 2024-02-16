@@ -219,7 +219,8 @@ const redirectToLogin = function () {
   background-color: var(--primary-color); /* 버튼의 배경색을 설정합니다 */
   color: white; /* 버튼의 텍스트 색상을 설정합니다 */
   border: none; /* 버튼의 테두리를 제거합니다 */
-  margin-left: 10px;
+  width: 150px;
+  margin: auto 10px;
   font-family: MiSans-Medium, sans-serif;
   border-radius: 5px; /* 버튼의 모서리를 둥글게 처리합니다 */
   cursor: pointer; /* 마우스를 올렸을 때 커서가 손가락 모양으로 변경되도록 설정합니다 */
@@ -353,5 +354,21 @@ const redirectToLogin = function () {
   font-size: 16px;
   color: var(--text-hint-dark);
   font-family: MiSans-Normal, sans-serif;
+}
+
+
+@media (max-width: 600px) {
+  .section {
+    min-width: 400px;
+    width: 100%;
+    margin: 15px auto;
+  }
+  .content {
+    display: flex;
+    flex-direction: column;
+  }
+
+
+
 }
 </style>

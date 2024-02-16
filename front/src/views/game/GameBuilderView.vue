@@ -276,11 +276,11 @@ const redirectToLogin = function () {
 .form-group {
   display: flex;
   flex-direction: column;
-  margin-bottom: 10px; /* 각 폼 그룹 사이의 간격 */
+  margin-bottom: 5px; /* 각 폼 그룹 사이의 간격 */
 }
 
 .form-group label {
-  font-family: MiSans-Semibold, sans-serif;
+  font-family: MiSans-Medium, sans-serif;
   color: black;
 }
 
@@ -311,7 +311,6 @@ const redirectToLogin = function () {
 .form-group label {
   font-size: 17px; /* 레이블 글꼴 크기 */
   color: #333; /* 레이블 글꼴 색상 */
-  margin-bottom: 5px; /* 레이블과 입력 필드 사이의 간격 */
 }
 
 .form-group input[type="text"] {
@@ -359,6 +358,7 @@ const redirectToLogin = function () {
 .action-container {
   display: flex;
   margin-top: 20px;
+  gap: 70px;
   justify-content: space-between;
 }
 
@@ -413,6 +413,10 @@ input[type="date"]:valid::after {
   .event-details-container {
     min-width: 400px;
     width: 70%;
+  }
+
+  .date-button {
+    width: 90%;
   }
 }
 

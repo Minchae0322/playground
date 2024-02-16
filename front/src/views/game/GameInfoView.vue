@@ -359,7 +359,6 @@ const redirectToLogin = function () {
 <template>
   <div  class="game-container">
     <div class="game-info-container">
-
       <div class="game-details">
         <div class="game-details-name">{{ props.game.gameName }} ( {{props.game.gameType}} )</div>
         <div class="game-details-startTime">
@@ -574,9 +573,9 @@ a {
   color: black; /* 아이콘 색상 */
   font-size: 24px; /* 아이콘 크기 */
   cursor: pointer; /* 마우스 오버 시 커서 변경 */
-
-  text-align: left;
-  position: relative; /* 상대 위치 설정 */
+  width: 5%;
+  padding-left: 10px;
+  margin: auto;
 }
 
 .button-goBack::before {
@@ -609,9 +608,10 @@ a {
   display: flex;
   justify-content: space-around;
   align-items: center;
+  margin: 0 auto;
   background: var(--background-color-gray);
   border-radius: 8px;
-  width: 90%;
+  width: 85%;
 }
 
 /* 탭 버튼 기본 스타일 */
@@ -625,6 +625,7 @@ a {
   cursor: pointer;
   width: 45%;
   margin: 5px 0;
+  padding: 5px 0;
   border: none;
   background-color: transparent;
   color: #989898;
@@ -936,8 +937,7 @@ a {
   border: 1px solid #252525;
   width: 95%;
   border-radius: 4px;
-  margin-bottom: 5px; /* 필요에 따라 조정 */
-  margin-top: 10px;
+  margin: 10px auto;
   font-size: 14px;
   cursor: pointer;
   outline: none;
@@ -1019,7 +1019,7 @@ a {
   border-radius: 5px; /* 모서리 둥글기 조정 */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* 그림자를 더 부드럽게 조정 */
   width: 40%; /* 너비를 내용물에 맞게 자동으로 조정 */
-  max-width: 50%; /* 최대 너비 설정 */
+
 }
 
 .modal-window h2 {
@@ -1152,8 +1152,10 @@ a {
 }
 
 
-@media (max-width: 768px) {
-
+@media (max-width: 600px) {
+  .modal-window {
+    width: 90%;
+  }
 }
 
 
