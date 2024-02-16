@@ -26,11 +26,11 @@
           <img :src=team.teamProfileImg class="team-card-img-teamList" :alt=defaultImage>
           <div class="team-list-teamName">{{ team.teamName }}</div>
           <div class="team-list-info-container">
-            <div>{{ team.sportsEvent }}</div>
+            <div>{{ team.sportsEvent }} </div>
+            <div class="more-teamList"></div>
           </div>
         </router-link>
       </div>
-
     </div>
 </template>
 
@@ -165,8 +165,7 @@ const redirectToLogin = function () {
 
 .sports-event-container-teamList button {
   text-align: center;
-  width: 80px;
-  height: 30px;
+  width: 70px;
   margin: 5px 5px;
   background-color: var(--text-primary);
   color: white;
@@ -175,7 +174,7 @@ const redirectToLogin = function () {
   font-family: MiSans-Semibold, sans-serif;
 }
 
-.sports-event-container button:hover {
+.sports-event-container-teamList button:hover {
   background-color: #365486;
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
 }
@@ -207,6 +206,7 @@ const redirectToLogin = function () {
 .team-list-container-teamList {
   display: flex;
   width: 95%;
+
   min-width: 1045px;
   justify-content: start;
   align-items: center;
@@ -218,7 +218,6 @@ const redirectToLogin = function () {
 
 
 .team-card-teamList {
-  position: relative;
   width: 24%; /* 카드의 폭 */
   text-align: start;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
@@ -228,22 +227,18 @@ const redirectToLogin = function () {
   background-color: #fff;
 }
 
+
 .team-card-teamList:hover {
   background-color: #DCF2F1; /* 배경색 변경 */
   box-shadow: 0 8px 12px rgba(0, 0, 0, 0.2); /* 그림자 효과 강조 */
-  transform: translateY(-3px); /* 조금 위로 움직임 */
   transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 */
 }
 
-.team-card-teamList::after {
-
+.more-teamList::after {
   content: '\f054'; /* Font Awesome 오른쪽 화살표 아이콘 */
   font-family: 'Font Awesome 5 Free', serif; /* Font Awesome 폰트 설정 */
   font-weight: 900; /* Font Awesome 아이콘을 위한 폰트 두께 */
-  position: absolute; /* 절대 위치 설정 */
-  right: 10px; /* 오른쪽에서 10px 떨어진 곳에 위치 */
-  bottom: 10px; /* 아래에서 10px 떨어진 곳에 위치 */
-  font-size: 1.5rem; /* 아이콘 크기 */
+  font-size: 1rem; /* 아이콘 크기 */
   color: #0F1035; /* 아이콘 색상 */
 }
 
@@ -270,6 +265,8 @@ const redirectToLogin = function () {
 .team-list-info-container {
   text-align: start;
   width: 100%;
+  display: flex;
+  justify-content: space-between;
   font-family: MiSans-Normal, sans-serif;
 
 }
@@ -293,8 +290,8 @@ const redirectToLogin = function () {
   }
 
   .sports-event-container-teamList button {
-    width: 60px;
-    font-size: 11px;
+    width: 65px;
+    font-size: 10px;
   }
   .search-teamList {
     width: 95%;

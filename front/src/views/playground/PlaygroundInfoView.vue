@@ -142,7 +142,6 @@ const redirectToLogin = function () {
 .upcoming-games {
   line-height: 1.2;
   padding: 15px;
-
   min-height: 90vh;
   background-color: #fff; /* 배경색을 흰색으로 설정 */
   border-radius: 8px;

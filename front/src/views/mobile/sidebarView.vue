@@ -1,13 +1,19 @@
 <template>
+  <nav class="logo-bar">
+    <div class="logo-mobile">
+      <img  src='@/assets/school-profile.jpeg'>
+      <div>哈尔滨工业大学</div>
+    </div>
+  </nav>
   <nav class="navigation-under-bar">
     <ul class="nav-links-under-bar">
       <li>
+        <RouterLink :to="{ name:'home'}" class="sub-nav-item">
         <div @click="toggleMenu('home', $event)" class="menu-container-under-bar"
              :class="{'active-menu-container-under-bar': menu === 'home'}">
-          <RouterLink :to="{ name:'home'}" class="sub-nav-item">
             <img class="icon-under-bar" src='@/assets/icon-home.png'>
-          </RouterLink>
         </div>
+        </RouterLink>
       </li>
       <li>
         <div @click="toggleMenu('playground', $event)" class="menu-container-under-bar"
@@ -15,7 +21,7 @@
           <img class="icon-under-bar" src='@/assets/playground-icon.png'>
 
         </div>
-        <ul @click="clickRouter" :style="{ left: calculateLeftPosition(1.2) }" v-if="menu === 'playground'"
+        <ul @click="clickRouter" v-if="menu === 'playground'"
             class="sub-menu-under-bar">
           <RouterLink :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" class="sub-nav-item">
             <li>足球</li>
@@ -40,18 +46,18 @@
           <img class="icon-under-bar" src='@/assets/team-icon.png'>
 
         </div>
-        <ul @click="clickRouter" v-if="menu === 'team'" :style="{ left: calculateLeftPosition(2) }" class="sub-menu-under-bar">
-
+        <ul @click="clickRouter" v-if="menu === 'team'"
+            class="sub-menu-under-bar">
           <RouterLink :to="{ name:'myTeam'}" class="sub-nav-item">
             <li>我的队伍</li>
           </RouterLink>
-          <RouterLink :to="{ name:'teamList'}" class="sub-nav-item">
+          <RouterLink  :to="{ name:'teamList'}" class="sub-nav-item">
             <li>加入队伍</li>
           </RouterLink>
-          <RouterLink :to="{ name:'teamRequest'}" class="sub-nav-item">
+          <RouterLink  @click="toggleMenu('team', $event)" :to="{ name:'teamRequest'}" class="sub-nav-item">
             <li>队伍加入请求</li>
           </RouterLink>
-          <RouterLink :to="{ name:'teamBuilding'}" class="sub-nav-item">
+          <RouterLink  @click="toggleMenu('team', $event)" :to="{ name:'teamBuilding'}" class="sub-nav-item">
             <li>组队</li>
           </RouterLink>
 
@@ -63,7 +69,8 @@
           <img class="icon-under-bar" src='@/assets/game-icon.png'>
 
         </div>
-        <ul v-if="menu === 'game'" @click="clickRouter" :style="{ left: calculateLeftPosition(2.8) }" class="sub-menu-under-bar">
+        <ul v-if="menu === 'game'" @click="clickRouter"
+            class="sub-menu-under-bar">
           <RouterLink :to="{name: 'gameRequest'}" class="sub-nav-item">
             <li>比赛参加请求</li>
           </RouterLink>
@@ -111,15 +118,10 @@ const clickRouter = async () => {
   menu.value = "";
 }
 
-const calculateLeftPosition = (index) => {
-  return `${(100 / menuCount) * index}%`;
-};
-
 const menu = ref("");
 
 const toggleMenu = (selectedMenu, event) => {
-  event.stopPropagation();
-  if (menu.value === selectedMenu) {
+  if (menu.value === selectedMenu && selectedMenu !== 'home') {
     menu.value = "";
   } else {
     menu.value = selectedMenu;
@@ -195,6 +197,33 @@ const redirectToLogin = async () => {
 </script>
 
 <style>
+.logo-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.logo-mobile {
+  display: flex;
+  color: #4c8ba8;
+  font-family: MiSans-Medium,sans-serif;
+  justify-content: center;
+  align-content: center;
+}
+
+.logo-mobile img {
+  width: 20px;
+  height: 20px;
+  margin: auto 5px;
+}
+
 .navigation-under-bar {
   position: fixed;
   bottom: 0;
@@ -226,8 +255,13 @@ const redirectToLogin = async () => {
   border-radius: 8px;
 }
 
+.sub-nav-item {
+  z-index: 2000;
+}
+
 .active-menu-container-under-bar .icon-under-bar {
   opacity: 1;
+
 }
 
 .icon-under-bar {
@@ -251,26 +285,29 @@ const redirectToLogin = async () => {
 }
 
 .sub-menu-under-bar {
-  position: absolute;
-  left: 50%; /* 왼쪽에서 50% 떨어진 곳에 위치 */
-  transform: translateX(-50%); /* X축 중앙 정렬 */
-  bottom: 50px; /* 아이콘 아래에 위치하도록 bottom 값을 조정 */
+  position: fixed; /* absolute에서 fixed로 변경 */
+  bottom: 60px; /* navigation-under-bar의 높이에 맞게 조정 */
+  width: 100%;
+  justify-content: center;
+  left: 0; /* 화면 왼쪽에서 시작 */
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  padding: 10px;
+  padding: 2px 10px;
+  z-index: 2000;
   display: none; /* 기본적으로 보이지 않도록 설정 */
   transition: all 0.3s ease;
-  z-index: 100; /* 다른 요소들 위에 보이도록 z-index 설정 */
+
 }
 
 .sub-menu-under-bar li {
-  margin: 15px 0px 15px 0px;
+  margin: 0 0px 5px 0px;
   list-style-type: none;
-  width: 80%;
+  width: 100%;
   padding: 5px;
-  font-size: 14px;
-  border-bottom: 1px solid #838383;
+  font-size: 13px;
+  letter-spacing: 2px;
+  border-bottom: 1px solid #b9b9b9;
 }
 
 .sub-menu-under-bar li:hover {
@@ -280,4 +317,10 @@ const redirectToLogin = async () => {
 .sub-menu-under-bar {
   display: block;
 }
+
+.router-link-active {
+  font-family: MiSans-Semibold, sans-serif;
+  color: black;
+}
+
 </style>

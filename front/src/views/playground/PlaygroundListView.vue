@@ -266,6 +266,7 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
   border: none;
   width: 70px;
   height: 30px;
+  margin: auto 0;
   padding: 5px 20px;
   color: var(--text-hint-dark);
   cursor: pointer;

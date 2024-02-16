@@ -1,27 +1,21 @@
     /* color palette from <https://github.com/vuejs/theme> */
-/*
+
 :root {
-  --vt-c-white: #ffffff;
-  --vt-c-white-soft: #f8f8f8;
-  --vt-c-white-mute: #f2f2f2;
-
-  --vt-c-black: #181818;
-  --vt-c-black-soft: #222222;
-  --vt-c-black-mute: #282828;
-
-  --vt-c-indigo: #2c3e50;
-
-  --vt-c-divider-light-1: rgba(60, 60, 60, 0.29);
-  --vt-c-divider-light-2: rgba(60, 60, 60, 0.12);
-  --vt-c-divider-dark-1: rgba(84, 84, 84, 0.65);
-  --vt-c-divider-dark-2: rgba(84, 84, 84, 0.48);
-
-  --vt-c-text-light-1: var(--vt-c-indigo);
-  --vt-c-text-light-2: rgba(60, 60, 60, 0.66);
-  --vt-c-text-dark-1: var(--vt-c-white);
-  --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
+  --primary-color: #365486; /* 주 색상 */
+  --secondary-color: #6a85b6; /* 보조 색상 */
+  --accent-color: #4C516D; /* 강조 색상 */
+  --primary-gradient: linear-gradient(to right, #6a85b6 0%, #bac8e0 100%);
+  --text-black: #000000;
+  --text-primary: #2C3E50; /* 주 텍스트 색상 */
+  --text-hint: #949494; /* 보조 텍스트 색상 */
+  --text-hint-light: #c9c9c9; /* 보조 텍스트 색상 */
+  --text-hint-dark: #7a7a7a;
+  --background-color-gray: #f1f4f6; /* 배경 색상 */
+  --button-hover: #4E6EF2; /* 버튼 호버 상태 색상 */
+  --white: #fff;
 }
 
+    /*
 !* semantic color variables for this project *!
 :root {
   --color-background: var(--vt-c-white);
@@ -78,21 +72,9 @@
 
 
 
+
 @media (prefers-color-scheme: dark) {
-  :root {
-    --primary-color: #365486; /* 주 색상 */
-    --secondary-color: #6a85b6; /* 보조 색상 */
-    --accent-color: #4C516D; /* 강조 색상 */
-    --primary-gradient: linear-gradient(to right, #6a85b6 0%, #bac8e0 100%);
-    --text-black: #000000;
-    --text-primary: #2C3E50; /* 주 텍스트 색상 */
-    --text-hint: #949494; /* 보조 텍스트 색상 */
-    --text-hint-light: #c9c9c9; /* 보조 텍스트 색상 */
-    --text-hint-dark: #7a7a7a;
-    --background-color-gray: #f1f4f6; /* 배경 색상 */
-    --button-hover: #4E6EF2; /* 버튼 호버 상태 색상 */
-    --white: #fff;
-  }
+
 }
 
 *,
@@ -106,16 +88,5 @@ button {
   color: white;
 }
 body {
-  min-height: 100vh;
-  color: var(--primary-color);
-  background: var(--background-color-gray);
-  font-family: MiSans-Semibold,sans-serif;
-  transition:
-    color 0.5s,
-    background-color 0.5s;
-  line-height: 1.6;
-  font-size: 15px;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+
 }

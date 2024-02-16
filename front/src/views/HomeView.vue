@@ -136,7 +136,7 @@
   <div class="page-title-container">
     <div class="flex-box">
       <img src="../assets/icon-tableTennisBall.png">
-      <h2>篮球</h2>
+      <h2>乒乓球</h2>
     </div>
     <div class="page-title-container-border"></div>
   </div>
@@ -279,7 +279,7 @@ const getAccessToken = function () {
 };
 
 const updateAccessToken = async function () {
-  const refreshToken = getAccessToken()
+  const refreshToken = localStorage.getItem("refreshToken");
   if (!refreshToken) return redirectToLogin();
 
   try {
@@ -359,7 +359,7 @@ const redirectToLogin = async () => {
   color: #666;
   margin-right: auto;
   margin-left: 100px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-family: MiSans-Normal, sans-serif;
 }
 
@@ -454,7 +454,7 @@ const redirectToLogin = async () => {
 @media (max-width: 600px) {
   .page-title-container {
     min-width: 400px;
-    margin: 10px auto;
+    margin: 0 auto;
     padding-left: 10px;
     width: 95%;
   }
@@ -477,11 +477,11 @@ const redirectToLogin = async () => {
   }
 
   .page-title-container-border {
-    min-width: 300px;
-    margin-left: 100px;
+    min-width: 70%;
+    margin-left: 20%;
     margin-bottom: 10px;
-    max-width: 300px;
-    width: 50%;
+    margin-right: 0;
+    width: 75%;
   }
 
   .game-card-mini-title {

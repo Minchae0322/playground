@@ -492,18 +492,19 @@ a {
  .game-container {
    display: flex;
    flex-direction: column;
-   min-width: 400px;
+   min-width: 300px;
+   margin: 0;
    width: 100%;
  }
 
   .playground-container {
-    min-width: 400px;
+    min-width: 300px;
     width: 100%;
-    margin-bottom: 20px;
+    margin: 0 0 20px;
   }
 
   .upcoming-container {
-    min-width: 400px;
+    min-width: 300px;
     width: 100%;
     margin-left: 0;
     margin-bottom: 50px;
