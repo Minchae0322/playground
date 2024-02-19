@@ -1,6 +1,6 @@
 <template>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
   </head>
 
   <div class="campus-button-container-playgroundList">
@@ -22,7 +22,8 @@
     </div>
     <div class="games">
       <div class="game-card-mini" v-for="game in upcomingGames" :key="game.id">
-        <router-link :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
+        <router-link
+            :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
           <div class="game-card-mini-title">{{ game.gameName }} ({{ game.gameStart }})</div>
           <div class="game-card-mini-info-container">
             <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
@@ -46,7 +47,7 @@
       </div>
       <div class="card-body">
         <div class="game-info-container">
-            <div>预定的比赛 : {{info.upcomingGameNum}}</div>
+          <div>预定的比赛 : {{ info.upcomingGameNum }}</div>
         </div>
       </div>
       <div class="card-footer">
@@ -58,7 +59,7 @@
 
   </div>
   <div v-else>
-    <div class="teamRequest-notExist">활성화된 운동장이 존재하지 않습니다.</div>
+    <div class="teamRequest-notExist">运动场不存在</div>
   </div>
 </template>
 
@@ -315,7 +316,6 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
 }
 
 
-
 .playground-list {
   display: flex;
   min-width: 1045px;
@@ -323,6 +323,7 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
   flex-wrap: wrap; /* 내용이 넘치면 다음 줄로 넘깁니다. */
   margin: 10px auto;
   padding: 20px;
+
 }
 
 .playground-card {
@@ -419,13 +420,14 @@ button:hover {
   .campus-button-container-playgroundList {
     min-width: 400px;
     width: 95%;
-    margin:0 auto;
+    margin: 0 auto;
   }
 
   .upcoming-games-container {
     min-width: 400px;
     width: 100%;
     display: flex;
+    justify-content: center;
     flex-direction: column;
     margin: 0 auto;
   }
@@ -434,19 +436,24 @@ button:hover {
     margin: 0 auto;
     min-width: 400px;
     width: 95%;
+    padding-left: 20px;
     display: flex;
+
     flex-wrap: wrap;
   }
+
 
   .playground-list {
     min-width: 400px;
-    width: 95%;
+    width: 100%;
     padding: 0;
+    gap: 5px;
+    flex-wrap: wrap;
   }
 
   .playground-card {
-    width: 47%;
-    flex-wrap: wrap;
+    width: 45%;
+    margin: 10px auto;
   }
 
 

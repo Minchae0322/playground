@@ -12,6 +12,7 @@ import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.request.vo.impl.SoloGameJoinRequest;
 import com.example.playgroundmanage.request.vo.GameRequest;
+import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,8 @@ public class SoloGameJoinRequestService implements RequestService {
 
     private final GameManagementService gameManagementService;
 
+    private final FileHandler fileHandler;
+
     @Override
     public String getRequestType() {
         return "soloGameJoin";
@@ -50,7 +53,7 @@ public class SoloGameJoinRequestService implements RequestService {
                 .toList();
 
         return soloGameJoinRequests.stream()
-                .map(SoloGameJoinRequest::toGameRequestInfoDto)
+                .map(solo -> solo.toGameRequestInfoDto(fileHandler.extractFile(solo.getUser().getProfileImg())))
                 .toList();
     }
 

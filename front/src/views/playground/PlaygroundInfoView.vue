@@ -273,4 +273,14 @@ a {
 }
 
 
+
+
+@media (max-width: 600px) {
+  .upcoming-games {
+    min-height: 0;
+  }
+
+}
+
+
 </style>

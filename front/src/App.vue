@@ -159,14 +159,15 @@ const redirectToLogin = async () => {
 
   </head>
   <main v-if="isMobile">
-    <component v-if="$route.name !== 'login'"  :class="{'disable-sidebar': $route.name === 'login'}" class="under-bar" :is="mSidebarView"></component>
     <div class="router-view-container-m">
       <RouterView/>
     </div>
+    <component v-if="$route.name !== 'login'" :class="{'disable-sidebar': $route.name === 'login'}" class="under-bar"
+               :is="mSidebarView"></component>
   </main>
 
   <main v-else class="main-content">
-    <div v-if="$route.name !== 'login'"  :class="{'disable-sidebar': $route.name === 'login'}" class="sidebar">
+    <div v-if="$route.name !== 'login'" :class="{'disable-sidebar': $route.name === 'login'}" class="sidebar">
       <router-link :to="{name : 'home'}">
         <div class="school-info-container">
           <img class="school-profile-img" src="../src/assets/school-profile.jpeg">
@@ -433,8 +434,6 @@ header {
 }
 
 
-
-
 .logout {
   color: #d70000;
   text-align: end;
@@ -447,14 +446,12 @@ header {
   cursor: pointer;
 }
 
-.under-bar {
-  z-index: 2000;
-}
 
 .router-view-container-m {
   width: 100%;
   margin-top: 60px;
   margin-bottom: 60px;
+
   overflow-y: auto; /* 내용이 높이를 초과하면 스크롤바 생성 */
 }
 
@@ -467,6 +464,7 @@ header {
   width: 100%;
   margin: 0;
 }
+
 @media (max-width: 600px) {
 
 }

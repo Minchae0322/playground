@@ -44,6 +44,7 @@ public class RequestInfoDto {
                 .gameName(game.getGameName())
                 .gameId(game.getId())
                 .requestId(requestId)
+                .userProfileImg(userProfileImg)
                 .requestTime(DateFormat.dateFormatYYYYMMDDHHMM(requestTime))
                 .requestType(requestType)
                 .username(user.getNickname())

@@ -1,37 +1,36 @@
 
 <template>
-
   <div class="page-title-container">
     <h2>团队请求</h2>
     <p>Check out our teams request</p>
     <div class="page-title-container-border"></div>
   </div>
-  <div v-if="joinRequests" class="team-requests-container">
+  <div v-if="joinRequests && joinRequests.length >= 1" class="team-requests-container">
     <div v-for="(requests, teamName) in joinRequests" :key="teamName" class="team-request-group">
       <h3>{{ teamName }}</h3>
       <div v-for="request in requests" :key="request.requestId" class="request">
         <div class="request-info-container">
           <div class="user-avatar">
-            <img class="user-profile-img" :src="request.userProfileImg">
+            <img class="user-profile-img-request" :src="request.userProfileImg">
           </div>
-          <div class="user-info" @click="toggleIntroduction(request)">
-            <div class="user-name">{{ request.userName }}</div>
-            <div class="user-requestTime">{{ request.requestTime }}</div>
+          <div class="user-info-request" @click="toggleIntroduction(request)">
+            <div class="user-name-request">{{ request.userName }}</div>
+            <div class="user-requestTime-request">{{ request.requestTime }}</div>
           </div>
-          <div class="toggle-info" @click="toggleIntroduction(request)">点击看介绍 ></div>
-          <div class="actions">
+          <div class="toggle-info-request" @click="toggleIntroduction(request)">点击看介绍 ></div>
+          <div class="actions-request">
             <button @click="rejectRequest(request.requestId)" class="reject">Reject</button>
             <button @click="acceptRequest(request.requestId)" class="accept">Accept</button>
           </div>
         </div>
-        <div v-if="request.isExpanded" class="introduction">
+        <div v-if="request.isExpanded" class="introduction-request">
           <p>介绍 : {{ request.introduction }}</p>
         </div>
       </div>
     </div>
   </div>
   <div v-else>
-    <div class="teamRequest-notExist">没有参加要求.</div>
+    <div class="teamRequest-notExist">没有请求</div>
   </div>
 </template>
 
@@ -177,7 +176,7 @@ const redirectToLogin = function () {
 </script>
 
 
-<style scoped>
+<style>
 .team-requests-container {
   min-width: 1100px;
   width: 90%;
@@ -186,11 +185,6 @@ const redirectToLogin = function () {
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-h2 {
-  text-align: center;
-  color: #333;
 }
 
 .team-request-group {
@@ -220,7 +214,7 @@ h2 {
 }
 
 
-.user-profile-img {
+.user-profile-img-request {
   width: 50px;
   height: 50px;
   background-color: #ddd;
@@ -229,22 +223,22 @@ h2 {
   margin-right: 15px;
 }
 
-.user-info {
+.user-info-request {
   flex-grow: 1;
 }
 
-.user-name {
+.user-name-request {
   font-family: MiSans-Semibold,sans-serif;
   color: var(--text-black);
 }
 
-.user-role {
+.user-role-request {
   color: var(--text-hint);
   font-size: 12px;
   font-family: MiSans-Normal,sans-serif;
 }
 
-.toggle-info {
+.toggle-info-request {
   font-size: 9px;
   color: var(--text-hint);
   display: flex;
@@ -257,7 +251,7 @@ h2 {
   cursor: pointer;
 }
 
-.introduction {
+.introduction-request {
   padding: 10px 10px 10px 20px;
   width: 100%;
   margin-top: 10px;
@@ -313,7 +307,7 @@ h2 {
     margin: 0 auto;
   }
 
-  .toggle-info {
+  .toggle-info-request {
     text-align: start;
   }
 

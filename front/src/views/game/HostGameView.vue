@@ -398,7 +398,6 @@ a {
 
 .game-type {
   color: #eab800;
-
   font-size: 19px;
   margin: auto 10px;
 }
@@ -444,6 +443,33 @@ a {
     min-width: 400px;
     width: 100%;
     margin: 15px auto;
+  }
+
+  .date-selector {
+    min-width: 300px;
+    width: 100%;
+  }
+
+  .game-title {
+    font-size: 20px;
+    margin: auto 0;
+  }
+
+  .game-date {
+    font-size: 16px;
+  }
+
+  .game-type {
+    font-size: 17px;
+
+  }
+
+  .game-time {
+    font-size: 16px;
+  }
+
+  .host {
+    font-size: 12px;
   }
 
 }

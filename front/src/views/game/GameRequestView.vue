@@ -1,12 +1,46 @@
 <template>
-  <main class="main-container">
 
-    <!-- ...other components... -->
+  <div class="page-title-container">
+    <h2>比赛请求</h2>
+    <p>Check out our games request</p>
+    <div class="page-title-container-border"></div>
+  </div>
+  <div v-if="pendingRequests && pendingRequests.length >= 1" class="team-requests-container">
+    <div v-for="request in pendingRequests" :key="request.id" class="team-request-group">
+      <h3>{{ request.gameName }}</h3>
 
-    <!-- Table container -->
+      <div class="request-info-container">
+        <div class="user-avatar">
+          <img class="user-profile-img-request" :src="request.userProfileImg">
+        </div>
+        <div class="user-info-request" >
+          <div class="user-name-request">{{ request.userName }}</div>
+          <div class="user-requestTime-request">{{ request.requestTime }}</div>
+        </div>
+        <div class="actions-request">
+          <button class="reject">Reject</button>
+          <button @click="acceptRequest(request.requestId, request.requestType)" class="accept">Accept</button>
+        </div>
+      </div>
+      <div v-if="request.isExpanded" class="introduction-request">
+        <p>介绍 : {{ request.introduction }}</p>
+      </div>
+    </div>
+  </div>
+  <div v-else>
+    <div class="teamRequest-notExist">没有请求</div>
+  </div>
+
+
+<!--  <main class="main-container">
+
+
+    &lt;!&ndash; ...other components... &ndash;&gt;
+
+    &lt;!&ndash; Table container &ndash;&gt;
     <div class="table-container">
       <table class="table">
-        <!-- Table Head -->
+        &lt;!&ndash; Table Head &ndash;&gt;
         <thead>
         <tr>
           <th>게임</th>
@@ -16,7 +50,7 @@
           <th>Actions</th>
         </tr>
         </thead>
-        <!-- Table Body -->
+        &lt;!&ndash; Table Body &ndash;&gt;
         <tbody>
         <tr v-for="request in pendingRequests" :key="request.requestId"
             :class="{'solo-game': request.requestType === 'soloGameJoin',
@@ -29,14 +63,16 @@
           <td>{{ request.requestType }}</td>
           <td>{{ request.requestTime }}</td>
           <td class="action-buttons">
-<!--            <button class="action-button action-button-reject" @click="rejectRequest(request.requestId, request.requestType)">Reject</button>-->
-            <button class="action-button action-button-accept" @click="acceptRequest(request.requestId, request.requestType)">Accept</button>
+            &lt;!&ndash;            <button class="action-button action-button-reject" @click="rejectRequest(request.requestId, request.requestType)">Reject</button>&ndash;&gt;
+            <button class="action-button action-button-accept"
+                    @click="acceptRequest(request.requestId, request.requestType)">Accept
+            </button>
           </td>
         </tr>
         </tbody>
       </table>
     </div>
-  </main>
+  </main>-->
 </template>
 
 <script setup>
@@ -45,6 +81,7 @@ import axios from 'axios';
 import {useRouter} from "vue-router";
 import router from "@/router";
 import UserInfoView from '../UserInfoView.vue'
+import defaultImage from "@/assets/img.png";
 
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
@@ -53,9 +90,10 @@ const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseU
 const pendingRequests = ref([]);
 
 onMounted(() => {
-  fetchPendingRequests('teamGameJoin')
-  fetchPendingRequests('teamGameRegistration')
-  fetchPendingRequests('soloGameJoin')
+  fetchPendingRequests('friendlyGameJoin')
+ // fetchPendingRequests('teamGameJoin')
+  //fetchPendingRequests('teamGameRegistration')
+  //fetchPendingRequests('soloGameJoin')
 })
 
 
@@ -63,12 +101,16 @@ onMounted(() => {
 const fetchPendingRequests = async (requestType) => {
   await validateAccessToken()
   try {
-    const response = await axios.get(`${apiBaseUrl}/user/pending/request`, {
+    const response = await axios.post(`${apiBaseUrl}/user/pending/request/game/${requestType}`, {}, {
       headers: {
         'Authorization': getAccessToken()
       }
     });
     pendingRequests.value = response.data; // Assuming the data is directly the list of requests
+    pendingRequests.value = response.data.map(request => ({
+      ...request,
+      userProfileImg: request.userProfileImg ? `data:image/jpeg;base64, ${request.userProfileImg}` : defaultImage,
+    }));
   } catch (error) {
     console.error("There was an error fetching the pending requests: ", error);
     // Handle error appropriately
@@ -144,7 +186,7 @@ const updateAccessToken = async function () {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
-      headers: { 'RefreshToken': refreshToken }
+      headers: {'RefreshToken': refreshToken}
     });
     if (response.status === 200) {
       const newAccessToken = response.headers['authorization'];
@@ -162,11 +204,12 @@ const redirectToLogin = function () {
 
 </script>
 
-<style scoped>
-
-a{
+<style >
+/*
+a {
   text-decoration: none;
 }
+
 .main-container {
   width: 80%;
   padding: 16px;
@@ -176,120 +219,118 @@ a{
 }
 
 
-
-
-/* Different background colors for each request type */
+!* Different background colors for each request type *!
 .solo-game {
-  background-color: #e0f7fa; /* Light blue for solo game join requests */
+  background-color: #e0f7fa; !* Light blue for solo game join requests *!
 }
 
 .team-game {
-  background-color: #e8f5e9; /* Light green for team game join requests */
+  background-color: #e8f5e9; !* Light green for team game join requests *!
 }
 
 .registration-game {
-  background-color: #fff3e0; /* Light orange for game registration requests */
+  background-color: #fff3e0; !* Light orange for game registration requests *!
 }
 
-/* 검색 및 정렬 섹션 스타일 */
+!* 검색 및 정렬 섹션 스타일 *!
 .search-and-sort {
   display: flex;
   justify-content: space-between;
   margin-bottom: 16px;
 }
 
-/* 검색 입력 필드 스타일 */
+!* 검색 입력 필드 스타일 *!
 .search-input {
-  width: calc(100% - 100px); /* 정렬 버튼의 공간을 고려하여 너비를 조정 */
+  width: calc(100% - 100px); !* 정렬 버튼의 공간을 고려하여 너비를 조정 *!
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-right: 10px; /* 정렬 버튼과의 간격 */
+  margin-right: 10px; !* 정렬 버튼과의 간격 *!
 }
 
-/* 정렬 버튼 스타일 */
+!* 정렬 버튼 스타일 *!
 .sort-button {
   background-color: #f0f0f0;
   border: 1px solid #ccc;
-  padding: 8px 16px; /* 좌우 패딩을 늘려서 버튼을 더 커 보이게 함 */
+  padding: 8px 16px; !* 좌우 패딩을 늘려서 버튼을 더 커 보이게 함 *!
   border-radius: 4px;
   cursor: pointer;
   display: flex;
   align-items: center;
 }
 
-/* 테이블 컨테이너 스타일 */
+!* 테이블 컨테이너 스타일 *!
 .table-container {
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow-x: auto;
 }
 
-/* 테이블 스타일 */
+!* 테이블 스타일 *!
 .table {
   width: 100%;
   border-collapse: collapse;
-  table-layout: fixed; /* 컬럼 너비를 고정하기 위한 스타일 */
+  table-layout: fixed; !* 컬럼 너비를 고정하기 위한 스타일 *!
 }
 
-/* 테이블 헤더 스타일 */
+!* 테이블 헤더 스타일 *!
 .table thead th {
   background-color: #f9f9f9;
   padding: 12px;
-  color:black;
+  color: black;
   font-weight: bold;
-  padding-left: 24px; /* 기존 padding 값에 더하여 내용을 오른쪽으로 이동 */
+  padding-left: 24px; !* 기존 padding 값에 더하여 내용을 오른쪽으로 이동 *!
   font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
-  border-bottom: 2px solid #eee; /* 테두리를 좀 더 두껍게 조정 */
+  border-bottom: 2px solid #eee; !* 테두리를 좀 더 두껍게 조정 *!
   text-align: left;
 }
 
-/* 테이블 바디 스타일 */
+!* 테이블 바디 스타일 *!
 .table tbody td {
-  padding: 16px; /* 패딩을 더 크게 조정 */
-  border-bottom: 1px solid #eee; /* 테두리 색상을 조정 */
+  padding: 16px; !* 패딩을 더 크게 조정 *!
+  border-bottom: 1px solid #eee; !* 테두리 색상을 조정 *!
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  font-size: 14px; /* 글자 크기 조정 */
-  color: #333; /* 글자 색상 조정 */
+  font-size: 14px; !* 글자 크기 조정 *!
+  color: #333; !* 글자 색상 조정 *!
 }
 
 
-
-/* 액션 버튼 스타일 */
+!* 액션 버튼 스타일 *!
 .action-buttons button {
-  padding: 8px 16px; /* 버튼 패딩 조정 */
-  margin-right: 8px; /* 버튼 사이 간격 조정 */
-  border: none; /* 테두리 제거 */
-  border-radius: 4px; /* 둥근 모서리 */
-  color: white; /* 텍스트 색상 흰색 */
-  font-size: 14px; /* 글자 크기 조정 */
-  font-weight: 500; /* 글자 무게 조정 */
+  padding: 8px 16px; !* 버튼 패딩 조정 *!
+  margin-right: 8px; !* 버튼 사이 간격 조정 *!
+  border: none; !* 테두리 제거 *!
+  border-radius: 4px; !* 둥근 모서리 *!
+  color: white; !* 텍스트 색상 흰색 *!
+  font-size: 14px; !* 글자 크기 조정 *!
+  font-weight: 500; !* 글자 무게 조정 *!
   cursor: pointer;
-  outline: none; /* 외곽선 제거 */
-  box-shadow: none; /* 그림자 제거 */
+  outline: none; !* 외곽선 제거 *!
+  box-shadow: none; !* 그림자 제거 *!
 }
 
 .action-button-reject {
-  background-color: #F87171; /* 빨간색 배경 */
+  background-color: #F87171; !* 빨간색 배경 *!
 }
 
 .action-button-accept {
-  background-color: #34D399; /* 녹색 배경 */
+  background-color: #34D399; !* 녹색 배경 *!
 }
 
 .action-button:hover {
   opacity: 0.8;
 }
 
-/* 반응형 디자인 */
+!* 반응형 디자인 *!
 @media (max-width: 768px) {
   .main-container {
     width: 100%;
   }
-}
+}*/
+
 
 </style>

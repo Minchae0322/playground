@@ -278,11 +278,12 @@ td {
 .button-teamJoin-teamInfo {
   background: var(--accent-color);
   border: none;
-  padding: 10px 40px; /* 버튼 패딩 조정 */
+  padding: 10px 20px; /* 버튼 패딩 조정 */
   color: white; /* 텍스트 색상 */
   border-radius: 4px;
+  width: 200px;
   margin: 10px 18px 10px auto;
-  text-align: left; /* 왼쪽 정렬 */
+  text-align: center; /* 왼쪽 정렬 */
 }
 
 .button-teamJoin-teamInfo:hover {
@@ -437,6 +438,10 @@ td {
   .button-teamJoin-teamInfo {
     padding: 10px 20px;
     margin: 0 0 0 auto;
+  }
+
+  .button-teamJoin-teamInfo {
+    width: 120px;
   }
 
 }

@@ -360,13 +360,43 @@ const redirectToLogin = function () {
 @media (max-width: 600px) {
   .section {
     min-width: 400px;
-    width: 100%;
+    width: 95%;
     margin: 15px auto;
   }
   .content {
     display: flex;
     flex-direction: column;
+
   }
+
+  .date-selector {
+    min-width: 300px;
+    margin: 0;
+    width: 90%;
+  }
+
+  .game-title {
+    font-size: 20px;
+    margin: auto 0;
+  }
+
+  .game-date {
+    font-size: 16px;
+  }
+
+  .game-type {
+    font-size: 17px;
+
+  }
+
+  .game-time {
+    font-size: 16px;
+  }
+
+  .host {
+    font-size: 12px;
+  }
+
 
 
 

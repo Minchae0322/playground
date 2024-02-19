@@ -3,6 +3,7 @@ package com.example.playgroundmanage.request.vo;
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -46,7 +47,7 @@ public abstract class GameRequest extends Request {
         this.requestTime = requestTime;
     }
 
-    public abstract RequestInfoDto toGameRequestInfoDto();
+    public abstract RequestInfoDto toGameRequestInfoDto(InMemoryMultipartFile inMemoryMultipartFile);
 
     /*public GameRequestDto toGameRequestDto() {
         GameRequestDto gameRequestDto = GameRequestDto.builder()

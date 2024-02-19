@@ -17,6 +17,7 @@ import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.request.vo.impl.FriendlyGameJoinRequest;
 import com.example.playgroundmanage.request.vo.impl.SoloGameJoinRequest;
+import com.example.playgroundmanage.store.FileHandler;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,9 +39,10 @@ public class FriendlyGameJoinRequestService implements RequestService {
 
     private final GameParticipantRepository gameParticipantRepository;
 
+    private final FileHandler fileHandler;
     @Override
     public String getRequestType() {
-        return "FriendlyGameJoin";
+        return "friendlyGameJoin";
     }
 
     @Override
@@ -81,7 +83,7 @@ public class FriendlyGameJoinRequestService implements RequestService {
                 .toList();
 
         return friendlyGameJoinRequests.stream()
-                .map(FriendlyGameJoinRequest::toGameRequestInfoDto)
+                .map(friendly -> friendly.toGameRequestInfoDto(fileHandler.extractFile(friendly.getUser().getProfileImg())))
                 .toList();
     }
 

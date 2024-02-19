@@ -47,7 +47,7 @@ public class GameManagementService {
     }
 
 
-    @Transactional
+   /* @Transactional
     public List<RequestInfoDto> getPendingGameRequests(User host) {
         List<GameRequest> pendingRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(host, LocalDateTime.now());
 
@@ -63,5 +63,5 @@ public class GameManagementService {
         return pendingRequests.stream()
                 .map(GameRequest::toGameRequestInfoDto)
                 .toList();
-    }
+    }*/
 }

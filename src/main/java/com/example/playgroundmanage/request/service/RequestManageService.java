@@ -18,12 +18,12 @@ public class RequestManageService {
 
     private final GameRequestRepository gameRequestRepository;
 
-    @Transactional
+  /*  @Transactional
     public List<RequestInfoDto> getAllPendingRequestByHost(User host) {
         List<GameRequest> gameRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(host, LocalDateTime.now());
 
         return gameRequests.stream()
                 .map(GameRequest::toGameRequestInfoDto)
                 .toList();
-    }
+    }*/
 }

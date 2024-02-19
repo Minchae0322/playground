@@ -5,6 +5,7 @@ import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.persistence.Entity;
 import lombok.*;
@@ -27,12 +28,13 @@ public class SoloGameJoinRequest extends GameRequest {
 
 
     @Override
-    public RequestInfoDto toGameRequestInfoDto() {
+    public RequestInfoDto toGameRequestInfoDto(InMemoryMultipartFile inMemoryMultipartFile) {
         return RequestInfoDto.builder()
                 .game(getGame())
                 .requestId(getId())
                 .requestType("soloGameJoin")
                 .user(getUser())
+                .userProfileImg(inMemoryMultipartFile)
                 .gameTeamSide(getGameTeamSide())
                 .requestTime(getRequestTime())
                 .build();

@@ -81,7 +81,8 @@ const participants = ref([{
 const emits = defineEmits(['goBack']);
 
 onMounted(async () => {
-  await getTeamData("NONE", 'Friendly')
+  await getTeamData("NONE", 'F' +
+      'Friendly')
 });
 
 const getTeamData = async (matchTeamSide, gameType) => {
@@ -117,7 +118,7 @@ const sendFriendlyGameJoinRequest = async () => {
   }
   await validateAccessToken();
   try {
-    const response = await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/FriendlyGameJoin`, {
+    const response = await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/friendlyGameJoin`, {
           gameTeamSide: 'NONE',
         },
         {

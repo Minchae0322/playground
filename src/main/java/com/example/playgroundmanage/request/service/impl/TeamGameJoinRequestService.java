@@ -14,6 +14,7 @@ import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.request.vo.impl.TeamGameJoinRequest;
 import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.request.vo.GameRequest;
+import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.team.TeamSelector;
 import com.example.playgroundmanage.team.TeamValidation;
@@ -45,6 +46,7 @@ public class TeamGameJoinRequestService implements RequestService {
 
     private final GameRequestRepository gameRequestRepository;
 
+    private final FileHandler fileHandler;
 
     @Override
     public String getRequestType() {
@@ -59,7 +61,7 @@ public class TeamGameJoinRequestService implements RequestService {
         return gameRequests.stream()
                 .filter(TeamGameJoinRequest.class::isInstance)
                 .map(TeamGameJoinRequest.class::cast)
-                .map(TeamGameJoinRequest::toGameRequestInfoDto)
+                .map(join -> join.toGameRequestInfoDto(fileHandler.extractFile(join.getUser().getProfileImg())))
                 .toList();
     }
 

@@ -4,6 +4,7 @@ package com.example.playgroundmanage.request.vo.impl;
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.request.vo.GameRequest;
+import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -30,10 +31,11 @@ public class TeamGameJoinRequest extends GameRequest {
     }
 
     @Override
-    public RequestInfoDto toGameRequestInfoDto() {
+    public RequestInfoDto toGameRequestInfoDto(InMemoryMultipartFile inMemoryMultipartFile) {
         return RequestInfoDto.builder()
                 .game(getGame())
                 .requestId(getId())
+                .userProfileImg(inMemoryMultipartFile)
                 .requestType("teamGameJoin")
                 .user(getUser())
                 .subTeam(subTeam)
@@ -41,4 +43,5 @@ public class TeamGameJoinRequest extends GameRequest {
                 .requestTime(getRequestTime())
                 .build();
     }
+
 }

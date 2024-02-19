@@ -14,6 +14,7 @@ import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.request.vo.impl.TeamGameRegistrationRequest;
 import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.request.vo.GameRequest;
+import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.team.TeamSelector;
 import jakarta.transaction.Transactional;
@@ -42,6 +43,8 @@ public class TeamGameRegistrationRequestService implements RequestService {
     private final GameParticipantRepository gameParticipantRepository;
 
     private final GameRequestRepository gameRequestRepository;
+
+    private final FileHandler fileHandler;
 
 
     @Override
@@ -92,7 +95,7 @@ public class TeamGameRegistrationRequestService implements RequestService {
         return gameRequests.stream()
                 .filter(TeamGameRegistrationRequest.class::isInstance)
                 .map(TeamGameRegistrationRequest.class::cast)
-                .map(TeamGameRegistrationRequest::toGameRequestInfoDto)
+                .map(registration -> registration.toGameRequestInfoDto(fileHandler.extractFile(registration.getUser().getProfileImg())))
                 .toList();
     }
 
