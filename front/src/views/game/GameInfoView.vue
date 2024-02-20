@@ -853,9 +853,7 @@ a {
 }
 
 .close-marker {
-  position: absolute; /* 절대 위치 설정 */
-  top: 0; /* 상단에 붙임 */
-  right: 0; /* 우측에 붙임 */
+  position: relative; /* 절대 위치 설정 */
   cursor: pointer; /* 마우스 포인터 스타일 변경 */
   /* 필요한 추가 스타일 */
 }

@@ -30,7 +30,9 @@
         <div class="line"></div>
         <div class="participant-container">
           <div class="team-member" v-for="(participant, userId) in participants" :key="participant.userId">
-            <div v-if="participant.userId === loggedInUserId" class="close-marker" @click="clickOutOfGame">X</div>
+<!--            <div v-if="participant.userId === loggedInUserId" class="close-marker"
+                 @click="clickOutOfGame()">X
+            </div>-->
             <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
             <p class="nickname-container-nickname-userInfo">{{ participant.userNickname }}</p>
             <p class="user-role">个人</p>
@@ -65,6 +67,7 @@ import {defineProps} from 'vue';
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 const router = useRouter();
+const loggedInUserId = ref('');
 
 const props = defineProps({
   game: {
@@ -83,6 +86,7 @@ const emits = defineEmits(['goBack']);
 onMounted(async () => {
   await getTeamData("NONE",
       'Friendly')
+  await getLoggedUserId()
 });
 
 const getTeamData = async (matchTeamSide, gameType) => {
@@ -110,6 +114,46 @@ const getTeamData = async (matchTeamSide, gameType) => {
 function goBack() {
   emits('goBack'); // 부모 컴포넌트에게 뒤로가기 이벤트 전달
 }
+
+
+const getLoggedUserId = async () => {
+  await validateAccessToken();
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/user/profile`,
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        });
+    loggedInUserId.value = response.data.userId;
+    // 서버에서 성공 응답을 받았을 때의 처리를 이곳에 추가할 수 있습니다.
+  } catch (error) {
+    showErrorMessage(error)
+  }
+};
+
+const clickOutOfGame = async () => {
+  const isConfirm = confirm("确定要退出吗？")
+  if(!isConfirm) {
+    return
+  }
+  await validateAccessToken();
+  try {
+    await axios.delete(`${apiBaseUrl}/game/${props.game.gameId}/${subTeamId}/out`,
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
+    )
+    alert("退出成功")
+    await getTeamData("NONE",
+        'Friendly')
+  } catch (error) {
+    alert(error.response.data.message)
+  }
+};
 
 const sendFriendlyGameJoinRequest = async () => {
   const isConfirm = confirm("진행하시겠습니까?")
@@ -396,6 +440,10 @@ const redirectToLogin = function () {
   background-color: var(--secondary-color)
 }
 
-
+.close-marker {
+  position: relative; /* 절대 위치 설정 */
+  cursor: pointer; /* 마우스 포인터 스타일 변경 */
+  /* 필요한 추가 스타일 */
+}
 
 </style>

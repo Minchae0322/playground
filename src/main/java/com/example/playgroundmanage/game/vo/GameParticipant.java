@@ -63,7 +63,7 @@ public class GameParticipant {
     public UserInfoDto toUserInfoDto(InMemoryMultipartFile inMemoryMultipartFile) {
         return UserInfoDto.builder()
                 .userNickname(user.getNickname())
-                .userId(id)
+                .userId(user.getId())
                 .userProfileImg(inMemoryMultipartFile)
                 .build();
     }

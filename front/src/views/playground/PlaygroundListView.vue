@@ -24,7 +24,7 @@
       <div class="game-card-mini" v-for="game in upcomingGames" :key="game.id">
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="game-card-mini-title">{{ game.gameName }} ({{ game.gameStart }})</div>
+          <div class="game-card-mini-title">{{ game.gameName }} [{{ game.gameStart }}]</div>
           <div class="game-card-mini-info-container">
             <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
             <div>主持人: {{ game.hostName }}</div>
@@ -48,7 +48,6 @@
                    src="@/assets/icon-location-black.png">
               <div class="location-text">{{ info.campusName }}</div>
           </div>
-
         </div>
       </div>
       <div class="card-body">
@@ -343,7 +342,7 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
 
 
 .card-header {
-  padding: 20px;
+  padding: 15px 20px 5px 20px;
   border-bottom: 1px solid #eee; /* 헤더 하단 선 */
 }
 
@@ -363,6 +362,7 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
 }
 
 .playground-info-container {
+
   font-size: 13px;
   color: var(--text-hint);
 
@@ -383,7 +383,7 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
 }
 
 .sports-event-img {
-  width: 30px;
+  width: 20px;
   margin-right: 5px;
 }
 
@@ -394,9 +394,9 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
 
 
 .location-img-playgroundList {
-  width: 20px;
+  width: 15px;
   margin: auto 0 auto 10px;
-  height: 20px;
+  height: 15px;
 }
 
 .location-text {
