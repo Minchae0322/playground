@@ -40,10 +40,16 @@
         <img :src="info.playgroundProfileImg" alt="game image" class="game-image"/>
         <div class="playground-name">{{ info.playgroundName }}</div>
         <div class="playground-info-container">
-          <div>{{ info.sportsEvent }}</div>
-          <div>{{ info.campusName }}</div>
-        </div>
+          <div class="sports-event-playgroundList">
+            <img class="sports-event-img"
+                 src="@/assets/icon-olympic.png">
+            <div class="sports-event-text">{{ info.sportsEvent }}</div>
+              <img class="location-img-playgroundList"
+                   src="@/assets/icon-location-black.png">
+              <div class="location-text">{{ info.campusName }}</div>
+          </div>
 
+        </div>
       </div>
       <div class="card-body">
         <div class="game-info-container">
@@ -344,7 +350,7 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
 .game-image {
   width: 100%;
   height: 100%; /* 높이를 자동으로 설정하여 원본 이미지 비율 유지 */
-  aspect-ratio: 18 / 10; /* 18:9 비율로 설정 */
+  aspect-ratio: 18 / 12; /* 18:9 비율로 설정 */
   object-fit: cover; /* 이미지가 지정된 비율에 맞도록 조정 */
   opacity: 0.7; /* 이미지 투명도 */
 
@@ -370,6 +376,33 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
   font-size: 11px
 }
 
+.sports-event-playgroundList {
+  display: flex;
+  margin: auto 0;
+
+}
+
+.sports-event-img {
+  width: 30px;
+  margin-right: 5px;
+}
+
+.sports-event-text {
+  margin: auto 0;
+  color: black;
+}
+
+
+.location-img-playgroundList {
+  width: 20px;
+  margin: auto 0 auto 10px;
+  height: 20px;
+}
+
+.location-text {
+  margin: auto 0;
+  color: black;
+}
 
 .card-body {
   padding: 10px;

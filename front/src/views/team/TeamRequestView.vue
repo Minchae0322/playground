@@ -188,13 +188,12 @@ const redirectToLogin = function () {
 }
 
 .team-request-group {
-  border-top: 1px solid #ccc;
   padding-top: 20px;
 }
 
 .team-request-group h3 {
   color: var(--text-black);
-  margin-bottom: 20px;
+  margin-bottom: 10px;
   font-size: 21px;
   font-family: MiSans-Heavy,sans-serif;
 }
@@ -294,6 +293,7 @@ const redirectToLogin = function () {
 .teamRequest-notExist {
   text-align: center;
   width: 100%;
+  font-family: MiSans-Normal,sans-serif;
   color: var(--text-black);
   margin-top: 250px;
   align-content: center;

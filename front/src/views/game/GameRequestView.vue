@@ -8,71 +8,29 @@
   <div v-if="pendingRequests && pendingRequests.length >= 1" class="team-requests-container">
     <div v-for="request in pendingRequests" :key="request.id" class="team-request-group">
       <h3>{{ request.gameName }}</h3>
-
       <div class="request-info-container">
         <div class="user-avatar">
           <img class="user-profile-img-request" :src="request.userProfileImg">
         </div>
-        <div class="user-info-request" >
-          <div class="user-name-request">{{ request.userName }}</div>
+        <div class="user-info-request">
+          <div class="user-name-request">{{ request.username }}</div>
           <div class="user-requestTime-request">{{ request.requestTime }}</div>
+          <div class="user-requestType-request">{{ request.requestType_cn }}</div>
         </div>
         <div class="actions-request">
           <button class="reject">Reject</button>
           <button @click="acceptRequest(request.requestId, request.requestType)" class="accept">Accept</button>
         </div>
       </div>
-      <div v-if="request.isExpanded" class="introduction-request">
-        <p>介绍 : {{ request.introduction }}</p>
+      <div class="request-border">
+        <hr>
       </div>
     </div>
+
   </div>
   <div v-else>
     <div class="teamRequest-notExist">没有请求</div>
   </div>
-
-
-<!--  <main class="main-container">
-
-
-    &lt;!&ndash; ...other components... &ndash;&gt;
-
-    &lt;!&ndash; Table container &ndash;&gt;
-    <div class="table-container">
-      <table class="table">
-        &lt;!&ndash; Table Head &ndash;&gt;
-        <thead>
-        <tr>
-          <th>게임</th>
-          <th>참가자</th>
-          <th>Request Type</th>
-          <th>요청시간</th>
-          <th>Actions</th>
-        </tr>
-        </thead>
-        &lt;!&ndash; Table Body &ndash;&gt;
-        <tbody>
-        <tr v-for="request in pendingRequests" :key="request.requestId"
-            :class="{'solo-game': request.requestType === 'soloGameJoin',
-               'team-game': request.requestType === 'teamGameJoin',
-               'registration-game': request.requestType === 'teamGameRegistration'}">
-          <router-link :to="{ name:'gameInfo', params: { gameId: request.gameId } }">
-            <td>{{ request.gameName }}</td>
-          </router-link>
-          <td>{{ request.username }}</td>
-          <td>{{ request.requestType }}</td>
-          <td>{{ request.requestTime }}</td>
-          <td class="action-buttons">
-            &lt;!&ndash;            <button class="action-button action-button-reject" @click="rejectRequest(request.requestId, request.requestType)">Reject</button>&ndash;&gt;
-            <button class="action-button action-button-accept"
-                    @click="acceptRequest(request.requestId, request.requestType)">Accept
-            </button>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-  </main>-->
 </template>
 
 <script setup>
@@ -90,30 +48,42 @@ const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseU
 const pendingRequests = ref([]);
 
 onMounted(() => {
-  fetchPendingRequests('friendlyGameJoin')
- // fetchPendingRequests('teamGameJoin')
-  //fetchPendingRequests('teamGameRegistration')
-  //fetchPendingRequests('soloGameJoin')
+  fetchPendingRequests()
 })
 
 
 // Fetch data from server
-const fetchPendingRequests = async (requestType) => {
+const fetchPendingRequests = async () => {
   await validateAccessToken()
   try {
-    const response = await axios.post(`${apiBaseUrl}/user/pending/request/game/${requestType}`, {}, {
+    const response = await axios.get(`${apiBaseUrl}/user/pending/request/game`,  {
       headers: {
         'Authorization': getAccessToken()
       }
     });
     pendingRequests.value = response.data; // Assuming the data is directly the list of requests
-    pendingRequests.value = response.data.map(request => ({
-      ...request,
-      userProfileImg: request.userProfileImg ? `data:image/jpeg;base64, ${request.userProfileImg}` : defaultImage,
-    }));
+    pendingRequests.value = response.data.map(request => {
+      updateRequestType(request, request.requestType);
+      return {
+        ...request,
+        userProfileImg: request.userProfileImg ? `data:image/jpeg;base64, ${request.userProfileImg}` : defaultImage,
+      };
+    });
   } catch (error) {
     console.error("There was an error fetching the pending requests: ", error);
     // Handle error appropriately
+  }
+};
+
+const updateRequestType = (request, type) => {
+  if (type === 'friendlyGameJoin') {
+    request.requestType_cn = '友谊赛';
+  } else if (type === 'soloGameJoin') {
+    request.requestType_cn = '竞争赛个人';
+  } else if(type === 'teamGameRegistration') {
+    request.requestType_cn = '竞争赛组队';
+  } else if(type === 'teamGameJoin') {
+    request.requestType_cn = '竞争赛加入团队';
   }
 };
 
@@ -204,133 +174,14 @@ const redirectToLogin = function () {
 
 </script>
 
-<style >
-/*
-a {
-  text-decoration: none;
+<style>
+.request-border {
+  margin: 10px 0;
+
 }
 
-.main-container {
-  width: 80%;
-  padding: 16px;
-  height: 100%;
-  margin: auto;
-  box-sizing: border-box;
+.user-requestType-request {
+  color: #00b7ff;
 }
-
-
-!* Different background colors for each request type *!
-.solo-game {
-  background-color: #e0f7fa; !* Light blue for solo game join requests *!
-}
-
-.team-game {
-  background-color: #e8f5e9; !* Light green for team game join requests *!
-}
-
-.registration-game {
-  background-color: #fff3e0; !* Light orange for game registration requests *!
-}
-
-!* 검색 및 정렬 섹션 스타일 *!
-.search-and-sort {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
-}
-
-!* 검색 입력 필드 스타일 *!
-.search-input {
-  width: calc(100% - 100px); !* 정렬 버튼의 공간을 고려하여 너비를 조정 *!
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-right: 10px; !* 정렬 버튼과의 간격 *!
-}
-
-!* 정렬 버튼 스타일 *!
-.sort-button {
-  background-color: #f0f0f0;
-  border: 1px solid #ccc;
-  padding: 8px 16px; !* 좌우 패딩을 늘려서 버튼을 더 커 보이게 함 *!
-  border-radius: 4px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-}
-
-!* 테이블 컨테이너 스타일 *!
-.table-container {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  overflow-x: auto;
-}
-
-!* 테이블 스타일 *!
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: fixed; !* 컬럼 너비를 고정하기 위한 스타일 *!
-}
-
-!* 테이블 헤더 스타일 *!
-.table thead th {
-  background-color: #f9f9f9;
-  padding: 12px;
-  color: black;
-  font-weight: bold;
-  padding-left: 24px; !* 기존 padding 값에 더하여 내용을 오른쪽으로 이동 *!
-  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
-  border-bottom: 2px solid #eee; !* 테두리를 좀 더 두껍게 조정 *!
-  text-align: left;
-}
-
-!* 테이블 바디 스타일 *!
-.table tbody td {
-  padding: 16px; !* 패딩을 더 크게 조정 *!
-  border-bottom: 1px solid #eee; !* 테두리 색상을 조정 *!
-  text-overflow: ellipsis;
-  overflow: hidden;
-  white-space: nowrap;
-  font-size: 14px; !* 글자 크기 조정 *!
-  color: #333; !* 글자 색상 조정 *!
-}
-
-
-!* 액션 버튼 스타일 *!
-.action-buttons button {
-  padding: 8px 16px; !* 버튼 패딩 조정 *!
-  margin-right: 8px; !* 버튼 사이 간격 조정 *!
-  border: none; !* 테두리 제거 *!
-  border-radius: 4px; !* 둥근 모서리 *!
-  color: white; !* 텍스트 색상 흰색 *!
-  font-size: 14px; !* 글자 크기 조정 *!
-  font-weight: 500; !* 글자 무게 조정 *!
-  cursor: pointer;
-  outline: none; !* 외곽선 제거 *!
-  box-shadow: none; !* 그림자 제거 *!
-}
-
-.action-button-reject {
-  background-color: #F87171; !* 빨간색 배경 *!
-}
-
-.action-button-accept {
-  background-color: #34D399; !* 녹색 배경 *!
-}
-
-.action-button:hover {
-  opacity: 0.8;
-}
-
-!* 반응형 디자인 *!
-@media (max-width: 768px) {
-  .main-container {
-    width: 100%;
-  }
-}*/
-
 
 </style>

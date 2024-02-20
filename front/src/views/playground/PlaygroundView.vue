@@ -364,13 +364,13 @@ const redirectToLogin = function () {
 }
 
 .game-card {
-
+  width: 90%;
   display: flex;
   border: 1px solid #ddd;
   padding: 15px 20px;
   font-size: 0.875rem;
   color: #666;
-  margin-top: 0.5rem;
+  margin: 10px auto;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05); /* 그림자를 더 부드럽게 조정 */
   border-radius: 8px;

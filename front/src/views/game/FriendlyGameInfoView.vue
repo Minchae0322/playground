@@ -81,7 +81,7 @@ const participants = ref([{
 const emits = defineEmits(['goBack']);
 
 onMounted(async () => {
-  await getTeamData("NONE", 'F' +
+  await getTeamData("NONE",
       'Friendly')
 });
 

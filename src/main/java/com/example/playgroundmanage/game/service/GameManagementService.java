@@ -6,6 +6,7 @@ import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.request.vo.GameRequest;
+import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.transaction.Transactional;
@@ -24,6 +25,9 @@ public class GameManagementService {
     private final GameRequestRepository gameRequestRepository;
 
     private final TeamRequestRepository teamRequestRepository;
+
+    private final FileHandler fileHandler;
+
     private final GameParticipantRepository gameParticipantRepository;
 
     public void deletePreviousGameRequest(Game game, User user) {
@@ -46,16 +50,16 @@ public class GameManagementService {
                 .ifPresent(gameRequestRepository::delete);
     }
 
-
-   /* @Transactional
+ @Transactional
     public List<RequestInfoDto> getPendingGameRequests(User host) {
         List<GameRequest> pendingRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(host, LocalDateTime.now());
 
         return pendingRequests.stream()
-                .map(GameRequest::toGameRequestInfoDto)
+                .map(gameRequest ->  gameRequest.toGameRequestInfoDto(fileHandler.extractFile(gameRequest.getUser().getProfileImg())))
                 .toList();
     }
 
+   /*
     @Transactional
     public List<RequestInfoDto> getPendingTeamGameJoinRequests(User user) {
         List<GameRequest> pendingRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(user, LocalDateTime.now());

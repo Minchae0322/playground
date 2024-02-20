@@ -158,7 +158,7 @@ public class PlaygroundService {
                         .playgroundId(playground.getId())
                         .playgroundName(playground.getName())
                         .upcomingGameNum(getUpcomingGames(playground.getId()).size())
-                        .sportsEvent(playground.getSportsEvent().getValue())
+                        .sportsEvent(playground.getSportsEvent().getValue_cn())
                         .playgroundProfileImg(fileHandler.extractFile(playground.getImg()))
                         .campusName(playground.getCampus().getCampusName())
                         .schoolName(playground.getCampus().getSchool().getSchoolName())

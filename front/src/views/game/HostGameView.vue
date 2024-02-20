@@ -5,13 +5,11 @@
     <div class="page-title-container-border"></div>
   </div>
 
-
-  <div class="content">
     <div class="section ">
       <div class="game-list-title">未来比赛</div>
       <div v-for="game in upcomingGames" :key="game.id">
-        <router-link class="game"
-                     :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
+        <div class="game">
+          <router-link :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
           <div class="game-info">
             <div class="game-title">{{ game.gameName }}
               <div class="game-type">{{ game.gameType }}</div>
@@ -33,13 +31,13 @@
               <div class="host"><img src="../../assets/icon-location.png">{{ game.location }}</div>
             </div>
           </div>
-
+          </router-link>
           <div class="game-time">{{ formatTime(game.gameStart) }} - {{
               formatEndTime(game.gameStart, game.runningTime)
             }}
             <button @click="deleteGame(game.gameId)" class="delete">删除</button>
           </div>
-        </router-link>
+        </div>
 
       </div>
 
@@ -74,13 +72,12 @@
         <div class="game-time">{{ formatTime(game.gameStart) }} - {{
             formatEndTime(game.gameStart, game.runningTime)
           }}
-
-          <button class="submit">提交</button>
+          <button @click="submitResault" class="submit">提交</button>
 
         </div>
       </div>
     </div>
-  </div>
+
 
 </template>
 <script setup>
@@ -162,13 +159,16 @@ const getMyGameByYearMonth = async (year, month) => {
     });
 
   } catch (error) {
-    console.error('게임 정보를 가져오는데 실패했습니다.', error.response.data.message);
+    console.error('获取游戏信息失败', error.response.data.message);
   }
 };
 
+const submitResault = async  ( ) => {
+  alert("正在准备中")
+}
 
 const deleteGame = async (gameId) => {
-  const isConfirm = confirm("정말 삭제하시겠습니까?");
+  const isConfirm = confirm("确定要删除吗？");
   if (!isConfirm) {
     return;
   }
@@ -181,7 +181,7 @@ const deleteGame = async (gameId) => {
       }
     });
     alert("삭제되었습니다.")
-    await monthChanged()
+    await getMyGames()
   } catch (error) {
     alert(error.response.data.message)
   }
@@ -257,12 +257,6 @@ const redirectToLogin = function () {
 
 
 <style scoped>
-
-a {
-  text-decoration: none;
-}
-
-
 .date-selector {
   display: flex; /* 요소들을 가로로 정렬합니다 */
   align-items: center; /* 요소들을 세로 중앙에 배치합니다 */
@@ -304,19 +298,14 @@ a {
 }
 
 
-.content {
-  display: flex;
-  justify-content: center; /* 가운데 정렬 */
-  align-items: start; /* 상단 정렬 */
-  flex-direction: column;
-  padding: 20px;
-}
+
 
 .section {
   background-color: #ffffff;
   padding: 20px;
-  width: 100%;
+  width: 90%;
   min-width: 1100px;
+  margin: 0 auto;
   border-radius: 5px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 
@@ -336,10 +325,7 @@ a {
   border-right: 1px solid #e6e6e6;
 }
 
-.game:hover {
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* 호버 시 그림자 강조 */
-  transform: translateY(-5px); /* 호버 시 카드가 약간 위로 올라가는 효과 */
-}
+
 
 .game-info {
   display: flex;
@@ -439,9 +425,12 @@ a {
 }
 
 @media (max-width: 600px) {
+
+
+
   .section {
     min-width: 400px;
-    width: 100%;
+    width: 90%;
     margin: 15px auto;
   }
 

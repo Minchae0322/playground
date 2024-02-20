@@ -55,6 +55,11 @@ public class GameParticipant {
                 .build();
     }
 
+    public void delete() {
+        this.game = null;
+        this.subTeam = null;
+    }
+
     public UserInfoDto toUserInfoDto(InMemoryMultipartFile inMemoryMultipartFile) {
         return UserInfoDto.builder()
                 .userNickname(user.getNickname())

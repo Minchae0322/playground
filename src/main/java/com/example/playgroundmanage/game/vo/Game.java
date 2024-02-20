@@ -36,14 +36,17 @@ public class Game {
     @ManyToOne(cascade = CascadeType.MERGE)
     private User host;
 
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<CompetingTeam> competingTeams = new ArrayList<>();
+
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GameRequest> gameRequests = new ArrayList<>();
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<GameParticipant> gameParticipants;
 
-    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<CompetingTeam> competingTeams = new ArrayList<>();
+
 
     @Enumerated
     private SportsEvent sportsEvent;
@@ -93,6 +96,11 @@ public class Game {
         return competingTeams.stream()
                 .filter(competingTeam -> competingTeam.getGameTeamSide().equals(gameTeamSide))
                 .findFirst();
+    }
+
+    public void delete() {
+        gameParticipants = new ArrayList<>();
+        playground = null;
     }
 
 

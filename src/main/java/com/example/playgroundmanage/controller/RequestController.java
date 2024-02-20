@@ -56,14 +56,14 @@ public class RequestController {
         requestService.declineRequest(requestId);
     }
 
- /*   @GetMapping("/user/pending/request")
+    @GetMapping("/user/pending/request/game")
     public List<PendingGameRequest> getAllPendingGameRequests(@AuthenticationPrincipal MyUserDetails myUserDetails) {
         List<RequestInfoDto> pendingRequest = gameManagementService.getPendingGameRequests(myUserDetails.getUser());
 
         return pendingRequest.stream()
                 .map(RequestInfoDto::toPendingGameRequest)
                 .toList();
-    }*/
+    }
 
     @PostMapping("/user/pending/request/game/{requestType}")
     public List<PendingGameRequest> getAllPendingGameRequestsByRequestType(@RequestBody PendingRequestParams pendingRequestParams, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable String requestType) {

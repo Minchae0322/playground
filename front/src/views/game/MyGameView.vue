@@ -205,7 +205,7 @@ const redirectToLogin = function () {
 };
 </script>
 
-<style scoped>
+<style>
 .date-selector {
   display: flex; /* 요소들을 가로로 정렬합니다 */
   align-items: center; /* 요소들을 세로 중앙에 배치합니다 */
@@ -266,10 +266,10 @@ const redirectToLogin = function () {
 }
 
 .section {
-  margin-bottom: 10px;
   background-color: #ffffff;
   padding: 20px;
   width: 48%;
+  margin: 0 auto 10px auto;
   min-width: 530px;
   overflow: auto; /* 내용이 넘칠 경우 스크롤바 표시 */
   height: auto;
@@ -359,14 +359,13 @@ const redirectToLogin = function () {
 
 @media (max-width: 600px) {
   .section {
-    min-width: 400px;
+    min-width: 300px;
     width: 95%;
     margin: 15px auto;
   }
   .content {
-    display: flex;
-    flex-direction: column;
-
+    min-width: 300px;
+    width: 100%;
   }
 
   .date-selector {

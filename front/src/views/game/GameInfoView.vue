@@ -911,13 +911,12 @@ a {
   cursor: pointer;
   transition: background-color 0.3s ease;
   display: flex;
-  margin-top: 10px;
+
   letter-spacing: 4px;
   justify-content: center;
   align-items: center;
-  width: 200px;
-  font-weight: 600;
-
+  width: 100px;
+  height: 40px;
   position: relative; /* Needed to position the pseudo-element */
 }
 

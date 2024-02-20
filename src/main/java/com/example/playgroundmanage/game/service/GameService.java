@@ -32,6 +32,8 @@ public class GameService {
 
     private final GameFinder gameFinder;
 
+    private final CompetingTeamRepository competingTeamRepository;
+
     private final GameParticipantRepository gameParticipantRepository;
 
     private final GameParticipantFinder gameParticipantFinder;
@@ -81,7 +83,16 @@ public class GameService {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
 
+        game.getPlayground().getGames().remove(game);
+        List<GameParticipant> gameParticipants = game.getGameParticipants();
+        gameParticipants.forEach(GameParticipant::delete);
+
         gameRepository.delete(game);
+    }
+
+    @Transactional
+    public void deleteCompetingTeam(CompetingTeam competingTeam) {
+        competingTeamRepository.delete(competingTeam);
     }
 
     @Transactional
