@@ -84,6 +84,10 @@ public class GameService {
                 .orElseThrow(GameNotExistException::new);
 
         game.getPlayground().getGames().remove(game);
+
+        //아마도 game 에서 CompetingGame -> SubTeam -> List<GameParticipant>
+        //이런식으로 먼저 삭제되어서 game -> List<GameParticipant> 를 못찾는듯
+
         List<GameParticipant> gameParticipants = game.getGameParticipants();
         gameParticipants.forEach(GameParticipant::delete);
 

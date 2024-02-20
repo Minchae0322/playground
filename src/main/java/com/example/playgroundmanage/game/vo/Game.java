@@ -77,6 +77,15 @@ public class Game {
         this.runningTime = runningTime;
     }
 
+    private void validate(Integer runningTime, LocalDateTime gameStartDateTime) {
+        if (runningTime < 0 || runningTime > 120) {
+            throw new RuntimeException("不符合，> 0 or < 121");
+        }
+        if (LocalDateTime.now().isAfter(gameStartDateTime)) {
+            throw new RuntimeException("不能设置比现在早的时间。");
+        }
+    }
+
 
     public GameDto toGameDto() {
         return GameDto.builder()
@@ -105,14 +114,7 @@ public class Game {
 
 
 
-    private void validate(Integer runningTime, LocalDateTime gameStartDateTime) {
-        if (runningTime < 0 || runningTime > 120) {
-            throw new RuntimeException("경기 소요 시간이 올바르지 않습니다.");
-        }
-        if (LocalDateTime.now().isAfter(gameStartDateTime)) {
-            throw new RuntimeException("현재보다 전에 시작할 수 없습니다.");
-        }
-    }
+
 
     public void addCompetingTeam(CompetingTeam competingTeam) {
         competingTeams.add(competingTeam);

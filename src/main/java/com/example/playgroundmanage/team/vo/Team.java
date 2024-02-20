@@ -47,6 +47,7 @@ public class Team {
 
     @Builder
     public Team(Long id, String teamName, UploadFile teamPic, User leader, String description, SportsEvent sportsEvent, List<SubTeam> subTeams, List<Teaming> members) {
+        validate(teamName, description);
         this.id = id;
         this.teamName = teamName;
         this.teamPic = teamPic;
@@ -57,13 +58,17 @@ public class Team {
         this.members = members;
     }
 
+    private void validate(String teamName, String description) {
+        if (teamName.length() > 9 || teamName.equals("")) {
+            throw new RuntimeException("不符合格式。 最大字数9个字");
+        }
+        if (description.length() > 40) {
+            throw new RuntimeException("不符合格式。 最大字数40个字");
+        }
+    }
 
     public void updateTeamPic(UploadFile uploadFile) {
         this.teamPic = uploadFile;
     }
 
-    public void addMember(Teaming teaming) {
-        this.members = new ArrayList<>();
-        this.members.add(teaming);
-    }
 }

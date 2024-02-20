@@ -146,7 +146,7 @@ public class UserService {
     @Transactional
     public UserNicknameDto changeNickname(Long userId, String newNickname) {
         if (isValidUserNickname(newNickname)) {
-            throw new IllegalArgumentException("이미 존재하거나 사용 할 수 없는 닉네임입니다.");
+            throw new IllegalArgumentException("已经存在或不能使用的昵称");
         }
         User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
         userRepository.save(user.update(UserEdit.builder()
