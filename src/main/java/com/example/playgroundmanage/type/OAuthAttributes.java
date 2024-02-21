@@ -16,7 +16,12 @@ public enum OAuthAttributes {
                 .build();
     }
     ),
-
+    GOOGLE("google", (attribute) -> OAuth2UserProfile.builder()
+            .username((String) attribute.get("sub"))
+            .attributes(attribute)
+            .provider("google")
+            .build()
+    ),
     GITHUB("github", (attribute) -> OAuth2UserProfile.builder()
             .username((String) attribute.get("login"))
             .attributes(attribute)

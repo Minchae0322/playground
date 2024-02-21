@@ -46,6 +46,15 @@
       <div data-orientation="horizontal" role="none" class="shrink-0 bg-gray-100 h-[1px] w-full my-8"></div>
       <div class="space-y-4">
         <hr class="margin-bottom">
+
+        <img
+            src="../assets/icon-google.png"
+            alt="Your Image Alt Text"
+            class="image-margin"
+            width="50"
+            height="50"
+            @click="login_google"
+        />
         <img
 
             src="../assets/logo_naver.png"
@@ -64,6 +73,8 @@
             height="50"
             @click="login_github"
         />
+
+
       </div>
     </div>
   </div>
@@ -96,6 +107,15 @@ const login_naver = function () {
 const login_github = function () {
   try {
     window.location.href = `${apiBaseUrl}/oauth2/authorization/github`;
+  } catch (error) {
+    console.error('Error during Github login:', error);
+    router.replace('/login'); // Redirect to /login in case of an error
+  }
+};
+
+const login_google = function () {
+  try {
+    window.location.href = `${apiBaseUrl}/oauth2/authorization/google`;
   } catch (error) {
     console.error('Error during Github login:', error);
     router.replace('/login'); // Redirect to /login in case of an error
