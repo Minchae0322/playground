@@ -1,18 +1,22 @@
 <template>
   <div class="user-info-container-userInfo">
-    <h1>我的信息</h1>
+    <div class="title-userInfo">
+      <h1>我的信息</h1>
+      <div @click="logout" class="logout">logout</div>
+    </div>
+
     <div class="header">
       <div class="user-profile-container-userInfo">
-        <img :src="user.userProfileImg || defaultImage" @click="triggerFileInput" class="profile-image" />
-        <input type="file" ref="fileInput" @change="handleFileChange" style="display:none" />
-      <div class="profile-hint">点击照片更改头像</div>
+        <img :src="user.userProfileImg || defaultImage" @click="triggerFileInput" class="profile-image"/>
+        <input type="file" ref="fileInput" @change="handleFileChange" style="display:none"/>
+        <div class="profile-hint">点击照片更改头像</div>
       </div>
       <div class="nickname-container-userInfo" v-if="!isEditing">
         <div class="nickname-container-nickname-userInfo">{{ user.userNickname }}</div>
         <button class="nickname-change-button" @click="clickChangeNickname">换昵称</button>
       </div>
       <div class="nickname-container-userInfo" v-else>
-        <input v-model="editedNickname" placeholder="Enter new nickname" />
+        <input v-model="editedNickname" placeholder="Enter new nickname"/>
         <div class="button-container-userInfo">
           <button @click="clickChangeNickname">取消</button>
           <button @click="confirmEditNickname">确定</button>
@@ -33,8 +37,8 @@
           </div>
         </router-link>
       </div>
-      </div>
     </div>
+  </div>
 </template>
 
 <script setup>
@@ -84,8 +88,8 @@ const getUserInfo = async () => {
 
 const confirmEditNickname = function () {
   validateAccessToken()
-  axios.patch(`${apiBaseUrl}/user/change-nickname`,{
-    userNickname: editedNickname.value
+  axios.patch(`${apiBaseUrl}/user/change-nickname`, {
+        userNickname: editedNickname.value
       },
       {
         headers: {
@@ -101,6 +105,7 @@ const confirmEditNickname = function () {
     const errorMessage = extractErrorMessage(error);
     alert(errorMessage);
   });
+
   function extractErrorMessage(error) {
     if (error.response && error.response.data) {
       if (error.response.data.errors) {
@@ -114,7 +119,7 @@ const confirmEditNickname = function () {
     return 'error'; // 기본 에러 메시지
   }
 };
-const getTeams =  () => {
+const getTeams = () => {
   validateAccessToken();
   axios.get(`${apiBaseUrl}/user/teams`, {
     headers: {
@@ -132,6 +137,30 @@ const getTeams =  () => {
     console.error('팀 정보를 가져오는데 실패했습니다.', error);
   });
 };
+
+const logout = async () => {
+  const isConfirm = confirm("确定要退出吗？")
+  if(!isConfirm) {
+    return
+  }
+
+  await validateAccessToken()
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/user/logout`, {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
+    );
+    if (response.data === true) {
+      isLoggedIn.value = false
+      await router.push({name: 'login'})
+    }
+  } catch (error) {
+    alert(error.response.data.message)
+  }
+}
 
 const fileInput = ref(null);
 
@@ -192,7 +221,7 @@ const updateAccessToken = async function () {
 
   try {
     const response = await axios.get(`${apiBaseUrl}/token/refresh`, {
-      headers: { 'RefreshToken': refreshToken }
+      headers: {'RefreshToken': refreshToken}
     });
     if (response.status === 200) {
       const newAccessToken = response.headers['authorization'];
@@ -210,6 +239,11 @@ const redirectToLogin = function () {
 </script>
 
 <style>
+.title-userInfo {
+  display: flex;
+  justify-content: space-between;
+}
+
 .user-info-container-userInfo {
   min-width: 1045px;
   margin: 0 auto;
@@ -217,8 +251,8 @@ const redirectToLogin = function () {
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 20px;
-  box-shadow: 5px 1px 8px 0 rgba(0,0,0,.06);
-  border-left: 1px solid rgba(0,0,0,.08);;
+  box-shadow: 5px 1px 8px 0 rgba(0, 0, 0, .06);
+  border-left: 1px solid rgba(0, 0, 0, .08);;
   background: #fff; /* 카드의 배경색 */
   overflow: auto; /* 내용이 넘칠 때 스크롤바를 보여줌 */
 }
@@ -229,12 +263,12 @@ const redirectToLogin = function () {
   background-color: #eee;
   border-radius: 50%;
   display: inline-block;
-  box-shadow: 0 3px 6px 0 rgba(29,34,53,.08);
+  box-shadow: 0 3px 6px 0 rgba(29, 34, 53, .08);
 }
 
 .profile-hint {
   color: var(--text-hint);
-  font-family: MiSans-Light,sans-serif;
+  font-family: MiSans-Light, sans-serif;
   font-size: 11px;
 }
 
@@ -262,7 +296,7 @@ const redirectToLogin = function () {
   color: black;
 }
 
-.nickname-change-button{
+.nickname-change-button {
   font-family: MiSans-Medium, sans-serif;
   display: block;
   width: 100%;
@@ -289,6 +323,7 @@ const redirectToLogin = function () {
   border-color: #4CAF50; /* 포커스 시 테두리 색상 변경 */
   box-shadow: 0 0 5px rgba(76, 175, 80, 0.5); /* 포커스 시 그림자 효과 */
 }
+
 .nickname-container-userInfo button {
   display: flex;
   justify-content: center;
@@ -298,12 +333,13 @@ const redirectToLogin = function () {
   color: white;
   padding: 10px;
   margin-top: 10px;
-  font-family: MiSans-Medium,sans-serif;
+  font-family: MiSans-Medium, sans-serif;
   overflow-y: hidden;
   overflow-x: hidden;
   border: none;
   border-radius: 5px;
 }
+
 .nickname-container-userInfo .button-container-userInfo {
   display: flex;
   justify-content: center;
@@ -314,18 +350,19 @@ const redirectToLogin = function () {
   flex: 1; /* 버튼의 크기를 같게 조정 */
   margin: 5px; /* 버튼 사이의 간격 */
 }
+
 .nickname-container-userInfo input {
   width: 20%; /* 크기를 40%로 설정 */
   margin-bottom: 10px; /* 요소 간의 여백 추가 */
 }
 
-.teams-title-userInfo{
+.teams-title-userInfo {
   display: flex;
   align-items: center;
   border-radius: 12px 12px 0 0;
   background: var(--primary-gradient);
   color: white;
-  font-family: MiSans-Semibold,sans-serif;
+  font-family: MiSans-Semibold, sans-serif;
   padding: 0 5px 10px;
 }
 
@@ -386,15 +423,13 @@ const redirectToLogin = function () {
 .team-info-name-userInfo {
   font-size: 14px; /* 적절한 크기 설정 */
   color: #333;
-  font-family: MiSans-Semibold,sans-serif;
+  font-family: MiSans-Semibold, sans-serif;
 }
 
 .team-info-sports-event-userInfo {
   font-size: 12px; /* 적절한 크기 설정 */
-  font-family: MiSans-Normal,sans-serif;
+  font-family: MiSans-Normal, sans-serif;
 }
-
-
 
 
 @media (max-width: 600px) {
@@ -403,13 +438,14 @@ const redirectToLogin = function () {
     margin-bottom: 80px;
     width: 95%;
   }
+
   .nickname-container-userInfo button {
     width: 200px;
   }
+
   .nickname-container-userInfo input {
     width: 200px;
   }
-
 
 
 }

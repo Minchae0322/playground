@@ -107,9 +107,9 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("https://localhost:5173");
-        configuration.addAllowedOrigin("https://" + SERVER_URL);
-        configuration.addAllowedOrigin("https://localhost:8080");
+        configuration.addAllowedOrigin("http://localhost:5173");
+        configuration.addAllowedOrigin("http://" + SERVER_URL);
+        configuration.addAllowedOrigin("http://localhost:8080");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.addExposedHeader(ACCESS_TOKEN_HEADER_NAME);

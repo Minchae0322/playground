@@ -20,18 +20,18 @@
       <p>Check out our playground</p>
       <div class="page-title-container-border"></div>
     </div>
-    <div class="games">
+    <div class="games-home">
       <div class="game-card-mini" v-for="game in upcomingGames" :key="game.id">
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
           <div class="game-card-mini-title">{{ game.gameName }}
-            <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{getChineseDayOfWeek(game.gameStart)}}</div>
+            <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{ getChineseDayOfWeek(game.gameStart) }}</div>
           </div>
           <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
           <div class="game-card-mini-info-container">
             <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
-            <div>主持人: {{ game.hostName }}</div>
-            <div>所需时间: {{ game.runningTime }} 分</div>
+            <div class="game-card-mini-info">主持人: {{ game.hostName }}</div>
+            <div class="game-card-mini-info">所需时间: {{ game.runningTime }} 分</div>
           </div>
         </router-link>
       </div>

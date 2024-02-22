@@ -72,6 +72,11 @@ const clickUserInfo = function () {
 };
 
 const logout = async () => {
+  const isConfirm = confirm("确定要退出吗？")
+  if(!isConfirm) {
+    return
+  }
+
   await validateAccessToken()
 
   try {
@@ -177,6 +182,7 @@ const redirectToLogin = async () => {
       <div class="user-info-container" @click="clickUserInfo">
         <img class="user-profile-img" :src="user.userProfileImg || defaultImage">
         <div class="user-name">{{ user.userNickname }}</div>
+        <div @click="logout" class="logout">logout</div>
       </div>
       <nav class="navigation">
         <ul class="nav-links">
@@ -250,7 +256,7 @@ const redirectToLogin = async () => {
           </li>
         </ul>
       </nav>
-      <div @click="logout" class="logout">logout</div>
+
     </div>
     <div :class="{'login-router-view ': $route.name === 'login'}" class="router-view-container">
       <RouterView/>
@@ -437,9 +443,9 @@ header {
 .logout {
   color: #d70000;
   text-align: end;
-  margin: 20px;
+  margin: auto 20px auto auto;
   text-decoration: underline;
-  font-family: MiSans-Light, sans-serif;
+  font-family: MiSans-Normal, sans-serif;
 }
 
 .logout:hover {

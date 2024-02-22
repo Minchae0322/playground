@@ -1,194 +1,57 @@
+
 <template>
-  <div class="page-title-container">
-    <div class="flex-box">
-      <img src="../assets/icon-soccerball.png">
-      <h2>足球</h2>
-    </div>
-    <div class="page-title-container-border"></div>
-  </div>
-
-  <div v-if="soccerGames.length === 0 || !soccerGames" class="empty-games-screen">
-    <div class="empty-message">
-      <h2>没有即将开始的比赛</h2>
-      <p>目前没有安排的比赛。</p>
-    </div>
-  </div>
-
-
-  <div v-else class="upcoming-games-container-home">
-    <div class="games-home">
-      <div class="game-card-mini" v-for="game in soccerGames" :key="game.gameId">
-        <router-link
-            :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="game-card-mini-title">{{ game.gameName }}
-          <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{getChineseDayOfWeek(game.gameStart)}}</div></div>
-          <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
-          <div class="game-card-mini-info-container">
-            <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
-            <div class="game-card-mini-info">主持人: {{ game.hostName }}</div>
-            <div class="game-card-mini-info">所需时间: {{ game.runningTime }} 分</div>
-          </div>
-        </router-link>
+  <div>
+    <div v-for="sport in sports" :key="sport.eventType">
+      <div class="page-title-container">
+        <div class="flex-box">
+          <img :src=sport.icon>
+          <h2>{{sport.name}}</h2>
+        </div>
+        <div class="page-title-container-border"></div>
       </div>
-    </div>
-  </div>
-  <RouterLink class="more-button-container-home" :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}" >
-    <button class="more-button-home">更多</button>
-  </RouterLink>
 
-
-  <div class="page-title-container">
-    <div class="flex-box">
-      <img src="../assets/icon-basketballBall.png">
-      <h2>篮球</h2>
-    </div>
-    <div class="page-title-container-border"></div>
-  </div>
-  <div v-if="basketballGames.length === 0 || !basketballGames" class="empty-games-screen">
-    <div class="empty-message">
-      <h2>没有即将开始的比赛</h2>
-      <p>目前没有安排的比赛。</p>
-    </div>
-  </div>
-  <div v-else class="upcoming-games-container">
-    <div class="games">
-      <div class="game-card" v-for="game in basketballGames" :key="game.gameId">
-        <router-link
-            :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="game-card-mini-title">{{ game.gameName }}
-            <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{getChineseDayOfWeek(game.gameStart)}}</div>
-          </div>
-          <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
-          <div class="game-card-mini-info-container">
-          <div class="game-card-mini-info-container">
-            <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
-            <div>主持人: {{ game.hostName }}</div>
-            <div>所需时间: {{ game.runningTime }} 分</div>
-          </div>
-        </router-link>
+      <div v-if="sport.games.length === 0 || !sport.games" class="empty-games-screen">
+        <div class="empty-message">
+          <h2>没有即将开始的比赛</h2>
+          <p>目前没有安排的比赛。</p>
+        </div>
       </div>
-    </div>
-  </div>
-  <RouterLink class="more-button-container-home" :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}" >
-    <button class="more-button-home">更多</button>
-  </RouterLink>
 
-  <div class="page-title-container">
-    <div class="flex-box">
-      <img src="../assets/icon-badmintonBall.png">
-      <h2>羽毛球</h2>
-    </div>
-    <div class="page-title-container-border"></div>
-  </div>
-  <div v-if="badmintonGames.length === 0 || !badmintonGames" class="empty-games-screen">
-    <div class="empty-message">
-      <h2>没有即将开始的比赛</h2>
-      <p>目前没有安排的比赛。</p>
-    </div>
-  </div>
-  <div v-else class="upcoming-games-container">
-    <div class="games">
-      <div class="game-card" v-for="game in badmintonGames" :key="game.gameId">
-        <router-link
-            :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="game-card-mini-title">{{ game.gameName }}
-            <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{getChineseDayOfWeek(game.gameStart)}}</div>
+      <div v-else class="upcoming-games-container-home">
+        <div class="games-home">
+          <div class="game-card-mini" v-for="game in soccerGames" :key="game.gameId">
+            <router-link
+                :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
+              <div class="game-card-mini-title">{{ game.gameName }}
+                <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{ getChineseDayOfWeek(game.gameStart) }}</div>
+              </div>
+              <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
+              <div class="game-card-mini-info-container">
+                <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
+                <div class="game-card-mini-info">主持人: {{ game.hostName }}</div>
+                <div class="game-card-mini-info">所需时间: {{ game.runningTime }} 分</div>
+              </div>
+            </router-link>
           </div>
-          <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
-          <div class="game-card-mini-info-container">
-            <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
-            <div>主持人: {{ game.hostName }}</div>
-            <div>所需时间: {{ game.runningTime }} 分</div>
-          </div>
-        </router-link>
+        </div>
       </div>
-    </div>
-  </div>
 
-
-  <RouterLink class="more-button-container-home" :to="{ name:'playgroundList', params: {sportsEvent : 'BADMINTON'}}" >
-    <button class="more-button-home">更多</button>
-  </RouterLink>
-
-  <div class="page-title-container">
-    <div class="flex-box">
-      <img src="../assets/icon-tennisBall.png">
-      <h2>网球</h2>
-    </div>
-    <div class="page-title-container-border"></div>
-  </div>
-  <div v-if="tennisGames.length === 0 || !tennisGames" class="empty-games-screen">
-    <div class="empty-message">
-      <h2>没有即将开始的比赛</h2>
-      <p>目前没有安排的比赛。</p>
+      <RouterLink class="more-button-container-home" :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}">
+        <button class="more-button-home">更多</button>
+      </RouterLink>
     </div>
   </div>
-  <div v-else class="upcoming-games-container">
-    <div class="games">
-      <div class="game-card" v-for="game in tennisGames" :key="game.gameId">
-        <router-link
-            :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="game-card-mini-title">{{ game.gameName }}
-            <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{getChineseDayOfWeek(game.gameStart)}}</div>
-          </div>
-          <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
-          <div class="game-card-mini-info-container">
-            <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
-            <div>主持人: {{ game.hostName }}</div>
-            <div>所需时间: {{ game.runningTime }} 分</div>
-          </div>
-        </router-link>
-      </div>
-    </div>
-  </div>
-  <RouterLink class="more-button-container-home" :to="{ name:'playgroundList', params: {sportsEvent : 'TENNIS'}}" >
-    <button class="more-button-home">更多</button>
-  </RouterLink>
-
-  <div class="page-title-container">
-    <div class="flex-box">
-      <img src="../assets/icon-tableTennisBall.png">
-      <h2>乒乓球</h2>
-    </div>
-    <div class="page-title-container-border"></div>
-  </div>
-  <div v-if="tableTennisGames.length === 0 || !tableTennisGames" class="empty-games-screen">
-    <div class="empty-message">
-      <h2>没有即将开始的比赛</h2>
-      <p>目前没有安排的比赛。</p>
-    </div>
-  </div>
-  <div v-else class="upcoming-games-container">
-    <div class="games">
-      <div class="game-card" v-for="game in tableTennisGames" :key="game.gameId">
-        <router-link
-            :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="game-card-mini-title">{{ game.gameName }}
-            <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{getChineseDayOfWeek(game.gameStart)}}</div>
-          </div>
-          <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
-          <div class="game-card-mini-info-container">
-          <div class="game-card-mini-info-container">
-            <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
-            <div>主持人: {{ game.hostName }}</div>
-            <div>所需时间: {{ game.runningTime }} 分</div>
-          </div>
-        </router-link>
-      </div>
-    </div>
-  </div>
-  <RouterLink class="more-button-container-home" :to="{ name:'playgroundList', params: {sportsEvent : 'BASKETBALL'}}" >
-    <button class="more-button-home">更多</button>
-  </RouterLink>
-
-
 </template>
-
 
 <script setup>
 import {computed, getCurrentInstance, onMounted, ref} from "vue";
 import axios from "axios";
 import {useRouter} from "vue-router";
+import soccerImage from "../assets/icon-soccerball.png"
+import basketBallImage from  "../assets/icon-basketballBall.png"
+import badmintonBallImage from "../assets/icon-badmintonBall.png"
+import tennisBallImage from "../assets/icon-tennisBall.png"
+import tableTennisBall from "../assets/icon-tableTennisBall.png"
 
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
@@ -197,6 +60,40 @@ const upcomingGames = ref([{
   playgroundId: 1,
   gameId: 1,
 }]);
+
+
+const sports = ref([
+  {
+    name: '足球',
+    eventType: 'SOCCER',
+    icon: soccerImage,
+    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'SOCCER'))
+  },
+  {
+    name: '篮球',
+    eventType: 'BASKETBALL',
+    icon: basketBallImage,
+    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'BASKETBALL'))
+  },
+  {
+    name: '羽毛球',
+    eventType: 'BADMINTON',
+    icon: badmintonBallImage,
+    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'BADMINTON'))
+  },
+  {
+    name: '乒乓球',
+    eventType: 'TABLE_TENNIS',
+    icon: tableTennisBall,
+    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'TABLE_TENNIS'))
+  },
+  {
+    name: '网球',
+    eventType: 'TENNIS',
+    icon: tennisBallImage,
+    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'TENNIS'))
+  },
+]);
 
 
 onMounted(async () => {
@@ -240,40 +137,6 @@ const getDayColor = (dateString) => {
   return colorMap[dayOfWeekIndex] || 'black';
 };
 
-const sports = [
-  {
-    name: '足球',
-    eventType: 'SOCCER',
-    icon: '../assets/icon-soccerball.png',
-    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'SOCCER'))
-  },
-  {
-
-    name: '篮球',
-    eventType: 'BASKETBALL',
-    icon: '../assets/icon-basketballBall.png',
-    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'BASKETBALL'))
-  },
-  {
-    name: '羽毛球',
-    eventType: 'BADMINTON',
-    icon: '../assets/icon-badmintonBall.png',
-    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'BADMINTON'))
-  },
-  {
-    name: '乒乓球',
-    eventType: 'TABLE_TENNIS',
-    icon: '../assets/icon-tableTennisBall.png',
-    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'TABLE_TENNIS'))
-  },
-  {
-    name: '网球',
-    eventType: 'TENNIS',
-    icon: '../assets/icon-badmintonBall.png',
-    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'TENNIS'))
-  },
-  // ... (다른 스포츠 추가)
-];
 
 const soccerGames = computed(() => {
   return upcomingGames.value.filter(game => game.sportsEvent === 'SOCCER');
@@ -402,7 +265,6 @@ const redirectToLogin = async () => {
 }
 
 
-
 .game-card-mini-campus-name {
   font-size: 15px;
   margin: 5px 0;
@@ -426,6 +288,7 @@ const redirectToLogin = async () => {
   padding: 12px 15px;
   flex-wrap: wrap;
   border-radius: 4px;
+
 }
 
 .game-card-mini-title {
@@ -435,12 +298,14 @@ const redirectToLogin = async () => {
   font-family: MiSans-Semibold, sans-serif;
   overflow-wrap: break-word; /* 긴 단어가 컨테이너 너비를 초과할 경우 줄바꿈 */
   letter-spacing: 1px;
+  margin: 0;
   color: var(--text-primary);
 }
 
 .game-card-mini-info {
   font-size: 12px;
-  font-family: MiSans-Medium,sans-serif;
+  line-height: 1;
+  font-family: MiSans-Medium, sans-serif;
 }
 
 .more-button-container-home {
@@ -462,7 +327,7 @@ const redirectToLogin = async () => {
 }
 
 .more-button-home:hover {
-  background-color: skyblue/* 마우스 오버 시 버튼 배경색 변경 */
+  background-color: skyblue /* 마우스 오버 시 버튼 배경색 변경 */
 }
 
 .empty-games-screen {
@@ -528,13 +393,16 @@ const redirectToLogin = async () => {
   .game-card-mini-title {
     font-size: 14px;
   }
+
   .game-card-mini-campus-name {
     font-size: 12px;
     margin: 1px 0;
   }
+
   .game-card-mini-info {
     font-size: 12px;
   }
+
   .more-button-home {
     margin: 15px 0;
   }
