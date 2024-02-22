@@ -24,7 +24,9 @@
       <div class="game-card-mini" v-for="game in upcomingGames" :key="game.id">
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="game-card-mini-title">{{ game.gameName }} [{{ game.gameStart }}]</div>
+          <div class="game-card-mini-title">{{ game.gameName }}
+            <div :style="{ color: getDayColor(game.gameStart) }">{{getChineseDayOfWeek(game.gameStart)}}</div></div>
+          <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
           <div class="game-card-mini-info-container">
             <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
             <div>主持人: {{ game.hostName }}</div>
@@ -151,6 +153,29 @@ const getCampusPlaygroundAndUpcomingGames = (campusId, sportsEvent) => {
   getPlaygroundsByCampus(campusId, sportsEvent)
   getUpcomingGamesByCampusId(campusId, sportsEvent)
 }
+
+const getChineseDayOfWeek = (dateString) => {
+  const daysOfWeek = ["星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+  const date = new Date(dateString);
+  const dayOfWeekIndex = date.getDay();
+  return daysOfWeek[dayOfWeekIndex];
+};
+
+const getDayColor = (dateString) => {
+  const dayOfWeekIndex = new Date(dateString).getDay();
+  // 각 요일에 대한 색상 매핑
+  const colorMap = {
+    0: 'red',    // 일요일
+    1: 'blue',   // 월요일
+    2: 'green',  // 화요일
+    3: 'purple', // 수요일
+    4: 'orange', // 목요일
+    5: 'brown',  // 금요일
+    6: 'teal',   // 토요일
+  };
+  return colorMap[dayOfWeekIndex] || 'black';
+};
+
 
 const getPlaygrounds = async (sportsEvent) => {
   await validateAccessToken()

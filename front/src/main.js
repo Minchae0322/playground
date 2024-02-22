@@ -11,7 +11,7 @@ import {from} from "node-vibrant";
 const app = createApp(App)
 
 
-app.config.globalProperties.$apiBaseUrl = "http://localhost:8080/api";
+app.config.globalProperties.$apiBaseUrl = "https://localhost:8080";
 
 app.use(createPinia())
 app.use(router)
