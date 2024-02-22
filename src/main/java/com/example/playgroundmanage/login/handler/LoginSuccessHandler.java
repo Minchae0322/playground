@@ -73,9 +73,9 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("http")
+                .scheme("https")
                 .host(SERVER_URL)
-                .port(FRONT_END_PORT_NUM)
+                //.port(FRONT_END_PORT_NUM)
                 .path("/app")
                 .queryParams(queryParams)
                 .build()

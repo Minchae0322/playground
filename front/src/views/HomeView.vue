@@ -21,7 +21,7 @@
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
           <div class="game-card-mini-title">{{ game.gameName }}
-          <div :style="{ color: getDayColor(game.gameStart) }">{{getChineseDayOfWeek(game.gameStart)}}</div></div>
+          <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{getChineseDayOfWeek(game.gameStart)}}</div></div>
           <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
           <div class="game-card-mini-info-container">
             <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
@@ -55,8 +55,11 @@
       <div class="game-card" v-for="game in basketballGames" :key="game.gameId">
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="game-card-mini-title">{{ game.gameName }} {{getChineseDayOfWeek(game.gameStart)}}</div>
+          <div class="game-card-mini-title">{{ game.gameName }}
+            <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{getChineseDayOfWeek(game.gameStart)}}</div>
+          </div>
           <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
+          <div class="game-card-mini-info-container">
           <div class="game-card-mini-info-container">
             <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
             <div>主持人: {{ game.hostName }}</div>
@@ -88,7 +91,9 @@
       <div class="game-card" v-for="game in badmintonGames" :key="game.gameId">
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="game-card-mini-title">{{ game.gameName }} {{getChineseDayOfWeek(game.gameStart)}}</div>
+          <div class="game-card-mini-title">{{ game.gameName }}
+            <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{getChineseDayOfWeek(game.gameStart)}}</div>
+          </div>
           <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
           <div class="game-card-mini-info-container">
             <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
@@ -123,7 +128,9 @@
       <div class="game-card" v-for="game in tennisGames" :key="game.gameId">
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="game-card-mini-title">{{ game.gameName }} {{getChineseDayOfWeek(game.gameStart)}}</div>
+          <div class="game-card-mini-title">{{ game.gameName }}
+            <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{getChineseDayOfWeek(game.gameStart)}}</div>
+          </div>
           <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
           <div class="game-card-mini-info-container">
             <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
@@ -156,8 +163,11 @@
       <div class="game-card" v-for="game in tableTennisGames" :key="game.gameId">
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
-          <div class="game-card-mini-title">{{ game.gameName }} {{getChineseDayOfWeek(game.gameStart)}}</div>
+          <div class="game-card-mini-title">{{ game.gameName }}
+            <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{getChineseDayOfWeek(game.gameStart)}}</div>
+          </div>
           <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
+          <div class="game-card-mini-info-container">
           <div class="game-card-mini-info-container">
             <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
             <div>主持人: {{ game.hostName }}</div>
@@ -421,7 +431,7 @@ const redirectToLogin = async () => {
 .game-card-mini-title {
   font-size: 17px;
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
   font-family: MiSans-Semibold, sans-serif;
   overflow-wrap: break-word; /* 긴 단어가 컨테이너 너비를 초과할 경우 줄바꿈 */
   letter-spacing: 1px;

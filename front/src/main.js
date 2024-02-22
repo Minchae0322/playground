@@ -11,7 +11,7 @@ import {from} from "node-vibrant";
 const app = createApp(App)
 
 
-app.config.globalProperties.$apiBaseUrl = "https://localhost:8080";
+app.config.globalProperties.$apiBaseUrl = "https://hityundong.com/api";
 
 app.use(createPinia())
 app.use(router)
