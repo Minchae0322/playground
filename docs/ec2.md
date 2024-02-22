@@ -21,7 +21,25 @@
 ## 스프링 부트 실행
 * nohup java -jar [program-name].jar &
 
+## ssl https 적용
+*  apt-get install python3-certbot-nginx
+* certbot certonly --nginx -d example.com
+  server {
+  listen 443 ssl http2;
+  server_name example.com;
 
+  # ssl 인증서 적용하기
+  ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+  ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
+
+  location / { # location 이후 특정 url을 처리하는 방법을 정의(여기서는 / -> 즉, 모든 request)
+  proxy_pass https//localhost:9001; # Request에 대해 어디로 리다이렉트하는지 작성. 8443 -> 자신의 springboot app 이사용하는 포트
+  proxy_set_header Host $http_host;
+  proxy_set_header X-Real-IP $remote_addr;
+  proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+  proxy_set_header X-Forwarded-Proto $scheme;
+  }
+  }
 
 
 
