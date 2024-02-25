@@ -356,7 +356,7 @@ const redirectToLogin = async () => {
   font-family: MiSans-Normal, sans-serif;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 675px) {
   .page-title-container {
     min-width: 400px;
     margin: 0 auto;

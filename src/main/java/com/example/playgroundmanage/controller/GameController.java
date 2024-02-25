@@ -2,6 +2,7 @@ package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.dto.GameDto;
+import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.UsersGameDto;
 import com.example.playgroundmanage.dto.reqeust.GameRegistration;
 import com.example.playgroundmanage.dto.SubTeamDto;
@@ -81,6 +82,12 @@ public class GameController {
                 .sportsEvent(SportsEvent.fromString(gameRegistration.getSportsEvent()))
                 .build();
 
+        GameTimeDto gameTimeDto = GameTimeDto.builder()
+                .runningTime(gameDto.getRunningTime())
+                .startDateTime(gameDto.getStartDateTime())
+                .build();
+
+        playgroundService.isValidGameStartTime(gameDto.getPlaygroundId(), gameTimeDto);
         GameGenerator gameGenerator = gameGeneratorFactory.find(gameRegistration.getGameType());
 
         return ResponseEntity.ok(gameGenerator.generate(gameDto));

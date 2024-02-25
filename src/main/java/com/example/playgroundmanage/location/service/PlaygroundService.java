@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.location.service;
 
 import com.example.playgroundmanage.date.MyDateTime;
+import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.PlaygroundDto;
@@ -99,7 +100,7 @@ public class PlaygroundService {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
 
-        List<Game> upcomingGames = gameFinder.getUpcomingGames(playground.getGames(), playground.getGames().size(), MyDateTime.initMyDateTime(ZonedDateTime.now()));
+        List<Game> upcomingGames = gameFinder.getUpcomingGames(playground.getGames(), playground.getGames().size(), MyDateTimeLocal.initMyDateTime(LocalDateTime.now()));
 
         return upcomingGames.stream()
                 .map(Game::toGameDto)

@@ -14,12 +14,13 @@
     </div>
   </div>
 
-  <div class="upcoming-games-container">
-    <div class="page-title-container">
-      <h2>即将开始比赛</h2>
-      <p>Check out our playground</p>
-      <div class="page-title-container-border"></div>
-    </div>
+  <div class="page-title-container">
+    <h2>即将开始比赛</h2>
+    <p>Check out our playground</p>
+    <div class="page-title-container-border"></div>
+  </div>
+
+  <div class="upcoming-games-container-home">
     <div class="games-home">
       <div class="game-card-mini" v-for="game in upcomingGames" :key="game.id">
         <router-link
@@ -37,6 +38,7 @@
       </div>
     </div>
   </div>
+
   <div v-if="isPlaygroundExist" class="playground-list">
     <div v-for="info in playgroundInfoList" :key="info.playgroundId" class="playground-card">
       <div class="card-header">
@@ -324,27 +326,8 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
   justify-content: center;
 }
 
-.upcoming-games-container {
-  min-width: 1100px;
-  width: 95%;
-  line-height: 1.4;
-}
-
-.games {
-  display: flex;
-  width: 90%;
-  margin: 0 auto;
-  min-width: 1100px;
-  gap: 20px;
-  justify-content: start;
-}
 
 
-.game-card-mini-info-container {
-  font-size: 11px;
-  color: var(--text-primary);
-  font-family: MiSans-Normal, sans-serif;
-}
 
 
 .playground-list {
@@ -388,7 +371,6 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
 }
 
 .playground-info-container {
-
   font-size: 13px;
   color: var(--text-hint);
 
@@ -444,23 +426,6 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
   width: 100%;
 }
 
-h2 {
-  color: #000; /* 제목 색상 */
-  margin-bottom: 10px;
-}
-
-h3 {
-  color: #333; /* 부제목 색상 */
-}
-
-ul {
-  list-style-type: none; /* 기본 리스트 스타일 제거 */
-}
-
-li {
-  padding: 10px 0; /* 리스트 아이템 패딩 */
-  border-bottom: 1px solid #eee; /* 아이템 하단 선 */
-}
 
 button {
   color: white; /* 버튼 텍스트 색상 */
@@ -480,25 +445,6 @@ button:hover {
     min-width: 400px;
     width: 95%;
     margin: 0 auto;
-  }
-
-  .upcoming-games-container {
-    min-width: 400px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    margin: 0 auto;
-  }
-
-  .games {
-    margin: 0 auto;
-    min-width: 400px;
-    width: 95%;
-    padding-left: 20px;
-    display: flex;
-
-    flex-wrap: wrap;
   }
 
 

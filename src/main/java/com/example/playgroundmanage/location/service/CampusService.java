@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.location.service;
 
 
+import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.exception.CampusNotExistException;
 import com.example.playgroundmanage.exception.SchoolNotExistException;
@@ -83,7 +84,7 @@ public class CampusService {
     private List<Game> getUpcomingGames(List<Playground> playgrounds) {
         LocalDateTime now = LocalDateTime.now();
         return playgrounds.stream()
-                .flatMap(playground -> gameFinder.getUpcomingGames(playground.getGames(), playground.getGames().size(), initMyDateTime(now))
+                .flatMap(playground -> gameFinder.getUpcomingGames(playground.getGames(), playground.getGames().size(), MyDateTimeLocal.initMyDateTime(now))
                         .stream())
                 .collect(Collectors.toList());
     }
