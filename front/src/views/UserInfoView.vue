@@ -154,7 +154,6 @@ const logout = async () => {
         }
     );
     if (response.data === true) {
-      isLoggedIn.value = false
       await router.push({name: 'login'})
     }
   } catch (error) {

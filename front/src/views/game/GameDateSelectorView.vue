@@ -16,7 +16,7 @@
           <div class="button-container">
             <div class="button-container">
               <div class="start-time-container">
-                <a class="start-time" id="start-time">
+                <div class="start-time" id="start-time">
                   <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none"
                        stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"
                        class="icon-style">
@@ -24,9 +24,9 @@
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
                   开始时间
-                </a>
+                </div>
                 <div class="time-picker-container">
-                  <el-time-picker size="large" format="HH:mm" value-format="HH:mm" v-model="timeValue"
+                  <el-time-picker class="time-picker" size="large" format="HH:mm" value-format="HH:mm" v-model="timeValue"
                                   @change="changeTime" placeholder="Select Time"/>
                 </div>
               </div>
@@ -257,11 +257,6 @@ const redirectToLogin = function () {
   align-items: center;
   color: black;
 }
-a {
-  text-decoration: none;
-  color: black;
-  font-family: MiSans-Medium,sans-serif;
-}
 
 .modal {
   border: 1px #000000; /* 테두리 스타일 및 색상 지정 */
@@ -325,6 +320,8 @@ hr {
   display: flex;
   flex-direction: column;
 }
+
+
 
 .button-style {
   background-color: #ffffff; /* 흰색 배경 */
@@ -402,7 +399,6 @@ hr {
   background-color: #ffffff; /* 흰색 배경 */
   border: 1px solid #e3e3e3; /* 연한 회색 테두리 */
   border-radius: 20px;
-
   padding: 0 10px;
   font-size: 13px;
   margin: 5px 5px;
@@ -421,8 +417,9 @@ hr {
   display: flex;
   background-color: #ffffff; /* 흰색 배경 */
   color: #333333; /* 글자색 */
-  padding: 10px;
   align-items: center;
+
+  padding: 10px;
   cursor: pointer; /* 포인터 모양 변경 */
   transition: background-color 0.3s, color 0.3s; /* 부드러운 전환 효과 */
 }
@@ -434,7 +431,15 @@ hr {
   font-family: MiSans-Medium,sans-serif;
 }
 
+.time-picker button {
+  width : 0px;
+  background-color: black;
+}
 
+.block {
+  margin-top: 15px;
+  margin-bottom: 10px;
+}
 @media (max-width: 600px) {
   .modal-overlay {
     min-width: 400px;

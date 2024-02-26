@@ -288,11 +288,12 @@ watch(() => props.sportsEvent, (newSportsEvent, oldSportsEvent) => {
   justify-content: flex-start; /* 버튼을 가로 방향으로 왼쪽 정렬합니다. */
   width: 90%;
   margin-left: 20px;
+
   background-color: var(--white);
   border-radius: 5px;
   overflow: hidden;
   min-width: 1100px;
-  padding: 5px 20px;
+  padding: 10px 20px;
 }
 
 .campus-button-container-playgroundList button {

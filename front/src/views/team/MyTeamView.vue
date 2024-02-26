@@ -135,20 +135,7 @@ const redirectToLogin = function () {
   text-align: start;
 }
 
-button {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #f5f5f5;
-  cursor: pointer;
-}
 
-button:hover {
-  background-color: #e1e1e1;
-}
 
 .teams-myTeam h3 {
   display: flex;

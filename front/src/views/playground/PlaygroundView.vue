@@ -322,6 +322,8 @@ const redirectToLogin = function () {
 
 .game-info-container {
   height: 220px;
+  display: flex;
+  flex-direction: column;
   border: 1px solid #ddd; /* Add a border */
   margin-top: 10px; /* Add some space above the card */
   background-color: #fff; /* Set a background color */
@@ -346,11 +348,10 @@ const redirectToLogin = function () {
   font-size: 15px;
 }
 .ongoing-not-exist {
-  margin: 50px auto 0 auto;
   font-family: MiSans-Normal,sans-serif;
   color: var(--text-hint-dark);
   font-size: 12px;
-  justify-content: center;
+  margin: auto auto;
   text-align: center;
 }
 
