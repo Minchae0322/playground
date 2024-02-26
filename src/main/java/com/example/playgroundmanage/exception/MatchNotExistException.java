@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.exception;
 
 public class MatchNotExistException  extends RuntimeException{
-    private static final String MESSAGE = "경기가 존재하지 않습니다.";
+    private static final String MESSAGE = "比赛不存在";
     public MatchNotExistException() {
         super(MESSAGE);
     }

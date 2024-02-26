@@ -16,7 +16,7 @@ import static com.example.playgroundmanage.util.Util.localDateToYearMonthDateTim
 @Getter
 public class MyDateTime implements DateTime {
 
-    private final static ZoneId DEFAULT_ZONE_ID = ZoneId.of("Asia/Seoul");
+    private final static ZoneId DEFAULT_ZONE_ID = ZoneId.of("Asia/Shanghai");
     private final ZonedDateTime zonedDateTime;
 
     public static MyDateTime initMyDateTime(ZonedDateTime zonedDateTime) {

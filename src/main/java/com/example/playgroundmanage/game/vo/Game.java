@@ -65,7 +65,7 @@ public class Game {
 
     @Builder
     public Game(String gameName, Playground playground, User host, SportsEvent sportsEvent, LocalDateTime gameStartDateTime, Integer runningTime, GameType gameType) {
-        validate(runningTime, gameStartDateTime);
+        validate(gameName, runningTime, gameStartDateTime);
         this.gameName = (gameName == null || gameName.trim().isEmpty()) ? host.getNickname() + "的比赛" : gameName;
         this.playground = playground;
         this.host = host;
@@ -77,7 +77,10 @@ public class Game {
         this.runningTime = runningTime;
     }
 
-    private void validate(Integer runningTime, LocalDateTime gameStartDateTime) {
+    private void validate(String gameName, Integer runningTime, LocalDateTime gameStartDateTime) {
+        if(gameName.length() > 20) {
+            throw new RuntimeException("最长20个字");
+        }
         if (runningTime < 0 || runningTime > 120) {
             throw new RuntimeException("不符合，> 0 or < 121");
         }
