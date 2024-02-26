@@ -18,8 +18,8 @@
           <div class="user-requestType-request">{{ request.requestType_cn }}</div>
         </div>
         <div class="actions-request">
-          <button class="reject">Reject</button>
-          <button @click="acceptRequest(request.requestId, request.requestType)" class="accept">Accept</button>
+          <button @click="rejectRequest(request.requestId, request.requestType)" class="reject">拒绝</button>
+          <button @click="acceptRequest(request.requestId, request.requestType)" class="accept">接受</button>
         </div>
       </div>
       <div class="request-border">
@@ -98,20 +98,20 @@ const acceptRequest = async (requestId, requestType) => {
     if (response.status === 200) {
       // 성공적인 요청 후 처리. 예를 들어, 요청 목록을 갱신하거나 사용자에게 알림을 표시할 수 있습니다.
       // 예: pendingRequests.value = pendingRequests.value.filter(request => request.requestId !== requestId);
-      alert('Request accepted successfully.');
+      alert('接受请求成功');
       router.go(0)
     }
   } catch (error) {
-    console.error("There was an error accepting the request: ", error);
+    console.error("请求错误 ", error);
     // 사용자에게 실패를 알리는 메시지를 표시합니다.
-    alert('Failed to accept the request.');
+    alert('失败接受请求，问题 : jmcabc1216@gmail.com');
   }
 };
 
 const rejectRequest = async (requestId, requestType) => {
   await validateAccessToken();
   try {
-    const response = await axios.patch(`${apiBaseUrl}/game/reject/${requestId}/${requestType}`, {}, {
+    const response = await axios.delete(`${apiBaseUrl}/game/reject/${requestId}/${requestType}`,  {
       headers: {
         'Authorization': getAccessToken()
       }
@@ -119,7 +119,7 @@ const rejectRequest = async (requestId, requestType) => {
     if (response.status === 200) {
       // 성공적인 요청 후 처리. 예를 들어, 요청 목록을 갱신하거나 사용자에게 알림을 표시할 수 있습니다.
       // 예: pendingRequests.value = pendingRequests.value.filter(request => request.requestId !== requestId);
-      alert('Request accepted successfully.');
+      alert('拒绝请求成功');
       router.go(0)
     }
   } catch (error) {

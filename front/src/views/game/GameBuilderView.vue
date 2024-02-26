@@ -140,7 +140,7 @@ const generateGame = async () => {
 
 const validate = async () => {
   if (!startTime.value) {
-    alert("시간을 입력해주세요.")
+    alert("请输入时间")
     return false;
   }
   return true;

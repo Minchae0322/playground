@@ -171,10 +171,10 @@ const sendSoloGameJoinRequest = async () => {
 
 const sendTeamRegistrationRequest = async () => {
   if (!selectedTeam.value.teamId) {
-    alert("팀을 선택해주세요");
+    alert("选择队伍");
     return;
   }
-  const isConfirm = confirm("진행하시겠습니까?")
+  const isConfirm = confirm("确定进行组队？")
   if (!isConfirm) {
     return
   }
@@ -191,14 +191,14 @@ const sendTeamRegistrationRequest = async () => {
         'Authorization': getAccessToken()
       }
     });
-    // 서버에서 성공 응답을 받았을 때의 처리를 이곳에 추가할 수 있습니다.
+    alert("组队请求成功。 等接受请求")
   } catch (error) {
     showErrorMessage(error)
   }
 };
 
 const sendTeamJoinRequest = async (subTeamId, teamId) => {
-  const isConfirm = confirm("진행하시겠습니까?")
+  const isConfirm = confirm("进行属于团队参加比赛？")
   if (!isConfirm) {
     return
   }
@@ -226,7 +226,7 @@ const showErrorMessage = (error) => {
     alert(error.response.data.message);
   } else {
     // 에러 응답이 없거나 예상치 못한 에러의 경우
-    alert("경기 참가 과정에서 에러가 발생했습니다.");
+    alert("参赛过程中出现了错误");
   }
 };
 
@@ -456,7 +456,7 @@ const redirectToLogin = function () {
           </div>
           </div>
           <div class="no-participants" v-else>
-            <p >개인팀원이 없습니다.</p>
+            <p >没有个人参与者.</p>
           </div>
         </div>
 
@@ -466,7 +466,7 @@ const redirectToLogin = function () {
             <div v-if="menuVisible" ref="menu" class="py-1" role="menu" aria-orientation="vertical"
                  aria-labelledby="options-menu">
               <div @click="sendSoloGameJoinRequest" class="menu-item" role="menuitem">个人</div>
-              <div @click="clickTeamRegistration" class="menu-item" role="menuitem">参加小队</div>
+              <div @click="clickTeamRegistration" class="menu-item" role="menuitem">组队参与</div>
             </div>
             <button
                 class="select-team-solo-button"
@@ -490,8 +490,8 @@ const redirectToLogin = function () {
 
   <div v-if="isTeamRegistrationModalVisible" class="modal-overlay">
     <div class="modal-window">
-      <h2>팀 만들기</h2>
-      <p>경기에 참여 할 팀을 만들고 참여합니다.</p>
+      <div class="title">组队</div>
+      <div class="title-description">组建并参与比赛的队伍</div>
       <div class="dropdown">
         <div class="dropdown-selected" @click="toggleUserTeamDropdown">{{ selectedTeam.name || 'Select a team' }}</div>
         <div class="dropdown-content" v-show="dropdownVisible">
@@ -503,7 +503,7 @@ const redirectToLogin = function () {
         </div>
       </div>
       <div class="selected-team-container">
-        <a>선택한 팀:</a>
+        <a>选择的队伍:</a>
         <img :src="selectedTeam.teamProfileImg || defaultImage" class="team-image">
         <a>{{ selectedTeam.teamName }}</a>
       </div>
@@ -523,6 +523,17 @@ const redirectToLogin = function () {
 
 
 <style scoped>
+.title {
+  font-size: 27px;
+  color: black;
+  font-family: MiSans-Heavy, sans-serif;
+}
+.title-description {
+  color: #949494;
+  font-family: MiSans-Light, sans-serif;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
 
 h1 {
   background-color: #333;

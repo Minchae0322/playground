@@ -30,7 +30,7 @@ public final class GameValidation {
 
     public static void validateStartBeforePresent(GameTimeDto gameTimeDto) {
         if (gameTimeDto.getStartDateTime().getLocalDateTime().isBefore(LocalDateTime.now().plusMinutes(1))) {
-            throw new RuntimeException("현재시간 +1분 보다 전에 시작할 수 없습니다. 현재시간 : " + localDateToYearMonthDateTimeString(LocalDateTime.now()));
+            throw new RuntimeException("您不能提前于当前时间 + 1 分钟开始 。 当前时间 : " + localDateToYearMonthDateTimeString(LocalDateTime.now()));
         }
     }
 
@@ -39,7 +39,7 @@ public final class GameValidation {
                 .anyMatch(gp -> gp.getUser().equals(user));
 
         if (isAlreadyParticipant) {
-            throw new IllegalArgumentException("이미 게임에 참여하고 있는 사용자입니다: ");
+            throw new IllegalArgumentException("已经参与比赛的用户: ");
         }
     }
 

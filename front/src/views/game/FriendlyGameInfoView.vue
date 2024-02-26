@@ -30,9 +30,9 @@
         <div class="line"></div>
         <div class="participant-container">
           <div class="team-member" v-for="(participant, userId) in participants" :key="participant.userId">
-<!--            <div v-if="participant.userId === loggedInUserId" class="close-marker"
-                 @click="clickOutOfGame()">X
-            </div>-->
+            <!--            <div v-if="participant.userId === loggedInUserId" class="close-marker"
+                             @click="clickOutOfGame()">X
+                        </div>-->
             <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
             <p class="nickname-container-nickname-userInfo">{{ participant.userNickname }}</p>
             <p class="user-role">个人</p>
@@ -41,17 +41,14 @@
       </div>
 
     </div>
+    <div class="relative add-button-container">
+      <button
+          class="add-button-friendly"
+          @click="sendFriendlyGameJoinRequest"
+      >
+        {{ buttonText }}
+      </button>
 
-    <div id="app" class="flex justify-center items-center h-screen">
-      <div class="relative">
-        <button
-            class="select-team-solo-button"
-            @click="sendFriendlyGameJoinRequest"
-        >
-          {{ buttonText }}
-        </button>
-
-      </div>
     </div>
   </div>
 </template>
@@ -77,7 +74,7 @@ const props = defineProps({
 
 
 });
-const buttonText = ref("+")
+const buttonText = ref("参加")
 const participants = ref([{
   userProfileImg: '',
 }])
@@ -135,7 +132,7 @@ const getLoggedUserId = async () => {
 
 const clickOutOfGame = async () => {
   const isConfirm = confirm("确定要退出吗？")
-  if(!isConfirm) {
+  if (!isConfirm) {
     return
   }
   await validateAccessToken();
@@ -156,7 +153,7 @@ const clickOutOfGame = async () => {
 };
 
 const sendFriendlyGameJoinRequest = async () => {
-  const isConfirm = confirm("진행하시겠습니까?")
+  const isConfirm = confirm("确定进行参加？")
   if (!isConfirm) {
     return
   }
@@ -346,7 +343,6 @@ const redirectToLogin = function () {
 }
 
 
-
 .team-details {
   background: #ffffff; /* Light grey background */
   padding: 7px;
@@ -357,7 +353,6 @@ const redirectToLogin = function () {
   transition: box-shadow 0.3s ease;
   align-items: flex-start; /* Align items to the start of the flex container */
 }
-
 
 
 .line {
@@ -422,13 +417,16 @@ const redirectToLogin = function () {
   background-color: var(--background-color-gray);
 }
 
-.select-team-solo-button {
-  padding: 8px 16px;
-  border: 1px solid #252525;
+.add-button-container {
+  background-color: white;
+  width: 100%;
+  padding: 0 0 15px 0;
+}
+
+.add-button-friendly {
   width: 95%;
   border-radius: 4px;
-  margin-bottom: 5px; /* 필요에 따라 조정 */
-  margin-top: 10px;
+  margin: 0px auto;
   font-size: 14px;
   cursor: pointer;
   outline: none;
@@ -436,7 +434,7 @@ const redirectToLogin = function () {
   z-index: 1000; /* 메뉴가 버튼 아래에 오도록 z-index 설정 */
 }
 
-.select-team-solo-button:hover {
+.add-button-friendly:hover {
   background-color: var(--secondary-color)
 }
 

@@ -274,12 +274,14 @@ const redirectToLogin = function () {
 }
 
 .accept {
+  width: 100px;
   background-color: var(--primary-color);
   color: white;
   border: none;
 }
 
 .reject {
+  width: 100px;
   background-color: white;
   color: black;
   border: 1px solid var(--text-hint-light);

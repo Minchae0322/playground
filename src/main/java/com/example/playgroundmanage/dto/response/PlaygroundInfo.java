@@ -30,6 +30,6 @@ public class PlaygroundInfo {
         this.schoolName = schoolName;
         this.campusName = campusName;
         this.playgroundName = playgroundName;
-        this.sportsEvent = sportsEvent.getValue();
+        this.sportsEvent = sportsEvent.getValue_cn();
     }
 }

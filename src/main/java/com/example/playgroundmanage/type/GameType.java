@@ -28,6 +28,11 @@ public enum GameType {
                 return event;
             }
         }
+        for (GameType event : GameType.values()) {
+            if (event.getValue().equalsIgnoreCase(value)) {
+                return event;
+            }
+        }
         throw new IllegalArgumentException("No constant with value " + value + " found");
         // 또는 null 반환을 원하면 return null; 사용
     }

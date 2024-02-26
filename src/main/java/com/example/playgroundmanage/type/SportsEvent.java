@@ -9,6 +9,7 @@ public enum SportsEvent {
 
     TABLE_TENNIS("Table_tennis","乒乓球");
 
+
     private final String value;
     private final String value_cn;
 
@@ -31,7 +32,14 @@ public enum SportsEvent {
                 return event;
             }
         }
+        for (SportsEvent event : SportsEvent.values()) {
+            if (event.getValue_cn().equalsIgnoreCase(value)) {
+                return event;
+            }
+        }
         throw new IllegalArgumentException("No constant with value " + value + " found");
         // 또는 null 반환을 원하면 return null; 사용
     }
     }
+
+
