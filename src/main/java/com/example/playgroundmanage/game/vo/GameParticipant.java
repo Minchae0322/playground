@@ -57,6 +57,7 @@ public class GameParticipant {
 
     public void delete() {
         this.game = null;
+        this.user = null;
         this.subTeam = null;
     }
 

@@ -133,7 +133,7 @@ const getMyGames = async () => {
       }
     });
   } catch (error) {
-    console.error('게임 정보를 가져오는데 실패했습니다.', error.response.data.message);
+    console.error('请求失败', error.response.data.message);
   }
 }
 const getMyGameByYearMonth = async (year, month) => {
@@ -180,7 +180,7 @@ const deleteGame = async (gameId) => {
         'Authorization': getAccessToken(),
       }
     });
-    alert("삭제되었습니다.")
+    alert("成功")
     await getMyGames()
   } catch (error) {
     alert(error.response.data.message)

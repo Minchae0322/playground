@@ -43,11 +43,11 @@
           </div>
         </div>
         <div v-else class="ongoing-not-exist" >
-          No current game in progress
+          没有正在进行的比赛
         </div>
       </div>
 
-      <button class="join-button" @click="openGameBuilder">Join Game</button>
+      <button class="join-button" @click="openGameBuilder">新比赛</button>
     </div>
     <div class="upcoming-container" id="gameView-container">
       <component :is="currentView" :game="selectedGame" :key="componentKey" :playground-id="props.playgroundId"
@@ -481,7 +481,7 @@ a {
   margin-left: 20px;
   min-width: 500px;
   width: 50%;
-  height: 90vh;
+
   min-height: 350px;
   overflow-y: auto;
 }

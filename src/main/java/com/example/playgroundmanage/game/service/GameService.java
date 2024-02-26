@@ -90,6 +90,7 @@ public class GameService {
 
         List<GameParticipant> gameParticipants = game.getGameParticipants();
         gameParticipants.forEach(GameParticipant::delete);
+        //gameParticipantRepository.deleteAll(gameParticipants);
 
         gameRepository.delete(game);
     }

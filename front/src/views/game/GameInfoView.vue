@@ -62,7 +62,7 @@ const props = defineProps({
     required: true
   }
 });
-const buttonText = ref("+")
+const buttonText = ref("参加")
 
 const emits = defineEmits(['goBack']);
 
@@ -148,7 +148,7 @@ const getTeamData = async (matchTeamSide, gameType) => {
   }
 };
 const sendSoloGameJoinRequest = async () => {
-  const isConfirm = confirm("진행하시겠습니까?")
+  const isConfirm = confirm("确定请求个人参加？")
   if (!isConfirm) {
     return
   }
@@ -163,6 +163,7 @@ const sendSoloGameJoinRequest = async () => {
           }
         }
     )
+    alert("请求成功")
   } catch (error) {
     showErrorMessage(error)
   }
@@ -439,7 +440,7 @@ const redirectToLogin = function () {
                 <p class="user-role">{{ participant.userRole }}</p>
               </div>
             </div>
-            <button class="add-button" @click="sendTeamJoinRequest(team.subTeamId, team.teamId)"> 参加</button>
+            <button class="add-button" @click="sendTeamJoinRequest(team.subTeamId, team.teamId)"> 组队参加</button>
           </div>
         </div>
 
@@ -920,18 +921,15 @@ a {
   cursor: pointer;
   transition: background-color 0.3s ease;
   display: flex;
-
-  letter-spacing: 4px;
   justify-content: center;
   align-items: center;
-  width: 100px;
-  height: 40px;
+  width: 120px;
+  margin-top: 20px;;
   position: relative; /* Needed to position the pseudo-element */
 }
 
 .add-button::before {
-  content: "+"; /* Adds the plus sign */
-  font-size: 24px; /* Size of the plus sign */
+  font-size: 22px; /* Size of the plus sign */
 
 }
 
@@ -941,7 +939,6 @@ a {
 
 
 .select-team-solo-button {
-  padding: 8px 16px;
   border: 1px solid #252525;
   width: 95%;
   border-radius: 4px;
