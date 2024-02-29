@@ -3,10 +3,10 @@
     <div class="login-container-2">
       <div class=" text-center">
         <h1 class="text-3xl">Sign In</h1>
-        <div class="font" style="color: var(--text-hint)">Enter your email and password to sign in</div>
+        <div class="font" style="color: var(--text-hint)">点击登录</div>
       </div>
       <div class="space-y-4">
-        <div class="space-id">
+<!--        <div class="space-id">
           <label
               class="label-id font-medium"
               for="id"
@@ -32,8 +32,9 @@
             @click="write"
         >
           Sign In
-        </button>
+        </button>-->
       </div>
+<!--
       <div class="flex justify-between text-sm font-light">
         <a class="text-color-black font" href="#">
           Forgot password?
@@ -42,6 +43,7 @@
           Create an account
         </a>
       </div>
+-->
 
       <div data-orientation="horizontal" role="none" class="shrink-0 bg-gray-100 h-[1px] w-full my-8"></div>
       <div class="space-y-4">
@@ -54,6 +56,15 @@
             width="50"
             height="50"
             @click="login_google"
+        />
+        <img
+
+            src="../assets/icon-qq.png"
+            alt="Your Image Alt Text"
+            class="image-margin"
+            width="50"
+            height="50"
+            @click="login_qq"
         />
         <img
 
@@ -102,6 +113,16 @@ const login_naver = function () {
     console.error('Error during Naver login:', error);
     router.replace('/login'); // Redirect to /login in case of an error
   }
+}
+
+const login_qq = function () {
+  alert("正在准备中")
+  /*try {
+    window.location.href = `${apiBaseUrl}/oauth2/authorization/qq`;
+  } catch (error) {
+    console.error('Error during Naver login:', error);
+    router.replace('/login'); // Redirect to /login in case of an error
+  }*/
 }
 
 const login_github = function () {
@@ -166,6 +187,8 @@ const write = async function () {
 
 .text-3xl {
   font-size: 1.875rem;
+  color: black;
+  margin: 50px 0;
 }
 
 .justify-between {

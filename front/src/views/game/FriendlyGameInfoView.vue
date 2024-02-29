@@ -168,7 +168,7 @@ const sendFriendlyGameJoinRequest = async () => {
           }
         }
     )
-    alert("요청에 성공하였습니다.")
+    alert("请求成功")
   } catch (error) {
     showErrorMessage(error)
   }

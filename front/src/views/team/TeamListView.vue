@@ -166,6 +166,7 @@ const redirectToLogin = function () {
 .sports-event-container-teamList button {
   text-align: center;
   width: 70px;
+
   margin: 5px 5px;
   background-color: var(--text-primary);
   color: white;

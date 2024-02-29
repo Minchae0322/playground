@@ -7,7 +7,7 @@ import {useRouter} from "vue-router";
 import mSidebarView from "../src/views/mobile/sidebarView.vue"
 
 const router = useRouter();
-const isMobile = ref(window.innerWidth < 600);
+const isMobile = ref(window.innerWidth < 650);
 
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
@@ -267,8 +267,8 @@ const redirectToLogin = async () => {
 <style>
 .main-content {
   display: flex;
-  align-items: start;
-  justify-content: start;
+  align-items: center;
+  justify-content: center;
 
 }
 
@@ -331,6 +331,7 @@ li {
   display: flex;
   padding: 20px 10px;
   margin: 10px 0;
+  cursor: pointer;
   background-color: var(--accent-color);
 
 }
@@ -457,7 +458,6 @@ header {
   width: 100%;
   margin-top: 60px;
   margin-bottom: 60px;
-
   overflow-y: auto; /* 내용이 높이를 초과하면 스크롤바 생성 */
 }
 
@@ -471,6 +471,15 @@ header {
   margin: 0;
 }
 
+
+@media (max-width: 600px) {
+  .router-view-container-m {
+    width: 100%;
+    justify-content: center;
+    align-content: center;
+    margin: 80px auto;
+  }
+}
 
 
 

@@ -8,6 +8,7 @@ import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.game.service.UserService;
 import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
+import com.example.playgroundmanage.store.FileHandler;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -33,6 +34,8 @@ public class UserController {
 
     private final TestRepository testRepository;
 
+    private final FileHandler fileHandler;
+
     @GetMapping("/user/profile")
     public UserInfoDto getUserProfile(@AuthenticationPrincipal MyUserDetails userDetails) {
         return userService.getUserProfile(userDetails.getUser());
@@ -42,6 +45,13 @@ public class UserController {
     public void updateProfileImg(@AuthenticationPrincipal MyUserDetails myUserDetails, @RequestParam("image") MultipartFile multipartFile) throws IOException {
         userService.updateProfileImg(myUserDetails.getUser().getId(), multipartFile);
     }
+
+
+    @PostMapping(value = "/img/update", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    public void updateImg(@AuthenticationPrincipal MyUserDetails myUserDetails, @RequestParam("image") MultipartFile multipartFile) throws IOException {
+        fileHandler.storeFile(multipartFile);
+    }
+
 
 
     @GetMapping("/user/info")

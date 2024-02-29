@@ -135,7 +135,10 @@ const redirectToLogin = function () {
   text-align: start;
 }
 
-
+button {
+  padding: 10px;
+  cursor: pointer;
+}
 
 .teams-myTeam h3 {
   display: flex;

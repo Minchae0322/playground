@@ -22,10 +22,20 @@ import teamList from '../views/team/TeamListView.vue';
 import App from "@/App.vue";
 import friendlyGameInfo from "@/views/game/FriendlyGameInfoView.vue";
 import mSidebar from "@/views/mobile/sidebarView.vue"
+import addPhoto from '@/views/addphotoView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
+    {
+      path: '/', // 도메인 입력 시 초기 페이지를 '/home'으로 설정
+      redirect: '/home'
+    },
+    {
+      path: '/photo',
+      name: 'photo',
+      component: addPhoto
+    },
       {
       path: '/home',
       name: 'home',
