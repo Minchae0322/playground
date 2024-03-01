@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.dto.UserNicknameDto;
-import com.example.playgroundmanage.dto.response.TeamInfoResponse;
+import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.location.repository.TeamingRepository;
@@ -25,7 +25,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.example.playgroundmanage.validator.UserValidator.validateUser;
@@ -62,11 +61,11 @@ public class UserService {
     }
 
     @Transactional
-    public List<TeamInfoResponse> getTeamsInfoUserBelongsTo(Long userId) {
+    public List<TeamDto.TeamResponseDto> getTeamsInfoUserBelongsTo(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
         List<Teaming> teams = user.getTeams();
         return teams.stream()
-                .map(t -> TeamInfoResponse.builder()
+                .map(t -> TeamDto.TeamResponseDto.builder()
                         .teamId(t.getTeam().getId())
                         .sportsEvent(t.getTeam().getSportsEvent().getValue())
                         .teamName(t.getTeam().getTeamName())

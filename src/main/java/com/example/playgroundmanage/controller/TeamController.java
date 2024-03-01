@@ -3,9 +3,9 @@ package com.example.playgroundmanage.controller;
 import com.example.playgroundmanage.dto.TeamRequestDto;
 import com.example.playgroundmanage.dto.TeamRegistrationRequest;
 import com.example.playgroundmanage.dto.TeamJoinRequestDto;
-import com.example.playgroundmanage.dto.response.TeamInfoResponse;
+import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.dto.response.TeamMemberDto;
-import com.example.playgroundmanage.dto.response.TeamResponseDto;
+import com.example.playgroundmanage.team.dto.TeamResponseDto;
 import com.example.playgroundmanage.team.service.TeamService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.type.SportsEvent;
@@ -28,7 +28,7 @@ public class TeamController {
     private final TeamService teamService;
 
     @GetMapping("/team/{teamId}/info")
-    public TeamInfoResponse getTeamInfo(@PathVariable Long teamId) throws IOException {
+    public TeamDto.TeamResponseDto getTeamInfo(@PathVariable Long teamId) throws IOException {
         return teamService.getTeamInfo(teamId);
     }
 
@@ -49,7 +49,7 @@ public class TeamController {
     }
 
     @PostMapping(value = "/team/build", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    public TeamInfoResponse generateTeam(@AuthenticationPrincipal MyUserDetails myUserDetails, @RequestPart("team") TeamRegistrationRequest params, @RequestPart(value = "imageFile", required = false) MultipartFile multipartFile) throws IOException {
+    public TeamDto.TeamResponseDto generateTeam(@AuthenticationPrincipal MyUserDetails myUserDetails, @RequestPart("team") TeamRegistrationRequest params, @RequestPart(value = "imageFile", required = false) MultipartFile multipartFile) throws IOException {
         TeamRequestDto teamRequestDto = TeamRequestDto.builder()
                 .teamPic(multipartFile)
                 .teamDescription(params.getTeamDescription())
@@ -58,7 +58,7 @@ public class TeamController {
                 .sportsEvent(SportsEvent.fromString(params.getSportsEvent()))
                 .build();
 
-        return TeamInfoResponse.builder()
+        return TeamDto.TeamResponseDto.builder()
                 .teamId(teamService.generateTeam(teamRequestDto))
                 .build();
     }

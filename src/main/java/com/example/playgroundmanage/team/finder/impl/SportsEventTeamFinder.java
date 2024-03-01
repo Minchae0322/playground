@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.team.finder.impl;
 
 import com.example.playgroundmanage.dto.TeamJoinRequestDto;
-import com.example.playgroundmanage.dto.response.TeamResponseDto;
+import com.example.playgroundmanage.team.dto.TeamResponseDto;
 import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.team.finder.TeamFinder;

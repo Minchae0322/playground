@@ -3,7 +3,7 @@ package com.example.playgroundmanage.controller;
 import com.example.playgroundmanage.Test;
 import com.example.playgroundmanage.TestRepository;
 import com.example.playgroundmanage.dto.UserNicknameDto;
-import com.example.playgroundmanage.dto.response.TeamInfoResponse;
+import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.game.service.UserService;
 import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
@@ -14,12 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -78,7 +76,7 @@ public class UserController {
 
 
     @GetMapping("/user/teams")
-    public List<TeamInfoResponse> getTeamsUserBelongTo(@AuthenticationPrincipal MyUserDetails userDetails) {
+    public List<TeamDto.TeamResponseDto> getTeamsUserBelongTo(@AuthenticationPrincipal MyUserDetails userDetails) {
         return userService.getTeamsInfoUserBelongsTo(userDetails.getUser().getId());
     }
 

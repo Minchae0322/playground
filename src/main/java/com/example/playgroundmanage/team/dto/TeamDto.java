@@ -1,0 +1,37 @@
+package com.example.playgroundmanage.team.dto;
+
+import com.example.playgroundmanage.store.InMemoryMultipartFile;
+import com.example.playgroundmanage.store.impl.FileHandlerImpl;
+import lombok.Builder;
+import lombok.Data;
+
+public class TeamDto {
+
+    @Data
+    public static class TeamResponseDto {
+        private Long teamId;
+        private String teamName;
+
+        private String teamProfileImg;
+
+        private String sportsEvent;
+
+        private String description;
+
+        private Long leaderId;
+
+        private String leaderName;
+
+        @Builder
+        public TeamResponseDto(Long teamId, String teamName, InMemoryMultipartFile teamProfileImg, String sportsEvent, Long leaderId, String leaderName, String description) {
+            this.teamId = teamId;
+            this.teamName = teamName;
+            this.teamProfileImg = FileHandlerImpl.multipartFileToString(teamProfileImg);
+            this.sportsEvent = sportsEvent;
+            this.leaderId = leaderId;
+            this.leaderName = leaderName;
+            this.description = description;
+        }
+
+    }
+}

@@ -2,12 +2,11 @@ package com.example.playgroundmanage.team.service;
 
 import com.example.playgroundmanage.dto.TeamRequestDto;
 import com.example.playgroundmanage.dto.TeamJoinRequestDto;
-import com.example.playgroundmanage.dto.response.TeamInfoResponse;
+import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.dto.response.TeamMemberDto;
-import com.example.playgroundmanage.dto.response.TeamResponseDto;
+import com.example.playgroundmanage.team.dto.TeamResponseDto;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.service.SubTeamService;
-import com.example.playgroundmanage.game.vo.SubTeam;
 import com.example.playgroundmanage.location.repository.TeamingRepository;
 import com.example.playgroundmanage.game.service.UserService;
 import com.example.playgroundmanage.team.TeamMemberFinder;
@@ -123,13 +122,11 @@ public class TeamService {
 
 
     @Transactional
-    public TeamInfoResponse getTeamInfo(Long teamId) throws IOException {
+    public TeamDto.TeamResponseDto getTeamInfo(Long teamId) {
         Team team = teamRepository.findById(teamId).orElseThrow(TeamNotExistException::new);
-        InMemoryMultipartFile teamProfileImg = null;
-        if(team.getTeamPic() != null) {
-            teamProfileImg = fileHandler.extractFile(team.getTeamPic());
-        }
-        return TeamInfoResponse.builder()
+        InMemoryMultipartFile teamProfileImg = fileHandler.extractFile(team.getTeamPic());
+
+        return TeamDto.TeamResponseDto.builder()
                 .teamName(team.getTeamName())
                 .description(team.getDescription())
                 .sportsEvent(team.getSportsEvent().getValue())

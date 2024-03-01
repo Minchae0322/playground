@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.dto.response;
+package com.example.playgroundmanage.team.dto;
 
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.store.impl.FileHandlerImpl;
