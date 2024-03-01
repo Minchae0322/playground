@@ -14,6 +14,7 @@
     "axios": "^1.6.2",
     "canvas": "^2.11.2",
     "element-plus": "^2.4.3",
+    "image-compressor": "^2.0.3",
     "node-vibrant": "^3.2.1-alpha.1",
     "pinia": "^2.1.7",
     "vue": "^3.3.4",

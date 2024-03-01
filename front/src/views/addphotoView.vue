@@ -7,11 +7,11 @@
 
 
 <script setup>
-
 import {getCurrentInstance, onMounted, ref} from "vue";
 import axios from "axios";
 import defaultImage from '../assets/img.png';
 import {useRouter} from "vue-router";
+
 
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
@@ -25,13 +25,16 @@ const handleFileChange = async (event) => {
   }
 
   const options = {
-    quality: 0.6, // 0 ~ 1 사이의 압축 품질
-    maxWidth: 800, // 원하는 최대 너비
-    maxHeight: 600, // 원하는 최대 높이
-    mimeType: 'image/jpeg', // 압축된 이미지 형식
-  }
+    quality: 0.6,
+    maxWidth: 800,
+    maxHeight: 600,
+    mimeType: 'image/jpeg',
+  };
+
+  const compressedImage = await compressImage(file);
+
   const formData = new FormData();
-  formData.append('image', file); // 'image'는 백엔드에서 기대하는 필드명입니다.
+  formData.append('image', compressedImage); // 'image'는 백엔드에서 기대하는 필드명입니다.
 
   try {
     const response = await axios.post(`${apiBaseUrl}/img/update`, formData, {
@@ -45,6 +48,34 @@ const handleFileChange = async (event) => {
   } catch (error) {
     console.error('업로드 실패', error);
   }
+};
+
+
+const compressImage = async (file) => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 800; // 원하는 최대 너비
+        canvas.height = (canvas.width * img.height) / img.width;
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob(
+            (blob) => {
+              resolve(new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() }));
+            },
+            'image/jpeg',
+            0.6 // 0 ~ 1 사이의 압축 품질
+        );
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
 };
 const validateAccessToken = async function () {
   const accessToken = getAccessToken();

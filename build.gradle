@@ -36,6 +36,7 @@ dependencies {
     implementation "com.querydsl:querydsl-collections"
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
+    implementation group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'
     annotationProcessor("com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta")
     annotationProcessor("jakarta.persistence:jakarta.persistence-api")
     annotationProcessor("jakarta.annotation:jakarta.annotation-api")

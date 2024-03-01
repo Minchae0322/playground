@@ -12,7 +12,7 @@ import lombok.Setter;
 @Inheritance(strategy = InheritanceType.JOINED)
 @DiscriminatorColumn(name = "dtype", discriminatorType = DiscriminatorType.STRING)
 @NoArgsConstructor
-public  class UploadFile {
+public class UploadFile {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
