@@ -23,6 +23,8 @@ import App from "@/App.vue";
 import friendlyGameInfo from "@/views/game/FriendlyGameInfoView.vue";
 import mSidebar from "@/views/mobile/sidebarView.vue"
 import addPhoto from '@/views/addphotoView.vue'
+import signup from '@/views/signupView.vue'
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -160,12 +162,17 @@ const router = createRouter({
       name: 'teamRequest',
       component: teamRequest,
     },
-
+    {
+      path: '/user/signup',
+      name: 'signup',
+      component: signup,
+    },
     {
       path: '/m/sidebar',
       name: 'mSidebar',
       component: mSidebar,
     },
+
   ]
 })
 

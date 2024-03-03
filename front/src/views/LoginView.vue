@@ -3,10 +3,9 @@
     <div class="login-container-2">
       <div class=" text-center">
         <h1 class="text-3xl">Sign In</h1>
-        <div class="font" style="color: var(--text-hint)">点击登录</div>
       </div>
       <div class="space-y-4">
-<!--        <div class="space-id">
+        <div class="space-id">
           <label
               class="label-id font-medium"
               for="id"
@@ -24,7 +23,7 @@
             Password
           </label>
         </div>
-        <el-input class="custom-input" v-model="password" placeholder="Please input password"/>
+        <el-input type="password" class="custom-input" v-model="password" placeholder="Please input password"/>
 
         <button
             class="button-margin rounded-md text-sm font-medium ring-offset-background  fn=g focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
@@ -32,18 +31,16 @@
             @click="write"
         >
           Sign In
-        </button>-->
+        </button>
       </div>
-<!--
+
       <div class="flex justify-between text-sm font-light">
-        <a class="text-color-black font" href="#">
-          Forgot password?
-        </a>
-        <a class="text-color-black font" href="#">
+
+        <a class="text-color-black font" href="/user/signup">
           Create an account
         </a>
       </div>
--->
+
 
       <div data-orientation="horizontal" role="none" class="shrink-0 bg-gray-100 h-[1px] w-full my-8"></div>
       <div class="space-y-4">
@@ -73,7 +70,7 @@
             class="image-margin"
             width="50"
             height="50"
-            @click="login_naver"
+            @click="login_wechat"
         />
 
         <img
@@ -109,6 +106,15 @@ axios.defaults.withCredentials = true; // withCredentials 전역 설정
 const login_naver = function () {
   try {
     window.location.href = `${apiBaseUrl}/oauth2/authorization/naver`;
+  } catch (error) {
+    console.error('Error during Naver login:', error);
+    router.replace('/login'); // Redirect to /login in case of an error
+  }
+}
+
+const login_wechat = function () {
+  try {
+    window.location.href = `${apiBaseUrl}/oauth2/authorization/wechat`;
   } catch (error) {
     console.error('Error during Naver login:', error);
     router.replace('/login'); // Redirect to /login in case of an error

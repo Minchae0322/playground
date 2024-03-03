@@ -161,18 +161,18 @@ const redirectToLogin = async () => {
 <template>
 
   <head>
-
+    <link rel="icon" href="@/front/dist/favicon.ico">
   </head>
   <main v-if="isMobile">
     <div class="router-view-container-m">
       <RouterView/>
     </div>
-    <component v-if="$route.name !== 'login'" :class="{'disable-sidebar': $route.name === 'login'}" class="under-bar"
+    <component v-if="$route.name !== 'login'" :class="{'disable-sidebar': $route.name === 'login' || $route.name === 'signup'}" class="under-bar"
                :is="mSidebarView"></component>
   </main>
 
   <main v-else class="main-content">
-    <div v-if="$route.name !== 'login'" :class="{'disable-sidebar': $route.name === 'login'}" class="sidebar">
+    <div v-if="$route.name !== 'login'" :class="{'disable-sidebar': $route.name === 'login' || $route.name === 'signup'}" class="sidebar">
       <router-link :to="{name : 'home'}">
         <div class="school-info-container">
           <img class="school-profile-img" src="../src/assets/school-profile.jpeg">
@@ -258,7 +258,7 @@ const redirectToLogin = async () => {
       </nav>
 
     </div>
-    <div :class="{'login-router-view ': $route.name === 'login'}" class="router-view-container">
+    <div :class="{'login-router-view ': $route.name === 'login' || $route.name === 'signup'}" class="router-view-container">
       <RouterView/>
     </div>
   </main>

@@ -3,6 +3,8 @@ package com.example.playgroundmanage.controller;
 import com.example.playgroundmanage.Test;
 import com.example.playgroundmanage.TestRepository;
 import com.example.playgroundmanage.dto.UserNicknameDto;
+import com.example.playgroundmanage.dto.reqeust.UserDto;
+import com.example.playgroundmanage.login.dto.UserSignupForm;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.game.service.UserService;
@@ -83,5 +85,10 @@ public class UserController {
     @PatchMapping("/user/change-nickname")
     public UserNicknameDto changeNickname(@RequestBody UserNicknameDto userNicknameDto, @AuthenticationPrincipal MyUserDetails userDetails) {
         return userService.changeNickname(userDetails.getUser().getId(), userNicknameDto.getUserNickname());
+    }
+
+    @PostMapping("/user/signup")
+    public void signup(@RequestBody UserSignupForm userSignupForm) {
+        userService.signup(userSignupForm);
     }
 }

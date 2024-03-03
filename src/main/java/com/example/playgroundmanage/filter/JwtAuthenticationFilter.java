@@ -30,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if(skipFilter(request.getRequestURI())) {
+        if (skipFilter(request.getRequestURI())) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -64,8 +64,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private boolean skipFilter(String url) {
         List<String> list = List.of(
                 "/auth/login"
-                ,"/favicon.ico"
-                ,"/oauth2"
+                , "/favicon.ico"
+                , "/oauth2"
+                , "/user/signup"
                 /*,"/token/valid"*/
                 , ACCESS_TOKEN_REFRESH_URL
         );

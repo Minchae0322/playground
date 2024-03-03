@@ -95,6 +95,7 @@ public class User implements Serializable{
         if (nickname.equals("") || nickname.length() > 9) {
             throw new RuntimeException("不符合昵称格式。 最大字数9个字");
         }
+
     }
 
     @Transactional
