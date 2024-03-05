@@ -36,7 +36,6 @@ public class Game {
     @ManyToOne(cascade = CascadeType.MERGE)
     private User host;
 
-
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CompetingTeam> competingTeams = new ArrayList<>();
 
@@ -46,14 +45,13 @@ public class Game {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<GameParticipant> gameParticipants;
 
+    @OneToOne(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private GameResult gameResult;
+
     @Enumerated
     private SportsEvent sportsEvent;
 
     private GameType gameType;
-
-    private int homeScore;
-
-    private int awayScore;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
     private LocalDateTime gameStartDateTime;
@@ -68,8 +66,6 @@ public class Game {
         this.playground = playground;
         this.host = host;
         this.sportsEvent = sportsEvent;
-        this.homeScore = 0;
-        this.awayScore = 0;
         this.gameType = gameType;
         this.gameStartDateTime = gameStartDateTime;
         this.runningTime = runningTime;
