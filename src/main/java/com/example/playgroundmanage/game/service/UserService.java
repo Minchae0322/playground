@@ -52,6 +52,7 @@ public class UserService {
                 .username(userSignupForm.getUsername())
                 .password(passwordEncoder.encode(userSignupForm.getPassword()))
                 .role(UserRole.USER)
+                .isEnable(true)
                 .build();
         userRepository.save(user);
     }

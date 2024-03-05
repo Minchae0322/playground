@@ -42,7 +42,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             Authentication authentication = jwtTokenProvider.getAuthentication(accessToken);
 
             if (!userDetailsService.isValidUser((MyUserDetails) authentication.getPrincipal())) {
-                throw new AuthenticationException("권한이 없습니다.");
+                throw new AuthenticationException("没有权限");
             }
 
             SecurityContextHolder.getContext().setAuthentication(authentication);

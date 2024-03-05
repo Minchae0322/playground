@@ -86,8 +86,8 @@ public class WebSecurityConfig {
     @Bean
     public UsernamePasswordCustomAuthenticationFilter usernamePasswordCustomAuthenticationFilter() {
         UsernamePasswordCustomAuthenticationFilter filter = new UsernamePasswordCustomAuthenticationFilter();
-        filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(jwtTokenProvider, tokenService, userRepository));
-        filter.setAuthenticationFailureHandler(new LoginFailureHandler());
+        //filter.setAuthenticationSuccessHandler(new LoginSuccessHandler(jwtTokenProvider, tokenService, userRepository));
+        //filter.setAuthenticationFailureHandler(new LoginFailureHandler());
         filter.setSecurityContextRepository(new HttpSessionSecurityContextRepository());
         filter.setAuthenticationManager(authenticationManage());
         return filter;

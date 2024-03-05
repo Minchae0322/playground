@@ -70,7 +70,7 @@
             class="image-margin"
             width="50"
             height="50"
-            @click="login_wechat"
+            @click="login_naver"
         />
 
         <img
@@ -101,7 +101,7 @@ const password = ref("");
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 
-axios.defaults.withCredentials = true; // withCredentials 전역 설정
+axios.defaults.withCredentials = false; // withCredentials 전역 설정
 
 const login_naver = function () {
   try {
@@ -157,12 +157,16 @@ const write = async function () {
     }, {
       headers: {}
     });
-
-    if (response.status === 200) {
+    console.log(response.headers['Authorization'])
+    const accessToken = response.headers['Authorization'];
+    if (accessToken) {
+      localStorage.setItem('accessToken', accessToken.value);
+      console.log(accessToken)
     }
+    console.log(accessToken)
+    router.replace('/home')
   } catch (error) {
-    console.error('에러 발생:', error);
-    alert("아이디 또는 비밀번호가 틀렸습니다.");
+
   }
 }
 

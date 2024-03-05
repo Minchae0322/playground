@@ -83,6 +83,8 @@ public class User implements Serializable{
         this.gameParticipants = new ArrayList<>();
     }
 
+
+
     public void enable() {
         isLoggedIn = true;
     }

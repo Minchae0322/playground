@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.net.URI;
 
 import static com.example.playgroundmanage.Instance.*;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @RequiredArgsConstructor
@@ -46,6 +47,8 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
         tokenService.updateRefreshToken(tokenEdit);
 
         response.setStatus(HttpServletResponse.SC_OK);
+       /* response.setContentType(APPLICATION_JSON_VALUE);
+        response.setHeader("Authorization", tokenInfo.getAccessToken());*/
         redirect(request, response, tokenInfo.getAccessToken(), tokenInfo.getRefreshToken());
     }
 
