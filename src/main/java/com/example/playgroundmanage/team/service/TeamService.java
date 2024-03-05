@@ -4,7 +4,6 @@ import com.example.playgroundmanage.dto.TeamRequestDto;
 import com.example.playgroundmanage.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.dto.response.TeamMemberDto;
-import com.example.playgroundmanage.team.dto.TeamResponseDto;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.service.SubTeamService;
 import com.example.playgroundmanage.location.repository.TeamingRepository;
@@ -69,7 +68,7 @@ public class TeamService {
 
 
     @Transactional
-    public List<TeamResponseDto> getTeams(TeamJoinRequestDto teamJoinRequestDto, String by) {
+    public List<TeamDto.TeamResponseDto> getTeams(TeamJoinRequestDto teamJoinRequestDto, String by) {
         TeamFinder teamFinder = teamFinderFactory.find(by);
 
         return teamFinder.getTeams(teamJoinRequestDto);

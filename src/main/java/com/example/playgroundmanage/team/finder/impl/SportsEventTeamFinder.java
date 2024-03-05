@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.team.finder.impl;
 
 import com.example.playgroundmanage.dto.TeamJoinRequestDto;
-import com.example.playgroundmanage.team.dto.TeamResponseDto;
+import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.team.finder.TeamFinder;
@@ -20,14 +20,14 @@ public class SportsEventTeamFinder implements TeamFinder {
 
     private final FileHandler fileHandler;
     @Override
-    public List<TeamResponseDto> getTeams(TeamJoinRequestDto teamJoinRequestDto) {
+    public List<TeamDto.TeamResponseDto> getTeams(TeamJoinRequestDto teamJoinRequestDto) {
         List<Team> teams = teamRepository.findAllBySportsEvent(SportsEvent.fromString(teamJoinRequestDto.getSportsEvent()));
 
         return teams.stream()
-                .map(team -> TeamResponseDto.builder()
+                .map(team -> TeamDto.TeamResponseDto.builder()
                         .teamId(team.getId())
                         .teamName(team.getTeamName())
-                        .teamDescription(team.getDescription())
+                        .description(team.getDescription())
                         .sportsEvent(team.getSportsEvent().getValue_cn())
                         .teamProfileImg(fileHandler.extractFile(team.getTeamPic()))
                         .build())

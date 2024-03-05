@@ -1,11 +1,10 @@
 package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.dto.TeamRequestDto;
-import com.example.playgroundmanage.dto.TeamRegistrationRequest;
+import com.example.playgroundmanage.request.dto.TeamRegistrationRequest;
 import com.example.playgroundmanage.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.dto.response.TeamMemberDto;
-import com.example.playgroundmanage.team.dto.TeamResponseDto;
 import com.example.playgroundmanage.team.service.TeamService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.type.SportsEvent;
@@ -74,7 +73,7 @@ public class TeamController {
     }
 
     @PostMapping("/team/list/{type}")
-    public List<TeamResponseDto> getTeams(@RequestBody TeamJoinRequestDto teamJoinRequestDto, @PathVariable String type) {
+    public List<TeamDto.TeamResponseDto> getTeams(@RequestBody TeamJoinRequestDto teamJoinRequestDto, @PathVariable String type) {
         return teamService.getTeams(teamJoinRequestDto, type);
     }
 

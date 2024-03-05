@@ -1,10 +1,11 @@
-package com.example.playgroundmanage.game;
+package com.example.playgroundmanage.game.impl;
 
 import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.exception.TimeOverlappingException;
+import com.example.playgroundmanage.game.GameGenerator;
 import com.example.playgroundmanage.game.dto.GameTeamResponseDto;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.service.UserService;

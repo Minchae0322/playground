@@ -46,8 +46,6 @@ public class Game {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<GameParticipant> gameParticipants;
 
-
-
     @Enumerated
     private SportsEvent sportsEvent;
 

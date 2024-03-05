@@ -10,7 +10,7 @@
               @click="deleteTeam">删除
       </button>
       <button v-else-if="isTeamMember" class="button-teamJoin-teamInfo">已加入</button>
-      <button v-else class="button-teamJoin-teamInfo" @click="clickJoinTeam">加入</button>
+      <button v-else class="button-teamJoin-teamInfo" @click="openModal">加入</button>
     </div>
 
 
@@ -46,6 +46,15 @@
       <ul>
         <li>准备中</li>
       </ul>
+    </div>
+
+    <div v-if="showModal" class="modal">
+      <div class="modal-content">
+        <span class="close" @click="closeModal">&times;</span>
+        <label for="introduction">介绍我（30个字内）</label>
+        <textarea rows="4" placeholder="介绍我" :maxlength="30" v-model="introduction"></textarea>
+        <button class="button-teamJoin-teamInfo" @click="submitIntroduction">提交</button>
+      </div>
     </div>
   </div>
 </template>
@@ -91,6 +100,38 @@ onMounted(async () => {
   getTeamInfo()
   getTeamMembers()
 });
+
+const showModal = ref(false);
+const introduction = ref('');
+
+const closeModal = () => {
+  showModal.value = false;
+  introduction.value = '';
+};
+
+const openModal = () => {
+  showModal.value = true;
+};
+
+const submitIntroduction = async () => {
+  await validateAccessToken()
+  try {
+    await axios.post(`${apiBaseUrl}/team/join/teamJoin`, {
+          teamId: props.teamId,
+          introduction: introduction.value,
+        },
+        {
+          headers: {
+            'Authorization': getAccessToken()
+          }
+        }
+    );
+    alert("请求成功");
+    closeModal();
+  } catch (error) {
+    alert(error.response.data.message);
+  }
+};
 
 const checkTeamLeader = async () => {
   await validateAccessToken()
@@ -146,23 +187,6 @@ const checkTeamMember = async () => {
   }
 };
 
-const clickJoinTeam = async () => {
-  await validateAccessToken()
-  try {
-    await axios.post(`${apiBaseUrl}/team/join/teamJoin`, {
-          teamId: props.teamId
-        },
-        {
-          headers: {
-            'Authorization': getAccessToken()
-          }
-        }
-    );
-    alert("가입 요청을 보냈습니다.");
-  } catch (error) {
-    alert(error.response.data.message);
-  }
-};
 const getTeamMembers = function () {
   validateAccessToken()
   axios.get(`${apiBaseUrl}/team/${props.teamId}/members`,
@@ -413,20 +437,43 @@ td {
   padding: 10px;
   border-radius: 5px;
 }
+.modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1;
+}
 
-.learn-more {
-  background-color: #007bff;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
+.modal-content {
+  background-color: #fefefe;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
   cursor: pointer;
-  margin-top: 20px;
 }
 
-.learn-more:hover {
-  background-color: #0056b3;
+/* 텍스트 입력 스타일 */
+textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }
+
 
 @media (max-width: 600px) {
   .team-container-teamInfo {

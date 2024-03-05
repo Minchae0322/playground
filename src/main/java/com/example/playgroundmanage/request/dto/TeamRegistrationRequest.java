@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.dto;
+package com.example.playgroundmanage.request.dto;
 
 import lombok.Builder;
 import lombok.Getter;

@@ -1,9 +1,10 @@
-package com.example.playgroundmanage.game;
+package com.example.playgroundmanage.game.impl;
 
 import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.dto.SubTeamDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
+import com.example.playgroundmanage.game.GameGenerator;
 import com.example.playgroundmanage.game.dto.GameTeamResponseDto;
 import com.example.playgroundmanage.game.repository.CompetingTeamRepository;
 import com.example.playgroundmanage.game.repository.GameRepository;
