@@ -2,13 +2,14 @@ package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameService;
+import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.request.service.impl.SoloGameJoinRequestService;
 
 import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
 import com.example.playgroundmanage.team.vo.Team;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.login.vo.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

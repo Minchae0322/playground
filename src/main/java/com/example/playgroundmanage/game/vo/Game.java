@@ -2,6 +2,7 @@ package com.example.playgroundmanage.game.vo;
 
 import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.dto.GameDto;
+import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;

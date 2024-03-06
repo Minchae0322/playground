@@ -2,7 +2,7 @@ package com.example.playgroundmanage.dto;
 
 import com.example.playgroundmanage.dto.response.PendingTeamRequest;
 import com.example.playgroundmanage.team.vo.Team;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.util.DateFormat;
 import lombok.Builder;
 import lombok.Data;

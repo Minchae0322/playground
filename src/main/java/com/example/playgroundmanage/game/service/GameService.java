@@ -4,12 +4,10 @@ import com.example.playgroundmanage.dto.GameDto;
 
 import com.example.playgroundmanage.dto.UsersGameDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
-import com.example.playgroundmanage.exception.MatchNotExistException;
 import com.example.playgroundmanage.exception.UserNotParticipantGameException;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.vo.*;
-import com.example.playgroundmanage.location.repository.PlaygroundRepository;
-import com.example.playgroundmanage.store.FileHandler;
+import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.util.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

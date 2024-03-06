@@ -1,15 +1,12 @@
 package com.example.playgroundmanage.util;
 
-import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.exception.UserNotParticipantGameException;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.login.vo.User;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

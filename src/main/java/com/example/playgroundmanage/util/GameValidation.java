@@ -4,7 +4,7 @@ import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.exception.TimeOverlappingException;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.login.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

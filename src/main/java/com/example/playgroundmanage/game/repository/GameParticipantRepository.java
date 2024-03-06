@@ -3,7 +3,7 @@ package com.example.playgroundmanage.game.repository;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.game.vo.SubTeam;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.login.vo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

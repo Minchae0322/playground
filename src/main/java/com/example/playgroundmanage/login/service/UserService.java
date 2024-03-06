@@ -1,8 +1,9 @@
-package com.example.playgroundmanage.game.service;
+package com.example.playgroundmanage.login.service;
 
 import com.example.playgroundmanage.dto.UserNicknameDto;
 import com.example.playgroundmanage.dto.response.UserRecordResponse;
 import com.example.playgroundmanage.game.repository.GameParticipantRepository;
+import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.exception.UserNotExistException;
@@ -12,7 +13,7 @@ import com.example.playgroundmanage.login.dto.UserEdit;
 import com.example.playgroundmanage.login.dto.UserSignupForm;
 import com.example.playgroundmanage.exception.ExistUserException;
 import com.example.playgroundmanage.game.repository.GameRepository;
-import com.example.playgroundmanage.game.repository.UserRepository;
+import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.store.UploadFile;

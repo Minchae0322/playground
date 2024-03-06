@@ -6,7 +6,7 @@ import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.util.Util;
 import lombok.Builder;
 import lombok.Getter;

@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.login.handler;
 
-import com.example.playgroundmanage.game.repository.UserRepository;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.login.repository.UserRepository;
+import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.login.auth.JwtTokenProvider;
 import com.example.playgroundmanage.login.auth.TokenInfo;
 import com.example.playgroundmanage.login.dto.TokenEdit;
@@ -11,7 +11,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -21,7 +20,6 @@ import java.io.IOException;
 import java.net.URI;
 
 import static com.example.playgroundmanage.Instance.*;
-import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 
 @RequiredArgsConstructor

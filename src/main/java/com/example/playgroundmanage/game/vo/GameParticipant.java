@@ -3,6 +3,7 @@ package com.example.playgroundmanage.game.vo;
 
 import com.example.playgroundmanage.dto.UsersGameDto;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
+import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.GameRecord;
 import jakarta.persistence.*;

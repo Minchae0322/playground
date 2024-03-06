@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.store;
 
-import com.example.playgroundmanage.game.repository.UserRepository;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.login.repository.UserRepository;
+import com.example.playgroundmanage.login.vo.User;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;

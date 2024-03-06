@@ -1,11 +1,11 @@
 package com.example.playgroundmanage.login.service;
 
 import com.example.playgroundmanage.login.dto.OAuth2UserProfile;
-import com.example.playgroundmanage.game.repository.UserRepository;
+import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.repository.TokenRepository;
 import com.example.playgroundmanage.type.OAuthAttributes;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.login.vo.User;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

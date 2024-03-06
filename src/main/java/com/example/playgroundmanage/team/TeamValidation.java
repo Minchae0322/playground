@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.team;
 
 import com.example.playgroundmanage.team.vo.Team;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.login.vo.User;
 
 public class TeamValidation {
 

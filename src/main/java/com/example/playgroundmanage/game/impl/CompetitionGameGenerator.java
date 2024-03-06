@@ -8,16 +8,14 @@ import com.example.playgroundmanage.game.GameGenerator;
 import com.example.playgroundmanage.game.dto.GameTeamResponseDto;
 import com.example.playgroundmanage.game.repository.CompetingTeamRepository;
 import com.example.playgroundmanage.game.repository.GameRepository;
-import com.example.playgroundmanage.game.repository.SubTeamRepository;
 import com.example.playgroundmanage.game.service.SubTeamService;
-import com.example.playgroundmanage.game.service.UserService;
+import com.example.playgroundmanage.login.service.UserService;
 import com.example.playgroundmanage.game.vo.CompetingTeam;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.SubTeam;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.store.FileHandler;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.util.GameValidation;
@@ -26,8 +24,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-
-import static java.util.stream.Collectors.toList;
 
 @Component
 @RequiredArgsConstructor

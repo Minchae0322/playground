@@ -1,10 +1,10 @@
 package com.example.playgroundmanage.login.auth;
 
 import com.example.playgroundmanage.login.dto.TokenEdit;
-import com.example.playgroundmanage.game.repository.UserRepository;
+import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.service.TokenService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.type.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

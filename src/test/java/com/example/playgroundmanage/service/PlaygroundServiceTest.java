@@ -1,8 +1,8 @@
 package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.game.repository.GameRepository;
-import com.example.playgroundmanage.game.repository.UserRepository;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.login.repository.UserRepository;
+import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.type.UserRole;

@@ -6,7 +6,7 @@ import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.SubTeam;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.team.vo.Team;
-import com.example.playgroundmanage.game.vo.User;
+import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.util.DateFormat;
 import lombok.Builder;
