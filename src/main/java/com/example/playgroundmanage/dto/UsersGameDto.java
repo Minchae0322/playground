@@ -33,6 +33,8 @@ public class UsersGameDto {
 
         private String gameType;
 
+        private String gameType_en;
+
         private String location;
 
         private String hostName;
@@ -52,6 +54,7 @@ public class UsersGameDto {
             this.subTeamName = subTeamName;
             this.gameName = gameName;
             this.hostName = hostName;
+            this.gameType_en = gameType.getValue();
             this.gameType = gameType.getValue_cn();
             this.gameStart = gameStart;
             this.playgroundId = playgroundId;

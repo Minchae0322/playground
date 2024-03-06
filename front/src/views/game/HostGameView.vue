@@ -72,7 +72,7 @@
         <div class="game-time">{{ formatTime(game.gameStart) }} - {{
             formatEndTime(game.gameStart, game.runningTime)
           }}
-          <button @click="submitResult(game.gameId)" class="submit">提交</button>
+          <button @click="submitResult(game.gameId, game.gameType_en)" class="submit">提交</button>
 
         </div>
       </div>
@@ -138,11 +138,11 @@ const getMyGames = async () => {
 }
 
 
-const submitResult = async (gameId) => {
+const submitResult = async (gameId, gameType) => {
   await validateAccessToken();
 
   try {
-    const response = await axios.post(`${apiBaseUrl}/game/result`, {
+    const response = await axios.post(`${apiBaseUrl}/game/result/${gameType}`, {
       gameId: gameId,
       homeScore: 1,
       awayScore: 2,

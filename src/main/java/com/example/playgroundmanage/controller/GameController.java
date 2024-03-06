@@ -10,6 +10,7 @@ import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.dto.response.TeamBySide;
 import com.example.playgroundmanage.game.GameGenerator;
 import com.example.playgroundmanage.game.GameGeneratorFactory;
+import com.example.playgroundmanage.game.GameResultManagerFactory;
 import com.example.playgroundmanage.game.GameResultManger;
 import com.example.playgroundmanage.game.dto.GameResultDto;
 import com.example.playgroundmanage.game.dto.GameTeamResponseDto;
@@ -46,7 +47,7 @@ public class GameController {
     private final PlaygroundService playgroundService;
     private final GameGeneratorFactory gameGeneratorFactory;
 
-    private final CompetingGameResultManager competingGameResultManager;
+    private final GameResultManagerFactory gameResultManagerFactory;
 
 
 
@@ -135,8 +136,10 @@ public class GameController {
     }
 
 
-    @PostMapping("/game/result")
-    public void summitGameResult(@RequestBody GameResultDto.GameResultRequestDto gameResultRequestDto) {
-        competingGameResultManager.submitGameResult(gameResultRequestDto);
+    @PostMapping("/game/result/{gameType}")
+    public void summitGameResult(@RequestBody GameResultDto.GameResultRequestDto gameResultRequestDto, @PathVariable String gameType) {
+        GameResultManger gameResultManger = gameResultManagerFactory.find(gameType);
+
+        gameResultManger.submitGameResult(gameResultRequestDto);
     }
 }

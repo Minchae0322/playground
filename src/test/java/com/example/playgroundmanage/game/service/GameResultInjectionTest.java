@@ -21,7 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class GameServiceTest {
+public class GameResultInjectionTest {
 
     @Mock
     private GameParticipantRepository gameParticipantRepository;
