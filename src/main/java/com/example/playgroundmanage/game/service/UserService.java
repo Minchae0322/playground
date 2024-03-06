@@ -1,6 +1,8 @@
 package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.dto.UserNicknameDto;
+import com.example.playgroundmanage.dto.response.UserRecordResponse;
+import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.exception.UserNotExistException;
@@ -16,6 +18,7 @@ import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.store.UploadFile;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.team.vo.Teaming;
+import com.example.playgroundmanage.type.GameRecord;
 import com.example.playgroundmanage.type.UserRole;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -37,6 +40,8 @@ public class UserService {
     private final TeamingRepository teamingRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final GameParticipantRepository gameParticipantRepository;
 
     private final FileHandler fileHandler;
 
@@ -160,6 +165,27 @@ public class UserService {
         return userRepository.existsByNickname(nickname);
     }
 
+
+    @Transactional
+    public UserRecordResponse getUserRecord(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotExistException::new);
+
+        List<GameParticipant> gameParticipants = gameParticipantRepository.findAllByUser(user);
+        int win = gameParticipants.stream()
+                .filter(gameParticipant -> gameParticipant.getGameRecord().equals(GameRecord.WIN))
+                .toList().size();
+
+        int lose = gameParticipants.stream()
+                .filter(gameParticipant -> gameParticipant.getGameRecord().equals(GameRecord.LOSE))
+                .toList().size();
+
+
+        return UserRecordResponse.builder()
+                .win(win)
+                .lose(lose)
+                .build();
+    }
 
 
 

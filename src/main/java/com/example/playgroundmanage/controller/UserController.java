@@ -4,6 +4,7 @@ import com.example.playgroundmanage.Test;
 import com.example.playgroundmanage.TestRepository;
 import com.example.playgroundmanage.dto.UserNicknameDto;
 import com.example.playgroundmanage.dto.reqeust.UserDto;
+import com.example.playgroundmanage.dto.response.UserRecordResponse;
 import com.example.playgroundmanage.login.dto.UserSignupForm;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
@@ -90,5 +91,11 @@ public class UserController {
     @PostMapping("/user/signup")
     public void signup(@RequestBody UserSignupForm userSignupForm) {
         userService.signup(userSignupForm);
+    }
+
+
+    @GetMapping("/user/record/{userId}")
+    public UserRecordResponse getUserRecord(@PathVariable Long userId) {
+        return userService.getUserRecord(userId);
     }
 }

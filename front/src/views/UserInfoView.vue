@@ -55,6 +55,7 @@ const editedNickname = ref("")
 const isEditing = ref(false); // 닉네임 편집 상태를 추적하는 반응형 변수
 const user = ref({
   userNickname: '',
+  userId: '',
   userProfileImg: ref('')
 })
 
@@ -69,6 +70,7 @@ const teams = ref([{
 onMounted(async () => {
   // Check if the initial page number is provided in the route query
   await getUserInfo()
+  getUserRecord(1)
   getTeams()
 });
 const getUserInfo = async () => {
@@ -80,9 +82,25 @@ const getUserInfo = async () => {
         }
       }
   ).then(response => {
+    user.value.userId = response.data.userId;
     user.value.userNickname = response.data.userNickname
     user.value.userProfileImg = `data:image/jpeg;base64,${response.data.userProfileImg}`;
   });
+
+};
+
+const getUserRecord = (userId) => {
+  validateAccessToken();
+
+  try {
+    const response = axios.get(`${apiBaseUrl}/user/record/${userId}`, {
+      headers: {
+        'Authorization': localStorage.getItem("accessToken")
+      }
+    })
+  } catch (error) {
+
+  }
 
 };
 
@@ -98,7 +116,7 @@ const confirmEditNickname = function () {
       }
   ).then(response => {
     user.value.userNickname = response.data.userNickname
-    alert("닉네임이 변경되었습니다.")
+    alert("换昵称了")
     clickChangeNickname()
   }).catch(error => {
     // 에러 메시지 처리
@@ -134,7 +152,7 @@ const getTeams = () => {
     }));
     console.log(teams.value[0].teamId)
   }).catch(error => {
-    console.error('팀 정보를 가져오는데 실패했습니다.', error);
+    console.error('队伍信息下载失败', error);
   });
 };
 
