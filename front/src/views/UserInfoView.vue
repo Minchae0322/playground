@@ -11,10 +11,17 @@
         <input type="file" ref="fileInput" @change="handleFileChange" style="display:none"/>
         <div class="profile-hint">点击照片更改头像</div>
       </div>
+
+      <div class="user-record-container-userInfo">
+        <div class="user-record">{{userRecord.win }}胜  </div>
+        <div class="user-record">{{userRecord.lose }}败</div>
+      </div>
       <div class="nickname-container-userInfo" v-if="!isEditing">
         <div class="nickname-container-nickname-userInfo">{{ user.userNickname }}</div>
         <button class="nickname-change-button" @click="clickChangeNickname">换昵称</button>
       </div>
+
+
       <div class="nickname-container-userInfo" v-else>
         <input v-model="editedNickname" placeholder="Enter new nickname"/>
         <div class="button-container-userInfo">
@@ -59,6 +66,12 @@ const user = ref({
   userProfileImg: ref('')
 })
 
+const userRecord = ref({
+  win: '1',
+  lose: '1',
+  draw: '1',
+})
+
 const teams = ref([{
   teamId: '1',
   teamName: '',
@@ -89,15 +102,16 @@ const getUserInfo = async () => {
 
 };
 
-const getUserRecord = (userId) => {
-  validateAccessToken();
+const getUserRecord = async (userId) => {
+  await validateAccessToken();
 
   try {
-    const response = axios.get(`${apiBaseUrl}/user/record/${userId}`, {
+    const response = await axios.get(`${apiBaseUrl}/user/record/${userId}`, {
       headers: {
         'Authorization': localStorage.getItem("accessToken")
       }
     })
+    userRecord.value = response.data;
   } catch (error) {
 
   }
@@ -300,6 +314,17 @@ const redirectToLogin = function () {
   border-left: 1px solid rgba(0, 0, 0, .08);;
   background: #fff; /* 카드의 배경색 */
   overflow: auto; /* 내용이 넘칠 때 스크롤바를 보여줌 */
+}
+
+.user-record-container-userInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5px;
+}
+
+.user-record {
+  color: #792626;
 }
 
 .user-profile-container-userInfo img {
