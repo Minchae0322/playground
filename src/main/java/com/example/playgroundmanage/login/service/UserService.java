@@ -3,7 +3,9 @@ package com.example.playgroundmanage.login.service;
 import com.example.playgroundmanage.dto.UserNicknameDto;
 import com.example.playgroundmanage.dto.response.UserRecordResponse;
 import com.example.playgroundmanage.game.repository.GameParticipantRepository;
+import com.example.playgroundmanage.login.repository.UserGameRecordRepository;
 import com.example.playgroundmanage.login.vo.User;
+import com.example.playgroundmanage.login.vo.UserGameRecord;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.exception.UserNotExistException;
@@ -47,6 +49,8 @@ public class UserService {
     private final FileHandler fileHandler;
 
     private final GameRepository gameRepository;
+
+    private final UserGameRecordRepository userGameRecordRepository;
 
     @Transactional
     public void signup(UserSignupForm userSignupForm) {
@@ -186,6 +190,31 @@ public class UserService {
                 .win(win)
                 .lose(lose)
                 .build();
+    }
+
+    @Transactional
+    public UserRecordResponse getUserGameRecord(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotExistException::new);
+
+        UserGameRecord userGameRecord = findUserGameRecord(user);
+
+        return UserRecordResponse.builder()
+                .win(userGameRecord.getWin())
+                .lose(userGameRecord.getLose())
+                .draw(userGameRecord.getDraw())
+                .build();
+    }
+
+    @Transactional
+    private UserGameRecord findUserGameRecord(User user) {
+        return userGameRecordRepository.findUserGameRecordByUser(user)
+                .orElse(userGameRecordRepository.save(UserGameRecord.builder()
+                        .win(0)
+                        .draw(0)
+                        .lose(0)
+                        .none(0)
+                        .build()));
     }
 
 
