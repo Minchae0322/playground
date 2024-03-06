@@ -1,9 +1,9 @@
 package com.example.playgroundmanage.type;
 
-public enum MatchResult {
+public enum GameRecord {
     WIN,
     LOSE,
     DRAW,
     NONE,
-    ;
+
 }

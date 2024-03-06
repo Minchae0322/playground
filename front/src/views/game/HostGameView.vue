@@ -72,7 +72,7 @@
         <div class="game-time">{{ formatTime(game.gameStart) }} - {{
             formatEndTime(game.gameStart, game.runningTime)
           }}
-          <button @click="submitResault" class="submit">提交</button>
+          <button @click="submitResult(game.gameId)" class="submit">提交</button>
 
         </div>
       </div>
@@ -136,6 +136,27 @@ const getMyGames = async () => {
     console.error('请求失败', error.response.data.message);
   }
 }
+
+
+const submitResult = async (gameId) => {
+  await validateAccessToken();
+
+  try {
+    const response = await axios.post(`${apiBaseUrl}/game/result`, {
+      gameId: gameId,
+      homeScore: 1,
+      awayScore: 2,
+    }, {
+      headers: {
+        'Authorization': getAccessToken(),
+      }
+    });
+  } catch (error) {
+    alert(error)
+  }
+}
+
+
 const getMyGameByYearMonth = async (year, month) => {
   await validateAccessToken();
 
@@ -162,10 +183,6 @@ const getMyGameByYearMonth = async (year, month) => {
     console.error('获取游戏信息失败', error.response.data.message);
   }
 };
-
-const submitResault = async  ( ) => {
-  alert("正在准备中")
-}
 
 const deleteGame = async (gameId) => {
   const isConfirm = confirm("确定要删除吗？");

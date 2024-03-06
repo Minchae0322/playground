@@ -10,7 +10,10 @@ import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.dto.response.TeamBySide;
 import com.example.playgroundmanage.game.GameGenerator;
 import com.example.playgroundmanage.game.GameGeneratorFactory;
+import com.example.playgroundmanage.game.GameResultManger;
+import com.example.playgroundmanage.game.dto.GameResultDto;
 import com.example.playgroundmanage.game.dto.GameTeamResponseDto;
+import com.example.playgroundmanage.game.impl.CompetingGameResultManager;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.SubTeamService;
 import com.example.playgroundmanage.game.service.UserService;
@@ -42,6 +45,9 @@ public class GameController {
 
     private final PlaygroundService playgroundService;
     private final GameGeneratorFactory gameGeneratorFactory;
+
+    private final CompetingGameResultManager competingGameResultManager;
+
 
 
     /*@GetMapping("/game/{gameId}/{gameTeamSide}")
@@ -128,4 +134,9 @@ public class GameController {
         gameService.deleteGame(gameId);
     }
 
+
+    @PostMapping("/game/result")
+    public void summitGameResult(@RequestBody GameResultDto.GameResultRequestDto gameResultRequestDto) {
+        competingGameResultManager.submitGameResult(gameResultRequestDto);
+    }
 }

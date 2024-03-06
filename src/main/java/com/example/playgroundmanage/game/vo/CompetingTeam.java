@@ -2,7 +2,6 @@ package com.example.playgroundmanage.game.vo;
 
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.type.GameTeamSide;
-import com.example.playgroundmanage.type.MatchResult;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.Builder;
@@ -30,15 +29,12 @@ public class CompetingTeam {
     @OneToMany(mappedBy = "competingTeam", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private final List<SubTeam> subTeams = new ArrayList<>();
 
-    @Enumerated
-    private MatchResult gameResult;
-
     @Builder
-    public CompetingTeam(Long id, Game game, GameTeamSide gameTeamSide, MatchResult gameResult) {
+    public CompetingTeam(Long id, Game game, GameTeamSide gameTeamSide) {
         this.id = id;
         this.game = game;
         this.gameTeamSide = gameTeamSide;
-        this.gameResult = gameResult;
+
     }
 
     public SubTeam getSoloTeam() {

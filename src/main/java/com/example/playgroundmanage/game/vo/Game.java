@@ -5,7 +5,6 @@ import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;
-import com.example.playgroundmanage.type.MatchResult;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.location.vo.Playground;
 import jakarta.persistence.*;

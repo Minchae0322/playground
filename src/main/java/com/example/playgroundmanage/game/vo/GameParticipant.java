@@ -4,6 +4,7 @@ package com.example.playgroundmanage.game.vo;
 import com.example.playgroundmanage.dto.UsersGameDto;
 import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
+import com.example.playgroundmanage.type.GameRecord;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
@@ -28,6 +29,9 @@ public class GameParticipant {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private Game game;
+
+    @Enumerated
+    private GameRecord gameRecord;
 
     private boolean isAccepted;
 
@@ -59,6 +63,10 @@ public class GameParticipant {
         this.game = null;
         this.user = null;
         this.subTeam = null;
+    }
+
+    public void updateGameRecord(GameRecord gameRecord) {
+        this.gameRecord = gameRecord;
     }
 
     public UserInfoDto toUserInfoDto(InMemoryMultipartFile inMemoryMultipartFile) {
