@@ -2,7 +2,7 @@
 import {RouterLink, RouterView} from 'vue-router'
 import axios from "axios";
 import {getCurrentInstance, onMounted, onUnmounted, ref} from "vue";
-import defaultImage from '../src/assets/icon-default.png';
+import defaultImage from '@/assets/img.png';
 import {useRouter} from "vue-router";
 import mSidebarView from "../src/views/mobile/sidebarView.vue"
 
@@ -14,7 +14,7 @@ const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseU
 
 const user = ref({
   userNickname: '',
-  userProfileImg: ref('')
+  userProfileImg: ref(defaultImage)
 })
 const isLoggedIn = ref(false);
 
@@ -107,7 +107,7 @@ const getUserInfo = async () => {
     );
     isLoggedIn.value = true;
     user.value.userNickname = response.data.userNickname;
-    user.value.userProfileImg = `data:image/jpeg;base64,${response.data.userProfileImg}`;
+    user.value.userProfileImg = response.data.userProfileImg ? `data:image/jpeg;base64,${response.data.userProfileImg}` : defaultImage;
   } catch (error) {
     isLoggedIn.value = false;
   }
@@ -161,7 +161,7 @@ const redirectToLogin = async () => {
 <template>
 
   <head>
-    <link rel="icon" href="@/front/dist/favicon.ico">
+
   </head>
   <main v-if="isMobile">
     <div class="router-view-container-m">

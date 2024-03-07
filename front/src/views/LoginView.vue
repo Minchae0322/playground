@@ -28,7 +28,7 @@
         <button
             class="button-margin rounded-md text-sm font-medium ring-offset-background  fn=g focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 w-full"
             type="submit"
-            @click="write"
+            @click="notWorking"
         >
           Sign In
         </button>
@@ -36,9 +36,9 @@
 
       <div class="flex justify-between text-sm font-light">
 
-        <a class="text-color-black font" href="/user/signup">
+<!--        <a class="text-color-black font" href="/user/signup">
           Create an account
-        </a>
+        </a>-->
       </div>
 
 
@@ -63,15 +63,24 @@
             height="50"
             @click="login_qq"
         />
+
         <img
 
+            src="../assets/icon-kakao.png"
+            alt="Your Image Alt Text"
+            class="image-margin"
+            width="50"
+            height="50"
+            @click="login_kakao"
+        />
+<!--        <img
             src="../assets/logo_naver.png"
             alt="Your Image Alt Text"
             class="image-margin"
             width="50"
             height="50"
             @click="login_naver"
-        />
+        />-->
 
         <img
             src="../assets/icon-github.png"
@@ -140,6 +149,15 @@ const login_github = function () {
   }
 };
 
+const login_kakao = function () {
+  try {
+    window.location.href = `${apiBaseUrl}/oauth2/authorization/kakao`;
+  } catch (error) {
+    console.error('Error during Kakao login:', error);
+    router.replace('/login'); // Redirect to /login in case of an error
+  }
+};
+
 const login_google = function () {
   try {
     window.location.href = `${apiBaseUrl}/oauth2/authorization/google`;
@@ -148,6 +166,10 @@ const login_google = function () {
     router.replace('/login'); // Redirect to /login in case of an error
   }
 };
+
+const notWorking = async function () {
+  alert("正在准备中")
+}
 
 const write = async function () {
   try {

@@ -27,6 +27,13 @@ public enum OAuthAttributes {
             .attributes(attribute)
             .provider("github")
             .build()
+    ),
+
+    KAKAO("kakao", (attribute) -> OAuth2UserProfile.builder()
+            .username(String.valueOf(attribute.get("id")))
+            .attributes(attribute)
+            .provider("kakao")
+            .build()
     );
 
     private final String registrationId; // 로그인한 서비스(ex) google, naver..)

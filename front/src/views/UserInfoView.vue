@@ -97,7 +97,7 @@ const getUserInfo = async () => {
   ).then(response => {
     user.value.userId = response.data.userId;
     user.value.userNickname = response.data.userNickname
-    user.value.userProfileImg = `data:image/jpeg;base64,${response.data.userProfileImg}`;
+    user.value.userProfileImg = response.data.userProfileImg ? `data:image/jpeg;base64,${response.data.userProfileImg}` : defaultImage ;
   });
 
 };
