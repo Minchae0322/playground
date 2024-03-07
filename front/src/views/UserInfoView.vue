@@ -15,6 +15,7 @@
       <div class="user-record-container-userInfo">
         <div class="user-record">{{userRecord.win }}胜  </div>
         <div class="user-record">{{userRecord.lose }}败</div>
+        <button class="button-user-record-update" @click="updateUserRecord">更新</button>
       </div>
       <div class="nickname-container-userInfo" v-if="!isEditing">
         <div class="nickname-container-nickname-userInfo">{{ user.userNickname }}</div>
@@ -67,9 +68,9 @@ const user = ref({
 })
 
 const userRecord = ref({
-  win: '1',
-  lose: '1',
-  draw: '1',
+  win: '0',
+  lose: '0',
+  draw: '0',
 })
 
 const teams = ref([{
@@ -81,32 +82,35 @@ const teams = ref([{
 }]);
 
 onMounted(async () => {
-  // Check if the initial page number is provided in the route query
   await getUserInfo()
-  getUserRecord(1)
+
   getTeams()
 });
+
 const getUserInfo = async () => {
   await validateAccessToken()
-  axios.get(`${apiBaseUrl}/user/info`,
-      {
-        headers: {
-          'Authorization': localStorage.getItem("accessToken")
+  try {
+    const response = await axios.get(`${apiBaseUrl}/user/info`,
+        {
+          headers: {
+            'Authorization': localStorage.getItem("accessToken")
+          }
         }
-      }
-  ).then(response => {
+    )
     user.value.userId = response.data.userId;
     user.value.userNickname = response.data.userNickname
     user.value.userProfileImg = response.data.userProfileImg ? `data:image/jpeg;base64,${response.data.userProfileImg}` : defaultImage ;
-  });
+  } catch (e) {
 
+  }
+  await getUserRecord();
 };
 
 const getUserRecord = async (userId) => {
   await validateAccessToken();
 
   try {
-    const response = await axios.get(`${apiBaseUrl}/user/record/${userId}`, {
+    const response = await axios.get(`${apiBaseUrl}/user/record/${user.value.userId}`, {
       headers: {
         'Authorization': localStorage.getItem("accessToken")
       }
@@ -118,25 +122,44 @@ const getUserRecord = async (userId) => {
 
 };
 
-const confirmEditNickname = function () {
-  validateAccessToken()
-  axios.patch(`${apiBaseUrl}/user/change-nickname`, {
-        userNickname: editedNickname.value
-      },
-      {
-        headers: {
-          'Authorization': localStorage.getItem("accessToken")
-        }
+
+const updateUserRecord = async (userId) => {
+  await validateAccessToken();
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/user/record/update`, {
+      headers: {
+        'Authorization': localStorage.getItem("accessToken")
       }
-  ).then(response => {
+    })
+    userRecord.value = response.data;
+    alert("更新了")
+  } catch (error) {
+    alert(error.response.data.message + " 10分钟后再试试")
+  }
+
+};
+
+const confirmEditNickname = async function () {
+  validateAccessToken()
+  try {
+    const response = await  axios.patch(`${apiBaseUrl}/user/change-nickname`, {
+          userNickname: editedNickname.value
+        },
+        {
+          headers: {
+            'Authorization': localStorage.getItem("accessToken")
+          }
+        }
+    )
     user.value.userNickname = response.data.userNickname
     alert("换昵称了")
     clickChangeNickname()
-  }).catch(error => {
-    // 에러 메시지 처리
+  } catch (error) {
+
     const errorMessage = extractErrorMessage(error);
     alert(errorMessage);
-  });
+  }
 
   function extractErrorMessage(error) {
     if (error.response && error.response.data) {
@@ -324,7 +347,23 @@ const redirectToLogin = function () {
 }
 
 .user-record {
+  margin: auto 0;
   color: #792626;
+}
+
+.button-user-record-update {
+  width: 60px;
+  height: auto;
+  padding: 5px;
+  font-size: 11px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+
+.button-user-record-update:hover{
+  opacity: 0.7;
 }
 
 .user-profile-container-userInfo img {

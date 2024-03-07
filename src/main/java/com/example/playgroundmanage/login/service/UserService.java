@@ -2,6 +2,7 @@ package com.example.playgroundmanage.login.service;
 
 import com.example.playgroundmanage.dto.UserNicknameDto;
 import com.example.playgroundmanage.dto.response.UserRecordResponse;
+import com.example.playgroundmanage.exception.TooManyRequestException;
 import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.login.repository.UserGameRecordRepository;
 import com.example.playgroundmanage.login.vo.User;
@@ -55,7 +56,7 @@ public class UserService {
     @Transactional
     public void signup(UserSignupForm userSignupForm) {
         validateUser(userSignupForm.getUsername(), userSignupForm.getPassword());
-        if(userRepository.existsByUsername(userSignupForm.getUsername())) {
+        if (userRepository.existsByUsername(userSignupForm.getUsername())) {
             throw new ExistUserException();
         }
         User user = User.builder()
@@ -104,7 +105,6 @@ public class UserService {
     }
 
 
-
     public UserInfoDto getUserProfile(User user) {
         return UserInfoDto.builder()
                 .userNickname(user.getNickname())
@@ -113,12 +113,12 @@ public class UserService {
     }
 
     @Transactional
-    public InMemoryMultipartFile getUserProfileImg(User user)  {
+    public InMemoryMultipartFile getUserProfileImg(User user) {
         return fileHandler.extractFile(user.getProfileImg());
     }
 
     @Transactional
-    public UserInfoDto getUserInfo(User user)  {
+    public UserInfoDto getUserInfo(User user) {
         InMemoryMultipartFile userProfileImg = fileHandler.extractFile(user.getProfileImg());
 
         return UserInfoDto.builder()
@@ -129,7 +129,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserInfoDto getUserInfoInTeam(Team team, User user)  {
+    public UserInfoDto getUserInfoInTeam(Team team, User user) {
         String role = teamingRepository.findByTeamAndUser(team, user).getRole();
         InMemoryMultipartFile userProfileImg = fileHandler.extractFile(user.getProfileImg());
 
@@ -140,7 +140,6 @@ public class UserService {
                 .userProfileImg(userProfileImg)
                 .build();
     }
-
 
 
     public List<SubTeam> getUnacceptedSubTeams(CompetingTeam competingTeam) {
@@ -158,7 +157,9 @@ public class UserService {
         if (isValidUserNickname(newNickname)) {
             throw new IllegalArgumentException("已经存在或不能使用的昵称");
         }
-        User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotExistException::new);
+
         userRepository.save(user.update(UserEdit.builder()
                 .userNickname(newNickname)
                 .build()));
@@ -172,11 +173,42 @@ public class UserService {
 
 
     @Transactional
+    public UserGameRecord findUserGameRecordByUser(User user) {
+        return userGameRecordRepository.findUserGameRecordByUser(user)
+                .orElseGet(() -> userGameRecordRepository.save(
+                        UserGameRecord.builder()
+                                .win(0)
+                                .lose(0)
+                                .draw(0)
+                                .user(user)
+                                .lastUpdateTime(LocalDateTime.now().minusMinutes(15L))
+                                .build()
+                ));
+    }
+
+    @Transactional
     public UserRecordResponse getUserRecord(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotExistException::new);
 
+        UserGameRecord userGameRecord = findUserGameRecordByUser(user);
+
+        return UserRecordResponse.builder()
+                .win(userGameRecord.getWin())
+                .lose(userGameRecord.getLose())
+                .build();
+    }
+
+    @Transactional
+    public UserRecordResponse updateUserGameRecord(User user) {
+        UserGameRecord userGameRecord = findUserGameRecordByUser(user);
+
+        if(userGameRecord.getLastUpdateTime().isAfter(LocalDateTime.now().minusMinutes(10))) {
+            throw new TooManyRequestException();
+        }
+
         List<GameParticipant> gameParticipants = gameParticipantRepository.findAllByUser(user);
+
         int win = gameParticipants.stream()
                 .filter(gameParticipant -> gameParticipant.getGameRecord().equals(GameRecord.WIN))
                 .toList().size();
@@ -185,6 +217,7 @@ public class UserService {
                 .filter(gameParticipant -> gameParticipant.getGameRecord().equals(GameRecord.LOSE))
                 .toList().size();
 
+        userGameRecordRepository.save(userGameRecord.update(win, lose));
 
         return UserRecordResponse.builder()
                 .win(win)
@@ -216,8 +249,6 @@ public class UserService {
                         .none(0)
                         .build()));
     }
-
-
 
 
 }

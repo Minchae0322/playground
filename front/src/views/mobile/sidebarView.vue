@@ -95,7 +95,7 @@
 import {getCurrentInstance, onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import axios from "axios";
-import defaultImage from '@/assets/icon-default.png';
+import defaultImage from '@/assets/img.png';
 
 const router = useRouter();
 const internalInstance = getCurrentInstance();
@@ -145,7 +145,7 @@ const getUserInfo = async () => {
     );
     isLoggedIn.value = true;
     user.value.userNickname = response.data.userNickname;
-    user.value.userProfileImg = `data:image/jpeg;base64,${response.data.userProfileImg}`;
+    user.value.userProfileImg = response.data.userProfileImg ? `data:image/jpeg;base64,${response.data.userProfileImg}` : defaultImage;
   } catch (error) {
     isLoggedIn.value = false;
   }

@@ -42,4 +42,13 @@ public class UserGameRecord {
         this.none = none;
         this.lastUpdateTime = lastUpdateTime;
     }
+
+
+    public UserGameRecord update(int win, int lose) {
+        this.win = win;
+        this.lose = lose;
+        this.lastUpdateTime = LocalDateTime.now();
+        return this;
+    }
+
 }

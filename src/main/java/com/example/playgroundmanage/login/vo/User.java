@@ -96,7 +96,7 @@ public class User implements Serializable{
     }
 
     private void validate(String nickname) {
-        if (nickname.equals("") || nickname.length() > 9) {
+        if (nickname.equals("") || nickname.length() > 12) {
             throw new RuntimeException("不符合昵称格式。 最大字数9个字");
         }
 

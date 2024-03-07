@@ -100,4 +100,9 @@ public class UserController {
         //todo User 의 전적을 업데이트 할때 userRecord Entity 의 마지막 업데이트 시간이 5분 이상이면 UserRecord 를 업데이트하게(GameParticipants 를 가져와서 새로운
         // 정보들로 입력되게 하는 방법 생각)
     }
+
+    @GetMapping("/user/record/update")
+    public UserRecordResponse updateUserRecord(@AuthenticationPrincipal MyUserDetails myUserDetails) {
+        return userService.updateUserGameRecord(myUserDetails.getUser());
+    }
 }
