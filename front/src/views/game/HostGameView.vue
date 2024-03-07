@@ -151,6 +151,7 @@ const submitResult = async (gameId, gameType) => {
         'Authorization': getAccessToken(),
       }
     });
+    alert("提交成功")
   } catch (error) {
     alert(error)
   }

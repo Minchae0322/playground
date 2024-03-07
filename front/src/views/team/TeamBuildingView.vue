@@ -119,9 +119,10 @@ const write = async function () {
     type: "application/json"
   }));
 
+  const compressedImage = await compressImage(team.value.profilePicture);
   // 파일이 존재하는 경우에만 파일을 FormData에 추가
   if (team.value.profilePicture) {
-    formData.append("imageFile", team.value.profilePicture);
+    formData.append("imageFile", compressedImage);
   }
 
   // Axios로 POST 요청 보내기
@@ -139,6 +140,33 @@ const write = async function () {
     const errorMessage = extractErrorMessage(error);
     alert(errorMessage);
   }
+};
+
+const compressImage = async (file) => {
+  return new Promise((resolve) => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 800; // 원하는 최대 너비
+        canvas.height = (canvas.width * img.height) / img.width;
+
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        canvas.toBlob(
+            (blob) => {
+              resolve(new File([blob], file.name, { type: 'image/jpeg', lastModified: Date.now() }));
+            },
+            'image/jpeg',
+            0.6 // 0 ~ 1 사이의 압축 품질
+        );
+      };
+      img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  });
 };
 
 // 에러 메시지 추출 함수

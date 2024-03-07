@@ -135,13 +135,13 @@ const updateUserRecord = async (userId) => {
     userRecord.value = response.data;
     alert("更新了")
   } catch (error) {
-    alert(error.response.data.message + " 10分钟后再试试")
+    alert("没参与过比赛 或者 请求频度多 10分钟后再试试")
   }
 
 };
 
 const confirmEditNickname = async function () {
-  validateAccessToken()
+  await validateAccessToken()
   try {
     const response = await  axios.patch(`${apiBaseUrl}/user/change-nickname`, {
           userNickname: editedNickname.value
@@ -229,7 +229,7 @@ const handleFileChange = async (event) => {
   await validateAccessToken()
   const file = event.target.files[0];
   if (!file) {
-    console.log('파일을 선택해주세요.');
+    console.log('请选择图片');
     return;
   }
   const compressedImage = await compressImage(file);

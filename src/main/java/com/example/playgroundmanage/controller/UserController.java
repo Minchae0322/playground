@@ -96,9 +96,6 @@ public class UserController {
     @GetMapping("/user/record/{userId}")
     public UserRecordResponse getUserRecord(@PathVariable Long userId) {
         return userService.getUserRecord(userId);
-        //todo UserRecord Entity 를 하나 만들어서 user 의 전적을 가져올때는 여기서 가져오고,
-        //todo User 의 전적을 업데이트 할때 userRecord Entity 의 마지막 업데이트 시간이 5분 이상이면 UserRecord 를 업데이트하게(GameParticipants 를 가져와서 새로운
-        // 정보들로 입력되게 하는 방법 생각)
     }
 
     @GetMapping("/user/record/update")

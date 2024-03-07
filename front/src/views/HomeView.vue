@@ -404,6 +404,7 @@ const redirectToLogin = async () => {
   }
 
   .more-button-home {
+    width: 90%;
     margin: 15px 0;
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="modal-overlay">
-      <div class="modal">
+      <div class="modal-time">
         <div class="justify-center item-center " data-v0-t="card">
           <div class="padding-20">
             <div class="text-title">选择时间</div>
@@ -31,7 +31,7 @@
                 </div>
               </div>
               <div class="start-time-container">
-                <a class="start-time" id="start-time">
+                <div class="start-time" id="start-time">
                   <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="15"
@@ -50,7 +50,7 @@
                     <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2"></path>
                   </svg>
                   所需时间
-                </a>
+                </div>
                 <el-input-number v-model="runningTime" :min="1" :max="120" @change="handleChange"/>
               </div>
             </div>
@@ -258,7 +258,7 @@ const redirectToLogin = function () {
   color: black;
 }
 
-.modal {
+.modal-time {
   border: 1px #000000; /* 테두리 스타일 및 색상 지정 */
   box-shadow: 0 0 1px #bebebe;
   background: white;
@@ -446,7 +446,7 @@ hr {
     width: 100%;
   }
 
-  .modal {
+  .modal-time {
     min-width: 400px;
     width: 40%;
   }

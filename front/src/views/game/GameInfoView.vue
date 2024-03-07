@@ -462,8 +462,8 @@ const redirectToLogin = function () {
         </div>
 
 
-        <div id="app" class="flex justify-center items-center h-screen">
-          <div class="relative">
+        <div id="app" class="">
+          <div class="relative add-button-container">
             <div v-if="menuVisible" ref="menu" class="py-1" role="menu" aria-orientation="vertical"
                  aria-labelledby="options-menu">
               <div @click="sendSoloGameJoinRequest" class="menu-item" role="menuitem">个人</div>
@@ -940,10 +940,12 @@ a {
 
 .select-team-solo-button {
   border: 1px solid #252525;
-  width: 95%;
+  width: 90%;
   border-radius: 4px;
   margin: 10px auto;
   font-size: 14px;
+  display: flex;
+  justify-content: center;
   cursor: pointer;
   outline: none;
   background: var(--accent-color);
@@ -955,16 +957,7 @@ a {
 }
 
 
-.styled-menu {
-  position: absolute;
-  top: 100%; /* 버튼 바로 아래에 위치 */
-  left: 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
 
-  width: max-content;
-  z-index: 1000;
-}
 
 .menu-item {
   display: block;
@@ -1160,6 +1153,12 @@ a {
 @media (max-width: 600px) {
   .modal-window {
     width: 90%;
+  }
+  .select-team-solo-button {
+    width: 90%;
+  }
+  .teams-container {
+    width: 100%;
   }
 }
 

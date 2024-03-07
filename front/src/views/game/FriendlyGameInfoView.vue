@@ -414,6 +414,7 @@ const redirectToLogin = function () {
 }
 
 .relative {
+
   background-color: var(--background-color-gray);
 }
 
