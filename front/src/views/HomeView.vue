@@ -19,7 +19,7 @@
 
       <div v-else class="upcoming-games-container-home">
         <div class="games-home">
-          <div class="game-card-mini" v-for="game in soccerGames" :key="game.gameId">
+          <div class="game-card-mini" v-for="game in sport.games" :key="game.gameId">
             <router-link
                 :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
               <div class="game-card-mini-title">{{ game.gameName }}
@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <RouterLink class="more-button-container-home" :to="{ name:'playgroundList', params: {sportsEvent : 'SOCCER'}}">
+      <RouterLink class="more-button-container-home" :to="{ name:'playgroundList', params: {sportsEvent : sport.eventType}}">
         <button class="more-button-home">更多</button>
       </RouterLink>
     </div>

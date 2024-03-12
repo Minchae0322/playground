@@ -323,4 +323,15 @@ const redirectToLogin = async () => {
   color: black;
 }
 
+
+@media (max-width: 600px) {
+  .logo-bar {
+    width: 100%;
+    margin: 0;
+    padding: 10px;
+  }
+
+
+}
+
 </style>

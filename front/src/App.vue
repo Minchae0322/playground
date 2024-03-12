@@ -458,7 +458,7 @@ header {
   width: 100%;
   margin-top: 60px;
   margin-bottom: 60px;
-  overflow-y: auto; /* 내용이 높이를 초과하면 스크롤바 생성 */
+
 }
 
 

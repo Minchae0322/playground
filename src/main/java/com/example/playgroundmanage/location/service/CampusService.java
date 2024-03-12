@@ -21,6 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,6 +41,8 @@ public class CampusService {
     private final GameSorting gameSorting;
 
     private final SchoolRepository schoolRepository;
+
+    private final PlaygroundService playgroundService;
 
     @Transactional
     public List<GameDto> getUpcomingGamesInCampusBySportsEvent(Long campusId, SportsEvent sportsEvent) {
@@ -67,16 +70,25 @@ public class CampusService {
     }
 
     @Transactional
-    public List<GameDto> getUpcomingGamesBySchool(Long schoolId) {
+    public List<GameDto>getUpcomingGamesBySchool(Long schoolId) {
         School school = schoolRepository.findById(schoolId)
                 .orElseThrow(SchoolNotExistException::new);
 
-        List<Game> upcomingGames = school.getCampus().stream()
-                .flatMap(campus -> getUpcomingGames(campus.getPlaygrounds()).stream())
+        List<Game> upcomingGames = new ArrayList<>();
+
+        List<Playground> soccerPlayground = school.getCampus().stream()
+                .flatMap(campus -> getPlaygroundsBySportsEvent(campus, SportsEvent.SOCCER).stream())
                 .toList();
 
+
+        List<Playground> basketballPlayground = school.getCampus().stream()
+                .flatMap(campus -> getPlaygroundsBySportsEvent(campus, SportsEvent.BASKETBALL).stream())
+                .toList();
+
+        upcomingGames.addAll(getUpcomingGames(soccerPlayground));
+        upcomingGames.addAll(getUpcomingGames(basketballPlayground));
+
         return upcomingGames.stream()
-                .limit(4)
                 .map(Game::toGameDto)
                 .toList();
     }
@@ -85,8 +97,14 @@ public class CampusService {
         LocalDateTime now = LocalDateTime.now();
         return playgrounds.stream()
                 .flatMap(playground -> gameFinder.getUpcomingGames(playground.getGames(), playground.getGames().size(), MyDateTimeLocal.initMyDateTime(now))
-                        .stream())
+                        .stream().limit(4))
                 .collect(Collectors.toList());
+    }
+
+    private List<Playground> getPlaygroundsBySportsEvent(Campus campus, SportsEvent sportsEvent) {
+        return campus.getPlaygrounds().stream()
+                .filter(playground -> playground.getSportsEvent().equals(sportsEvent))
+                .toList();
     }
 
 }
