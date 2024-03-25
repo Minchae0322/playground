@@ -5,7 +5,7 @@
     <p>Check out our teams request</p>
     <div class="page-title-container-border"></div>
   </div>
-  <div v-if="joinRequests && joinRequests.length >= 1" class="team-requests-container">
+  <div v-if="true" class="team-requests-container">
     <div v-for="(requests, teamName) in joinRequests" :key="teamName" class="team-request-group">
       <h3>{{ teamName }}</h3>
       <div v-for="request in requests" :key="request.requestId" class="request">

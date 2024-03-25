@@ -61,7 +61,7 @@
             class="image-margin"
             width="50"
             height="50"
-            @click="login_qq"
+            @click="login_naver"
         />
 
         <img

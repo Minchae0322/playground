@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.config;
 
 
+import com.example.playgroundmanage.Instance;
 import com.example.playgroundmanage.filter.JwtAuthenticationFilter;
 import com.example.playgroundmanage.filter.JwtRefreshTokenFilter;
 import com.example.playgroundmanage.login.auth.JwtTokenProvider;
@@ -106,9 +107,9 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("https://localhost:5173");
-        configuration.addAllowedOrigin("https://" + SERVER_URL);
-        configuration.addAllowedOrigin("https://localhost:8080");
+        configuration.addAllowedOrigin(Instance.HTTP_HTTPS + "://localhost:5173");
+        configuration.addAllowedOrigin(Instance.HTTP_HTTPS + "://" + SERVER_URL);
+        configuration.addAllowedOrigin(Instance.HTTP_HTTPS +"://localhost:8080");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.addExposedHeader(ACCESS_TOKEN_HEADER_NAME);

@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.login.handler;
 
+import com.example.playgroundmanage.Instance;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.login.auth.JwtTokenProvider;
@@ -74,9 +75,9 @@ public class LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
         return UriComponentsBuilder
                 .newInstance()
-                .scheme("https")
+                .scheme(HTTP_HTTPS)
                 .host(SERVER_URL)
-                //.port(FRONT_END_PORT_NUM)
+                .port(FRONT_END_PORT_NUM)
                 .path("/app")
                 .queryParams(queryParams)
                 .build()
