@@ -81,17 +81,12 @@ public class UserService {
                         .teamId(t.getTeam().getId())
                         .sportsEvent(t.getTeam().getSportsEvent().getValue())
                         .teamName(t.getTeam().getTeamName())
-                        .teamProfileImg(getTeamProfileImg(t.getTeam().getTeamPic()))
+                        .teamProfileImg(fileHandler.getExtFullPath(t.getTeam().getTeamPic().getStoreFileName()))
                         .build())
                 .toList();
     }
 
-    public InMemoryMultipartFile getTeamProfileImg(UploadFile uploadFile) {
-        if (uploadFile != null) {
-            return fileHandler.extractFile(uploadFile);
-        }
-        return null;
-    }
+
 
     @Transactional
     public void updateProfileImg(Long userId, MultipartFile img) throws IOException {
@@ -119,7 +114,7 @@ public class UserService {
 
     @Transactional
     public UserInfoDto getUserInfo(User user) {
-        InMemoryMultipartFile userProfileImg = fileHandler.extractFile(user.getProfileImg());
+        String userProfileImg = fileHandler.getExtFullPath(user.getProfileImg().getStoreFileName());
 
         return UserInfoDto.builder()
                 .userNickname(user.getNickname())
@@ -131,7 +126,7 @@ public class UserService {
     @Transactional
     public UserInfoDto getUserInfoInTeam(Team team, User user) {
         String role = teamingRepository.findByTeamAndUser(team, user).getRole();
-        InMemoryMultipartFile userProfileImg = fileHandler.extractFile(user.getProfileImg());
+        String userProfileImg = fileHandler.getFullPath(user.getProfileImg().getStoreFileName());
 
         return UserInfoDto.builder()
                 .userRole(role)

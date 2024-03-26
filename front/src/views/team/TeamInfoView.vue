@@ -1,7 +1,7 @@
 <template>
   <div class="team-container-teamInfo">
     <div class="team-header-teamInfo">
-      <img :src=team.teamProfileImg class="team-header-img-teamInfo">
+      <img :src=getImageUrl(team.teamProfileImg) class="team-header-img-teamInfo">
       <div class="team-header-info-teamInfo">
         <h1>{{ team.teamName }}</h1>
         <p class="team-header-info-type-teamInfo">{{ team.teamSportsEvent }}</p>
@@ -31,7 +31,7 @@
           </thead>
           <tbody>
           <tr>
-              <img :src="user.userProfileImg || defaultImage" class="team-players-img-teamInfo"/>
+              <img :src=getImageUrl(user.userProfileImg) class="team-players-img-teamInfo"/>
               <td>{{ user.userNickname }}</td>
               <td>{{ user.userRole }}</td>
           </tr>
@@ -60,10 +60,10 @@
 </template>
 
 <script setup>
-import {getCurrentInstance, onMounted, ref} from "vue";
+import {computed, getCurrentInstance, inject, onMounted, ref} from "vue";
 import axios from "axios";
 import {useRouter} from "vue-router";
-import defaultImage from "@/assets/img.png";
+import defaultImage from "../../assets/img.png";
 
 
 const router = useRouter();
@@ -87,6 +87,7 @@ const teamMembers = ref([{
 }])
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
+const frontBaseUrl = inject('frontBaseUrl');
 
 const props = defineProps({
   teamId: {
@@ -113,6 +114,9 @@ const openModal = () => {
   showModal.value = true;
 };
 
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
 const submitIntroduction = async () => {
   await validateAccessToken()
   try {
@@ -200,7 +204,7 @@ const getTeamMembers = function () {
       userId: user.userId,
       userNickname: user.userNickname,
       userRole: user.userRole,
-      userProfileImg: user.userProfileImg ? `data:image/jpeg;base64,${user.userProfileImg}` : defaultImage
+      userProfileImg: user.userProfileImg,
     }));
   });
 };
@@ -214,7 +218,7 @@ const getTeamInfo = function () {
       }
   ).then(response => {
     team.value = response.data
-    team.value.teamProfileImg = response.data.teamProfileImg ? `data:image/jpeg;base64,${response.data.teamProfileImg}` : defaultImage
+    team.value.teamProfileImg = response.data.teamProfileImg
   });
 
 };

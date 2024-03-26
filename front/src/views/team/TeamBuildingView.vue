@@ -86,7 +86,7 @@ const getLeaderProfile = function () {
       }
     }).then(response => {
       leader.value.userNickname = response.data.userNickname
-      leader.value.userProfileImg =  `data:image/jpeg;base64,${response.data.userProfileImg}`;
+      leader.value.userProfileImg =  response.data.userProfileImg
     });
   }
 };

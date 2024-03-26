@@ -7,7 +7,7 @@
 
     <div class="header">
       <div class="user-profile-container-userInfo">
-        <img :src="user.userProfileImg || defaultImage" @click="triggerFileInput" class="profile-image"/>
+        <img :src="user.userProfileImg" @click="triggerFileInput" class="profile-image"/>
         <input type="file" ref="fileInput" @change="handleFileChange" style="display:none"/>
         <div class="profile-hint">点击照片更改头像</div>
       </div>
@@ -38,7 +38,7 @@
       </div>
       <div v-for="team in teams" :key="team.teamId" class="teams-item-userInfo">
         <router-link class="team-container-userInfo" :to="{ name:'teamInfo', params: { teamId: team.teamId } }">
-          <img :src="team.teamProfileImg || defaultImage" class="team-image"/>
+          <img :src="team.teamProfileImg" class="team-image"/>
           <div class="team-info-container-userInfo">
             <div class="team-info-name-userInfo">{{ team.teamName }}</div>
             <div class="team-info-sports-event-userInfo">项目: {{ team.teamSportsEvent }}</div>
@@ -99,7 +99,8 @@ const getUserInfo = async () => {
     )
     user.value.userId = response.data.userId;
     user.value.userNickname = response.data.userNickname
-    user.value.userProfileImg = response.data.userProfileImg ? `data:image/jpeg;base64,${response.data.userProfileImg}` : defaultImage ;
+    user.value.userProfileImg = response.data.userProfileImg;
+    console.log(user.value.userProfileImg)
   } catch (e) {
 
   }
@@ -185,7 +186,7 @@ const getTeams = () => {
       teamId: team.teamId,
       teamName: team.teamName,
       teamSportsEvent: team.sportsEvent,
-      teamProfileImg: team.teamProfileImg ? `data:image/jpeg;base64,${team.teamProfileImg}` : defaultImage
+      teamProfileImg: team.teamProfileImg
     }));
     console.log(teams.value[0].teamId)
   }).catch(error => {

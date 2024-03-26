@@ -23,7 +23,7 @@
     <div class="team-list-container-teamList">
       <div class="team-card-teamList" v-for="team in filteredTeams" :key="team.teamId" >
         <router-link :to="{name:'teamInfo', params:{teamId: team.teamId}}">
-          <img :src=team.teamProfileImg class="team-card-img-teamList" :alt=defaultImage>
+          <img :src="team.teamProfileImg" class="team-card-img-teamList">
           <div class="team-list-teamName">{{ team.teamName }}</div>
           <div class="team-list-info-container">
             <div>{{ team.sportsEvent }} </div>
@@ -69,7 +69,7 @@ const getTeams = async (type, sportsEvent) => {
     },)
     teams.value = response.data.map(team => ({
       ...team,
-      teamProfileImg: team.teamProfileImg ? `data:image/jpeg;base64,${team.teamProfileImg}` : defaultImage,
+      teamProfileImg: '../team' +  team.teamProfileImg
     }));
   } catch (error) {
 
@@ -87,7 +87,7 @@ const getTeamsBySportsEvent = async () => {
     },)
     teams.value = response.data.map(team => ({
       ...team,
-      teamProfileImg: team.teamProfileImg ? `data:image/jpeg;base64,${team.teamProfileImg}` : defaultImage,
+      teamProfileImg: team.teamProfileImg
     }));
   } catch (error) {
 

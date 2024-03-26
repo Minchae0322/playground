@@ -23,10 +23,10 @@ public class TeamDto {
         private String leaderName;
 
         @Builder
-        public TeamResponseDto(Long teamId, String teamName, InMemoryMultipartFile teamProfileImg, String sportsEvent, Long leaderId, String leaderName, String description) {
+        public TeamResponseDto(Long teamId, String teamName, String teamProfileImg, String sportsEvent, Long leaderId, String leaderName, String description) {
             this.teamId = teamId;
             this.teamName = teamName;
-            this.teamProfileImg = FileHandlerImpl.multipartFileToString(teamProfileImg);
+            this.teamProfileImg = teamProfileImg;
             this.sportsEvent = sportsEvent;
             this.leaderId = leaderId;
             this.leaderName = leaderName;

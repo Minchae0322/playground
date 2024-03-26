@@ -29,7 +29,7 @@ public class SportsEventTeamFinder implements TeamFinder {
                         .teamName(team.getTeamName())
                         .description(team.getDescription())
                         .sportsEvent(team.getSportsEvent().getValue_cn())
-                        .teamProfileImg(fileHandler.extractFile(team.getTeamPic()))
+                        .teamProfileImg(fileHandler.getExtFullPath(team.getTeamPic().getStoreFileName()))
                         .build())
                 .toList();
     }

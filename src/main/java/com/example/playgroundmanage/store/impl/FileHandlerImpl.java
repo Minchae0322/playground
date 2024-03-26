@@ -4,15 +4,11 @@ import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.store.UploadFile;
 import com.example.playgroundmanage.store.UploadFileRepository;
-import com.fasterxml.jackson.databind.ext.OptionalHandlerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -30,18 +26,22 @@ public class FileHandlerImpl implements FileHandler {
     String rootPath = System.getProperty("user.dir");
 
     // 프로젝트 루트 경로에 있는 files 디렉토리
-    private final String fileDir = rootPath + "/files/";
+    private final String fileStoreDir = rootPath + "/front/src/assets/";
+    private final String fileExtDir = "src/assets/";
 
     @Override
-    public String getFullPath(String filename) { return fileDir + filename; }
+    public String getFullPath(String filename) { return fileStoreDir + filename; }
+
+    @Override
+    public String getExtFullPath(String filename) {
+        return fileExtDir + filename;
+    }
 
     @Override
     public UploadFile storeFile(MultipartFile multipartFile) throws IOException {
         if(multipartFile.isEmpty()) {
             return null;
         }
-
-
 
         String originalFilename = multipartFile.getOriginalFilename();
         // 작성자가 업로드한 파일명 -> 서버 내부에서 관리하는 파일명
@@ -118,7 +118,6 @@ public class FileHandlerImpl implements FileHandler {
             fileContent = FileCopyUtils.copyToByteArray(inMemoryFile);
         } catch (IOException e) {
             return null;
-            //todo 처리 방식 고민 오류를 터뜨릴지 null 을 반환 할지.
         }
         return new InMemoryMultipartFile(uploadFile.getOrgFileName(), fileContent);
     }

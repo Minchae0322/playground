@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface FileHandler{
     String getFullPath(String filename);
 
+    String getExtFullPath(String filename);
+
     UploadFile storeFile(MultipartFile multipartFile) throws IOException;
 
     boolean deleteFile(UploadFile uploadFile);

@@ -51,7 +51,7 @@ const getTeams = async () => {
       teamId: team.teamId,
       teamName: team.teamName,
       teamSportsEvent: team.sportsEvent,
-      teamProfileImg: team.teamProfileImg ? `data:image/jpeg;base64,${team.teamProfileImg}` : defaultImage,
+      teamProfileImg: team.teamProfileImg,
     }));
   } catch (error) {
     console.error('팀 정보를 가져오는데 실패했습니다.', error.response.data.message);

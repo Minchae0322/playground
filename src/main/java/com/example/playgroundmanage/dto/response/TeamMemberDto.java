@@ -20,16 +20,10 @@ public class TeamMemberDto {
     private String userRole;
 
     @Builder
-    public TeamMemberDto(Long userId, String userNickname, InMemoryMultipartFile userProfileImg, String userRole) {
+    public TeamMemberDto(Long userId, String userNickname, String userProfileImg, String userRole) {
         this.userId = userId;
         this.userNickname = userNickname;
-        if (userProfileImg != null) {
-            try {
-                this.userProfileImg = Base64.getEncoder().encodeToString(userProfileImg.getBytes());
-            } catch (IOException e) {
-                throw new RuntimeException("이미지 변환 실패", e);
-            }
-        }
+        this.userProfileImg = userProfileImg;
         this.userRole = userRole;
     }
 }

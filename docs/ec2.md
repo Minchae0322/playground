@@ -41,7 +41,12 @@
   }
   }
 
-
-
-
+# 메모리
+sudo dd if=/dev/zero of=/swapfile bs=128M count=32
+sudo chmod 600 /swapfile
+sudo mkswap /swapfile
+sudo swapon /swapfile
+sudo vi /etc/fstab
+# vi 맨 아랫줄에 추가
+/swapfile swap swap defaults 0 0
 

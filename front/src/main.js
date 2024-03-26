@@ -13,6 +13,7 @@ const app = createApp(App)
 
 app.config.globalProperties.$apiBaseUrl = "http://localhost:8080";
 
+app.provide('frontBaseUrl', 'http://localhost:5173/');
 app.use(createPinia())
 app.use(router)
 app.mount('#app')

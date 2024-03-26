@@ -95,7 +95,7 @@ public class TeamService {
 
         return teamUserRelations.stream()
                 .map(t -> TeamMemberDto.builder()
-                        .userProfileImg(getUserProfileImg(t.getUser().getProfileImg()))
+                        .userProfileImg(fileHandler.getExtFullPath(t.getUser().getProfileImg().getStoreFileName()))
                         .userNickname(t.getUser().getNickname())
                         .userRole(t.getRole())
                         .userId(t.getUser().getId())
@@ -123,14 +123,14 @@ public class TeamService {
     @Transactional
     public TeamDto.TeamResponseDto getTeamInfo(Long teamId) {
         Team team = teamRepository.findById(teamId).orElseThrow(TeamNotExistException::new);
-        InMemoryMultipartFile teamProfileImg = fileHandler.extractFile(team.getTeamPic());
+
 
         return TeamDto.TeamResponseDto.builder()
                 .teamName(team.getTeamName())
                 .description(team.getDescription())
                 .sportsEvent(team.getSportsEvent().getValue())
                 .leaderId(team.getLeader().getId())
-                .teamProfileImg(teamProfileImg)
+                .teamProfileImg(fileHandler.getExtFullPath(team.getTeamPic().getStoreFileName()))
                 .leaderName(team.getLeader().getNickname())
                 .build();
     }

@@ -18,7 +18,7 @@ import home from "@/views/HomeView.vue";
 import myGame from '../views/game/MyGameView.vue'
 import hostGame from '../views/game/HostGameView.vue'
 import playgroundList from '../views/playground/PlaygroundListView.vue'
-import teamList from '../views/team/TeamListView.vue';
+import teamList from '../views/TeamListView.vue';
 import App from "@/App.vue";
 import friendlyGameInfo from "@/views/game/FriendlyGameInfoView.vue";
 import mSidebar from "@/views/mobile/sidebarView.vue"
