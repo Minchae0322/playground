@@ -75,11 +75,12 @@ public class GameDto {
                 .playgroundName(playground.getName())
                 .campusName(playground.getCampus().getCampusName())
                 .sportsEvent(sportsEvent)
+                .hostProfileImg(host.getProfileImg().getFileUrl())
                 .gameId(gameId)
                 .build();
     }
 
-    public GameThumbnail toGameThumbnail(InMemoryMultipartFile hostProfileImg) {
+    public GameThumbnail toGameThumbnailWithHostProfile() {
         return GameThumbnail.builder()
                 .gameStart(Util.localDateToYearMonthDateTimeString(startDateTime.getLocalDateTime()))
                 .hostName(host.getNickname())
@@ -90,7 +91,7 @@ public class GameDto {
                 .participantNum(participantNum)
                 .gameStartDateTime(startDateTime.getLocalDateTime())
                 .playgroundName(playground.getName())
-                .hostProfileImg(hostProfileImg)
+                .hostProfileImg(host.getProfileImg().getFileUrl())
                 .sportsEvent(sportsEvent)
                 .gameId(gameId)
                 .build();

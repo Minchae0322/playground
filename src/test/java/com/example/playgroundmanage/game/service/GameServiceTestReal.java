@@ -3,7 +3,7 @@ package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.dto.GameDto;
-import com.example.playgroundmanage.dto.UsersGameDto;
+import com.example.playgroundmanage.login.dto.UsersGameDto;
 import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.login.repository.UserRepository;

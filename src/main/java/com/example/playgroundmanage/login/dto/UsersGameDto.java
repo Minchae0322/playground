@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.dto;
+package com.example.playgroundmanage.login.dto;
 
 import com.example.playgroundmanage.date.DateTime;
 import com.example.playgroundmanage.login.vo.User;

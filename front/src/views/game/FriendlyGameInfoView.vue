@@ -13,7 +13,7 @@
           {{ props.game.gameStart }} 进行时间 {{ props.game.runningTime }}分
         </div>
         <div class="host-info-container">
-          <img class="host-info" :src="game.hostProfileImg || defaultImage">
+          <img class="host-info" :src="getImageUrl(game.hostProfileImg) || defaultImage">
           <div class="host-name">{{ game.hostName }}</div>
         </div>
       </div>
@@ -33,7 +33,7 @@
             <!--            <div v-if="participant.userId === loggedInUserId" class="close-marker"
                              @click="clickOutOfGame()">X
                         </div>-->
-            <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
+            <img class="team-member-photo" :src="getImageUrl(participant.userProfileImg)">
             <p class="nickname-container-nickname-userInfo">{{ participant.userNickname }}</p>
             <p class="user-role">个人</p>
           </div>
@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import {getCurrentInstance, onMounted, onUpdated, ref} from "vue";
+import {getCurrentInstance, inject, onMounted, onUpdated, ref} from "vue";
 import axios from "axios";
 import {defineEmits} from 'vue';
 import {useRouter} from "vue-router";
@@ -79,6 +79,11 @@ const participants = ref([{
   userProfileImg: '',
 }])
 const emits = defineEmits(['goBack']);
+const frontBaseUrl = inject('frontBaseUrl');
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
+
 
 onMounted(async () => {
   await getTeamData("NONE",
@@ -98,7 +103,7 @@ const getTeamData = async (matchTeamSide, gameType) => {
 
     participants.value = response.data.participants.map(user => ({
       ...user,
-      userProfileImg: user.userProfileImg ? `data:image/jpeg;base64,${user.userProfileImg}` : defaultImage,
+      userProfileImg: user.userProfileImg ? user.userProfileImg : defaultImage,
     }));
     console.log(participants.value)
   } catch (error) {
@@ -117,7 +122,7 @@ const getLoggedUserId = async () => {
   await validateAccessToken();
 
   try {
-    const response = await axios.get(`${apiBaseUrl}/user/profile`,
+    const response = await axios.get(`${apiBaseUrl}/user/info`,
         {
           headers: {
             'Authorization': getAccessToken()

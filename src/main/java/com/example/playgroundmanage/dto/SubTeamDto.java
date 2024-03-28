@@ -1,15 +1,12 @@
 package com.example.playgroundmanage.dto;
 
-import com.example.playgroundmanage.dto.response.UserInfoDto;
-import com.example.playgroundmanage.store.FileService;
+import com.example.playgroundmanage.login.dto.UserInfoDto;
+import com.example.playgroundmanage.login.dto.UserResponseDto;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
-import com.example.playgroundmanage.store.impl.FileHandlerImpl;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.io.IOException;
-import java.util.Base64;
 import java.util.List;
 
 import static com.example.playgroundmanage.store.impl.FileHandlerImpl.multipartFileToString;
@@ -28,10 +25,10 @@ public class SubTeamDto {
 
     private String teamProfileImg;
 
-    private List<UserInfoDto> users;
+    private List<UserResponseDto> users;
 
     @Builder
-    public SubTeamDto(Long teamId, String teamName, Long subTeamId,String teamDescription, InMemoryMultipartFile teamProfileImg, List<UserInfoDto> users) {
+    public SubTeamDto(Long teamId, String teamName, Long subTeamId,String teamDescription, InMemoryMultipartFile teamProfileImg, List<UserResponseDto> users) {
         this.teamId = teamId;
         this.teamName = teamName;
         this.subTeamId = subTeamId;

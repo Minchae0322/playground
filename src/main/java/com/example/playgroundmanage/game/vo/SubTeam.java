@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.game.vo;
 
-import com.example.playgroundmanage.dto.response.UserInfoDto;
+import com.example.playgroundmanage.login.dto.UserInfoDto;
 import com.example.playgroundmanage.team.vo.Team;
 import jakarta.persistence.*;
 import lombok.*;

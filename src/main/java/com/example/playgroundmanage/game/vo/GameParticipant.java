@@ -1,8 +1,8 @@
 package com.example.playgroundmanage.game.vo;
 
 
-import com.example.playgroundmanage.dto.UsersGameDto;
-import com.example.playgroundmanage.dto.response.UserInfoDto;
+import com.example.playgroundmanage.login.dto.UsersGameDto;
+import com.example.playgroundmanage.login.dto.UserInfoDto;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.GameRecord;
@@ -70,11 +70,10 @@ public class GameParticipant {
         this.gameRecord = gameRecord;
     }
 
-    public UserInfoDto toUserInfoDto(InMemoryMultipartFile inMemoryMultipartFile) {
+    public UserInfoDto toUserInfoDto() {
         return UserInfoDto.builder()
                 .userNickname(user.getNickname())
                 .userId(user.getId())
-
                 .build();
     }
 

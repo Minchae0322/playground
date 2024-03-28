@@ -36,7 +36,7 @@
                 {{ ongoingGame.gameStart }}（ {{ ongoingGame.runningTime }}分 ）
               </div>
               <div class="host-info">
-                <img :src="ongoingGame.hostProfileImg || defaultImage">
+                <img :src="getImageUrl(ongoingGame.hostProfileImg) || defaultImage">
                 <div class="host-name">{{ ongoingGame.hostName }}</div>
               </div>
             </div>
@@ -123,7 +123,7 @@ const clickInfo = async () => {
           }
       )
       game = response.data;
-      game.hostProfileImg = `data:image/jpeg;base64,${response.data.hostProfileImg}`;
+      game.hostProfileImg = response.data.hostProfileImg;
     } catch (error) {
 
     }
@@ -162,7 +162,6 @@ const getOngoingGame = async function () {
         }
     )
     ongoingGame.value = response.data
-    ongoingGame.value.hostProfileImg = `data:image/jpeg;base64,${ongoingGame.value.hostProfileImg}`;
   } catch (error) {
   }
 }

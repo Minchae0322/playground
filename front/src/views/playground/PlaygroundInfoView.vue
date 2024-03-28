@@ -23,7 +23,7 @@
                   {{ game.gameStart }}（ {{ game.runningTime }}分 ）
                 </div>
                 <div class="host-info">
-                  <img :src="game.hostProfileImg || defaultImage">
+                  <img :src="getImageUrl(game.hostProfileImg) || defaultImage">
                   <div class="host-name">{{ game.hostName }}</div>
                 </div>
               </div>
@@ -82,7 +82,7 @@ const getUpcomingGames = async () => {
   ).then(response => {
     upcomingGames.value = response.data.map(game => ({
       ...game,
-      hostProfileImg: game.hostProfileImg ? `data:image/jpeg;base64,${game.hostProfileImg}` : defaultImage,
+      hostProfileImg: game.hostProfileImg ? game.hostProfileImg : defaultImage,
       onClick: () => showGameInfo(game.gameId)
     }));
   });

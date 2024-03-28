@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.dto.response;
+package com.example.playgroundmanage.login.dto;
 
 import lombok.Builder;
 import lombok.Data;

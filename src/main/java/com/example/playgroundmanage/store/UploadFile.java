@@ -28,4 +28,8 @@ public class UploadFile {
         this.orgFileName = orgFileName;
         this.storeFileName = storeFileName;
     }
+
+    public String getFileUrl() {
+        return "src/assets/" + storeFileName;
+    }
 }

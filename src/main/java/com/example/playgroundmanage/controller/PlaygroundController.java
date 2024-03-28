@@ -30,7 +30,7 @@ public class PlaygroundController {
     public ResponseEntity<GameThumbnail> getOngoingGame(@PathVariable Long playgroundId) {
         GameDto gameDto =  playgroundService.getOngoingGame(playgroundId);
 
-        return ResponseEntity.ok(gameDto.toGameThumbnail(userService.getUserProfileImg(gameDto.getHost())));
+        return ResponseEntity.ok(gameDto.toGameThumbnailWithHostProfile());
     }
 
 
@@ -40,7 +40,7 @@ public class PlaygroundController {
         List<GameDto> upcomingThreeGames = playgroundService.getUpcomingGames(playgroundId);
 
         return upcomingThreeGames.stream()
-                .map(gameDto -> gameDto.toGameThumbnail(userService.getUserProfileImg(gameDto.getHost())))
+                .map(GameDto::toGameThumbnailWithHostProfile)
                 .toList();
     }
 

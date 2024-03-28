@@ -2,7 +2,7 @@ package com.example.playgroundmanage.game.service;
 
 import com.example.playgroundmanage.dto.GameDto;
 
-import com.example.playgroundmanage.dto.UsersGameDto;
+import com.example.playgroundmanage.login.dto.UsersGameDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.UserNotParticipantGameException;
 import com.example.playgroundmanage.game.repository.*;

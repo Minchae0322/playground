@@ -2,8 +2,7 @@ package com.example.playgroundmanage.game.dto;
 
 
 import com.example.playgroundmanage.dto.SubTeamDto;
-import com.example.playgroundmanage.dto.response.UserInfoDto;
-import com.example.playgroundmanage.game.vo.SubTeam;
+import com.example.playgroundmanage.login.dto.UserInfoDto;
 import lombok.Builder;
 import lombok.Data;
 

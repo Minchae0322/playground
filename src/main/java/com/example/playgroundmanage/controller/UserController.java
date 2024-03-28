@@ -2,11 +2,8 @@ package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.Test;
 import com.example.playgroundmanage.TestRepository;
-import com.example.playgroundmanage.dto.UserNicknameDto;
-import com.example.playgroundmanage.dto.response.UserRecordResponse;
-import com.example.playgroundmanage.login.dto.UserSignupForm;
+import com.example.playgroundmanage.login.dto.*;
 import com.example.playgroundmanage.team.dto.TeamDto;
-import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.login.service.UserService;
 import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
@@ -36,9 +33,9 @@ public class UserController {
 
     private final FileHandler fileHandler;
 
-    @GetMapping("/user/profile")
-    public UserInfoDto getUserProfile(@AuthenticationPrincipal MyUserDetails userDetails) {
-        return userService.getUserProfile(userDetails.getUser());
+    @GetMapping("/user/info")
+    public UserResponseDto getUserProfile(@AuthenticationPrincipal MyUserDetails userDetails) {
+        return userService.getUserInfo(userDetails.getUser());
     }
 
     @PostMapping(value = "/user/profile-img/update", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
@@ -53,14 +50,6 @@ public class UserController {
     }
 
 
-
-    @GetMapping("/user/info")
-    public UserInfoDto getUserInfo(@AuthenticationPrincipal MyUserDetails userDetails) {
-        testRepository.save(Test.builder()
-                .zonedDateTime(ZonedDateTime.now())
-                .build());
-        return userService.getUserInfo(userDetails.getUser());
-    }
 
     @GetMapping("/user/logout")
     @Transactional

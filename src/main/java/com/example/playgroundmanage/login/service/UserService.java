@@ -1,19 +1,15 @@
 package com.example.playgroundmanage.login.service;
 
-import com.example.playgroundmanage.dto.UserNicknameDto;
-import com.example.playgroundmanage.dto.response.UserRecordResponse;
+import com.example.playgroundmanage.login.dto.*;
 import com.example.playgroundmanage.exception.TooManyRequestException;
 import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.login.repository.UserGameRecordRepository;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.login.vo.UserGameRecord;
 import com.example.playgroundmanage.team.dto.TeamDto;
-import com.example.playgroundmanage.dto.response.UserInfoDto;
 import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.location.repository.TeamingRepository;
 import com.example.playgroundmanage.game.vo.*;
-import com.example.playgroundmanage.login.dto.UserEdit;
-import com.example.playgroundmanage.login.dto.UserSignupForm;
 import com.example.playgroundmanage.exception.ExistUserException;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.login.repository.UserRepository;
@@ -53,6 +49,8 @@ public class UserService {
 
     private final UserGameRecordRepository userGameRecordRepository;
 
+    private final UserDtoConverter userDtoConverter;
+
     @Transactional
     public void signup(UserSignupForm userSignupForm) {
         validateUser(userSignupForm.getUsername(), userSignupForm.getPassword());
@@ -81,7 +79,7 @@ public class UserService {
                         .teamId(t.getTeam().getId())
                         .sportsEvent(t.getTeam().getSportsEvent().getValue())
                         .teamName(t.getTeam().getTeamName())
-                        .teamProfileImg(fileHandler.getExtFullPath(t.getTeam().getTeamPic().getStoreFileName()))
+                        .teamProfileImg(t.getTeam().getTeamPic().getFileUrl())
                         .build())
                 .toList();
     }
@@ -99,41 +97,16 @@ public class UserService {
         userRepository.save(user);
     }
 
-
-    public UserInfoDto getUserProfile(User user) {
-        return UserInfoDto.builder()
-                .userNickname(user.getNickname())
-                .userId(user.getId())
-                .build();
+    @Transactional
+    public UserResponseDto getUserInfo(User user) {
+        return userDtoConverter.toUserResponseDto(user);
     }
 
     @Transactional
-    public InMemoryMultipartFile getUserProfileImg(User user) {
-        return fileHandler.extractFile(user.getProfileImg());
-    }
-
-    @Transactional
-    public UserInfoDto getUserInfo(User user) {
-        String userProfileImg = fileHandler.getExtFullPath(user.getProfileImg().getStoreFileName());
-
-        return UserInfoDto.builder()
-                .userNickname(user.getNickname())
-                .userId(user.getId())
-                .userProfileImg(userProfileImg)
-                .build();
-    }
-
-    @Transactional
-    public UserInfoDto getUserInfoInTeam(Team team, User user) {
+    public UserResponseDto getUserInfoInTeam(Team team, User user) {
         String role = teamingRepository.findByTeamAndUser(team, user).getRole();
-        String userProfileImg = fileHandler.getFullPath(user.getProfileImg().getStoreFileName());
 
-        return UserInfoDto.builder()
-                .userRole(role)
-                .userNickname(user.getNickname())
-                .userId(user.getId())
-                .userProfileImg(userProfileImg)
-                .build();
+        return userDtoConverter.toUserInTeamResponseDto(user, role);
     }
 
 

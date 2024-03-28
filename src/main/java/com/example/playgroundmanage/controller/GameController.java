@@ -3,7 +3,7 @@ package com.example.playgroundmanage.controller;
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.dto.GameTimeDto;
-import com.example.playgroundmanage.dto.UsersGameDto;
+import com.example.playgroundmanage.login.dto.UsersGameDto;
 import com.example.playgroundmanage.dto.reqeust.GameRegistration;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.game.GameGenerator;
@@ -71,7 +71,7 @@ public class GameController {
     public GameThumbnail getGameInfo(@PathVariable Long gameId) {
         GameDto gameDto = gameService.getGameInfo(gameId);
 
-        return gameDto.toGameThumbnail(userService.getUserProfileImg(gameDto.getHost()));
+        return gameDto.toGameThumbnail();
     }
 
     @PostMapping("/game/generate")

@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.dto.reqeust;
+package com.example.playgroundmanage.login.dto;
 
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.dto.GameRequestDto;

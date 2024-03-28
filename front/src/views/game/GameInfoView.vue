@@ -80,7 +80,7 @@ onMounted(async () => {
 
 
 function encodeImageToBase64(image) {
-  return image ? `data:image/jpeg;base64,${image}` : '';
+  return image ? image : '';
 }
 
 // 사용자 정보를 변환하는 함수
@@ -95,7 +95,7 @@ const getLoggedUserId = async () => {
   await validateAccessToken();
 
   try {
-    const response = await axios.get(`${apiBaseUrl}/user/profile`,
+    const response = await axios.get(`${apiBaseUrl}/user/info`,
         {
           headers: {
             'Authorization': getAccessToken()
@@ -122,7 +122,7 @@ const getTeamData = async (matchTeamSide, gameType) => {
     if (response.status === 200) {
       const transformedSubTeams = response.data.subTeams.map(subTeam => ({
         ...subTeam,
-        teamProfileImg: encodeImageToBase64(subTeam.teamProfileImg),
+        teamProfileImg:subTeam.teamProfileImg,
         users: transformUsers(subTeam.users)
       }));
 
@@ -309,7 +309,7 @@ const getTeamsUserBelongTo = function () {
       teamName: team.teamName,
       teamSportsEvent: team.sportsEvent,
       teamId: team.teamId,
-      teamProfileImg: team.teamProfileImg ? `data:image/jpeg;base64,${team.teamProfileImg}` : defaultImage
+      teamProfileImg: team.teamProfileImg ? team.teamProfileImg : defaultImage
     }));
   });
 };
