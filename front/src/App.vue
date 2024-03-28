@@ -1,7 +1,7 @@
 <script setup>
 import {RouterLink, RouterView} from 'vue-router'
 import axios from "axios";
-import {getCurrentInstance, onMounted, onUnmounted, ref} from "vue";
+import {getCurrentInstance, inject, onMounted, onUnmounted, ref} from "vue";
 import defaultImage from '@/assets/img.png';
 import {useRouter} from "vue-router";
 import mSidebarView from "../src/views/mobile/sidebarView.vue"
@@ -21,6 +21,10 @@ const isLoggedIn = ref(false);
 const accessToken = ref(null);
 const refreshToken = ref(null);
 
+const frontBaseUrl = inject('frontBaseUrl');
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
 
 onMounted(async () => {
   window.addEventListener('resize', updateWindowWidth);
@@ -180,7 +184,7 @@ const redirectToLogin = async () => {
         </div>
       </router-link>
       <div class="user-info-container" @click="clickUserInfo">
-        <img class="user-profile-img" :src="user.userProfileImg || defaultImage">
+        <img class="user-profile-img" :src="getImageUrl(user.userProfileImg) || defaultImage">
         <div class="user-name">{{ user.userNickname }}</div>
         <div @click="logout" class="logout">logout</div>
       </div>
@@ -478,6 +482,10 @@ header {
     justify-content: center;
     align-content: center;
     margin: 80px auto;
+  }
+
+  main {
+    width: 100%;
   }
 }
 

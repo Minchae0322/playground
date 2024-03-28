@@ -42,7 +42,7 @@
   <div v-if="isPlaygroundExist" class="playground-list">
     <div v-for="info in playgroundInfoList" :key="info.playgroundId" class="playground-card">
       <div class="card-header">
-        <img :src="info.playgroundProfileImg" alt="game image" class="game-image"/>
+        <img :src="getImageUrl(info.playgroundProfileImg)" alt="game image" class="game-image"/>
         <div class="playground-name">{{ info.playgroundName }}</div>
         <div class="playground-info-container">
           <div class="sports-event-playgroundList">
@@ -74,7 +74,7 @@
 </template>
 
 <script setup>
-import {getCurrentInstance, onMounted, ref, watch} from 'vue';
+import {getCurrentInstance, inject, onMounted, ref, watch} from 'vue';
 import axios from "axios";
 import GameBuilderModal from '../game/GameBuilderView.vue';
 import {useRouter} from "vue-router";
@@ -101,6 +101,11 @@ const props = defineProps({
     required: true,
   }
 });
+
+const frontBaseUrl = inject('frontBaseUrl');
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
 
 
 onMounted(async () => {
@@ -137,7 +142,7 @@ const getPlaygroundsByCampus = async (campusId, sportsEvent) => {
     );
     playgroundInfoList.value = response.data.map(playground => ({
       ...playground,
-      playgroundProfileImg: playground.playgroundProfileImg ? `data:image/jpeg;base64,${playground.playgroundProfileImg}` : defaultImage,
+      playgroundProfileImg: playground.playgroundProfileImg ?playground.playgroundProfileImg : defaultImage,
     }));
     isPlaygroundExist.value = true;
 
@@ -192,7 +197,7 @@ const getPlaygrounds = async (sportsEvent) => {
     );
     playgroundInfoList.value = response.data.map(playground => ({
       ...playground,
-      playgroundProfileImg: playground.playgroundProfileImg ? `data:image/jpeg;base64,${playground.playgroundProfileImg}` : defaultImage,
+      playgroundProfileImg: playground.playgroundProfileImg ? playground.playgroundProfileImg : defaultImage,
     }));
     isPlaygroundExist.value = true;
 

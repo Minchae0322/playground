@@ -84,7 +84,7 @@
         </ul>
       </li>
       <li class="user-info-container-under-bar" @click="clickUserInfo">
-        <img class="user-profile-img" :src="user.userProfileImg || defaultImage">
+        <img class="user-profile-img" :src="getImageUrl(user.userProfileImg)">
       </li>
     </ul>
   </nav>
@@ -92,7 +92,7 @@
 
 
 <script setup>
-import {getCurrentInstance, onMounted, ref} from "vue";
+import {getCurrentInstance, inject, onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 import axios from "axios";
 import defaultImage from '@/assets/img.png';
@@ -109,6 +109,10 @@ const isLoggedIn = ref(false);
 const menuItems = ['home', 'playground', 'team', 'game']; // 메뉴 항목들
 const menuCount = menuItems.length;
 
+const frontBaseUrl = inject('frontBaseUrl');
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
 
 onMounted(async () => {
   await getUserInfo();
@@ -145,7 +149,7 @@ const getUserInfo = async () => {
     );
     isLoggedIn.value = true;
     user.value.userNickname = response.data.userNickname;
-    user.value.userProfileImg = response.data.userProfileImg ? `data:image/jpeg;base64,${response.data.userProfileImg}` : defaultImage;
+    user.value.userProfileImg = response.data.userProfileImg ? response.data.userProfileImg : defaultImage;
   } catch (error) {
     isLoggedIn.value = false;
   }

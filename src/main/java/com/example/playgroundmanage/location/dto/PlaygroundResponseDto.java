@@ -1,16 +1,13 @@
 package com.example.playgroundmanage.location.dto;
 
-import com.example.playgroundmanage.store.FileHandler;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
-import com.example.playgroundmanage.store.impl.FileHandlerImpl;
+import com.example.playgroundmanage.location.vo.Playground;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Value;
 
-import static com.example.playgroundmanage.store.impl.FileHandlerImpl.multipartFileToString;
 
 @Data
 public class PlaygroundResponseDto {
-
     private Long playgroundId;
 
     private String playgroundName;
@@ -25,14 +22,17 @@ public class PlaygroundResponseDto {
 
     private Integer upcomingGameNum;
 
+
     @Builder
-    public PlaygroundResponseDto(Long playgroundId, Integer upcomingGameNum, String playgroundName, String sportsEvent, InMemoryMultipartFile playgroundProfileImg, String schoolName, String campusName) {
+    public PlaygroundResponseDto(Long playgroundId, Integer upcomingGameNum, String playgroundName, String sportsEvent, String playgroundProfileImg, String schoolName, String campusName) {
         this.playgroundId = playgroundId;
         this.playgroundName = playgroundName;
         this.sportsEvent = sportsEvent;
-        this.playgroundProfileImg = multipartFileToString(playgroundProfileImg);
+        this.playgroundProfileImg = playgroundProfileImg;
         this.schoolName = schoolName;
         this.campusName = campusName;
         this.upcomingGameNum = upcomingGameNum;
     }
+
+
 }

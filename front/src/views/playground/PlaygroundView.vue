@@ -6,7 +6,7 @@
   <div class="game-container">
     <div class="playground-container">
       <div class="game-image">
-        <img :src="playgroundInfo.playgroundProfileImg" alt="Game Image">
+        <img :src="getImageUrl(playgroundInfo.playgroundProfileImg)" alt="Game Image">
         <div class="overlay">
           <div class="playground-name">{{ playgroundInfo.playgroundName }}</div>
           <div class="playground-info-container">
@@ -59,7 +59,7 @@
 </template>
 
 <script setup>
-import {getCurrentInstance, onMounted, onUpdated, ref} from 'vue';
+import {getCurrentInstance, inject, onMounted, onUpdated, ref} from 'vue';
 import axios from "axios";
 import GameBuilderModal from '../game/GameBuilderView.vue';
 import {useRouter} from "vue-router";
@@ -96,6 +96,11 @@ const router = useRouter();
 const currentView = ref(PlaygroundInfoView); // 초기 뷰 설정
 const selectedGame = ref(null); // 선택된 게임
 const isGameBuilderModalOpen = ref(false);
+
+const frontBaseUrl = inject('frontBaseUrl');
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
 
 onMounted(async () => {
   await getPlaygroundInfo()
@@ -137,7 +142,7 @@ const getPlaygroundInfo = async () => {
         }
     )
     playgroundInfo.value = response.data
-    playgroundInfo.value.playgroundProfileImg = `data:image/jpeg;base64,${response.data.playgroundProfileImg}`;
+    playgroundInfo.value.playgroundProfileImg = response.data.playgroundProfileImg;
 
 
   } catch (error) {

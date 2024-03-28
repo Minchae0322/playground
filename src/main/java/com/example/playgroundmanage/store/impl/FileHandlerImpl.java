@@ -1,5 +1,7 @@
 package com.example.playgroundmanage.store.impl;
 
+
+
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.store.UploadFile;
@@ -21,8 +23,6 @@ public class FileHandlerImpl implements FileHandler {
 
     private final UploadFileRepository uploadFileRepository;
 
-    private final MultipartFileCompression multipartFileCompression;
-
     String rootPath = System.getProperty("user.dir");
 
     // 프로젝트 루트 경로에 있는 files 디렉토리
@@ -30,7 +30,14 @@ public class FileHandlerImpl implements FileHandler {
     private final String fileExtDir = "src/assets/";
 
     @Override
-    public String getFullPath(String filename) { return fileStoreDir + filename; }
+    public String getFullPath(String filename) {
+        return //fileStoreDir
+         fileExtDir + filename; }
+
+    @Override
+    public String getFullPath(UploadFile uploadFile) {
+        return fileExtDir + uploadFile.getStoreFileName();
+    }
 
     @Override
     public String getExtFullPath(String filename) {
@@ -141,3 +148,6 @@ public class FileHandlerImpl implements FileHandler {
                 .orElse("");
     }
 }
+
+
+

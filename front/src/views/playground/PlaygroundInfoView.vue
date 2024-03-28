@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import {getCurrentInstance, onMounted, ref} from 'vue';
+import {getCurrentInstance, inject, onMounted, ref} from 'vue';
 import axios from "axios";
 import {useRouter} from "vue-router";
 import {defineEmits} from 'vue';
@@ -55,6 +55,11 @@ const emits = defineEmits(['gameSelected']);
 const props = defineProps({
   playgroundId: Number,
 })
+const frontBaseUrl = inject('frontBaseUrl');
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
+
 onMounted(async () => {
   // Check if the initial page number is provided in the route query
 

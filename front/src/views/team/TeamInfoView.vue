@@ -88,7 +88,9 @@ const teamMembers = ref([{
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 const frontBaseUrl = inject('frontBaseUrl');
-
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
 const props = defineProps({
   teamId: {
     type: Number,
@@ -114,9 +116,7 @@ const openModal = () => {
   showModal.value = true;
 };
 
-const getImageUrl = (file) => {
-  return frontBaseUrl + file;
-};
+
 const submitIntroduction = async () => {
   await validateAccessToken()
   try {

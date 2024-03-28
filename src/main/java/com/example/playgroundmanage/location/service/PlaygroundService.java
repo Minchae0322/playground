@@ -7,7 +7,6 @@ import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.dto.response.*;
 import com.example.playgroundmanage.exception.CampusNotExistException;
-import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.exception.SchoolNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
@@ -27,7 +26,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -110,21 +108,13 @@ public class PlaygroundService {
 
 
     @Transactional
-    public PlaygroundDto getPlaygroundInfo(Long playgroundId) {
+    public PlaygroundResponseDto getPlaygroundInfo(Long playgroundId) {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
 
-        return playground.toPlaygroundDto();
+        return toPlaygroundResponseInfoDto(playground);
     }
 
-
-    @Transactional
-    public InMemoryMultipartFile getPlaygroundImg(Long playgroundId) {
-        Playground playground = playgroundRepository.findById(playgroundId)
-                .orElseThrow(PlaygroundNotExistException::new);
-
-        return fileHandler.extractFile(playground.getImg());
-    }
 
     @Transactional
     public List<PlaygroundDto> getPlaygroundByCampus(Long campusId) {
@@ -155,16 +145,31 @@ public class PlaygroundService {
             throw new PlaygroundNotExistException();
         }
         return playgrounds.stream()
-                .map(playground -> PlaygroundResponseDto.builder()
-                        .playgroundId(playground.getId())
-                        .playgroundName(playground.getName())
-                        .upcomingGameNum(getUpcomingGames(playground.getId()).size())
-                        .sportsEvent(playground.getSportsEvent().getValue_cn())
-                        .playgroundProfileImg(fileHandler.extractFile(playground.getImg()))
-                        .campusName(playground.getCampus().getCampusName())
-                        .schoolName(playground.getCampus().getSchool().getSchoolName())
-                        .build())
+                .map(this::toPlaygroundResponseDto)
                 .toList();
+    }
+
+    private PlaygroundResponseDto toPlaygroundResponseDto(Playground playground) {
+        return PlaygroundResponseDto.builder()
+                .playgroundId(playground.getId())
+                .playgroundName(playground.getName())
+                .upcomingGameNum(playground.getUpcomingGamesOrderedByStartDateTime().size())
+                .sportsEvent(playground.getSportsEvent().getValue_cn())
+                .playgroundProfileImg(fileHandler.getFullPath(playground.getImg()))
+                .campusName(playground.getCampus().getCampusName())
+                .schoolName(playground.getCampus().getSchool().getSchoolName())
+                .build();
+    }
+
+    private PlaygroundResponseDto toPlaygroundResponseInfoDto(Playground playground) {
+        return PlaygroundResponseDto.builder()
+                .playgroundId(playground.getId())
+                .campusName(playground.getCampus().getCampusName())
+                .playgroundName(playground.getName())
+                .playgroundProfileImg(fileHandler.getFullPath(playground.getImg()))
+                .schoolName(playground.getCampus().getSchool().getSchoolName())
+                .sportsEvent(playground.getSportsEvent().getValue_cn())
+                .build();
     }
 
     @Transactional

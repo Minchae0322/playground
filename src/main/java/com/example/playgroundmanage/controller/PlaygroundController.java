@@ -6,7 +6,7 @@ import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.response.OccupiedTime;
 import com.example.playgroundmanage.dto.PlaygroundDto;
-import com.example.playgroundmanage.dto.response.PlaygroundInfo;
+import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.login.service.UserService;
 import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
@@ -45,17 +45,9 @@ public class PlaygroundController {
     }
 
     @GetMapping("/playground/{playgroundId}/info")
-    public PlaygroundInfo getPlaygroundInfo(@PathVariable Long playgroundId) throws IOException {
-        PlaygroundDto playgroundDto = playgroundService.getPlaygroundInfo(playgroundId);
-        InMemoryMultipartFile playgroundImg = playgroundService.getPlaygroundImg(playgroundId);
+    public PlaygroundResponseDto getPlaygroundInfo(@PathVariable Long playgroundId) {
 
-        return PlaygroundInfo.builder()
-                .playgroundName(playgroundDto.getPlaygroundName())
-                .playgroundProfileImg(playgroundImg)
-                .campusName(playgroundDto.getCampusName())
-                .schoolName(playgroundDto.getSchoolName())
-                .sportsEvent(playgroundDto.getSportsEvent())
-                .build();
+        return playgroundService.getPlaygroundInfo(playgroundId);
     }
 
     @PostMapping("/playground/{playgroundId}/occupiedTime")
