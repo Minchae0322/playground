@@ -1,5 +1,5 @@
 <script setup>
-import {getCurrentInstance, onMounted, onUpdated, ref} from "vue";
+import {getCurrentInstance, inject, onMounted, onUpdated, ref} from "vue";
 import axios from "axios";
 import {defineEmits} from 'vue';
 import {useRouter} from "vue-router";
@@ -69,7 +69,10 @@ const emits = defineEmits(['goBack']);
 function goBack() {
   emits('goBack'); // 부모 컴포넌트에게 뒤로가기 이벤트 전달
 }
-
+const frontBaseUrl = inject('frontBaseUrl');
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
 
 onMounted(async () => {
   await getTeamData('HOME', 'Competition')
@@ -87,7 +90,7 @@ function encodeImageToBase64(image) {
 function transformUsers(users) {
   return users.map(user => ({
     ...user,
-    userProfileImg: encodeImageToBase64(user.userProfileImg)
+    userProfileImg: user.userProfileImg
   }));
 }
 
@@ -372,7 +375,7 @@ const redirectToLogin = function () {
           {{ props.game.gameStart }} 进行时间 {{ props.game.runningTime }}分
         </div>
         <div class="host-info-container">
-          <img class="host-info" :src="game.hostProfileImg || defaultImage">
+          <img class="host-info" :src="getImageUrl(game.hostProfileImg) || defaultImage">
           <div class="host-name">{{ game.hostName }}</div>
         </div>
       </div>
@@ -422,7 +425,7 @@ const redirectToLogin = function () {
         <div>
           <div class="team-details" v-for="(team, index) in homeAndAwayTeams.subTeams" :key="index">
             <router-link :to="{ name:'teamInfo', params: { teamId: team.teamId } }" class="team-info-container">
-              <img class="team-image" :src="team.teamProfileImg || defaultImage">
+              <img class="team-image" :src="getImageUrl(team.teamProfileImg) || defaultImage">
               <div class="team-header-info-teamInfo">
                 <div class="team-name">{{ team.teamName }}</div>
                 <div class="team-more"> ></div>
@@ -435,7 +438,7 @@ const redirectToLogin = function () {
                 <div v-if="participant.userId === loggedInUserId" class="close-marker"
                      @click="clickOutOfGame(team.subTeamId)">X
                 </div>
-                <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
+                <img class="team-member-photo" :src="getImageUrl(participant.userProfileImg) || defaultImage">
                 <p class="nickname-container-nickname-userInfo">{{ participant.userNickname }}</p>
                 <p class="user-role">{{ participant.userRole }}</p>
               </div>
@@ -450,7 +453,7 @@ const redirectToLogin = function () {
           <div class="team-details" v-for="(participant, index) in homeAndAwayTeams.soloTeam.users" :key="index">
             <div class="team-member">
               <div v-if="participant.userId === loggedInUserId" class="close-marker" @click="clickOutOfGame">X</div>
-              <img class="team-member-photo" :src="participant.userProfileImg || defaultImage">
+              <img class="team-member-photo" :src="getImageUrl(participant.userProfileImg) || defaultImage">
               <p class="nickname-container-nickname-userInfo">{{ participant.userNickname }}</p>
               <p class="user-role">个人</p>
             </div>
@@ -497,7 +500,7 @@ const redirectToLogin = function () {
         <div class="dropdown-selected" @click="toggleUserTeamDropdown">{{ selectedTeam.name || 'Select a team' }}</div>
         <div class="dropdown-content" v-show="dropdownVisible">
           <div class="dropdown-item" v-for="team in teamsUserBelongTo" :key="team.id" @click="selectTeam(team)">
-            <img :src="team.teamProfileImg || defaultImage" class="team-image">
+            <img :src="getImageUrl(team.teamProfileImg) || defaultImage" class="team-image">
             <a class="team-name">{{ team.teamName }}</a>
             <a class="team-description">{{ team.description }}</a>
           </div>
@@ -505,7 +508,7 @@ const redirectToLogin = function () {
       </div>
       <div class="selected-team-container">
         <a>选择的队伍:</a>
-        <img :src="selectedTeam.teamProfileImg || defaultImage" class="team-image">
+        <img :src="getImageUrl(selectedTeam.teamProfileImg) || defaultImage" class="team-image">
         <a>{{ selectedTeam.teamName }}</a>
       </div>
       <div class="container-confirm-style">

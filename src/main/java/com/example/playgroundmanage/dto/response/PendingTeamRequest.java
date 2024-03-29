@@ -1,13 +1,9 @@
 package com.example.playgroundmanage.dto.response;
 
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
-import com.example.playgroundmanage.store.impl.FileHandlerImpl;
 import lombok.Builder;
 import lombok.Data;
 
-import java.time.LocalDateTime;
 
-import static com.example.playgroundmanage.store.impl.FileHandlerImpl.multipartFileToString;
 
 @Data
 public class PendingTeamRequest {
@@ -25,13 +21,13 @@ public class PendingTeamRequest {
     private String requestTime;
 
     @Builder
-    public PendingTeamRequest(Long requestId, String introduction, String teamName, String userName, Long userId, String requestTime, InMemoryMultipartFile userProfileImg) {
+    public PendingTeamRequest(Long requestId, String introduction, String teamName, String userName, Long userId, String requestTime, String userProfileImg) {
         this.requestId = requestId;
         this.introduction = introduction;
         this.teamName = teamName;
         this.userName = userName;
         this.userId = userId;
         this.requestTime = requestTime;
-        this.userProfileImg = multipartFileToString(userProfileImg);
+        this.userProfileImg = userProfileImg;
     }
 }

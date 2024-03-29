@@ -1,10 +1,9 @@
 package com.example.playgroundmanage.game.vo;
 
 
+import com.example.playgroundmanage.login.dto.UserResponseDto;
 import com.example.playgroundmanage.login.dto.UsersGameDto;
-import com.example.playgroundmanage.login.dto.UserInfoDto;
 import com.example.playgroundmanage.login.vo.User;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.GameRecord;
 import jakarta.persistence.*;
 import lombok.Builder;
@@ -70,10 +69,11 @@ public class GameParticipant {
         this.gameRecord = gameRecord;
     }
 
-    public UserInfoDto toUserInfoDto() {
-        return UserInfoDto.builder()
+    public UserResponseDto toUserResponseDto() {
+        return UserResponseDto.builder()
                 .userNickname(user.getNickname())
                 .userId(user.getId())
+                .userProfileImg(user.getProfileImg().getFileUrl())
                 .build();
     }
 

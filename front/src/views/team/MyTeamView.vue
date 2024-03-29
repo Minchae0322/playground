@@ -6,7 +6,7 @@
     <div v-for="team in teams" :key="team.teamId" class="teams-item-myTeam">
       <router-link class="team-container-myTeam" :to="{ name:'teamInfo', params: { teamId: team.teamId } }">
         <div class="border"></div>
-        <img :src="team.teamProfileImg || defaultImage" class="team-image-myTeam"/>
+        <img :src="getImageUrl(team.teamProfileImg) || defaultImage" class="team-image-myTeam"/>
         <div class="team-info-container-myTeam">
           <div class="team-name-myTeam">{{ team.teamName }}</div>
           <div class="team-sportsEvent-myTeam">{{ team.teamSportsEvent }}</div>
@@ -21,7 +21,7 @@
 import {useRouter} from "vue-router";
 import axios from "axios";
 import defaultImage from "@/assets/img.png";
-import {getCurrentInstance, onMounted, ref} from "vue";
+import {getCurrentInstance, inject, onMounted, ref} from "vue";
 
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
@@ -33,6 +33,11 @@ const teams = ref([{
   teamSportsEvent: '',
 
 }]);
+
+const frontBaseUrl = inject('frontBaseUrl');
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
 
 onMounted(async () => {
   await getTeams()

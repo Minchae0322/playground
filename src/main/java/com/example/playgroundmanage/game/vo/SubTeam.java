@@ -1,6 +1,5 @@
 package com.example.playgroundmanage.game.vo;
 
-import com.example.playgroundmanage.login.dto.UserInfoDto;
 import com.example.playgroundmanage.team.vo.Team;
 import jakarta.persistence.*;
 import lombok.*;
@@ -40,14 +39,7 @@ public class SubTeam {
         this.isAccept = isAccept;
     }
 
-    public List<UserInfoDto> getParticipantsInfo() {
-        return gameParticipants.stream()
-                .map(p -> UserInfoDto.builder()
-                        .userNickname(p.getUser().getNickname())
-                        .userId(p.getUser().getId())
-                        .build())
-                .toList();
-    }
+
 
     public void delete() {
         this.competingTeam = null;

@@ -54,7 +54,7 @@ public class GameManagementService {
         List<GameRequest> pendingRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(host, LocalDateTime.now());
 
         return pendingRequests.stream()
-                .map(gameRequest ->  gameRequest.toGameRequestInfoDto(fileHandler.extractFile(gameRequest.getUser().getProfileImg())))
+                .map(GameRequest::toGameRequestInfoDto)
                 .toList();
     }
 

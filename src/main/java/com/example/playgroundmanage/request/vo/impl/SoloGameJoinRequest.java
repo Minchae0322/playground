@@ -28,13 +28,13 @@ public class SoloGameJoinRequest extends GameRequest {
 
 
     @Override
-    public RequestInfoDto toGameRequestInfoDto(InMemoryMultipartFile inMemoryMultipartFile) {
+    public RequestInfoDto toGameRequestInfoDto() {
         return RequestInfoDto.builder()
                 .game(getGame())
                 .requestId(getId())
                 .requestType("soloGameJoin")
                 .user(getUser())
-                .userProfileImg(inMemoryMultipartFile)
+                .userProfileImg(getUser().getProfileImg().getFileUrl())
                 .gameTeamSide(getGameTeamSide())
                 .requestTime(getRequestTime())
                 .build();

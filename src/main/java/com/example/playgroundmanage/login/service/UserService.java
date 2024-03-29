@@ -45,7 +45,6 @@ public class UserService {
 
     private final FileHandler fileHandler;
 
-    private final GameRepository gameRepository;
 
     private final UserGameRecordRepository userGameRecordRepository;
 
@@ -109,16 +108,9 @@ public class UserService {
         return userDtoConverter.toUserInTeamResponseDto(user, role);
     }
 
-
-    public List<SubTeam> getUnacceptedSubTeams(CompetingTeam competingTeam) {
-        return competingTeam.getSubTeams().stream()
-                .filter(t -> !t.isAccept())
-                .toList();
-    }
-
-    public List<Game> getHostCreatedGamesNotStarted(User user) {
+   /* public List<Game> getHostCreatedGamesNotStarted(User user) {
         return gameRepository.findAllByHostAndGameStartDateTimeAfter(user, LocalDateTime.now());
-    }
+    }*/
 
     @Transactional
     public UserNicknameDto changeNickname(Long userId, String newNickname) {
@@ -193,19 +185,7 @@ public class UserService {
                 .build();
     }
 
-    @Transactional
-    public UserRecordResponse getUserGameRecord(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(UserNotExistException::new);
 
-        UserGameRecord userGameRecord = findUserGameRecord(user);
-
-        return UserRecordResponse.builder()
-                .win(userGameRecord.getWin())
-                .lose(userGameRecord.getLose())
-                .draw(userGameRecord.getDraw())
-                .build();
-    }
 
     @Transactional
     private UserGameRecord findUserGameRecord(User user) {

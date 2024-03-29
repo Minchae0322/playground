@@ -1,21 +1,13 @@
 package com.example.playgroundmanage.dto.response;
 
-import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
-import com.example.playgroundmanage.store.impl.FileHandlerImpl;
 import com.example.playgroundmanage.type.SportsEvent;
-import com.example.playgroundmanage.util.Util;
-import jakarta.persistence.criteria.CriteriaBuilder;
 import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.Base64;
 
-import static com.example.playgroundmanage.store.impl.FileHandlerImpl.multipartFileToString;
+
 
 @Data
 @RequiredArgsConstructor

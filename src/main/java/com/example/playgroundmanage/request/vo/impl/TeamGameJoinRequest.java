@@ -32,11 +32,11 @@ public class TeamGameJoinRequest extends GameRequest {
     }
 
     @Override
-    public RequestInfoDto toGameRequestInfoDto(InMemoryMultipartFile inMemoryMultipartFile) {
+    public RequestInfoDto toGameRequestInfoDto() {
         return RequestInfoDto.builder()
                 .game(getGame())
                 .requestId(getId())
-                .userProfileImg(inMemoryMultipartFile)
+                .userProfileImg(getUser().getProfileImg().getFileUrl())
                 .requestType("teamGameJoin")
                 .user(getUser())
                 .subTeam(subTeam)

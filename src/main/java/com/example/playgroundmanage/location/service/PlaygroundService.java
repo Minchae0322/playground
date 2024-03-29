@@ -155,7 +155,7 @@ public class PlaygroundService {
                 .playgroundName(playground.getName())
                 .upcomingGameNum(playground.getUpcomingGamesOrderedByStartDateTime().size())
                 .sportsEvent(playground.getSportsEvent().getValue_cn())
-                .playgroundProfileImg(fileHandler.getFullPath(playground.getImg()))
+                .playgroundProfileImg(playground.getImg().getFileUrl())
                 .campusName(playground.getCampus().getCampusName())
                 .schoolName(playground.getCampus().getSchool().getSchoolName())
                 .build();
@@ -166,7 +166,7 @@ public class PlaygroundService {
                 .playgroundId(playground.getId())
                 .campusName(playground.getCampus().getCampusName())
                 .playgroundName(playground.getName())
-                .playgroundProfileImg(fileHandler.getFullPath(playground.getImg()))
+                .playgroundProfileImg(playground.getImg().getFileUrl())
                 .schoolName(playground.getCampus().getSchool().getSchoolName())
                 .sportsEvent(playground.getSportsEvent().getValue_cn())
                 .build();

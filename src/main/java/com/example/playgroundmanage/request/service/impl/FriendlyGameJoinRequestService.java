@@ -83,7 +83,7 @@ public class FriendlyGameJoinRequestService implements RequestService {
                 .toList();
 
         return friendlyGameJoinRequests.stream()
-                .map(friendly -> friendly.toGameRequestInfoDto(fileHandler.extractFile(friendly.getUser().getProfileImg())))
+                .map(FriendlyGameJoinRequest::toGameRequestInfoDto)
                 .toList();
     }
 

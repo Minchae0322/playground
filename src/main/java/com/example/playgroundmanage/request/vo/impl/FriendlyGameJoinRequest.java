@@ -29,14 +29,14 @@ public class FriendlyGameJoinRequest extends GameRequest {
     }
 
     @Override
-    public RequestInfoDto toGameRequestInfoDto(InMemoryMultipartFile inMemoryMultipartFile) {
+    public RequestInfoDto toGameRequestInfoDto() {
         return RequestInfoDto.builder()
                 .game(getGame())
                 .requestId(getId())
                 .gameTeamSide(gameTeamSide)
                 .requestType("friendlyGameJoin")
                 .user(getUser())
-                .userProfileImg(inMemoryMultipartFile)
+                .userProfileImg(getUser().getProfileImg().getFileUrl())
                 .requestTime(getRequestTime())
                 .build();
     }

@@ -29,8 +29,6 @@ public class UserController {
 
     private final UserDetailsServiceImpl userDetailsService;
 
-    private final TestRepository testRepository;
-
     private final FileHandler fileHandler;
 
     @GetMapping("/user/info")
@@ -49,8 +47,6 @@ public class UserController {
         fileHandler.storeFile(multipartFile);
     }
 
-
-
     @GetMapping("/user/logout")
     @Transactional
     public ResponseEntity<Boolean> logout(@AuthenticationPrincipal MyUserDetails myUserDetails) {
@@ -61,7 +57,6 @@ public class UserController {
 
     @GetMapping("/token/valid")
     public ResponseEntity<String> validToken() {
-
         return ResponseEntity.ok("valid");
     }
 

@@ -53,7 +53,7 @@ public class SoloGameJoinRequestService implements RequestService {
                 .toList();
 
         return soloGameJoinRequests.stream()
-                .map(solo -> solo.toGameRequestInfoDto(fileHandler.extractFile(solo.getUser().getProfileImg())))
+                .map(SoloGameJoinRequest::toGameRequestInfoDto)
                 .toList();
     }
 

@@ -77,7 +77,7 @@ public class TeamJoinRequestService implements RequestService {
         return teamRequests.stream()
                 .filter(TeamJoinRequest.class::isInstance)
                 .map(TeamJoinRequest.class::cast)
-                .map(teamJoinRequest -> teamJoinRequest.toTeamRequestInfoDto(fileHandler.extractFile(teamJoinRequest.getUser().getProfileImg())))
+                .map(TeamRequest::toTeamRequestInfoDto)
                 .toList();
     }
 

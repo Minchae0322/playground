@@ -1,12 +1,9 @@
 package com.example.playgroundmanage.store.impl;
 
-
-
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.store.UploadFile;
 import com.example.playgroundmanage.store.UploadFileRepository;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,66 +14,25 @@ import java.io.UncheckedIOException;
 import java.nio.file.Path;
 import java.util.*;
 
+import static com.example.playgroundmanage.store.FileRootParser.getExtFilePath;
+import static com.example.playgroundmanage.store.FileRootParser.getStoreFilePath;
+
 @Component
-@RequiredArgsConstructor
-public class FileHandlerImpl implements FileHandler {
+public class DirectoryPathFileHandler extends FileStoreImpl implements FileHandler {
 
-    private final UploadFileRepository uploadFileRepository;
-
-    String rootPath = System.getProperty("user.dir");
-
-    // 프로젝트 루트 경로에 있는 files 디렉토리
-    private final String fileStoreDir = rootPath + "/front/src/assets/";
-    private final String fileExtDir = "src/assets/";
+    public DirectoryPathFileHandler(UploadFileRepository uploadFileRepository) {
+        super(uploadFileRepository);
+    }
 
     @Override
     public String getFullPath(String filename) {
-        return //fileStoreDir
-         fileExtDir + filename; }
-
-    @Override
-    public String getFullPath(UploadFile uploadFile) {
-        return fileExtDir + uploadFile.getStoreFileName();
-    }
+        return getStoreFilePath() + filename; }
 
     @Override
     public String getExtFullPath(String filename) {
-        return fileExtDir + filename;
+        return getExtFilePath() + filename;
     }
 
-    @Override
-    public UploadFile storeFile(MultipartFile multipartFile) throws IOException {
-        if(multipartFile.isEmpty()) {
-            return null;
-        }
-
-        String originalFilename = multipartFile.getOriginalFilename();
-        // 작성자가 업로드한 파일명 -> 서버 내부에서 관리하는 파일명
-        // 파일명을 중복되지 않게끔 UUID로 정하고 ".확장자"는 그대로
-
-        String storeFilename = UUID.randomUUID() + "." + extractExt(originalFilename);
-        //System.out.println(getFullPath(storeFilename));
-        // 파일을 저장하는 부분 -> 파일경로 + storeFilename 에 저장
-
-        multipartFile.transferTo(Path.of(getFullPath(storeFilename)));
-
-        return uploadFileRepository.save(UploadFile.builder()
-                .orgFileName(originalFilename)
-                .storeFileName(storeFilename)
-                .build());
-    }
-
-    // 파일이 여러개 들어왔을 때 처리해주는 부분
-    @Override
-    public List<UploadFile> storeFiles(List<MultipartFile> multipartFiles, Object objectBy) throws IOException {
-        List<UploadFile> storeFileResult = new ArrayList<>();
-        for (MultipartFile multipartFile : multipartFiles) {
-            if(!multipartFile.isEmpty()) {
-                storeFileResult.add(storeFile(multipartFile));
-            }
-        }
-        return storeFileResult;
-    }
 
     @Override
     public List<InMemoryMultipartFile> extractFiles(List<? extends UploadFile> uploadFiles)  {
@@ -148,6 +104,3 @@ public class FileHandlerImpl implements FileHandler {
                 .orElse("");
     }
 }
-
-
-

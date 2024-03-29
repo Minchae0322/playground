@@ -11,7 +11,7 @@
       <div v-for="request in requests" :key="request.requestId" class="request">
         <div class="request-info-container">
           <div class="user-avatar">
-            <img class="user-profile-img-request" :src="request.userProfileImg">
+            <img class="user-profile-img-request" :src="getImageUrl(request.userProfileImg)">
           </div>
           <div class="user-info-request" @click="toggleIntroduction(request)">
             <div class="user-name-request">{{ request.userName }}</div>
@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import {getCurrentInstance, onMounted, ref} from 'vue';
+import {getCurrentInstance, inject, onMounted, ref} from 'vue';
 import axios from 'axios';
 import {useRouter} from "vue-router";
 import router from "@/router";
@@ -56,7 +56,10 @@ const joinRequests = ref([{
   requestTime: '',
 
 }]);
-
+const frontBaseUrl = inject('frontBaseUrl');
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
 onMounted(() => {
   fetchPendingRequests('teamJoin')
 })
@@ -77,7 +80,7 @@ const fetchPendingRequests = async (requestType) => {
       }
       acc[request.teamName].push({
         ...request,
-        userProfileImg: request.userProfileImg ? `data:image/jpeg;base64, ${request.userProfileImg}` : defaultImage,
+        userProfileImg: request.userProfileImg ? request.userProfileImg : defaultImage,
         isExpanded: false
       });
       return acc;

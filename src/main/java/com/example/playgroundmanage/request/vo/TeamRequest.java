@@ -47,13 +47,13 @@ public abstract class TeamRequest extends Request {
         this.requestTime = requestTime;
     }
 
-    public RequestInfoDto toTeamRequestInfoDto(InMemoryMultipartFile userProfileImg) {
+    public RequestInfoDto toTeamRequestInfoDto() {
         return RequestInfoDto.builder()
                 .user(user)
                 .leader(leader)
                 .team(team)
                 .requestId(id)
-                .userProfileImg(userProfileImg)
+                .userProfileImg(user.getProfileImg().getFileUrl())
                 .introduction(introduction)
                 .requestTime(requestTime)
                 .build();

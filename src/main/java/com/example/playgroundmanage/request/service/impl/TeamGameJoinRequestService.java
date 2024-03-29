@@ -61,7 +61,7 @@ public class TeamGameJoinRequestService implements RequestService {
         return gameRequests.stream()
                 .filter(TeamGameJoinRequest.class::isInstance)
                 .map(TeamGameJoinRequest.class::cast)
-                .map(join -> join.toGameRequestInfoDto(fileHandler.extractFile(join.getUser().getProfileImg())))
+                .map(TeamGameJoinRequest::toGameRequestInfoDto)
                 .toList();
     }
 

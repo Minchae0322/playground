@@ -46,7 +46,7 @@ public abstract class GameRequest extends Request {
         this.requestTime = requestTime;
     }
 
-    public abstract RequestInfoDto toGameRequestInfoDto(InMemoryMultipartFile inMemoryMultipartFile);
+    public abstract RequestInfoDto toGameRequestInfoDto();
 
     /*public GameRequestDto toGameRequestDto() {
         GameRequestDto gameRequestDto = GameRequestDto.builder()

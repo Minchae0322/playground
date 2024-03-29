@@ -103,11 +103,7 @@ public class TeamService {
                 .toList();
     }
 
-    public InMemoryMultipartFile getUserProfileImg(UploadFile uploadFile) {
-        return Optional.ofNullable(uploadFile)
-                .map(fileHandler::extractFile)
-                .orElse(null);
-    }
+
 
     @Transactional
     public String getUserRoleInTeam(User user, Team team) {

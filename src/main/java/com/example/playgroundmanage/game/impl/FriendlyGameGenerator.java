@@ -2,12 +2,12 @@ package com.example.playgroundmanage.game.impl;
 
 import com.example.playgroundmanage.dto.GameDto;
 import com.example.playgroundmanage.game.vo.GameParticipant;
-import com.example.playgroundmanage.login.dto.UserInfoDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.game.GameGenerator;
 import com.example.playgroundmanage.game.dto.GameTeamResponseDto;
 import com.example.playgroundmanage.game.repository.GameRepository;
+import com.example.playgroundmanage.login.dto.UserResponseDto;
 import com.example.playgroundmanage.login.service.UserService;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
@@ -62,8 +62,8 @@ public class FriendlyGameGenerator implements GameGenerator {
     public GameTeamResponseDto getGameTeamInfos(Long gameId, GameTeamSide gameTeamSide) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
-        List<UserInfoDto> userInfoDtos = game.getGameParticipants().stream()
-                .map(GameParticipant::toUserInfoDto)
+        List<UserResponseDto> userInfoDtos = game.getGameParticipants().stream()
+                .map(GameParticipant::toUserResponseDto)
                 .toList();
 
         return GameTeamResponseDto.builder()

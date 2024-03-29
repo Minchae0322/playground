@@ -2,7 +2,7 @@ package com.example.playgroundmanage.game.dto;
 
 
 import com.example.playgroundmanage.dto.SubTeamDto;
-import com.example.playgroundmanage.login.dto.UserInfoDto;
+import com.example.playgroundmanage.login.dto.UserResponseDto;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,10 +15,10 @@ public class GameTeamResponseDto {
 
     private SubTeamDto soloTeam;
 
-    private List<UserInfoDto> participants;
+    private List<UserResponseDto> participants;
 
     @Builder
-    public GameTeamResponseDto(List<SubTeamDto> subTeams, SubTeamDto soloTeam, List<UserInfoDto> participants) {
+    public GameTeamResponseDto(List<SubTeamDto> subTeams, SubTeamDto soloTeam, List<UserResponseDto> participants) {
         this.subTeams = subTeams;
         this.soloTeam = soloTeam;
         this.participants = participants;

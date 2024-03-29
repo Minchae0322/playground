@@ -21,7 +21,7 @@ public class RequestInfoDto {
     private Long requestId;
     private LocalDateTime requestTime;
     private User user;
-    private InMemoryMultipartFile userProfileImg;
+    private String userProfileImg;
 
     // GameRequestInfoDto 관련 필드
     private Game game;

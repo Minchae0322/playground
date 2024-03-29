@@ -95,7 +95,7 @@ public class TeamGameRegistrationRequestService implements RequestService {
         return gameRequests.stream()
                 .filter(TeamGameRegistrationRequest.class::isInstance)
                 .map(TeamGameRegistrationRequest.class::cast)
-                .map(registration -> registration.toGameRequestInfoDto(fileHandler.extractFile(registration.getUser().getProfileImg())))
+                .map(TeamGameRegistrationRequest::toGameRequestInfoDto)
                 .toList();
     }
 

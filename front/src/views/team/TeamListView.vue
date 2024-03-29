@@ -23,7 +23,7 @@
     <div class="team-list-container-teamList">
       <div class="team-card-teamList" v-for="team in filteredTeams" :key="team.teamId" >
         <router-link :to="{name:'teamInfo', params:{teamId: team.teamId}}">
-          <img :src="team.teamProfileImg" class="team-card-img-teamList">
+          <img :src="getImageUrl(team.teamProfileImg)" class="team-card-img-teamList">
           <div class="team-list-teamName">{{ team.teamName }}</div>
           <div class="team-list-info-container">
             <div>{{ team.sportsEvent }} </div>
@@ -36,7 +36,7 @@
 
 
 <script setup>
-import {computed, getCurrentInstance, onMounted, ref} from "vue";
+import {computed, getCurrentInstance, inject, onMounted, ref} from "vue";
 import axios from "axios";
 import {useRouter} from "vue-router";
 import defaultImage from "@/assets/img.png";
@@ -51,6 +51,11 @@ const teams = ref([{
   teamId: 1,
   vibrantColor: '',
 }]);
+
+const frontBaseUrl = inject('frontBaseUrl');
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
 
 onMounted(async () => {
   await getTeams('school', '');
@@ -69,7 +74,7 @@ const getTeams = async (type, sportsEvent) => {
     },)
     teams.value = response.data.map(team => ({
       ...team,
-      teamProfileImg: '../team' +  team.teamProfileImg
+      teamProfileImg: team.teamProfileImg
     }));
   } catch (error) {
 

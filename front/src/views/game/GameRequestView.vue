@@ -10,7 +10,7 @@
       <h3>{{ request.gameName }}</h3>
       <div class="request-info-container">
         <div class="user-avatar">
-          <img class="user-profile-img-request" :src="request.userProfileImg">
+          <img class="user-profile-img-request" :src="getImageUrl(request.userProfileImg)">
         </div>
         <div class="user-info-request">
           <div class="user-name-request">{{ request.username }}</div>
@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import {getCurrentInstance, onMounted, ref} from 'vue';
+import {getCurrentInstance, inject, onMounted, ref} from 'vue';
 import axios from 'axios';
 import {useRouter} from "vue-router";
 import router from "@/router";
@@ -46,6 +46,10 @@ const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseU
 
 // Ref for reactive data
 const pendingRequests = ref([]);
+const frontBaseUrl = inject('frontBaseUrl');
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
 
 onMounted(() => {
   fetchPendingRequests()
@@ -66,7 +70,7 @@ const fetchPendingRequests = async () => {
       updateRequestType(request, request.requestType);
       return {
         ...request,
-        userProfileImg: request.userProfileImg ? `data:image/jpeg;base64, ${request.userProfileImg}` : defaultImage,
+        userProfileImg: request.userProfileImg ? request.userProfileImg : defaultImage,
       };
     });
   } catch (error) {

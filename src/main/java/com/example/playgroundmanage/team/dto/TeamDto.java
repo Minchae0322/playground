@@ -1,7 +1,5 @@
 package com.example.playgroundmanage.team.dto;
 
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
-import com.example.playgroundmanage.store.impl.FileHandlerImpl;
 import lombok.Builder;
 import lombok.Data;
 

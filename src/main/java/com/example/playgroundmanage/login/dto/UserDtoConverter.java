@@ -26,7 +26,7 @@ public class UserDtoConverter {
         UserResponseDto.UserResponseDtoBuilder builder = UserResponseDto.builder()
                 .userId(user.getId())
                 .userNickname(user.getNickname())
-                .userProfileImg(fileHandler.getFullPath(user.getProfileImg()));
+                .userProfileImg(user.getProfileImg().getFileUrl());
 
         if (role != null) {
             builder.userRole(role);

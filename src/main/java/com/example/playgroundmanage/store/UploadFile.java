@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import static com.example.playgroundmanage.store.FileRootParser.getExtFilePath;
+
 @Getter
 @Setter
 @Entity
@@ -30,6 +32,6 @@ public class UploadFile {
     }
 
     public String getFileUrl() {
-        return "src/assets/" + storeFileName;
+        return getExtFilePath() + storeFileName;
     }
 }

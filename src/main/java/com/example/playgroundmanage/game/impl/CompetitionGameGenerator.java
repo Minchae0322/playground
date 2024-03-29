@@ -85,7 +85,7 @@ public class CompetitionGameGenerator implements GameGenerator {
                 .subTeamId(subTeam.getId())
                 .teamId(subTeam.getTeam().getId())
                 .teamName(subTeam.getTeam().getTeamName())
-                .teamProfileImg(fileHandler.extractFile(subTeam.getTeam().getTeamPic()))
+                .teamProfileImg(subTeam.getTeam().getTeamPic().getFileUrl())
                 .teamDescription(subTeam.getTeam().getDescription())
                 .users(subTeam.getGameParticipants().stream()
                         .map(gameParticipant -> userService.getUserInfoInTeam(subTeam.getTeam(), gameParticipant.getUser()))
