@@ -14,8 +14,7 @@ import com.example.playgroundmanage.team.vo.Teaming;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.store.FileHandler;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
-import com.example.playgroundmanage.store.UploadFile;
+import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.team.finder.TeamFinder;
 import com.example.playgroundmanage.team.finder.TeamFinderFactory;
 import jakarta.transaction.Transactional;
@@ -25,7 +24,6 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static com.example.playgroundmanage.team.TeamValidation.validateJoinTeam;
 
@@ -41,8 +39,6 @@ public class TeamService {
 
     private final TeamFinderFactory teamFinderFactory;
 
-    private final UserService userService;
-
     private final FileHandler fileHandler;
 
     private final TeamingRepository teamingRepository;
@@ -51,7 +47,7 @@ public class TeamService {
 
 
     @Transactional
-    public Team saveTeam(TeamRequestDto teamRequestDto) throws IOException {
+    public Team saveTeam(TeamRequestDto teamRequestDto) {
         validateTeamName(teamRequestDto.getTeamName());
         Team team = Team.builder()
                 .teamName(teamRequestDto.getTeamName())
@@ -59,6 +55,7 @@ public class TeamService {
                 .description(teamRequestDto.getTeamDescription())
                 .sportsEvent(teamRequestDto.getSportsEvent())
                 .build();
+
         if (teamRequestDto.getTeamPic() != null) {
             UploadFile uploadFile = fileHandler.storeFile(teamRequestDto.getTeamPic());
             team.updateTeamPic(uploadFile);

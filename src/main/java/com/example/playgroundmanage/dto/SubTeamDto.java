@@ -1,7 +1,6 @@
 package com.example.playgroundmanage.dto;
 
 import com.example.playgroundmanage.login.dto.UserResponseDto;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

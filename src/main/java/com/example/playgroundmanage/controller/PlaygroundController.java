@@ -5,16 +5,13 @@ import com.example.playgroundmanage.dto.reqeust.GameTimeInfo;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.response.OccupiedTime;
-import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.login.service.UserService;
 import com.example.playgroundmanage.location.service.PlaygroundService;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 
 @RestController

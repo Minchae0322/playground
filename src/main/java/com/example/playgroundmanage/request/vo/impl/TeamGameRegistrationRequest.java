@@ -4,7 +4,6 @@ import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.request.vo.GameRequest;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.persistence.Entity;

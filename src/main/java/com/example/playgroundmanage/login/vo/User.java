@@ -6,7 +6,7 @@ import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.login.dto.UserEdit;
 import com.example.playgroundmanage.request.vo.GameRequest;
-import com.example.playgroundmanage.store.UploadFile;
+import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.team.vo.Teaming;
 import com.example.playgroundmanage.type.UserRole;
 import jakarta.persistence.*;

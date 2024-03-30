@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.store.impl;
 
 import com.example.playgroundmanage.store.FileStore;
-import com.example.playgroundmanage.store.UploadFile;
+import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.store.UploadFileRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import static com.example.playgroundmanage.store.FileRootParser.getStoreFilePath;
+import static com.example.playgroundmanage.store.tool.FileRootParser.getStoreFilePath;
 
 
 @Component

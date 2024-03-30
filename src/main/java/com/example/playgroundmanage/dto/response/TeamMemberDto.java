@@ -1,12 +1,8 @@
 package com.example.playgroundmanage.dto.response;
 
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
-import java.io.IOException;
-import java.util.Base64;
 
 
 @Getter

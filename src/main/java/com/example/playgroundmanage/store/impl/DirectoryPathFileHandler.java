@@ -1,21 +1,19 @@
 package com.example.playgroundmanage.store.impl;
 
 import com.example.playgroundmanage.store.FileHandler;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
-import com.example.playgroundmanage.store.UploadFile;
+import com.example.playgroundmanage.store.vo.InMemoryMultipartFile;
+import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.store.UploadFileRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.nio.file.Path;
 import java.util.*;
 
-import static com.example.playgroundmanage.store.FileRootParser.getExtFilePath;
-import static com.example.playgroundmanage.store.FileRootParser.getStoreFilePath;
+import static com.example.playgroundmanage.store.tool.FileRootParser.getExtFilePath;
+import static com.example.playgroundmanage.store.tool.FileRootParser.getStoreFilePath;
 
 @Component
 public class DirectoryPathFileHandler extends FileStoreImpl implements FileHandler {

@@ -2,6 +2,7 @@ package com.example.playgroundmanage.store;
 
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.User;
+import com.example.playgroundmanage.store.vo.UploadFile;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;

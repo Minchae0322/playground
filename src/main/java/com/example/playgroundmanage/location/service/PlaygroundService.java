@@ -18,7 +18,6 @@ import com.example.playgroundmanage.location.repository.SchoolRepository;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.location.vo.School;
 import com.example.playgroundmanage.store.FileHandler;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.util.*;
 import com.example.playgroundmanage.location.vo.Campus;

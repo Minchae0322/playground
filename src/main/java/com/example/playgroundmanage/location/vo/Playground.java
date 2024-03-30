@@ -2,7 +2,7 @@ package com.example.playgroundmanage.location.vo;
 
 import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.store.UploadFile;
+import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.persistence.*;
 import lombok.Builder;

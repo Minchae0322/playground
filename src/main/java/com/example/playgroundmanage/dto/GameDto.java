@@ -3,7 +3,6 @@ package com.example.playgroundmanage.dto;
 import com.example.playgroundmanage.date.DateTime;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.location.vo.Playground;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.login.vo.User;

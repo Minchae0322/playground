@@ -1,11 +1,9 @@
 package com.example.playgroundmanage.store;
 
 
-import org.springframework.web.multipart.MultipartFile;
+import com.example.playgroundmanage.store.vo.UploadFile;
 
-import java.io.IOException;
 import java.util.List;
-import java.util.Optional;
 
 public interface FileHandler extends FileStore{
     String getFullPath(String filename);
@@ -13,13 +11,9 @@ public interface FileHandler extends FileStore{
 
     String getExtFullPath(String filename);
 
-
-
     boolean deleteFile(UploadFile uploadFile);
 
     boolean deleteFiles(List<? extends UploadFile> uploadFiles);
-
-
 
     List<? extends Object> extractFiles(List<? extends UploadFile> uploadFiles);
 

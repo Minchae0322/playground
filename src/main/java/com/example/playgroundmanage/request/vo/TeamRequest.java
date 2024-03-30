@@ -3,7 +3,6 @@ package com.example.playgroundmanage.request.vo;
 
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.login.vo.User;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
 import com.example.playgroundmanage.team.vo.Team;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

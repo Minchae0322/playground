@@ -11,11 +11,9 @@ import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.location.repository.TeamingRepository;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.exception.ExistUserException;
-import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.store.FileHandler;
-import com.example.playgroundmanage.store.InMemoryMultipartFile;
-import com.example.playgroundmanage.store.UploadFile;
+import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.team.vo.Teaming;
 import com.example.playgroundmanage.type.GameRecord;
@@ -45,7 +43,6 @@ public class UserService {
 
     private final FileHandler fileHandler;
 
-
     private final UserGameRecordRepository userGameRecordRepository;
 
     private final UserDtoConverter userDtoConverter;
@@ -66,7 +63,7 @@ public class UserService {
     }
 
     public User getUser(String username) {
-        return userRepository.findByUsername(username).orElseThrow();
+        return userRepository.findByUsername(username).orElseThrow(UserNotExistException::new);
     }
 
     @Transactional
