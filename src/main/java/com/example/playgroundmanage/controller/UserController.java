@@ -10,12 +10,14 @@ import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.store.FileHandler;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.print.Pageable;
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -85,5 +87,10 @@ public class UserController {
     @GetMapping("/user/record/update")
     public UserRecordResponse updateUserRecord(@AuthenticationPrincipal MyUserDetails myUserDetails) {
         return userService.updateUserGameRecord(myUserDetails.getUser());
+    }
+
+    @GetMapping("/user/ranking")
+    public List<UserRecordResponse> getRanking() {
+        return userService.getRanking();
     }
 }

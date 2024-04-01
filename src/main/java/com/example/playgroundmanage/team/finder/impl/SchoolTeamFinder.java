@@ -17,8 +17,6 @@ public class SchoolTeamFinder implements TeamFinder {
 
     private final TeamRepository teamRepository;
 
-    private final FileHandler fileHandler;
-
     @Override
     public List<TeamDto.TeamResponseDto> getTeams(TeamJoinRequestDto teamJoinRequestDto) {
         List<Team> teams = teamRepository.findAll();
@@ -29,7 +27,7 @@ public class SchoolTeamFinder implements TeamFinder {
                         .teamName(team.getTeamName())
                         .description(team.getDescription())
                         .sportsEvent(team.getSportsEvent().getValue_cn())
-                        .teamProfileImg(fileHandler.getExtFullPath(team.getTeamPic().getStoreFileName()))
+                        .teamProfileImg(team.getTeamPic().getFileUrl())
                         .build())
                 .toList();
     }

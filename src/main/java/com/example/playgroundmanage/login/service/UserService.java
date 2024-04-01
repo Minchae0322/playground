@@ -26,7 +26,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static com.example.playgroundmanage.validator.UserValidator.validateUser;
 
@@ -196,4 +199,20 @@ public class UserService {
     }
 
 
+    public List<UserRecordResponse> getRanking() {
+        List<UserGameRecord> userRankingDes = userGameRecordRepository.findAll().stream()
+                .sorted(Comparator.comparing(UserGameRecord::getWin).reversed())
+                .toList();
+
+        return IntStream.range(0, userRankingDes.size())
+                .mapToObj(index -> UserRecordResponse.builder()
+                        .ranking(index + 1)
+                        .win(userRankingDes.get(index).getWin())
+                        .lose(userRankingDes.get(index).getLose())
+                        .userProfileImg(userRankingDes.get(index).getUser().getProfileImg().getFileUrl())
+                        .userNickname(userRankingDes.get(index).getUser().getNickname())
+                        .build()
+                )
+                .toList();
+    }
 }
