@@ -24,6 +24,7 @@ import friendlyGameInfo from "@/views/game/FriendlyGameInfoView.vue";
 import mSidebar from "@/views/mobile/sidebarView.vue"
 import addPhoto from '@/views/addphotoView.vue'
 import signup from '@/views/signupView.vue'
+import ranking from '@/views/RankingView.vue'
 
 
 const router = createRouter({
@@ -171,6 +172,12 @@ const router = createRouter({
       path: '/m/sidebar',
       name: 'mSidebar',
       component: mSidebar,
+    },
+
+    {
+      path: '/ranking',
+      name: 'ranking',
+      component: ranking,
     },
 
   ]

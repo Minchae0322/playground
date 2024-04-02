@@ -201,7 +201,8 @@ public class UserService {
 
     public List<UserRecordResponse> getRanking() {
         List<UserGameRecord> userRankingDes = userGameRecordRepository.findAll().stream()
-                .sorted(Comparator.comparing(UserGameRecord::getWin).reversed())
+                .sorted(Comparator.comparing(UserGameRecord::getWin).reversed()
+                        .thenComparing(UserGameRecord::getLose))
                 .toList();
 
         return IntStream.range(0, userRankingDes.size())
