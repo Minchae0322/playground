@@ -72,11 +72,18 @@
         <div class="game-time">{{ formatTime(game.gameStart) }} - {{
             formatEndTime(game.gameStart, game.runningTime)
           }}
-          <button @click="submitResult(game.gameId, game.gameType_en)" class="submit">提交</button>
-
+          <button @click="openResultModal(game)" class="submit">提交</button>
+<!--          <button @click="submitResult(game.gameId, game.gameType_en)" class="submit">提交</button>-->
         </div>
+
       </div>
+      <GameResultModal v-if="isGameResultModalOpen" :game-id="propsGame.gameId" :game-name="propsGame.gameName"
+                       :game-start="propsGame.gameStart"
+                       :game-type="propsGame.gameType_en"
+                       @closeResultModal=closeModal></GameResultModal>
+
     </div>
+
 
 
 </template>
@@ -84,6 +91,7 @@
 import {useRouter} from "vue-router";
 import axios from "axios";
 import defaultImage from "@/assets/img.png";
+import GameResultModal from "@/views/game/GameResultView.vue"
 import {getCurrentInstance, onMounted, ref} from "vue";
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
@@ -91,6 +99,13 @@ const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseU
 const pastGames = ref([]);
 const upcomingGames = ref([]);
 const selectedMonth = ref(new Date().toISOString().substring(0, 7));
+const isGameResultModalOpen = ref(false);
+const propsGame = ref({
+  gameId: '1',
+  gameName: '',
+  gameStart: '',
+
+});
 
 onMounted(async () => {
   await getMyGames();
@@ -106,6 +121,15 @@ const selectThisMonth = () => {
   console.log(now)
   selectedMonth.value = now.toISOString().substring(0, 7);
   monthChanged(); // 이 함수를 호출하여 선택된 달에 대한 데이터를 가져옵니다.
+};
+
+const openResultModal = function (game) {
+  isGameResultModalOpen.value = !isGameResultModalOpen.value;
+  propsGame.value = game;
+};
+
+const closeModal = () => {
+  isGameResultModalOpen.value = false;
 };
 
 const getMyGames = async () => {

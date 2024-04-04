@@ -25,7 +25,7 @@ import mSidebar from "@/views/mobile/sidebarView.vue"
 import addPhoto from '@/views/addphotoView.vue'
 import signup from '@/views/signupView.vue'
 import ranking from '@/views/RankingView.vue'
-
+import gameResult from '@/views/game/GameResultView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -83,7 +83,12 @@ const router = createRouter({
       component: timePickerDialog,
 
     },
-
+    {
+      path: '/game/result',
+      name: 'game/result',
+      component: gameResult,
+      props: true,
+    },
     {
       path: '/gameDateSelect',
       name: 'gameDateSelector',

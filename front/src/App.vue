@@ -256,6 +256,9 @@ const redirectToLogin = async () => {
               <RouterLink :to="{name: 'hostGame'}" class="sub-nav-item">
                 <li>我主办的比赛</li>
               </RouterLink>
+              <RouterLink :to="{name: 'ranking'}" class="sub-nav-item">
+                <li>排行榜</li>
+              </RouterLink>
             </ul>
           </li>
         </ul>

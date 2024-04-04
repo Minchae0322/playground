@@ -133,10 +133,14 @@ public class GameController {
     }
 
 
-    @PostMapping("/game/result/{gameType}")
-    public void summitGameResult(@RequestBody GameResultDto.GameResultRequestDto gameResultRequestDto, @PathVariable String gameType) {
+    @PreAuthorize("hasPermission(#gameId,'summit_game','CREATE')")
+    @PostMapping("/game/result/{gameId}/{gameType}")
+    public ResponseEntity<String> summitGameResult(@RequestBody GameResultDto.GameResultRequestDto gameResultRequestDto, @PathVariable String gameType,
+                                 @PathVariable Long gameId) {
         GameResultManger gameResultManger = gameResultManagerFactory.find(gameType);
 
         gameResultManger.submitGameResult(gameResultRequestDto);
+
+        return ResponseEntity.ok("success");
     }
 }

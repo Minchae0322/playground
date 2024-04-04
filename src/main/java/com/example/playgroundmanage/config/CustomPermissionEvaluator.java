@@ -58,6 +58,12 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
             return Objects.equals(user.getId(), game.getHost().getId());
         }
 
+        if (targetType.equals("summit_game")) {
+            User user = (User) authentication.getPrincipal();
+            Game game = gameRepository.findById((Long) targetId).orElseThrow(GameNotExistException::new);
+            return Objects.equals(user.getId(), game.getHost().getId());
+        }
+
         if (targetType.equals("delete_team")) {
             User user = (User) authentication.getPrincipal();
             Team team = teamRepository.findById((Long) targetId).orElseThrow(TeamNotExistException::new);

@@ -253,8 +253,8 @@ const redirectToLogin = async () => {
   margin-bottom: 30px;
   max-width: 800px;
   height: 2px;
-  background: linear-gradient(to right, #ffa500, #f00, #800080);
-  border-bottom: 1px solid var(--text-hint);
+  background: linear-gradient(to right, #6f008c, #002ea2, #0601a2);
+
 }
 
 .page-title-container p {
