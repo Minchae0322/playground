@@ -51,9 +51,11 @@ public class UserService {
     @Transactional
     public void signup(UserSignupForm userSignupForm) {
         validateUser(userSignupForm.getUsername(), userSignupForm.getPassword());
+
         if (userRepository.existsByUsername(userSignupForm.getUsername())) {
             throw new ExistUserException();
         }
+
         User user = User.builder()
                 .username(userSignupForm.getUsername())
                 .password(passwordEncoder.encode(userSignupForm.getPassword()))
@@ -64,7 +66,8 @@ public class UserService {
     }
 
     public User getUser(String username) {
-        return userRepository.findByUsername(username).orElseThrow(UserNotExistException::new);
+        return userRepository.findByUsername(username)
+                .orElseThrow(UserNotExistException::new);
     }
 
     @Transactional

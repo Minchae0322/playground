@@ -1,0 +1,82 @@
+<mxfile host="app.diagrams.net" modified="2024-04-09T05:55:58.441Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0" etag="ky5vbIohLmO_Pot00xL3" version="24.0.5" type="device">
+  <diagram id="C5RBs43oDa-KdzZeNtuy" name="Page-1">
+    <mxGraphModel dx="1042" dy="569" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="WIyWlLk6GJQsqaUBKTNV-1" parent="WIyWlLk6GJQsqaUBKTNV-0" />
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-0" value="" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="90" y="200" width="270" height="180" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-1" value="&lt;b&gt;ExceptionController&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="160" y="210" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-2" value="&lt;p style=&quot;line-height: 100%;&quot;&gt;&lt;b&gt;&lt;font color=&quot;#c78b00&quot;&gt;@ControllerAdvice&lt;/font&gt;&lt;/b&gt;&lt;/p&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="90" y="170" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-3" value="exception method" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="140" y="290" width="170" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-4" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="224.5" y="470" as="sourcePoint" />
+            <mxPoint x="224.5" y="350" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-6" value="RunTimeException" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="165" y="420" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-7" value="&lt;b&gt;@ExceptionHandler&amp;nbsp;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="165" y="260" width="120" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-9" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="360" y="290" as="sourcePoint" />
+            <mxPoint x="500" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-10" value="&lt;b&gt;&lt;font color=&quot;#ff1919&quot;&gt;Catch Exception&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="370" y="250" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-12" value="" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;dashPattern=8 8;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="500" y="180" width="290" height="310" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-13" value="&lt;b&gt;&lt;font color=&quot;#c78b00&quot;&gt;Controller&lt;/font&gt;&lt;/b&gt;" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="500" y="150" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-14" value="UserController" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="520" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-15" value="CampusController" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="520" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-16" value="SchoolController" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="520" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-17" value="GameController" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="650" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-18" value="PlaygroundController" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="650" y="270" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-19" value="TeamController" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="650" y="340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-20" value="RequestController" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="580" y="410" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-22" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="310" y="330" as="sourcePoint" />
+            <mxPoint x="420" y="490" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="420" y="330" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="gkiBBrFed5-mqOYGWBSt-23" value="HTTP ERROR" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="WIyWlLk6GJQsqaUBKTNV-1">
+          <mxGeometry x="360" y="490" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
