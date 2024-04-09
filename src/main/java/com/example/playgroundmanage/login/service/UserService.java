@@ -24,11 +24,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static com.example.playgroundmanage.validator.UserValidator.validateUser;
@@ -84,13 +82,15 @@ public class UserService {
     }
 
 
-
     @Transactional
-    public void updateProfileImg(Long userId, MultipartFile img) throws IOException {
-        User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
+    public void updateUserProfileImg(Long userId, MultipartFile img) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotExistException::new);
+
         if (user.getProfileImg() != null) {
             fileHandler.deleteFile(user.getProfileImg());
         }
+
         UploadFile uploadFile = fileHandler.storeFile(img);
         user.updateProfile(uploadFile);
         userRepository.save(user);
@@ -113,18 +113,18 @@ public class UserService {
     }*/
 
     @Transactional
-    public UserNicknameDto changeNickname(Long userId, String newNickname) {
-        if (isValidUserNickname(newNickname)) {
+    public UserResponseDto changeNickname(UserRequestDto userRequestDto) {
+        if (isValidUserNickname(userRequestDto.getUserNickname())) {
             throw new IllegalArgumentException("已经存在或不能使用的昵称");
         }
-        User user = userRepository.findById(userId)
+        User user = userRepository.findById(userRequestDto.getUserId())
                 .orElseThrow(UserNotExistException::new);
 
         userRepository.save(user.update(UserEdit.builder()
-                .userNickname(newNickname)
+                .userNickname(userRequestDto.getUserNickname())
                 .build()));
-        return UserNicknameDto.builder().userNickname(newNickname)
-                .build();
+
+        return userDtoConverter.toUserNicknameResponseDto(userRequestDto.getUserNickname());
     }
 
     public boolean isValidUserNickname(String nickname) {
@@ -163,7 +163,7 @@ public class UserService {
     public UserRecordResponse updateUserGameRecord(User user) {
         UserGameRecord userGameRecord = findUserGameRecordByUser(user);
 
-        if(userGameRecord.getLastUpdateTime().isAfter(LocalDateTime.now().minusMinutes(10))) {
+        if (userGameRecord.getLastUpdateTime().isAfter(LocalDateTime.now().minusMinutes(10))) {
             throw new TooManyRequestException();
         }
 
@@ -186,7 +186,6 @@ public class UserService {
     }
 
 
-
     @Transactional
     private UserGameRecord findUserGameRecord(User user) {
         return userGameRecordRepository.findUserGameRecordByUser(user)
@@ -199,7 +198,7 @@ public class UserService {
     }
 
 
-    public List<UserRecordResponse> getRanking() {
+    public List<UserRecordResponse> getUsersRanking() {
         List<UserGameRecord> userRankingDes = userGameRecordRepository.findAll().stream()
                 .sorted(Comparator.comparing(UserGameRecord::getWin).reversed()
                         .thenComparing(UserGameRecord::getLose))

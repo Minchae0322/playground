@@ -22,6 +22,13 @@ public class UserDtoConverter {
         return toUserResponseDto(user, role);
     }
 
+    public UserResponseDto toUserNicknameResponseDto(String nickname) {
+        return UserResponseDto.builder()
+                .userNickname(nickname)
+                .build();
+    }
+
+
     private UserResponseDto toUserResponseDto(User user, String role) {
         UserResponseDto.UserResponseDtoBuilder builder = UserResponseDto.builder()
                 .userId(user.getId())
