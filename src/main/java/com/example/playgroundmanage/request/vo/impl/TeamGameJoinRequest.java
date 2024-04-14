@@ -35,7 +35,7 @@ public class TeamGameJoinRequest extends GameRequest {
         return RequestInfoDto.builder()
                 .game(getGame())
                 .requestId(getId())
-                .userProfileImg(getUser().getProfileImg().getFileUrl())
+                .userProfileImg(getUser().getUserProfileImg().getFileUrl())
                 .requestType("teamGameJoin")
                 .user(getUser())
                 .subTeam(subTeam)

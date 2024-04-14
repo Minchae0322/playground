@@ -29,21 +29,11 @@ public class User implements Serializable {
 
     private String username;
 
-    private String provider;
-
-    private String email;
-
-    private String password;
-
-    private String phoneNumber;
-
     private String nickname;
 
-    @OneToOne
-    private UploadFile profileImg;
+    private String provider;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private UserGameRecord userGameRecord;
+    private String password;
 
     private boolean isEnable;
 
@@ -51,6 +41,12 @@ public class User implements Serializable {
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
+
+    @OneToOne
+    private UploadFile userProfileImg;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    private UserGameRecord userGameRecord;
 
     @OneToMany(mappedBy = "host", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<GameRequest> gameRequests_host;
@@ -68,13 +64,11 @@ public class User implements Serializable {
     private List<GameRequest> gameRequests;
 
     @Builder
-    public User(Long id, String username, String provider, String email, String password, String phoneNumber, String nickname, boolean isEnable, UserRole role, List<Teaming> teams, List<GameParticipant> gameParticipants) {
+    public User(Long id, String username, String provider, String password, String nickname, boolean isEnable, UserRole role, List<Teaming> teams, List<GameParticipant> gameParticipants) {
         this.id = id;
         this.username = username;
         this.provider = provider;
-        this.email = email;
         this.password = password;
-        this.phoneNumber = phoneNumber;
         this.nickname = nickname;
         this.isEnable = isEnable;
         this.role = role;
@@ -84,8 +78,6 @@ public class User implements Serializable {
         this.gameRequests_host = new ArrayList<>();
         this.gameParticipants = new ArrayList<>();
     }
-
-
 
     public void enable() {
         isLoggedIn = true;
@@ -119,7 +111,7 @@ public class User implements Serializable {
 
     @Transactional
     public User updateProfile(UploadFile uploadFile) {
-        this.profileImg = uploadFile;
+        this.userProfileImg = uploadFile;
         return this;
     }
 }

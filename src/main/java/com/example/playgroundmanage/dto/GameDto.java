@@ -74,7 +74,7 @@ public class GameDto {
                 .playgroundName(playground.getName())
                 .campusName(playground.getCampus().getCampusName())
                 .sportsEvent(sportsEvent)
-                .hostProfileImg(host.getProfileImg().getFileUrl())
+                .hostProfileImg(host.getUserProfileImg().getFileUrl())
                 .gameId(gameId)
                 .build();
     }
@@ -90,7 +90,7 @@ public class GameDto {
                 .participantNum(participantNum)
                 .gameStartDateTime(startDateTime.getLocalDateTime())
                 .playgroundName(playground.getName())
-                .hostProfileImg(host.getProfileImg().getFileUrl())
+                .hostProfileImg(host.getUserProfileImg().getFileUrl())
                 .sportsEvent(sportsEvent)
                 .gameId(gameId)
                 .build();

@@ -37,7 +37,7 @@ public class TeamGameRegistrationRequest extends GameRequest {
         return RequestInfoDto.builder()
                 .game(getGame())
                 .requestId(getId())
-                .userProfileImg(getUser().getProfileImg().getFileUrl())
+                .userProfileImg(getUser().getUserProfileImg().getFileUrl())
                 .requestType("teamGameRegistration")
                 .user(getUser())
                 .team(team)

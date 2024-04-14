@@ -33,7 +33,7 @@ public class SoloGameJoinRequest extends GameRequest {
                 .requestId(getId())
                 .requestType("soloGameJoin")
                 .user(getUser())
-                .userProfileImg(getUser().getProfileImg().getFileUrl())
+                .userProfileImg(getUser().getUserProfileImg().getFileUrl())
                 .gameTeamSide(getGameTeamSide())
                 .requestTime(getRequestTime())
                 .build();

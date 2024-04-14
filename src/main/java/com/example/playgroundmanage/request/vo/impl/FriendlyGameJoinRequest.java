@@ -35,7 +35,7 @@ public class FriendlyGameJoinRequest extends GameRequest {
                 .gameTeamSide(gameTeamSide)
                 .requestType("friendlyGameJoin")
                 .user(getUser())
-                .userProfileImg(getUser().getProfileImg().getFileUrl())
+                .userProfileImg(getUser().getUserProfileImg().getFileUrl())
                 .requestTime(getRequestTime())
                 .build();
     }

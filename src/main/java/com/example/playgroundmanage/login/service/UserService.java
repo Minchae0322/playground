@@ -90,8 +90,8 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotExistException::new);
 
-        if (user.getProfileImg() != null) {
-            fileHandler.deleteFile(user.getProfileImg());
+        if (user.getUserProfileImg() != null) {
+            fileHandler.deleteFile(user.getUserProfileImg());
         }
 
         UploadFile uploadFile = fileHandler.storeFile(img);
@@ -212,7 +212,7 @@ public class UserService {
                         .ranking(index + 1)
                         .win(userRankingDes.get(index).getWin())
                         .lose(userRankingDes.get(index).getLose())
-                        .userProfileImg(userRankingDes.get(index).getUser().getProfileImg().getFileUrl())
+                        .userProfileImg(userRankingDes.get(index).getUser().getUserProfileImg().getFileUrl())
                         .userNickname(userRankingDes.get(index).getUser().getNickname())
                         .build()
                 )

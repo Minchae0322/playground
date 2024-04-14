@@ -7,7 +7,6 @@ import com.example.playgroundmanage.dto.response.TeamMemberDto;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.service.SubTeamService;
 import com.example.playgroundmanage.location.repository.TeamingRepository;
-import com.example.playgroundmanage.login.service.UserService;
 import com.example.playgroundmanage.team.TeamMemberFinder;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.team.vo.Teaming;
@@ -92,7 +91,7 @@ public class TeamService {
 
         return teamUserRelations.stream()
                 .map(t -> TeamMemberDto.builder()
-                        .userProfileImg(fileHandler.getExtFullPath(t.getUser().getProfileImg().getStoreFileName()))
+                        .userProfileImg(fileHandler.getExtFullPath(t.getUser().getUserProfileImg().getStoreFileName()))
                         .userNickname(t.getUser().getNickname())
                         .userRole(t.getRole())
                         .userId(t.getUser().getId())

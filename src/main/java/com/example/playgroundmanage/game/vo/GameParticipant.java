@@ -73,7 +73,7 @@ public class GameParticipant {
         return UserResponseDto.builder()
                 .userNickname(user.getNickname())
                 .userId(user.getId())
-                .userProfileImg(user.getProfileImg().getFileUrl())
+                .userProfileImg(user.getUserProfileImg().getFileUrl())
                 .build();
     }
 

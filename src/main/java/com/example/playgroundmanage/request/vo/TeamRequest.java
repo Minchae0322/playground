@@ -52,7 +52,7 @@ public abstract class TeamRequest extends Request {
                 .leader(leader)
                 .team(team)
                 .requestId(id)
-                .userProfileImg(user.getProfileImg().getFileUrl())
+                .userProfileImg(user.getUserProfileImg().getFileUrl())
                 .introduction(introduction)
                 .requestTime(requestTime)
                 .build();
