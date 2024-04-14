@@ -32,7 +32,7 @@ public class Team {
     private User leader;
 
     private String description;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private SportsEvent sportsEvent;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
