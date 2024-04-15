@@ -7,13 +7,6 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserDtoConverter {
 
-    private final FileHandler fileHandler;
-
-    // FileHandler 의존성 주입
-    public UserDtoConverter(FileHandler fileHandler) {
-        this.fileHandler = fileHandler;
-    }
-
     public UserResponseDto toUserResponseDto(User user) {
         return toUserResponseDto(user, null);
     }

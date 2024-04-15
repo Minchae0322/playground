@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.request.service.impl;
 
-import com.example.playgroundmanage.dto.GameRequestDto;
+import com.example.playgroundmanage.game.dto.GameRequestDto;
 import com.example.playgroundmanage.dto.RequestDto;
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
@@ -12,11 +12,9 @@ import com.example.playgroundmanage.game.repository.GameRequestRepository;
 import com.example.playgroundmanage.game.service.GameManagementService;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
-import com.example.playgroundmanage.game.vo.SubTeam;
 import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.request.vo.impl.FriendlyGameJoinRequest;
-import com.example.playgroundmanage.request.vo.impl.SoloGameJoinRequest;
 import com.example.playgroundmanage.store.FileHandler;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

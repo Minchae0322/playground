@@ -2,7 +2,7 @@ package com.example.playgroundmanage.location.service;
 
 
 import com.example.playgroundmanage.date.MyDateTimeLocal;
-import com.example.playgroundmanage.dto.GameDto;
+import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.exception.CampusNotExistException;
 import com.example.playgroundmanage.exception.SchoolNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
@@ -24,8 +24,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static com.example.playgroundmanage.date.MyDateTimeLocal.initMyDateTime;
 
 @Service
 @RequiredArgsConstructor

@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.game.vo;
 
 import com.example.playgroundmanage.date.MyDateTimeLocal;
-import com.example.playgroundmanage.dto.GameDto;
+import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.type.GameTeamSide;
@@ -21,14 +21,26 @@ import java.util.Optional;
 @Entity
 @Setter
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@RequiredArgsConstructor
 public class Game {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private String gameName;
+
+    @Enumerated(value = EnumType.STRING)
+    private SportsEvent sportsEvent;
+
+    @Enumerated
+    private GameType gameType;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
+    private LocalDateTime gameStartDateTime;
+
+    private Integer runningTime;
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private Playground playground;
@@ -48,15 +60,8 @@ public class Game {
     @OneToOne(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private GameResult gameResult;
 
-    @Enumerated
-    private SportsEvent sportsEvent;
 
-    private GameType gameType;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm")
-    private LocalDateTime gameStartDateTime;
-
-    private Integer runningTime;
 
 
     @Builder

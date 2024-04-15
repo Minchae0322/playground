@@ -1,20 +1,15 @@
 package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.dto.GameDto;
-import com.example.playgroundmanage.dto.GameTimeDto;
+import com.example.playgroundmanage.game.dto.*;
 import com.example.playgroundmanage.login.dto.UsersGameDto;
 import com.example.playgroundmanage.dto.reqeust.GameRegistration;
-import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.game.GameGenerator;
 import com.example.playgroundmanage.game.GameGeneratorFactory;
 import com.example.playgroundmanage.game.GameResultManagerFactory;
 import com.example.playgroundmanage.game.GameResultManger;
-import com.example.playgroundmanage.game.dto.GameResultDto;
-import com.example.playgroundmanage.game.dto.GameTeamResponseDto;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.SubTeamService;
-import com.example.playgroundmanage.login.service.UserService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.type.GameTeamSide;
@@ -38,27 +33,14 @@ public class GameController {
 
     private final GameService gameService;
 
-    private final UserService userService;
     private final SubTeamService subTeamService;
 
     private final PlaygroundService playgroundService;
+
     private final GameGeneratorFactory gameGeneratorFactory;
 
     private final GameResultManagerFactory gameResultManagerFactory;
 
-
-
-    /*@GetMapping("/game/{gameId}/{gameTeamSide}")
-    public TeamBySide getSubTeams(@PathVariable Long gameId, @PathVariable String gameTeamSide) {
-        List<SubTeamDto> subTeams = gameService.getSubTeamsByTeamSide(gameId, GameTeamSide.valueOf(gameTeamSide));
-        SubTeamDto soloTeam = gameService.getSoloTeamByTeamSide(gameId, GameTeamSide.valueOf(gameTeamSide));
-
-        return TeamBySide.builder()
-                .soloTeam(soloTeam)
-                .subTeams(subTeams)
-                .matchTeamSide(gameTeamSide)
-                .build();
-    }*/
 
     @GetMapping("/game/{gameId}/{gameType}/{gameTeamSide}")
     public GameTeamResponseDto getGameTeam(@PathVariable Long gameId, @PathVariable String gameType, @PathVariable String gameTeamSide) {
@@ -68,10 +50,8 @@ public class GameController {
     }
 
     @GetMapping("/game/{gameId}/info")
-    public GameThumbnail getGameInfo(@PathVariable Long gameId) {
-        GameDto gameDto = gameService.getGameInfo(gameId);
-
-        return gameDto.toGameThumbnail();
+    public GameResponseDto getGameInfo(@PathVariable Long gameId) {
+        return gameService.getGameInfo(gameId);
     }
 
     @PostMapping("/game/generate")
@@ -112,17 +92,17 @@ public class GameController {
                 .user(myUserDetails.getUser())
                 .build();
 
-        return gameService.getMonthGameAsc(usersGameRequestDto);
+        return gameService.getUserJoinGames(usersGameRequestDto);
     }
 
     @GetMapping("/user/game/host/{year}/{month}")
     public List<UsersGameDto.UsersGameResponseDto> getGamesUserHostByDate(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Integer year, @PathVariable Integer month) {
-        return gameService.getGamesUserHostByDate(myUserDetails.getUser(), LocalDateTime.of(year, month, 1, 0, 0));
+        return gameService.getUserHostGamesInMonth(myUserDetails.getUser(), LocalDateTime.of(year, month, 1, 0, 0));
     }
 
     @GetMapping("/user/game/host")
     public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(@AuthenticationPrincipal MyUserDetails myUserDetails) {
-        return gameService.getGamesUserHost(myUserDetails.getUser());
+        return gameService.getUserHostGames(myUserDetails.getUser());
     }
 
     @PreAuthorize("hasPermission(#gameId,'delete_game','DELETE')")

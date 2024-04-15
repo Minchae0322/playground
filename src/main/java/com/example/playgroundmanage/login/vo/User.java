@@ -12,6 +12,8 @@ import com.example.playgroundmanage.type.UserRole;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
+import org.springframework.boot.context.properties.bind.DefaultValue;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ public class User implements Serializable {
     private UserRole role;
 
     @OneToOne
+    @ColumnDefault("")
     private UploadFile userProfileImg;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.request.service.impl;
 
-import com.example.playgroundmanage.dto.GameRequestDto;
+import com.example.playgroundmanage.game.dto.GameRequestDto;
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.dto.RequestDto;
 import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;

@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.dto;
+package com.example.playgroundmanage.game.dto;
 
 import com.example.playgroundmanage.date.DateTime;
 import lombok.Builder;

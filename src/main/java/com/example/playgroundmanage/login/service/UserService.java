@@ -79,7 +79,7 @@ public class UserService {
                         .teamId(t.getTeam().getId())
                         .sportsEvent(t.getTeam().getSportsEvent().getValue())
                         .teamName(t.getTeam().getTeamName())
-                        .teamProfileImg(t.getTeam().getTeamPic().getFileUrl())
+                        .teamProfileImg(t.getTeam().getTeamProfileImg().getFileUrl())
                         .build())
                 .toList();
     }

@@ -9,6 +9,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +27,14 @@ public class Team {
     private String teamName;
 
     @OneToOne
-    private UploadFile teamPic;
+    @ColumnDefault("")
+    private UploadFile teamProfileImg;
 
     @ManyToOne
     private User leader;
 
     private String description;
+
     @Enumerated(EnumType.STRING)
     private SportsEvent sportsEvent;
 
@@ -46,11 +49,11 @@ public class Team {
 
 
     @Builder
-    public Team(Long id, String teamName, UploadFile teamPic, User leader, String description, SportsEvent sportsEvent, List<SubTeam> subTeams, List<Teaming> members) {
+    public Team(Long id, String teamName, UploadFile teamProfileImg, User leader, String description, SportsEvent sportsEvent, List<SubTeam> subTeams, List<Teaming> members) {
         validate(teamName, description);
         this.id = id;
         this.teamName = teamName;
-        this.teamPic = teamPic;
+        this.teamProfileImg = teamProfileImg;
         this.leader = leader;
         this.description = description;
         this.sportsEvent = sportsEvent;
@@ -68,7 +71,7 @@ public class Team {
     }
 
     public void updateTeamPic(UploadFile uploadFile) {
-        this.teamPic = uploadFile;
+        this.teamProfileImg = uploadFile;
     }
 
 }

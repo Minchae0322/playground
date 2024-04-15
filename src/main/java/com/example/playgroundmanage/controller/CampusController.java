@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.controller;
 
-import com.example.playgroundmanage.dto.GameDto;
+import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.service.CampusService;

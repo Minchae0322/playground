@@ -2,8 +2,8 @@ package com.example.playgroundmanage.location.service;
 
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.date.MyDateTimeLocal;
-import com.example.playgroundmanage.dto.GameDto;
-import com.example.playgroundmanage.dto.GameTimeDto;
+import com.example.playgroundmanage.game.dto.GameDto;
+import com.example.playgroundmanage.game.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.dto.response.*;
 import com.example.playgroundmanage.exception.CampusNotExistException;

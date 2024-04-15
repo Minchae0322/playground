@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.controller;
 
-import com.example.playgroundmanage.dto.GameRequestDto;
+import com.example.playgroundmanage.game.dto.GameRequestDto;
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;

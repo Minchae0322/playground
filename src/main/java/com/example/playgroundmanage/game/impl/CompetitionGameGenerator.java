@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.game.impl;
 
-import com.example.playgroundmanage.dto.GameDto;
+import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.dto.SubTeamDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
@@ -85,7 +85,7 @@ public class CompetitionGameGenerator implements GameGenerator {
                 .subTeamId(subTeam.getId())
                 .teamId(subTeam.getTeam().getId())
                 .teamName(subTeam.getTeam().getTeamName())
-                .teamProfileImg(subTeam.getTeam().getTeamPic().getFileUrl())
+                .teamProfileImg(subTeam.getTeam().getTeamProfileImg().getFileUrl())
                 .teamDescription(subTeam.getTeam().getDescription())
                 .users(subTeam.getGameParticipants().stream()
                         .map(gameParticipant -> userService.getUserInfoInTeam(subTeam.getTeam(), gameParticipant.getUser()))

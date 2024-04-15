@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.login.dto;
 
 import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.dto.GameRequestDto;
+import com.example.playgroundmanage.game.dto.GameRequestDto;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.type.GameTeamSide;
 import lombok.Builder;

@@ -2,7 +2,7 @@
 package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.dto.GameDto;
+import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.login.service.UserService;

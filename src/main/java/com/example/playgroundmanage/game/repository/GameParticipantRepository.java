@@ -7,6 +7,7 @@ import com.example.playgroundmanage.login.vo.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GameParticipantRepository extends JpaRepository<GameParticipant, Long> {
 
@@ -15,5 +16,7 @@ public interface GameParticipantRepository extends JpaRepository<GameParticipant
     List<GameParticipant> findAllBySubTeam(SubTeam subTeam);
 
     List<GameParticipant> findAllByUser(User user);
+
+    Optional<GameParticipant> findByGameAndUser(Game game, User user);
 
 }

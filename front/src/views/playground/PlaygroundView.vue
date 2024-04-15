@@ -123,7 +123,6 @@ const clickInfo = async () => {
           }
       )
       game = response.data;
-      game.hostProfileImg = response.data.hostProfileImg;
     } catch (error) {
 
     }

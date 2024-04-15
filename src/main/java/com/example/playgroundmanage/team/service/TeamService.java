@@ -122,7 +122,7 @@ public class TeamService {
                 .description(team.getDescription())
                 .sportsEvent(team.getSportsEvent().getValue())
                 .leaderId(team.getLeader().getId())
-                .teamProfileImg(fileHandler.getExtFullPath(team.getTeamPic().getStoreFileName()))
+                .teamProfileImg(fileHandler.getExtFullPath(team.getTeamProfileImg().getStoreFileName()))
                 .leaderName(team.getLeader().getNickname())
                 .build();
     }

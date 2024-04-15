@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.util;
 
-import com.example.playgroundmanage.dto.GameTimeDto;
+import com.example.playgroundmanage.game.dto.GameTimeDto;
 import com.example.playgroundmanage.exception.TimeOverlappingException;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;

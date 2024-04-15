@@ -1,7 +1,6 @@
 package com.example.playgroundmanage.game.service;
 
-import com.example.playgroundmanage.dto.GameDto;
-
+import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.login.dto.UsersGameDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.UserNotParticipantGameException;
@@ -17,8 +16,6 @@ import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
-import static com.example.playgroundmanage.util.LocationFormatter.getLocation;
-
 
 @Service
 @RequiredArgsConstructor
@@ -30,49 +27,45 @@ public class GameService {
 
     private final GameFinder gameFinder;
 
-    private final CompetingTeamRepository competingTeamRepository;
-
     private final GameParticipantRepository gameParticipantRepository;
 
-    private final GameParticipantFinder gameParticipantFinder;
+    private final GameDtoConverter gameDtoConverter;
 
     @Transactional
-    public List<UsersGameDto.UsersGameResponseDto> getGamesUserHostByDate(User user, LocalDateTime localDateTime) {
+    public List<UsersGameDto.UsersGameResponseDto> getUserHostGamesInMonth(User user, LocalDateTime localDateTime) {
         List<Game> games = gameRepository.findAllByHost(user);
-        List<Game> gamesByDate = gameFinder.getGamesForYearMonth(games, localDateTime);
-        List<Game> gamesOrderedByLatest = gameSorting.sortGamesByOldest(gamesByDate);
+
+        List<Game> gamesInSameYearMonth = gameFinder.getGamesForYearMonth(games, localDateTime);
+
+        List<Game> gamesOrderedByLatest = gameSorting.sortGamesByOldest(gamesInSameYearMonth);
 
         return gamesOrderedByLatest.stream()
-                .map(game -> UsersGameDto.UsersGameResponseDto.builder()
-                        .gameId(game.getId())
-                        .playgroundId(game.getPlayground().getId())
-                        .location(getLocation(game))
-                        .gameType(game.getGameType())
-                        .localDateStartTime(game.getGameStartDateTime())
-                        .gameStart(DateFormat.dateFormatYYYYMMDDHHMM(game.getGameStartDateTime()))
-                        .hostName(game.getHost().getNickname())
-                        .gameName(game.getGameName())
-                        .runningTime(game.getRunningTime())
-                        .build())
+                .map(gameDtoConverter::toUsersGameResponseDto)
                 .toList();
     }
     @Transactional
-    public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(User user) {
+    public List<UsersGameDto.UsersGameResponseDto> getUserHostGames(User user) {
         List<Game> games = gameRepository.findAllByHost(user);
+
         List<Game> gamesOrderedByLatest = gameSorting.sortGamesByOldest(games);
 
         return gamesOrderedByLatest.stream()
-                .map(game -> UsersGameDto.UsersGameResponseDto.builder()
-                        .gameId(game.getId())
-                        .playgroundId(game.getPlayground().getId())
-                        .location(getLocation(game))
-                        .gameType(game.getGameType())
-                        .localDateStartTime(game.getGameStartDateTime())
-                        .gameStart(DateFormat.dateFormatYYYYMMDDHHMM(game.getGameStartDateTime()))
-                        .hostName(game.getHost().getNickname())
-                        .gameName(game.getGameName())
-                        .runningTime(game.getRunningTime())
-                        .build())
+                .map(gameDtoConverter::toUsersGameResponseDto)
+                .toList();
+    }
+
+    @Transactional
+    public List<UsersGameDto.UsersGameResponseDto> getUserJoinGames(UsersGameDto.UsersGameRequestDto usersGameRequestDto) {
+        List<GameParticipant> usersGameParticipants = gameParticipantRepository.findAllByUser(usersGameRequestDto.getUser());
+
+        List<Game> userJoinGames = usersGameParticipants.stream()
+                .map(GameParticipant::getGame)
+                .toList();
+
+        List<Game> userJoinGamesInSameYearMonth = gameFinder.getGamesForYearMonth(userJoinGames, usersGameRequestDto.getMyDateTime().getLocalDateTime());
+
+        return userJoinGamesInSameYearMonth.stream()
+                .map(gameDtoConverter::toUsersGameResponseDto)
                 .toList();
     }
 
@@ -94,16 +87,11 @@ public class GameService {
     }
 
     @Transactional
-    public void deleteCompetingTeam(CompetingTeam competingTeam) {
-        competingTeamRepository.delete(competingTeam);
-    }
-
-    @Transactional
-    public GameDto getGameInfo(Long gameId) {
+    public GameResponseDto getGameInfo(Long gameId) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
 
-        return game.toGameDto();
+        return gameDtoConverter.toGameResponse(game);
     }
 
     @Transactional
@@ -111,24 +99,16 @@ public class GameService {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
 
-        GameParticipant gameParticipant = gameParticipantFinder.getParticipantInGame(game, user)
+        GameParticipant gameParticipant = gameParticipantRepository.findByGameAndUser(game, user)
                 .orElseThrow(UserNotParticipantGameException::new);
+
         game.getGameParticipants().remove(gameParticipant);
 
         gameParticipantRepository.delete(gameParticipant);
 
     }
 
-    @Transactional
-    public List<UsersGameDto.UsersGameResponseDto> getMonthGameAsc(UsersGameDto.UsersGameRequestDto usersGameRequestDto) {
-        List<GameParticipant> userGame = gameParticipantRepository.findAllByUser(usersGameRequestDto.getUser());
-        List<GameParticipant> sameMonthGameParticipants = gameParticipantFinder.getGameOfSameYearAndMonth(userGame, usersGameRequestDto.getMyDateTime().getLocalDateTime());
 
-        return sameMonthGameParticipants.stream()
-                .sorted(Comparator.comparing(gameParticipant -> gameParticipant.getGame().getGameStartDateTime()))
-                .map(GameParticipant::toUsersGameResponseDto)
-                .toList();
-    }
 
 
 

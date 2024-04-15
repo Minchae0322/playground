@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.game.impl;
 
-import com.example.playgroundmanage.dto.GameDto;
+import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
