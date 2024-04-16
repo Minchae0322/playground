@@ -1,10 +1,10 @@
-package com.example.playgroundmanage.game.impl;
+package com.example.playgroundmanage.game.service.impl;
 
 import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.dto.SubTeamDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
-import com.example.playgroundmanage.game.GameGenerator;
+import com.example.playgroundmanage.game.service.GameGenerator;
 import com.example.playgroundmanage.game.dto.GameTeamResponseDto;
 import com.example.playgroundmanage.game.repository.CompetingTeamRepository;
 import com.example.playgroundmanage.game.repository.GameRepository;
@@ -15,7 +15,6 @@ import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.SubTeam;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.location.vo.Playground;
-import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.util.GameValidation;
@@ -39,7 +38,6 @@ public class CompetitionGameGenerator implements GameGenerator {
 
     private final CompetingTeamRepository competingTeamRepository;
 
-    private final FileHandler fileHandler;
 
     private final UserService userService;
 
@@ -60,6 +58,24 @@ public class CompetitionGameGenerator implements GameGenerator {
         return newGame.getId();
     }
 
+    private Game generateGame(GameDto gameDto) {
+        Playground playground = playgroundRepository.findById(gameDto.getPlaygroundId())
+                .orElseThrow(PlaygroundNotExistException::new);
+
+        gameValidation.validateOverlappingGames(playground.getGames(), gameDto.toGameDateDto());
+
+        Game game = Game.builder()
+                .gameName(gameDto.getGameName())
+                .host(gameDto.getHost())
+                .playground(playground)
+                .gameType(GameType.COMPETITION)
+                .gameStartDateTime(gameDto.getStartDateTime().getLocalDateTime())
+                .sportsEvent(gameDto.getSportsEvent())
+                .runningTime(gameDto.getRunningTime())
+                .build();
+        return gameRepository.save(game);
+    }
+
     @Override
     public GameTeamResponseDto getGameTeamInfos(Long gameId, GameTeamSide gameTeamSide) {
         Game game = gameRepository.findById(gameId)
@@ -72,7 +88,7 @@ public class CompetitionGameGenerator implements GameGenerator {
                 .map(this::toSubTeamDto)
                 .toList();
 
-        SubTeamDto soloTeam = toSubTeamDtoSolo(competingTeam.getSoloTeam());
+        SubTeamDto soloTeam = toSoloSubTeamDto(competingTeam.getSoloTeam());
 
         return GameTeamResponseDto.builder()
                 .subTeams(subTeams)
@@ -93,31 +109,13 @@ public class CompetitionGameGenerator implements GameGenerator {
                 .build();
     }
 
-    private SubTeamDto toSubTeamDtoSolo(SubTeam subTeam) {
+    private SubTeamDto toSoloSubTeamDto(SubTeam subTeam) {
         return SubTeamDto.builder()
                 .subTeamId(subTeam.getId())
                 .users(subTeam.getGameParticipants().stream()
                         .map(gameParticipant -> userService.getUserInfo(gameParticipant.getUser()))
                         .toList())
                 .build();
-    }
-
-    private Game generateGame(GameDto gameDto) {
-        Playground playground = playgroundRepository.findById(gameDto.getPlaygroundId())
-                .orElseThrow(PlaygroundNotExistException::new);
-
-        gameValidation.validateOverlappingGames(playground.getGames(), gameDto.toGameDateDto());
-
-        Game game = Game.builder()
-                .gameName(gameDto.getGameName())
-                .host(gameDto.getHost())
-                .playground(playground)
-                .gameType(GameType.COMPETITION)
-                .gameStartDateTime(gameDto.getStartDateTime().getLocalDateTime())
-                .sportsEvent(gameDto.getSportsEvent())
-                .runningTime(gameDto.getRunningTime())
-                .build();
-        return gameRepository.save(game);
     }
 
     @Transactional

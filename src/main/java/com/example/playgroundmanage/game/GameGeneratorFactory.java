@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.game;
 
-import com.example.playgroundmanage.request.service.RequestService;
+import com.example.playgroundmanage.game.service.GameGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

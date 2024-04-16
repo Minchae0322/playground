@@ -7,7 +7,7 @@ import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.game.repository.*;
-import com.example.playgroundmanage.game.service.GameManagementService;
+import com.example.playgroundmanage.request.service.GameManagementService;
 import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.request.vo.impl.SoloGameJoinRequest;

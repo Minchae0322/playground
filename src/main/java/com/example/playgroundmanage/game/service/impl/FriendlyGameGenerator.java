@@ -1,10 +1,10 @@
-package com.example.playgroundmanage.game.impl;
+package com.example.playgroundmanage.game.service.impl;
 
 import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
-import com.example.playgroundmanage.game.GameGenerator;
+import com.example.playgroundmanage.game.service.GameGenerator;
 import com.example.playgroundmanage.game.dto.GameTeamResponseDto;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.login.dto.UserResponseDto;
@@ -30,7 +30,6 @@ public class FriendlyGameGenerator implements GameGenerator {
 
     private final GameValidation gameValidation;
 
-    private final UserService userService;
 
 
     @Override

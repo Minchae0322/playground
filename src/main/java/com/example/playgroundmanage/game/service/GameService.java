@@ -13,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 
 
@@ -30,6 +29,15 @@ public class GameService {
     private final GameParticipantRepository gameParticipantRepository;
 
     private final GameDtoConverter gameDtoConverter;
+
+
+    @Transactional
+    public GameResponseDto getGameInfo(Long gameId) {
+        Game game = gameRepository.findById(gameId)
+                .orElseThrow(GameNotExistException::new);
+
+        return gameDtoConverter.toGameResponse(game);
+    }
 
     @Transactional
     public List<UsersGameDto.UsersGameResponseDto> getUserHostGamesInMonth(User user, LocalDateTime localDateTime) {
@@ -86,13 +94,6 @@ public class GameService {
         gameRepository.delete(game);
     }
 
-    @Transactional
-    public GameResponseDto getGameInfo(Long gameId) {
-        Game game = gameRepository.findById(gameId)
-                .orElseThrow(GameNotExistException::new);
-
-        return gameDtoConverter.toGameResponse(game);
-    }
 
     @Transactional
     public void userOutOfGame(Long gameId, User user) {

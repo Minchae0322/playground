@@ -21,6 +21,11 @@ public abstract class GameRequest extends Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    protected LocalDateTime expiredTime;
+
+
+    protected LocalDateTime requestTime;
+
     @ManyToOne(cascade = CascadeType.PERSIST)
     private Game game;
 
@@ -30,10 +35,6 @@ public abstract class GameRequest extends Request {
     @ManyToOne
     private User host;
 
-    protected LocalDateTime expiredTime;
-
-
-    protected LocalDateTime requestTime;
 
 
     public GameRequest(Long id, Game game, User user, User host, LocalDateTime expiredTime, LocalDateTime requestTime) {

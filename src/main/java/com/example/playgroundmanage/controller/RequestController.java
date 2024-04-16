@@ -8,7 +8,7 @@ import com.example.playgroundmanage.login.dto.UserJoinGameParams;
 import com.example.playgroundmanage.login.dto.UserJoinTeamParams;
 import com.example.playgroundmanage.dto.response.PendingGameRequest;
 import com.example.playgroundmanage.dto.response.PendingTeamRequest;
-import com.example.playgroundmanage.game.service.GameManagementService;
+import com.example.playgroundmanage.request.service.GameManagementService;
 import com.example.playgroundmanage.request.service.RequestManageService;
 import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.request.RequestServiceFinder;

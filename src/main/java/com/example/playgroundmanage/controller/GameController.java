@@ -4,7 +4,7 @@ import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.game.dto.*;
 import com.example.playgroundmanage.login.dto.UsersGameDto;
 import com.example.playgroundmanage.dto.reqeust.GameRegistration;
-import com.example.playgroundmanage.game.GameGenerator;
+import com.example.playgroundmanage.game.service.GameGenerator;
 import com.example.playgroundmanage.game.GameGeneratorFactory;
 import com.example.playgroundmanage.game.GameResultManagerFactory;
 import com.example.playgroundmanage.game.GameResultManger;

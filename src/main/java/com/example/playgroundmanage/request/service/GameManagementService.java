@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.game.service;
+package com.example.playgroundmanage.request.service;
 
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.repository.GameRequestRepository;
@@ -25,9 +25,6 @@ public class GameManagementService {
 
     private final TeamRequestRepository teamRequestRepository;
 
-    private final FileHandler fileHandler;
-
-    private final GameParticipantRepository gameParticipantRepository;
 
     public void deletePreviousGameRequest(Game game, User user) {
         gameRequestRepository.findByGameAndUser(game, user)

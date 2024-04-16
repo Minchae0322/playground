@@ -9,7 +9,7 @@ import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.repository.GameRequestRepository;
-import com.example.playgroundmanage.game.service.GameManagementService;
+import com.example.playgroundmanage.request.service.GameManagementService;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.request.service.RequestService;

@@ -8,7 +8,7 @@ import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
-import com.example.playgroundmanage.game.service.GameManagementService;
+import com.example.playgroundmanage.request.service.GameManagementService;
 import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.team.service.TeamService;
