@@ -144,7 +144,7 @@ const clickOutOfGame = async () => {
   }
   await validateAccessToken();
   try {
-    await axios.delete(`${apiBaseUrl}/game/${props.game.gameId}/${subTeamId}/out`,
+    await axios.delete(`${apiBaseUrl}/game/${props.game.gameId}/friendly/out`,
         {
           headers: {
             'Authorization': getAccessToken()

@@ -90,6 +90,13 @@ public class GameController {
         return ResponseEntity.ok("success");
     }
 
+    @DeleteMapping("/game/{gameId}/friendly/out")
+    @Transactional
+    public ResponseEntity<String> userOutOfFriendlyGame(@PathVariable Long gameId, @AuthenticationPrincipal MyUserDetails myUserDetails) {
+        gameService.userOutOfGame(gameId, myUserDetails.getUser());
+        return ResponseEntity.ok("success");
+    }
+
     @GetMapping("/user/game/{year}/{month}")
     public List<UsersGameDto.UsersGameResponseDto> getMonthGamesInLatestOrder(@PathVariable Integer month, @PathVariable Integer year, @AuthenticationPrincipal MyUserDetails myUserDetails) {
         UsersGameDto.UsersGameRequestDto usersGameRequestDto = UsersGameDto.UsersGameRequestDto.builder()
