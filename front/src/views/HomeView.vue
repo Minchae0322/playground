@@ -252,7 +252,7 @@ const redirectToLogin = async () => {
   min-width: 400px;
   margin-bottom: 30px;
   max-width: 800px;
-  height: 2px;
+  height: 1px;
   background: linear-gradient(to right, #6f008c, #002ea2, #0601a2);
 
 }
