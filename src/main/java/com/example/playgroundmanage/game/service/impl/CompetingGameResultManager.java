@@ -32,7 +32,9 @@ public class CompetingGameResultManager implements GameResultManger {
     @Override
     @Transactional
     public void submitGameResult(GameResultDto.GameResultRequestDto gameResultRequestDto) {
-        Game game = gameRepository.findById(gameResultRequestDto.getGameId()).orElseThrow(GameNotExistException::new);
+        Game game = gameRepository.findById(gameResultRequestDto.getGameId())
+                .orElseThrow(GameNotExistException::new);
+
         if (game.getGameType() != GameType.COMPETITION) {
             throw new RuntimeException();
         }

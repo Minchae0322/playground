@@ -47,21 +47,25 @@ public class UsersGameDto {
 
         private LocalDateTime localDateStartTime;
 
+        private boolean isResulted;
 
         @Builder
-        public UsersGameResponseDto(Long gameId, String subTeamName, Long playgroundId, GameType gameType, String location, String gameName, String hostName, String gameStart, Integer runningTime, LocalDateTime localDateStartTime) {
+        public UsersGameResponseDto(Long gameId, String subTeamName, String gameName, String gameType, String gameType_en, String location, String hostName, String gameStart, Integer runningTime, Long playgroundId, LocalDateTime localDateStartTime, boolean isResulted) {
             this.gameId = gameId;
             this.subTeamName = subTeamName;
             this.gameName = gameName;
-            this.hostName = hostName;
-            this.gameType_en = gameType.getValue();
-            this.gameType = gameType.getValue_cn();
-            this.gameStart = gameStart;
-            this.playgroundId = playgroundId;
-            this.runningTime = runningTime;
+            this.gameType = gameType;
+            this.gameType_en = gameType_en;
             this.location = location;
+            this.hostName = hostName;
+            this.gameStart = gameStart;
+            this.runningTime = runningTime;
+            this.playgroundId = playgroundId;
             this.localDateStartTime = localDateStartTime;
+            this.isResulted = isResulted;
         }
+
+
 
 
 

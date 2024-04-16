@@ -44,20 +44,7 @@ public class GameParticipant {
         this.isAccepted = isAccepted;
     }
 
-    public UsersGameDto.UsersGameResponseDto toUsersGameResponseDto() {
-        return UsersGameDto.UsersGameResponseDto.builder()
-                .gameStart(dateFormatYYYYMMDDHHMM(game.getGameStartDateTime()))
-                .hostName(game.getHost().getNickname())
-                .runningTime(game.getRunningTime())
-                .gameId(game.getId())
-                .gameType(game.getGameType())
-                .playgroundId(game.getPlayground().getId())
-                .location(getLocation(game))
-                .subTeamName(subTeam == null ? "" : subTeam.getTeamName())
-                .localDateStartTime(game.getGameStartDateTime())
-                .gameName(game.getGameName())
-                .build();
-    }
+
 
     public void delete() {
         this.game = null;

@@ -53,6 +53,7 @@
       <div class="game" v-for="game in pastGames" :key="game.id">
         <div class="game-info">
           <div class="game-title">{{ game.gameName }}</div>
+
           <div class="game-date">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                  stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
@@ -60,7 +61,9 @@
               <circle cx="12" cy="12" r="10"></circle>
               <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
+
             {{ formatDate(game.gameStart) }}
+            <div v-if="game.resulted" class="game-has-result">已提交</div>
           </div>
 
           <div class="game-description">
@@ -72,6 +75,7 @@
         <div class="game-time">{{ formatTime(game.gameStart) }} - {{
             formatEndTime(game.gameStart, game.runningTime)
           }}
+
           <button @click="openResultModal(game)" class="submit">提交</button>
 <!--          <button @click="submitResult(game.gameId, game.gameType_en)" class="submit">提交</button>-->
         </div>
@@ -395,6 +399,11 @@ const redirectToLogin = function () {
   width: 14px;
   color: black;
   margin-right: 5px;
+}
+
+.game-has-result {
+  margin-left: 10px;
+  color: #95d475;
 }
 
 .game-description {
