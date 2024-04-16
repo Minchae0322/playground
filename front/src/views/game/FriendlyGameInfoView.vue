@@ -33,6 +33,7 @@
             <!--            <div v-if="participant.userId === loggedInUserId" class="close-marker"
                              @click="clickOutOfGame()">X
                         </div>-->
+            <div v-if="participant.userId === loggedInUserId" class="close-marker" @click="clickOutOfGame">X</div>
             <img class="team-member-photo" :src="getImageUrl(participant.userProfileImg)">
             <p class="nickname-container-nickname-userInfo">{{ participant.userNickname }}</p>
             <p class="user-role">个人</p>
@@ -74,6 +75,7 @@ const props = defineProps({
 
 
 });
+
 const buttonText = ref("参加")
 const participants = ref([{
   userProfileImg: '',
@@ -382,7 +384,7 @@ const redirectToLogin = function () {
   padding: 10px 5px 5px 5px;
   width: 10%;
   min-width: 70px;
-  height: 90px;
+  height: 120px;
   text-align: center;
   line-height: 1.1;
   border-radius: 6px;

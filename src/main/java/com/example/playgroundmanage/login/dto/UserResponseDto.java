@@ -11,14 +11,16 @@ public class UserResponseDto {
 
     private String userRole;
 
+    private boolean isMine;
+
     private String userProfileImg;
 
     @Builder
-    public UserResponseDto(Long userId, String userNickname, String userRole, String userProfileImg)  {
+    public UserResponseDto(Long userId, String userNickname, String userRole, boolean isMine, String userProfileImg) {
         this.userId = userId;
         this.userNickname = userNickname;
         this.userRole = userRole;
+        this.isMine = isMine;
         this.userProfileImg = userProfileImg;
     }
-
 }

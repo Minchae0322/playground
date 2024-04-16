@@ -46,7 +46,12 @@ public class GameController {
     public GameTeamResponseDto getGameTeam(@PathVariable Long gameId, @PathVariable String gameType, @PathVariable String gameTeamSide) {
         GameGenerator gameGenerator = gameGeneratorFactory.find(gameType);
 
-        return gameGenerator.getGameTeamInfos(gameId, GameTeamSide.valueOf(gameTeamSide));
+        GameTeamRequestDto gameTeamRequestDto = GameTeamRequestDto.builder()
+                .gameId(gameId)
+                .gameTeamSide(GameTeamSide.fromString(gameTeamSide))
+                .build();
+
+        return gameGenerator.getGameTeamInfos(gameTeamRequestDto);
     }
 
     @GetMapping("/game/{gameId}/info")

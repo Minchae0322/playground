@@ -4,6 +4,7 @@ import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.dto.SubTeamDto;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
+import com.example.playgroundmanage.game.dto.GameTeamRequestDto;
 import com.example.playgroundmanage.game.service.GameGenerator;
 import com.example.playgroundmanage.game.dto.GameTeamResponseDto;
 import com.example.playgroundmanage.game.repository.CompetingTeamRepository;
@@ -77,11 +78,11 @@ public class CompetitionGameGenerator implements GameGenerator {
     }
 
     @Override
-    public GameTeamResponseDto getGameTeamInfos(Long gameId, GameTeamSide gameTeamSide) {
-        Game game = gameRepository.findById(gameId)
+    public GameTeamResponseDto getGameTeamInfos(GameTeamRequestDto gameTeamRequestDto) {
+        Game game = gameRepository.findById(gameTeamRequestDto.getGameId())
                 .orElseThrow(GameNotExistException::new);
 
-        CompetingTeam competingTeam = game.getCompetingTeamBySide(gameTeamSide)
+        CompetingTeam competingTeam = game.getCompetingTeamBySide(gameTeamRequestDto.getGameTeamSide())
                 .orElseThrow();
 
         List<SubTeamDto> subTeams = competingTeam.getSubTeamsNotSoloTeam().stream()
