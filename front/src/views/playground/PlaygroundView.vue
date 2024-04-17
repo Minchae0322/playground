@@ -33,7 +33,7 @@
                   <circle cx="12" cy="12" r="10"></circle>
                   <polyline points="12 6 12 12 16 14"></polyline>
                 </svg>
-                {{ ongoingGame.gameStart }}（ {{ ongoingGame.runningTime }}分 ）
+                {{ ongoingGame.gameStartDateTime }}（ {{ ongoingGame.runningTime }}分 ）
               </div>
               <div class="host-info">
                 <img :src="getImageUrl(ongoingGame.hostProfileImg) || defaultImage">

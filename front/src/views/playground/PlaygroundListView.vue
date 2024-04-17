@@ -26,9 +26,9 @@
         <router-link
             :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
           <div class="game-card-mini-title">{{ game.gameName }}
-            <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{ getChineseDayOfWeek(game.gameStart) }}</div>
+            <div :style="{ color: getDayColor(game.gameStartDateTime) }">&nbsp;{{ getChineseDayOfWeek(game.gameStartDateTime) }}</div>
           </div>
-          <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
+          <div class="game-card-mini-title">[{{ game.gameStartDateTime}}]</div>
           <div class="game-card-mini-info-container">
             <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
             <div class="game-card-mini-info">主持人: {{ game.hostName }}</div>

@@ -2,11 +2,15 @@ package com.example.playgroundmanage.location.service;
 
 
 import com.example.playgroundmanage.date.MyDateTimeLocal;
+import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.exception.CampusNotExistException;
 import com.example.playgroundmanage.exception.SchoolNotExistException;
+import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.repository.CampusRepository;
+import com.example.playgroundmanage.game.service.GameDtoConverter;
 import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.location.repository.SchoolRepository;
 import com.example.playgroundmanage.location.vo.Campus;
@@ -28,7 +32,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CampusService {
-    private final PlaygroundRepository playgroundRepository;
+
 
     private final CampusRepository campusRepository;
 
@@ -40,10 +44,11 @@ public class CampusService {
 
     private final SchoolRepository schoolRepository;
 
-    private final PlaygroundService playgroundService;
+    private final GameDtoConverter gameDtoConverter;
+
 
     @Transactional
-    public List<GameDto> getUpcomingGamesInCampusBySportsEvent(Long campusId, SportsEvent sportsEvent) {
+    public List<GameResponseDto> getUpcomingGamesInCampusBySportsEvent(Long campusId, SportsEvent sportsEvent) {
         Campus campus = campusRepository.findById(campusId)
                 .orElseThrow(CampusNotExistException::new);
 
@@ -53,12 +58,37 @@ public class CampusService {
 
         return games.stream()
                 .limit(3)
-                .map(Game::toGameDto)
+                .map(gameDtoConverter::toGameResponse)
                 .toList();
     }
 
     @Transactional
-    public List<GameDto> getUpcomingGamesBySportsEvent(Long schoolId, SportsEvent sportsEvent) {
+    public List<PlaygroundResponseDto> getPlaygroundByCampusAndSportsType(Long campusId, SportsEvent valueOf) {
+        Campus campus = campusRepository.findById(campusId)
+                .orElseThrow(CampusNotExistException::new);
+        List<Playground> playgrounds = playgroundFinder.getPlaygroundsBySportsEvent(campus.getPlaygrounds(), valueOf);
+        if (playgrounds.size() == 0) {
+            throw new PlaygroundNotExistException();
+        }
+        return playgrounds.stream()
+                .map(this::toPlaygroundResponseDto)
+                .toList();
+    }
+
+    private PlaygroundResponseDto toPlaygroundResponseDto(Playground playground) {
+        return PlaygroundResponseDto.builder()
+                .playgroundId(playground.getId())
+                .playgroundName(playground.getName())
+                .upcomingGameNum(playground.getUpcomingGamesOrderedByStartDateTime().size())
+                .sportsEvent(playground.getSportsEvent().getValue_cn())
+                .playgroundProfileImg(playground.getImg().getFileUrl())
+                .campusName(playground.getCampus().getCampusName())
+                .schoolName(playground.getCampus().getSchool().getSchoolName())
+                .build();
+    }
+
+    @Transactional
+    public List<GameResponseDto> getUpcomingGamesBySportsEvent(Long schoolId, SportsEvent sportsEvent) {
         School school = schoolRepository.findById(schoolId)
                 .orElseThrow(SchoolNotExistException::new);
 
@@ -68,7 +98,7 @@ public class CampusService {
     }
 
     @Transactional
-    public List<GameDto>getUpcomingGamesBySchool(Long schoolId) {
+    public List<GameDto> getUpcomingGamesBySchool(Long schoolId) {
         School school = schoolRepository.findById(schoolId)
                 .orElseThrow(SchoolNotExistException::new);
 

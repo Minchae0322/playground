@@ -2,6 +2,7 @@ package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
+import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.location.dto.CampusResponseDto;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.service.CampusService;
@@ -33,16 +34,13 @@ public class SchoolController {
 
     @GetMapping("/school/{schoolId}/playground/{sportsType}")
     public List<PlaygroundResponseDto> getPlaygroundsBySportsType(@PathVariable String sportsType, @PathVariable Long schoolId) {
-        return playgroundService.getPlaygroundByCampusAndSportsType(schoolId, SportsEvent.valueOf(sportsType));
+        return campusService.getPlaygroundByCampusAndSportsType(schoolId, SportsEvent.valueOf(sportsType));
     }
 
     @GetMapping("/school/{schoolId}/upcoming/{sportsType}")
-    public List<GameThumbnail> getUpcomingGamesBySportsEvent(@PathVariable String sportsType, @PathVariable Long schoolId) {
-        List<GameDto> upcomingGames = campusService.getUpcomingGamesBySportsEvent(schoolId, SportsEvent.valueOf(sportsType));
+    public List<GameResponseDto> getUpcomingGamesBySportsEvent(@PathVariable String sportsType, @PathVariable Long schoolId) {
 
-        return upcomingGames.stream()
-                .map(GameDto::toGameThumbnail)
-                .toList();
+        return campusService.getUpcomingGamesBySportsEvent(schoolId, SportsEvent.valueOf(sportsType));
     }
 
     @GetMapping("/school/{schoolId}/upcoming")

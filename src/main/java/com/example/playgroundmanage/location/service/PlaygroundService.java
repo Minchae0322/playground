@@ -37,15 +37,13 @@ public class PlaygroundService {
 
     private final PlaygroundRepository playgroundRepository;
 
-    private final CampusRepository campusRepository;
-
     private final GameFinder gameFinder;
 
     private final GameDtoConverter gameDtoConverter;
 
-    private final PlaygroundFinder playgroundFinder;
-
     private final GameValidation gameValidation;
+
+    private final PlaygroundDtoConverter playgroundDtoConverter;
 
     private final GameSorting gameSorting;
 
@@ -107,44 +105,10 @@ public class PlaygroundService {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
 
-        return toPlaygroundResponseInfoDto(playground);
+        return playgroundDtoConverter.toPlaygroundResponseInfoDto(playground);
     }
 
-    @Transactional
-    public List<PlaygroundResponseDto> getPlaygroundByCampusAndSportsType(Long campusId, SportsEvent valueOf) {
-        Campus campus = campusRepository.findById(campusId)
-                .orElseThrow(CampusNotExistException::new);
-        List<Playground> playgrounds = playgroundFinder.getPlaygroundsBySportsEvent(campus.getPlaygrounds(), valueOf);
-        if (playgrounds.size() == 0) {
-            throw new PlaygroundNotExistException();
-        }
-        return playgrounds.stream()
-                .map(this::toPlaygroundResponseDto)
-                .toList();
-    }
 
-    private PlaygroundResponseDto toPlaygroundResponseDto(Playground playground) {
-        return PlaygroundResponseDto.builder()
-                .playgroundId(playground.getId())
-                .playgroundName(playground.getName())
-                .upcomingGameNum(playground.getUpcomingGamesOrderedByStartDateTime().size())
-                .sportsEvent(playground.getSportsEvent().getValue_cn())
-                .playgroundProfileImg(playground.getImg().getFileUrl())
-                .campusName(playground.getCampus().getCampusName())
-                .schoolName(playground.getCampus().getSchool().getSchoolName())
-                .build();
-    }
-
-    private PlaygroundResponseDto toPlaygroundResponseInfoDto(Playground playground) {
-        return PlaygroundResponseDto.builder()
-                .playgroundId(playground.getId())
-                .campusName(playground.getCampus().getCampusName())
-                .playgroundName(playground.getName())
-                .playgroundProfileImg(playground.getImg().getFileUrl())
-                .schoolName(playground.getCampus().getSchool().getSchoolName())
-                .sportsEvent(playground.getSportsEvent().getValue_cn())
-                .build();
-    }
 
 
 }
