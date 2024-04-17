@@ -3,6 +3,7 @@ package com.example.playgroundmanage.controller;
 import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.dto.reqeust.GameTimeInfo;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
+import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.response.OccupiedTime;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
@@ -20,30 +21,18 @@ public class PlaygroundController {
 
     private final PlaygroundService playgroundService;
 
-    private final UserService userService;
-
-
     @GetMapping("/playground/{playgroundId}/current")
-    public ResponseEntity<GameThumbnail> getOngoingGame(@PathVariable Long playgroundId) {
-        GameDto gameDto =  playgroundService.getOngoingGame(playgroundId);
-
-        return ResponseEntity.ok(gameDto.toGameThumbnailWithHostProfile());
+    public ResponseEntity<GameResponseDto> getOngoingGame(@PathVariable Long playgroundId) {
+        return ResponseEntity.ok(playgroundService.getOngoingGame(playgroundId));
     }
 
-
-
     @GetMapping("/playground/{playgroundId}/upComing")
-    public List<GameThumbnail> getUpcomingGames(@PathVariable Long playgroundId) {
-        List<GameDto> upcomingThreeGames = playgroundService.getUpcomingGames(playgroundId);
-
-        return upcomingThreeGames.stream()
-                .map(GameDto::toGameThumbnailWithHostProfile)
-                .toList();
+    public List<GameResponseDto> getUpcomingGames(@PathVariable Long playgroundId) {
+        return playgroundService.getUpcomingGames(playgroundId);
     }
 
     @GetMapping("/playground/{playgroundId}/info")
     public PlaygroundResponseDto getPlaygroundInfo(@PathVariable Long playgroundId) {
-
         return playgroundService.getPlaygroundInfo(playgroundId);
     }
 

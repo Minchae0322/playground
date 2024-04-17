@@ -3,6 +3,7 @@ package com.example.playgroundmanage.location.service;
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.game.dto.GameDto;
+import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.dto.response.*;
@@ -11,6 +12,7 @@ import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.exception.SchoolNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.repository.GameRepository;
+import com.example.playgroundmanage.game.service.GameDtoConverter;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
@@ -48,6 +50,8 @@ public class PlaygroundService {
 
     private final GameFinder gameFinder;
 
+    private final GameDtoConverter gameDtoConverter;
+
     private final PlaygroundFinder playgroundFinder;
 
     private final GameValidation gameValidation;
@@ -81,29 +85,27 @@ public class PlaygroundService {
     }
 
 
-
     @Transactional
-    public GameDto getOngoingGame(Long playgroundId) {
+    public GameResponseDto getOngoingGame(Long playgroundId) {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
 
         Game onGoingGame = GameFinder.findOngoingGame(playground.getGames(), MyDateTime.initMyDateTime(ZonedDateTime.now()));
 
-        return onGoingGame.toGameDto();
+        return gameDtoConverter.toGameResponse(onGoingGame);
     }
 
     @Transactional
-    public List<GameDto> getUpcomingGames(Long playgroundId) {
+    public List<GameResponseDto> getUpcomingGames(Long playgroundId) {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
 
         List<Game> upcomingGames = gameFinder.getUpcomingGames(playground.getGames(), playground.getGames().size(), MyDateTimeLocal.initMyDateTime(LocalDateTime.now()));
 
         return upcomingGames.stream()
-                .map(Game::toGameDto)
+                .map(gameDtoConverter::toGameResponse)
                 .toList();
     }
-
 
 
     @Transactional
@@ -120,13 +122,12 @@ public class PlaygroundService {
         Campus campus = campusRepository.findById(campusId).orElseThrow();
         return campus.getPlaygrounds().stream()
                 .map(Playground::toPlaygroundDto)
-        .toList();
+                .toList();
     }
 
 
-
     @Transactional
-    public boolean isExistGameTime(Long playgroundId, LocalDateTime day,Integer runningTime) {
+    public boolean isExistGameTime(Long playgroundId, LocalDateTime day, Integer runningTime) {
         //TODO 모든 게임을 불러오기에는 너무 많으니 그 날과 그 다음날까지만 불러오기.
         Playground playground = playgroundRepository.findById(playgroundId).orElseThrow();
         List<Game> games = playground.getGames();
