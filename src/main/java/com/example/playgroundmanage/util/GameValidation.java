@@ -28,7 +28,7 @@ public final class GameValidation {
         }
     }
 
-    public static void validateStartBeforePresent(GameTimeDto gameTimeDto) {
+    public static void validateStartTimeAfterPresent(GameTimeDto gameTimeDto) {
         if (gameTimeDto.getStartDateTime().getLocalDateTime().isBefore(LocalDateTime.now().plusMinutes(1))) {
             throw new RuntimeException("您不能提前于当前时间 + 1 分钟开始 。 当前时间 : " + localDateToYearMonthDateTimeString(LocalDateTime.now()));
         }
