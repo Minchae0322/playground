@@ -45,7 +45,7 @@ public class SchoolController {
 
     @GetMapping("/school/{schoolId}/upcoming")
     public List<GameThumbnail> getUpcomingGamesBySchool( @PathVariable Long schoolId) {
-        List<GameDto> upcomingGames = campusService.getUpcomingGamesBySchool(schoolId);
+        List<GameDto> upcomingGames = schoolService.getUpcomingGamesBySchool(schoolId);
 
         return upcomingGames.stream()
                 .map(GameDto::toGameThumbnail)
