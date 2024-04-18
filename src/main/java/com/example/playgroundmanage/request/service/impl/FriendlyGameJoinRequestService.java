@@ -37,7 +37,6 @@ public class FriendlyGameJoinRequestService implements RequestService {
 
     private final GameParticipantRepository gameParticipantRepository;
 
-    private final FileHandler fileHandler;
     @Override
     public String getRequestType() {
         return "friendlyGameJoin";

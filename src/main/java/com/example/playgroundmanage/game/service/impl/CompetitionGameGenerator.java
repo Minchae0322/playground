@@ -39,7 +39,6 @@ public class CompetitionGameGenerator implements GameGenerator {
 
     private final CompetingTeamRepository competingTeamRepository;
 
-
     private final UserService userService;
 
 

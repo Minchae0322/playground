@@ -33,16 +33,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CampusService {
 
-
     private final CampusRepository campusRepository;
+
+    private final SchoolRepository schoolRepository;
 
     private final PlaygroundFinder playgroundFinder;
 
     private final GameFinder gameFinder;
 
     private final GameSorting gameSorting;
-
-    private final SchoolRepository schoolRepository;
 
     private final GameDtoConverter gameDtoConverter;
 
@@ -78,7 +77,6 @@ public class CampusService {
                 .toList();
     }
 
-
     @Transactional
     public List<GameResponseDto> getUpcomingGamesBySportsEvent(Long schoolId, SportsEvent sportsEvent) {
         School school = schoolRepository.findById(schoolId)
@@ -88,8 +86,6 @@ public class CampusService {
                 .flatMap(campus -> getUpcomingGamesInCampusBySportsEvent(campus.getId(), sportsEvent).stream())
                 .toList();
     }
-
-
 
     private List<Game> getUpcomingGames(List<Playground> playgrounds) {
         LocalDateTime now = LocalDateTime.now();
