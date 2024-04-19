@@ -33,6 +33,11 @@ public class FriendlyGameResultManager implements GameResultManger {
         saveGameResult(game, gameResult);
     }
 
+    @Override
+    public GameResultDto.GameResultResponseDto getGameResult(Long gameId) {
+        return null;
+    }
+
     @Transactional
     private void saveGameResult(Game game, GameResult gameResult) {
         gameResultRepository.findGameResultByGame(game)

@@ -7,4 +7,6 @@ public interface GameResultManger {
     String getType();
 
     void submitGameResult(GameResultDto.GameResultRequestDto gameResultRequestDto);
+
+    GameResultDto.GameResultResponseDto getGameResult(Long gameId);
 }

@@ -5,6 +5,8 @@ import com.example.playgroundmanage.request.dto.TeamRegistrationRequest;
 import com.example.playgroundmanage.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.dto.response.TeamMemberDto;
+import com.example.playgroundmanage.team.finder.TeamFinder;
+import com.example.playgroundmanage.team.finder.TeamFinderFactory;
 import com.example.playgroundmanage.team.service.TeamService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.type.SportsEvent;
@@ -25,6 +27,9 @@ import java.util.List;
 public class TeamController {
 
     private final TeamService teamService;
+
+
+    private final TeamFinderFactory teamFinderFactory;
 
     @GetMapping("/team/{teamId}/info")
     public TeamDto.TeamResponseDto getTeamInfo(@PathVariable Long teamId) throws IOException {
@@ -74,7 +79,9 @@ public class TeamController {
 
     @PostMapping("/team/list/{type}")
     public List<TeamDto.TeamResponseDto> getTeams(@RequestBody TeamJoinRequestDto teamJoinRequestDto, @PathVariable String type) {
-        return teamService.getTeams(teamJoinRequestDto, type);
+        TeamFinder teamFinder = teamFinderFactory.find(type);
+
+        return teamFinder.getTeams(teamJoinRequestDto);
     }
 
 }

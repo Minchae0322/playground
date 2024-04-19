@@ -36,8 +36,6 @@ public class TeamService {
 
     private final SubTeamService subTeamService;
 
-    private final TeamFinderFactory teamFinderFactory;
-
     private final FileHandler fileHandler;
 
     private final TeamingRepository teamingRepository;
@@ -62,13 +60,6 @@ public class TeamService {
         return teamRepository.save(team);
     }
 
-
-    @Transactional
-    public List<TeamDto.TeamResponseDto> getTeams(TeamJoinRequestDto teamJoinRequestDto, String by) {
-        TeamFinder teamFinder = teamFinderFactory.find(by);
-
-        return teamFinder.getTeams(teamJoinRequestDto);
-    }
 
     public void validateTeamName(String teamName) {
         if (teamRepository.existsByTeamName(teamName)) {
@@ -99,17 +90,6 @@ public class TeamService {
                 .toList();
     }
 
-
-
-    @Transactional
-    public String getUserRoleInTeam(User user, Team team) {
-        Teaming teaming = teamingRepository.findByTeamAndUser(team, user);
-        return teaming.getRole();
-    }
-
-    public Team findByTeamId(Long teamId) {
-        return teamRepository.findById(teamId).orElseThrow(TeamNotExistException::new);
-    }
 
 
     @Transactional

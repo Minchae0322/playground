@@ -45,6 +45,11 @@ public class CompetingGameResultManager implements GameResultManger {
         gameResultInjection.injectResult(game, gameResult);
     }
 
+    @Override
+    public GameResultDto.GameResultResponseDto getGameResult(Long gameId) {
+        return null;
+    }
+
     @Transactional
     public void saveGameResult(Game game, GameResult gameResult) {
         gameResultRepository.findGameResultByGame(game)

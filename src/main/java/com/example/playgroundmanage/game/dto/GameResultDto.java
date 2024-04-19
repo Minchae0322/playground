@@ -34,4 +34,30 @@ public class GameResultDto {
         }
 
     }
+
+    @Data
+    public static class GameResultResponseDto {
+
+        private Long gameId;
+
+        private int homeScore;
+
+        private int awayScore;
+
+        @Builder
+        public GameResultResponseDto(Long gameId, int homeScore, int awayScore) {
+            this.gameId = gameId;
+            this.homeScore = homeScore;
+            this.awayScore = awayScore;
+        }
+
+        public GameResult toGameResult(Game game) {
+            return GameResult.builder()
+                    .game(game)
+                    .homeScore(homeScore)
+                    .awayScore(awayScore)
+                    .build();
+        }
+
+    }
 }
