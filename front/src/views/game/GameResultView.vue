@@ -1,42 +1,59 @@
 <template>
   <div id="gameResultModal" class="modal-overlay">
-    <div class="modal-content">
 
-      <h2 class="modal-header">{{ props.gameName}}</h2>
-      <h2 class="modal-header">{{ props.gameStart}}</h2>
-      <div class="modal-gameResult">
-        <div class="score-gameResult">
-          <div class="score-group">
-            <label for="homeTeamScore">Home</label>
-            <input type="number"
-                   id="homeTeamScore"
-                   name="homeTeamScore"
-                   min="0"
-                   class="input-field"
-                   v-model="homeScore"
-                   @click="increaseScore('home')"
-                   readonly>
-            <div>
-            <button type="button" onclick="addScore('homeTeamScore', 1)">1점 추가</button>
-            <button type="button" onclick="addScore('homeTeamScore', 10)">10점 추가</button>
+      <div class="result-details-container">
+        <div class="game-info-result">
+          <div class="game-title-result">{{ props.gameName }}
+            <div class="game-type-result">{{ props.gameType }}</div>
+          </div>
+
+          <div class="game-date-result">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+                 class="time-icon">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            {{ formatDate(props.gameStart) }}
+            <div class="game-location-result"><img src="../../assets/icon-location.png">{{ props.location }}</div>
+          </div>
+
+        </div>
+        <div class="modal-gameResult">
+          <div class="score-gameResult">
+            <div class="score-group">
+              <label for="homeTeamScore">Home</label>
+              <input type="number"
+                     id="homeTeamScore"
+                     name="homeTeamScore"
+                     min="0"
+                     class="input-field"
+                     v-model="homeScore"
+                     @click="increaseScore('home')"
+                     readonly>
+              <div class="add-score-button-container">
+                <button class="add-score-button" type="button" @click="addScore('home', 1)">加1分</button>
+                <button class="add-score-button" type="button" @click="addScore('home', 10)">加10分</button>
+              </div>
+            </div>
+
+            <div class="score-group">
+              <label for="awayTeamScore">Away</label>
+              <input type="number"
+                     id="homeTeamScore"
+                     name="homeTeamScore"
+                     min="0"
+                     class="input-field"
+                     v-model="awayScore"
+                     @click="increaseScore('away')"
+                     readonly>
+              <div class="add-score-button-container">
+                <button class="add-score-button" type="button" @click="addScore('away', 1)">加1分</button>
+                <button class="add-score-button" type="button" @click="addScore('away', 10)">加10分</button>
+              </div>
             </div>
           </div>
 
-          <div class="score-group">
-            <label for="awayTeamScore">Away</label>
-            <input type="number"
-                   id="homeTeamScore"
-                   name="homeTeamScore"
-                   min="0"
-                   class="input-field"
-                   v-model="awayScore"
-                   @click="increaseScore('away')"
-                   readonly>
-            <div>
-            <button type="button" onclick="addScore('awayTeamScore', 1)">1점 추가</button>
-            <button type="button" onclick="addScore('awayTeamScore', 10)">10점 추가</button>
-            </div>
-          </div>
         </div>
         <div class="button-group">
           <button type="button" @click="close" class="cancel-button">取消</button>
@@ -44,7 +61,7 @@
         </div>
       </div>
     </div>
-  </div>
+
 </template>
 
 <script setup>
@@ -60,7 +77,7 @@ const props = defineProps({
   gameName: String,
   gameStart: String,
   gameType: String,
-
+  location: String,
 });
 const homeScore = ref(0);
 const awayScore = ref(0);
@@ -74,10 +91,23 @@ const increaseScore = async (homeAndAway) => {
   }
 }
 
+const addScore = async (homeAndAway, score) => {
+  if (homeAndAway === "home") {
+    homeScore.value += score;
+  }
+  if (homeAndAway === "away") {
+    awayScore.value += score;
+  }
+};
+
 const close = () => {
   emit('closeResultModal');
 };
 
+function formatDate(dateTime) {
+  const date = new Date(dateTime);
+  return date.toLocaleDateString();
+}
 
 const summitResult = async () => {
   await validateAccessToken()
@@ -87,7 +117,7 @@ const summitResult = async () => {
       gameId: props.gameId,
       homeScore: homeScore.value,
       awayScore: awayScore.value,
-    },{
+    }, {
       headers: {'Authorization': getAccessToken()},
     });
   } catch (error) {
@@ -139,7 +169,6 @@ const redirectToLogin = function () {
 </script>
 
 <style>
-
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -153,23 +182,87 @@ const redirectToLogin = function () {
   align-items: center;
 }
 
+.result-details-container {
+  min-width: 550px;
+  margin: auto;
+  width: 40%; /* 너비를 50%로 설정 */
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 5px 1px 8px 0 rgba(0, 0, 0, .06);
+  border-left: 1px solid rgba(0, 0, 0, .08);;
+  background: #fff; /* 카드의 배경색 */
+  overflow: auto; /* 내용이 넘칠 때 스크롤바를 보여줌 */
+
+}
+
+.game-info-result {
+  display: flex;
+  padding: 5px;
+  flex-direction: column;
+}
+
+.game-title-result {
+  font-size: 24px;
+  font-family: MiSans-Semibold, sans-serif;
+  color: black;
+  display: flex;
+
+}
+
+.game-date-result {
+  display: flex;
+  font-size: 18px;
+
+  color: var(--text-hint-dark);
+  font-family: MiSans-Medium, sans-serif;
+}
+
+.game-date-result svg {
+  width: 14px;
+  color: black;
+  margin-right: 5px;
+}
+
+.game-type-result {
+  color: #eab800;
+  font-size: 21px;
+  margin: auto 10px;
+}
+
+
+.game-location-result {
+  font-size: 16px;
+  display: flex;
+  margin-left: 5px;
+  color: #0064cc;
+  font-family: MiSans-Medium, sans-serif;
+}
+
+.game-location-result img {
+  width: 15px;
+  height: 15px;
+  margin: auto 2px auto 0;
+
+}
+
 .score-group {
   margin: 0 auto;
-
-
 }
 
 .score-group label {
   display: block;
-  margin-bottom: .5rem;
-  color: #333;
-  font-size: 1.2rem;
+
+  color: rgba(51, 51, 51, 0.6);
+  font-size: 1.4rem;
 }
 
 
 .input-field {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
+  border: 2px solid black;
+  border-radius: 4px;
   text-align: center;
   font-size: 32px;
   line-height: 100px;
@@ -185,6 +278,8 @@ const redirectToLogin = function () {
 .modal-gameResult {
   display: flex;
   flex-direction: column;
+  margin: 10px;
+
 }
 
 .score-gameResult {
@@ -195,34 +290,42 @@ const redirectToLogin = function () {
   width: 100%;
 }
 
-.modal-content {
-  background: white;
-  margin: 10% auto;
-  padding: 2rem;
-  border: 1px solid #ccc;
-  width: 50%;
-  border-radius: 10px;
+.add-score-button-container {
+  display: flex;
+  margin-top: 5px;
+  gap: 10px;
 }
 
-.modal-header {
-  font-size: 1.5rem;
-  margin-bottom: 2rem;
-  text-align: center;
+.add-score-button {
+  background-color: black;
+  color: white;
+ border: none;
+  letter-spacing: 1px;
+  font-family: MiSans-Semibold,sans-serif;
+  border-radius: 4px;
 }
-
-
 
 .button-group {
   text-align: right; /* 버튼을 오른쪽으로 정렬 */
+  margin-top: 30px;
 }
 
-.cancel-button,
+.cancel-button {
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  margin-left: 10px;
+  cursor: pointer;
+  background-color: red;
+}
+
 .save-button {
   padding: 10px 20px;
   border-radius: 5px;
   border: none;
   margin-left: 10px;
   cursor: pointer;
+  background-color: black;
 }
 
 

@@ -52,7 +52,9 @@
       <div class="game-list-title">过去比赛</div>
       <div class="game" v-for="game in pastGames" :key="game.id">
         <div class="game-info">
-          <div class="game-title">{{ game.gameName }}</div>
+          <div class="game-title">{{ game.gameName }}
+            <div class="game-type">{{ game.gameType }}</div>
+          </div>
 
           <div class="game-date">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -84,6 +86,7 @@
       <GameResultModal v-if="isGameResultModalOpen" :game-id="propsGame.gameId" :game-name="propsGame.gameName"
                        :game-start="propsGame.gameStart"
                        :game-type="propsGame.gameType_en"
+                       :location="propsGame.location"
                        @closeResultModal=closeModal></GameResultModal>
 
     </div>
@@ -108,7 +111,7 @@ const propsGame = ref({
   gameId: '1',
   gameName: '',
   gameStart: '',
-
+  location: '',
 });
 
 onMounted(async () => {
@@ -162,26 +165,6 @@ const getMyGames = async () => {
     });
   } catch (error) {
     console.error('请求失败', error.response.data.message);
-  }
-}
-
-
-const submitResult = async (gameId, gameType) => {
-  await validateAccessToken();
-
-  try {
-    const response = await axios.post(`${apiBaseUrl}/game/result/${gameType}`, {
-      gameId: gameId,
-      homeScore: 1,
-      awayScore: 2,
-    }, {
-      headers: {
-        'Authorization': getAccessToken(),
-      }
-    });
-    alert("提交成功")
-  } catch (error) {
-    alert(error)
   }
 }
 
