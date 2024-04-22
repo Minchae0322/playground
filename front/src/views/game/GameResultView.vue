@@ -37,6 +37,9 @@
               </div>
             </div>
 
+           <img class="refresh-icon" @click=refreshScore src="@/assets/icons-refresh.png">
+
+
             <div class="score-group">
               <label for="awayTeamScore">Away</label>
               <input type="number"
@@ -53,6 +56,7 @@
               </div>
             </div>
           </div>
+
 
         </div>
         <div class="button-group">
@@ -123,6 +127,11 @@ const summitResult = async () => {
   } catch (error) {
     await updateAccessToken();
   }
+};
+
+const refreshScore = async () => {
+  homeScore.value = 0;
+  awayScore.value = 0;
 };
 
 const validateAccessToken = async function () {
@@ -210,6 +219,8 @@ const redirectToLogin = function () {
 
 }
 
+
+
 .game-date-result {
   display: flex;
   font-size: 18px;
@@ -257,6 +268,14 @@ const redirectToLogin = function () {
   font-size: 1.4rem;
 }
 
+.refresh-icon {
+  width: 40px;
+  height: 40px;
+}
+
+.refresh-icon:hover {
+  opacity: 0.7;
+}
 
 .input-field {
   width: 150px;
