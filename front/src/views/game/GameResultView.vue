@@ -212,14 +212,11 @@ const redirectToLogin = function () {
 }
 
 .game-title-result {
-  font-size: 24px;
+  font-size: 28px;
   font-family: MiSans-Semibold, sans-serif;
   color: black;
   display: flex;
-
 }
-
-
 
 .game-date-result {
   display: flex;
@@ -237,7 +234,7 @@ const redirectToLogin = function () {
 
 .game-type-result {
   color: #eab800;
-  font-size: 21px;
+  font-size: 18px;
   margin: auto 10px;
 }
 
@@ -316,10 +313,10 @@ const redirectToLogin = function () {
 }
 
 .add-score-button {
-  background-color: black;
-  color: white;
- border: none;
-  letter-spacing: 1px;
+  background-color: white;
+  color: black;
+ border: 2px solid black;
+  letter-spacing: 2px;
   font-family: MiSans-Semibold,sans-serif;
   border-radius: 4px;
 }
