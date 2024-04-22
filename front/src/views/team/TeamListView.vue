@@ -277,7 +277,7 @@ const redirectToLogin = function () {
 
 }
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .team-list-container-teamList {
     min-width: 400px;
     width: 100%;

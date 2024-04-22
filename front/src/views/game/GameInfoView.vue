@@ -175,7 +175,7 @@ const sendSoloGameJoinRequest = async () => {
 
 const sendTeamRegistrationRequest = async () => {
   if (!selectedTeam.value.teamId) {
-    alert("选择队伍");
+    alert("选择团队");
     return;
   }
   const isConfirm = confirm("确定进行组队？")

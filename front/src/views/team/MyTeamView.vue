@@ -1,7 +1,7 @@
 <template>
   <div class="teams-myTeam">
     <div class="teams-title-myTeam">
-      <h3>我的队伍</h3>
+      <h3>我的团队</h3>
     </div>
     <div v-for="team in teams" :key="team.teamId" class="teams-item-myTeam">
       <router-link class="team-container-myTeam" :to="{ name:'teamInfo', params: { teamId: team.teamId } }">

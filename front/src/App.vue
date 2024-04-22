@@ -221,18 +221,18 @@ const redirectToLogin = async () => {
             <div @click="toggleMenu('team')" class="menu-container"
                  :class="{'active-menu-container': menuVisible.team}">
               <img class="icon" src='../src/assets/team-icon.png'>
-              <div class="nav-item">队伍</div>
+              <div class="nav-item">团队</div>
             </div>
             <ul v-if="menuVisible.team" class="sub-menu">
 
               <RouterLink :to="{ name:'myTeam'}" class="sub-nav-item">
-                <li>我的队伍</li>
+                <li>我的团队</li>
               </RouterLink>
               <RouterLink :to="{ name:'teamList'}" class="sub-nav-item">
-                <li>加入队伍</li>
+                <li>加入团队</li>
               </RouterLink>
               <RouterLink :to="{ name:'teamRequest'}" class="sub-nav-item">
-                <li>队伍加入请求</li>
+                <li>团队加入请求</li>
               </RouterLink>
               <RouterLink :to="{ name:'teamBuilding'}" class="sub-nav-item">
                 <li>组队</li>
@@ -479,7 +479,7 @@ header {
 }
 
 
-@media (max-width: 600px) {
+@media (max-width: 640px) {
   .router-view-container-m {
     width: 100%;
     justify-content: center;

@@ -44,7 +44,14 @@ public class TeamService {
 
 
     @Transactional
-    public Team saveTeam(TeamRequestDto teamRequestDto) {
+    public Long generateTeam(TeamRequestDto teamRequestDto)  {
+        Team team = saveTeam(teamRequestDto);
+        teamingService.joinTeam(team, teamRequestDto.getLeader());
+        return team.getId();
+    }
+
+    @Transactional
+    private Team saveTeam(TeamRequestDto teamRequestDto) {
         validateTeamName(teamRequestDto.getTeamName());
         Team team = Team.builder()
                 .teamName(teamRequestDto.getTeamName())
@@ -68,12 +75,7 @@ public class TeamService {
     }
 
 
-    @Transactional
-    public Long generateTeam(TeamRequestDto teamRequestDto) throws IOException {
-        Team team = saveTeam(teamRequestDto);
-        teamingService.joinTeam(team, teamRequestDto.getLeader());
-        return team.getId();
-    }
+
 
     @Transactional
     public List<TeamMemberDto> getTeamMembers(Long teamId) {

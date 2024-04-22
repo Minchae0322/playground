@@ -1,6 +1,6 @@
 <template>
   <div class="team-building-form-container">
-    <h2>创建队伍</h2>
+    <h2>建立团队</h2>
     <div class="form-info">组队</div>
 
     <form @submit.prevent="submitForm">
@@ -11,7 +11,7 @@
     </div>
 
       <div class="form-group">
-        <label for="teamName">队伍名</label>
+        <label for="teamName">团队名</label>
         <input type="text" id="teamName" v-model="team.name" placeholder="Enter team name">
       </div>
       <div class="sports-category-container">
