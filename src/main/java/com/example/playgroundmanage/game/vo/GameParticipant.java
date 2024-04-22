@@ -42,6 +42,7 @@ public class GameParticipant {
         this.subTeam = subTeam;
         this.game = game;
         this.isAccepted = isAccepted;
+        this.gameRecord = GameRecord.NONE;
     }
 
 

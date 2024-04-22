@@ -74,7 +74,8 @@ const getTeams = async (type, sportsEvent) => {
     },)
     teams.value = response.data.map(team => ({
       ...team,
-      teamProfileImg: team.teamProfileImg
+      teamProfileImg: team.teamProfileImg ? team.teamProfileImg : defaultImage,
+
     }));
   } catch (error) {
 
