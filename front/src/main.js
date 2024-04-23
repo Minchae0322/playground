@@ -14,6 +14,8 @@ const app = createApp(App)
 app.config.globalProperties.$apiBaseUrl = "https://hityundong.com/api";
 
 app.provide('frontBaseUrl', 'https://hityundong.com/');
+//app.provide('frontBaseUrl', 'http://localhost:5173/');
+
 app.use(createPinia())
 app.use(router)
 app.mount('#app')

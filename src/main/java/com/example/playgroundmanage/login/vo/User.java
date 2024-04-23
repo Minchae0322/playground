@@ -85,6 +85,16 @@ public class User {
     }
 
 
+    public UploadFile getUserProfileImg() {
+        if (userProfileImg == null) {
+            return UploadFile.builder()
+                    .storeFileName("")
+                    .orgFileName("")
+                    .build(); // null일 때 기본 객체 반환
+        }
+        return userProfileImg;
+    }
+
     public void enable() {
         isLoggedIn = true;
     }
