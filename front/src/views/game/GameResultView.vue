@@ -124,6 +124,7 @@ const summitResult = async () => {
     }, {
       headers: {'Authorization': getAccessToken()},
     });
+    emit('closeAndSubmitModal');
   } catch (error) {
     await updateAccessToken();
   }
@@ -209,6 +210,7 @@ const redirectToLogin = function () {
   display: flex;
   padding: 5px;
   flex-direction: column;
+  margin-bottom: 20px;
 }
 
 .game-title-result {
@@ -284,7 +286,11 @@ const redirectToLogin = function () {
   line-height: 100px;
 }
 
-/* 선택 가능한 입력 필드의 외형을 제거 */
+.input-field:hover{
+  border: 3px solid #0064cc;
+  color: #0064cc;
+}
+
 .input-field::-webkit-inner-spin-button,
 .input-field::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -300,9 +306,9 @@ const redirectToLogin = function () {
 
 .score-gameResult {
   display: flex;
-  justify-content: center; /* 가로축 중앙 정렬 */
-  align-items: center; /* 세로축 중앙 정렬 */
-  flex-direction: row; /* 항목들을 가로로 나열 */
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
   width: 100%;
 }
 
@@ -313,16 +319,16 @@ const redirectToLogin = function () {
 }
 
 .add-score-button {
-  background-color: white;
-  color: black;
- border: 2px solid black;
+  background-color: #0064cc;
+  color: white;
+  border: none;
   letter-spacing: 2px;
   font-family: MiSans-Semibold,sans-serif;
   border-radius: 4px;
 }
 
 .button-group {
-  text-align: right; /* 버튼을 오른쪽으로 정렬 */
+  text-align: right;
   margin-top: 30px;
 }
 

@@ -87,6 +87,7 @@
                        :game-start="propsGame.gameStart"
                        :game-type="propsGame.gameType_en"
                        :location="propsGame.location"
+                       @closeAndSubmitModal=closeAndSubmitModal
                        @closeResultModal=closeModal></GameResultModal>
 
     </div>
@@ -103,6 +104,7 @@ import {getCurrentInstance, onMounted, ref} from "vue";
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 
+const router = useRouter()
 const pastGames = ref([]);
 const upcomingGames = ref([]);
 const selectedMonth = ref(new Date().toISOString().substring(0, 7));
@@ -137,6 +139,11 @@ const openResultModal = function (game) {
 
 const closeModal = () => {
   isGameResultModalOpen.value = false;
+};
+
+const closeAndSubmitModal = () => {
+  isGameResultModalOpen.value = false;
+  router.go(0);
 };
 
 const getMyGames = async () => {
