@@ -7,7 +7,7 @@
 
     <div class="header">
       <div class="user-profile-container-userInfo">
-        <img :src="user.userProfileImg" @click="triggerFileInput" class="profile-image"/>
+        <img :src="getImageUrl(user.userProfileImg)" @click="triggerFileInput" class="profile-image"/>
         <input type="file" ref="fileInput" @change="handleFileChange" style="display:none"/>
         <div class="profile-hint">点击照片更改头像</div>
       </div>
@@ -38,7 +38,7 @@
       </div>
       <div v-for="team in teams" :key="team.teamId" class="teams-item-userInfo">
         <router-link class="team-container-userInfo" :to="{ name:'teamInfo', params: { teamId: team.teamId } }">
-          <img :src="team.teamProfileImg" class="team-image"/>
+          <img :src="getImageUrl(team.teamProfileImg)" class="team-image"/>
           <div class="team-info-container-userInfo">
             <div class="team-info-name-userInfo">{{ team.teamName }}</div>
             <div class="team-info-sports-event-userInfo">项目: {{ team.teamSportsEvent }}</div>
@@ -50,11 +50,15 @@
 </template>
 
 <script setup>
-import {getCurrentInstance, onMounted, ref} from "vue";
+import {getCurrentInstance, inject, onMounted, ref} from "vue";
 import axios from "axios";
 import defaultImage from '../assets/img.png';
 import {useRouter} from "vue-router";
 
+const frontBaseUrl = inject('frontBaseUrl');
+const getImageUrl = (file) => {
+  return frontBaseUrl + file;
+};
 
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;

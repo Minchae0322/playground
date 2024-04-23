@@ -14,7 +14,6 @@ import java.util.Map;
 
 
 @Getter
-
 public class MyUserDetails implements UserDetails, OAuth2User {
 
     private final User user;

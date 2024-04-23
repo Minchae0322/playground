@@ -27,7 +27,6 @@ public class Team {
     private String teamName;
 
     @OneToOne
-    @ColumnDefault("")
     private UploadFile teamProfileImg;
 
     @ManyToOne
@@ -35,7 +34,7 @@ public class Team {
 
     private String description;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     private SportsEvent sportsEvent;
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)

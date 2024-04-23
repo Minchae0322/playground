@@ -24,7 +24,7 @@ import java.util.Objects;
 @Entity
 @Getter
 @RequiredArgsConstructor
-public class User implements Serializable {
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,11 +41,10 @@ public class User implements Serializable {
 
     private boolean isLoggedIn;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated
     private UserRole role;
 
     @OneToOne
-    @ColumnDefault("")
     private UploadFile userProfileImg;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
@@ -67,20 +66,24 @@ public class User implements Serializable {
     private List<GameRequest> gameRequests;
 
     @Builder
-    public User(Long id, String username, String provider, String password, String nickname, boolean isEnable, UserRole role, List<Teaming> teams, List<GameParticipant> gameParticipants) {
+    public User(Long id, String username, String nickname, String provider, String password, boolean isEnable, boolean isLoggedIn, UserRole role, UploadFile userProfileImg, UserGameRecord userGameRecord, List<GameRequest> gameRequests_host, List<Game> hostGames, List<Teaming> teams, List<GameParticipant> gameParticipants, List<GameRequest> gameRequests) {
         this.id = id;
         this.username = username;
+        this.nickname = nickname;
         this.provider = provider;
         this.password = password;
-        this.nickname = nickname;
         this.isEnable = isEnable;
+        this.isLoggedIn = isLoggedIn;
         this.role = role;
+        this.userProfileImg = userProfileImg;
+        this.userGameRecord = userGameRecord;
+        this.gameRequests_host = new ArrayList<>();
         this.hostGames = new ArrayList<>();
         this.teams = new ArrayList<>();
-        this.gameRequests = new ArrayList<>();
-        this.gameRequests_host = new ArrayList<>();
         this.gameParticipants = new ArrayList<>();
+        this.gameRequests = new ArrayList<>();
     }
+
 
     public void enable() {
         isLoggedIn = true;

@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.login.dto;
 
+import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.type.UserRole;
 import com.example.playgroundmanage.login.vo.User;
 import lombok.Builder;
