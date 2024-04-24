@@ -17,10 +17,10 @@ public class FileRootParser {
 
 
     public static String getExtFilePath() {
-        return fileExtDir;
+        return fileExtDir_dev;
     }
 
     public static String getStoreFilePath() {
-        return fileStoreDir;
+        return fileStoreDir_dev;
     }
 }

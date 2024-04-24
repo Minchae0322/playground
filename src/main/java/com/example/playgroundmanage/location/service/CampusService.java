@@ -10,6 +10,7 @@ import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.service.GameDtoConverter;
 import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.location.dto.CampusResponseDto;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.location.repository.SchoolRepository;
@@ -84,6 +85,18 @@ public class CampusService {
 
         return school.getCampus().stream()
                 .flatMap(campus -> getUpcomingGamesInCampusBySportsEvent(campus.getId(), sportsEvent).stream())
+                .toList();
+    }
+
+    public List<CampusResponseDto> getCampusList(Long schoolId) {
+        School school = schoolRepository.findById(schoolId)
+                .orElseThrow(SchoolNotExistException::new);
+
+        return school.getCampus().stream()
+                .map(campus -> CampusResponseDto.builder()
+                        .campusName(campus.getCampusName())
+                        .campusId(campus.getId())
+                        .build())
                 .toList();
     }
 

@@ -1,21 +1,78 @@
 <template>
-  <div class="user-profile-container-userInfo">
-    <input type="file" ref="fileInput" @change="handleFileChange" />
-    <div class="profile-hint">点击照片更改头像</div>
+
+  <div class="team-building-form-container">
+    <h2>添加运动场</h2>
+    <div class="form-info">运动场</div>
+
+    <form @submit.prevent="submitForm">
+      <div class="image-preview">
+        <img :src="playground.imagePreview || defaultImage" @click="triggerFileInput" class="profile-image-playground" />
+        <input type="file" ref="fileInput" @change="handleFileChange" style="display:none" />
+        <div class="chang-profile-info">点击换头像</div>
+      </div>
+
+      <div class="form-group">
+        <label for="teamName">运动场名</label>
+        <input type="text" v-model="playground.name" placeholder="Enter team name">
+      </div>
+
+      <select v-model="selectedMenu">
+        <option v-for="menu in menus" :key="menu.id" :value="menu.id">
+          {{ menu.name }}
+        </option>
+      </select>
+      <p>선택된 메뉴: {{ selectedMenu }}</p>
+
+      <div class="sports-category-container">
+        <h4 class="">项目</h4>
+        <img src="../assets/soccer-ball.png" alt="" :class="{ 'selected': sportsEvent === 'Soccer' }"
+             @click="selectCategory('Soccer')">
+        <img src="../assets/icon-basketballBall.png" alt="" :class="{ 'selected': sportsEvent === 'Basketball' }"
+             @click="selectCategory('Basketball')">
+        <img src="../assets/icon-badmintonBall.png" alt="" :class="{ 'selected': sportsEvent === 'Badminton' }"
+             @click="selectCategory('Badminton')">
+        <img src="../assets/icon-tennisBall.png" alt="" :class="{ 'selected': sportsEvent === 'Tennis' }"
+             @click="selectCategory('Tennis')">
+        <img src="../assets/icon-tableTennisBall.png" alt="" :class="{ 'selected': sportsEvent === 'Table_tennis' }"
+             @click="selectCategory('Table_tennis')">
+      </div>
+
+
+
+
+      <button type="submit" @click="write">确定</button>
+    </form>
   </div>
 </template>
 
 
 <script setup>
-import {getCurrentInstance, onMounted, ref} from "vue";
+import {getCurrentInstance, onMounted, ref} from 'vue';
 import axios from "axios";
 import defaultImage from '../assets/img.png';
 import {useRouter} from "vue-router";
 
+const sportsEvent = ref("Soccer")
+const fileInput = ref(null);
+
+const playground = ref({
+  name: '',
+  description: '',
+  profilePicture: 'null',
+  imagePreview: defaultImage,
+});
+const menus = ref([
+  { id: 1, name: '홈' },
+  { id: 2, name: '프로필' },
+  { id: 3, name: '설정' }
+]);
+
+const selectedMenu = ref(menus.value[0].id);
 
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
 const router = useRouter();
+/*
 const handleFileChange = async (event) => {
   await validateAccessToken()
   const file = event.target.files[0];
@@ -49,7 +106,63 @@ const handleFileChange = async (event) => {
     console.error('업로드 실패', error);
   }
 };
+*/
 
+const selectCategory = function (category) {
+  sportsEvent.value = category; // 'Soccer' 또는 'Baseball'로 설정됩니다.
+  console.log(sportsEvent.value)
+};
+
+const triggerFileInput = () => {
+  fileInput.value.click();
+};
+
+const handleFileChange = (e) => {
+  const file = e.target.files[0];
+  playground.value.profilePicture = file;
+
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    playground.value.imagePreview = e.target.result;
+  };
+  reader.readAsDataURL(file);
+};
+
+const write = async function () {
+  // FormData 인스턴스 생성
+  const formData = new FormData();
+
+  // 팀 정보 추가
+  formData.append("team", new Blob([JSON.stringify({
+    teamName: team.value.name,
+    teamDescription: team.value.description,
+    sportsEvent: sportsEvent.value
+  })], {
+    type: "application/json"
+  }));
+
+  const compressedImage = await compressImage(team.value.profilePicture);
+  // 파일이 존재하는 경우에만 파일을 FormData에 추가
+  if (team.value.profilePicture) {
+    formData.append("imageFile", compressedImage);
+  }
+
+  // Axios로 POST 요청 보내기
+  try {
+    const response = await axios.post(`${apiBaseUrl}/team/build`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        'Authorization': localStorage.getItem("accessToken")
+      },
+    })
+    const teamId = response.data.teamId;
+    alert("成功")
+    router.replace({name: 'teamInfo', params: {teamId: teamId}})
+  } catch (e) {
+    const errorMessage = extractErrorMessage(error);
+    alert(errorMessage);
+  }
+};
 
 const compressImage = async (file) => {
   return new Promise((resolve) => {
@@ -119,3 +232,17 @@ const redirectToLogin = function () {
   router.push("/login");
 };
 </script>
+
+<style>
+.profile-image-playground {
+  width: 400px;
+  height: 200px;
+  background-color: #eee;
+  aspect-ratio: 18 / 12; /* 18:9 비율로 설정 */
+  object-fit: cover; /* 이미지가 지정된 비율에 맞도록 조정 */
+  border: 2px solid var(--text-hint-light);
+  display: inline-block;
+}
+
+
+</style>
