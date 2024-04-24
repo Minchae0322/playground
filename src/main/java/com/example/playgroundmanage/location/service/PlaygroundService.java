@@ -12,11 +12,14 @@ import com.example.playgroundmanage.exception.SchoolNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.service.GameDtoConverter;
 import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.location.dto.PlaygroundRequestDto;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.location.repository.SchoolRepository;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.location.vo.School;
+import com.example.playgroundmanage.store.FileHandler;
+import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.util.*;
 import com.example.playgroundmanage.location.vo.Campus;
@@ -46,6 +49,30 @@ public class PlaygroundService {
     private final PlaygroundDtoConverter playgroundDtoConverter;
 
     private final GameSorting gameSorting;
+
+    private final CampusRepository campusRepository;
+
+    private final FileHandler fileHandler;
+
+
+    @Transactional
+    public void addPlayground(PlaygroundRequestDto playgroundRequestDto) {
+        Campus campus = campusRepository.findById(playgroundRequestDto.getCampusId())
+                .orElseThrow(CampusNotExistException::new);
+
+
+        UploadFile uploadFile = fileHandler.storeFile(playgroundRequestDto.getPlaygroundProfileImg());
+
+        Playground playground = Playground.builder()
+                .campus(campus)
+                .sportsEvent(SportsEvent.fromString(playgroundRequestDto.getSportsEvent()))
+                .img(uploadFile)
+                .name(playgroundRequestDto.getPlaygroundName())
+                .build();
+
+        playgroundRepository.save(playground);
+
+    }
 
     @Transactional
     public boolean isValidGameStartTime(Long playgroundId, GameTimeDto gameTimeDto) {

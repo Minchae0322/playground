@@ -83,4 +83,5 @@ public class UserController {
     public List<UserRecordResponse> getUsersRanking() {
         return userService.getUsersRanking();
     }
+
 }
