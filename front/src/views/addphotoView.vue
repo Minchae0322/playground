@@ -16,12 +16,12 @@
         <input type="text" v-model="playground.name" placeholder="Enter team name">
       </div>
 
-      <select v-model="selectedMenu">
-        <option v-for="menu in menus" :key="menu.id" :value="menu.id">
-          {{ menu.name }}
+      <select  v-model="selectedMenu">
+        <option v-for="campus in campusList" :key="campus.campusId" :value="campus.campusId">
+          {{ campus.campusName }}
         </option>
       </select>
-      <p>선택된 메뉴: {{ selectedMenu }}</p>
+
 
       <div class="sports-category-container">
         <h4 class="">项目</h4>
@@ -52,6 +52,7 @@ import axios from "axios";
 import defaultImage from '../assets/img.png';
 import {useRouter} from "vue-router";
 
+
 const sportsEvent = ref("Soccer")
 const fileInput = ref(null);
 
@@ -61,13 +62,16 @@ const playground = ref({
   profilePicture: 'null',
   imagePreview: defaultImage,
 });
-const menus = ref([
-  { id: 1, name: '홈' },
-  { id: 2, name: '프로필' },
-  { id: 3, name: '설정' }
+
+
+const campusList = ref([
+  {
+    campusId: '1',
+  }
 ]);
 
-const selectedMenu = ref(menus.value[0].id);
+
+const selectedMenu = ref(campusList.value[0].campusId);
 
 const internalInstance = getCurrentInstance();
 const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseUrl;
@@ -107,6 +111,27 @@ const handleFileChange = async (event) => {
   }
 };
 */
+onMounted(async () => {
+  // Check if the initial page number is provided in the route query
+  await getCampusList()
+});
+const getCampusList = async () => {
+  await validateAccessToken();
+
+  try {
+    const response = await axios.get(`${apiBaseUrl}/campus/list/1`, {
+      headers: {
+
+        'Authorization': getAccessToken()
+      },
+    });
+    campusList.value = response.data;
+
+  } catch (error) {
+
+  }
+};
+
 
 const selectCategory = function (category) {
   sportsEvent.value = category; // 'Soccer' 또는 'Baseball'로 설정됩니다.
@@ -133,31 +158,31 @@ const write = async function () {
   const formData = new FormData();
 
   // 팀 정보 추가
-  formData.append("team", new Blob([JSON.stringify({
-    teamName: team.value.name,
-    teamDescription: team.value.description,
-    sportsEvent: sportsEvent.value
+  formData.append("playgroundRequest", new Blob([JSON.stringify({
+    playgroundName: playground.value.name,
+    sportsEvent: sportsEvent.value,
+    campusId: selectedMenu.value,
+
   })], {
     type: "application/json"
   }));
 
-  const compressedImage = await compressImage(team.value.profilePicture);
+  const compressedImage = await compressImage(playground.value.profilePicture);
   // 파일이 존재하는 경우에만 파일을 FormData에 추가
-  if (team.value.profilePicture) {
+  if (playground.value.profilePicture) {
     formData.append("imageFile", compressedImage);
   }
 
-  // Axios로 POST 요청 보내기
+
   try {
-    const response = await axios.post(`${apiBaseUrl}/team/build`, formData, {
+    const response = await axios.post(`${apiBaseUrl}/playground/add`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
-        'Authorization': localStorage.getItem("accessToken")
+        'Authorization': getAccessToken()
       },
     })
-    const teamId = response.data.teamId;
     alert("成功")
-    router.replace({name: 'teamInfo', params: {teamId: teamId}})
+
   } catch (e) {
     const errorMessage = extractErrorMessage(error);
     alert(errorMessage);

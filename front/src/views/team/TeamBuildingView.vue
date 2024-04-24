@@ -226,7 +226,7 @@ const redirectToLogin = function () {
 };
 </script>
 
-<style>
+<style scoped>
 .team-building-form-container {
   min-width: 400px;
   width: 35%;
