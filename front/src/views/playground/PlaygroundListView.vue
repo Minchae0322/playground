@@ -140,14 +140,15 @@ const getPlaygroundsByCampus = async (campusId, sportsEvent) => {
           }
         }
     );
+    isPlaygroundExist.value = response.data.length !== 0;
+
     playgroundInfoList.value = response.data.map(playground => ({
       ...playground,
       playgroundProfileImg: playground.playgroundProfileImg ?playground.playgroundProfileImg : defaultImage,
     }));
-    isPlaygroundExist.value = true;
 
   } catch (error) {
-    isPlaygroundExist.value = false;
+
   }
   activeCampus.value = campusId;
 };
@@ -195,14 +196,14 @@ const getPlaygrounds = async (sportsEvent) => {
           }
         }
     );
+
+    isPlaygroundExist.value = response.data.length !== 0;
+
     playgroundInfoList.value = response.data.map(playground => ({
       ...playground,
       playgroundProfileImg: playground.playgroundProfileImg ? playground.playgroundProfileImg : defaultImage,
     }));
-    isPlaygroundExist.value = true;
-
   } catch (error) {
-    isPlaygroundExist.value = false;
   }
   activeCampus.value = null;
 };

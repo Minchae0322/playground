@@ -70,7 +70,7 @@ public class CampusService {
         List<Playground> playgrounds = playgroundFinder.getPlaygroundsBySportsEvent(campus.getPlaygrounds(), valueOf);
 
         if (playgrounds.size() == 0) {
-            throw new PlaygroundNotExistException();
+            return new ArrayList<>();
         }
 
         return playgrounds.stream()

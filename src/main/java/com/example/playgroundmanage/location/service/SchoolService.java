@@ -5,6 +5,7 @@ import com.example.playgroundmanage.exception.SchoolNotExistException;
 import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.location.dto.CampusResponseDto;
+import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.repository.SchoolRepository;
 import com.example.playgroundmanage.location.vo.Campus;
 import com.example.playgroundmanage.location.vo.Playground;
@@ -27,6 +28,9 @@ public class SchoolService {
     private final SchoolRepository schoolRepository;
 
     private final GameFinder gameFinder;
+
+    private final CampusService campusService;
+
 
     @Transactional
     public List<CampusResponseDto> getCampusInfo(Long schoolId) {
@@ -65,6 +69,17 @@ public class SchoolService {
                 .toList();
     }
 
+    public List<PlaygroundResponseDto> getPlaygroundBySchoolAndSportsType(Long schoolId, SportsEvent valueOf) {
+        School school = findSchoolById(schoolId);
+
+        return school.getCampus().stream()
+                .flatMap(
+                        campus -> campusService.getPlaygroundByCampusAndSportsType(campus.getId(), valueOf)
+                                .stream()
+                )
+                .toList();
+    }
+
     private List<Game> getUpcomingGames(List<Playground> playgrounds) {
         LocalDateTime now = LocalDateTime.now();
         return playgrounds.stream()
@@ -73,10 +88,17 @@ public class SchoolService {
                 .collect(Collectors.toList());
     }
 
+    private School findSchoolById(Long schoolId) {
+        return schoolRepository.findById(schoolId)
+                .orElseThrow(SchoolNotExistException::new);
+    }
+
 
     private List<Playground> getPlaygroundsBySportsEvent(Campus campus, SportsEvent sportsEvent) {
         return campus.getPlaygrounds().stream()
                 .filter(playground -> playground.getSportsEvent().equals(sportsEvent))
                 .toList();
     }
+
+
 }

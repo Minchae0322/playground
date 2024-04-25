@@ -32,7 +32,7 @@ public class SchoolController {
 
     @GetMapping("/school/{schoolId}/playground/{sportsType}")
     public List<PlaygroundResponseDto> getPlaygroundsBySportsType(@PathVariable String sportsType, @PathVariable Long schoolId) {
-        return campusService.getPlaygroundByCampusAndSportsType(schoolId, SportsEvent.valueOf(sportsType));
+        return schoolService.getPlaygroundBySchoolAndSportsType(schoolId, SportsEvent.valueOf(sportsType));
     }
 
     @GetMapping("/school/{schoolId}/upcoming/{sportsType}")
