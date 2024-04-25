@@ -97,32 +97,7 @@ public class GameController {
         return ResponseEntity.ok("success");
     }
 
-    @GetMapping("/user/game/{year}/{month}")
-    public List<UsersGameDto.UsersGameResponseDto> getMonthGamesInLatestOrder(@PathVariable Integer month, @PathVariable Integer year, @AuthenticationPrincipal MyUserDetails myUserDetails) {
-        UsersGameDto.UsersGameRequestDto usersGameRequestDto = UsersGameDto.UsersGameRequestDto.builder()
-                .myDateTime(initMyDateTime(LocalDateTime.of(year, month, 1, 0, 0)))
-                .user(myUserDetails.getUser())
-                .build();
 
-        return gameService.getUserJoinGames(usersGameRequestDto);
-    }
-
-    @GetMapping("/user/game/host/{year}/{month}")
-    public List<UsersGameDto.UsersGameResponseDto> getGamesUserHostByDate(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Integer year, @PathVariable Integer month) {
-        return gameService.getUserHostGamesInMonth(myUserDetails.getUser(), LocalDateTime.of(year, month, 1, 0, 0));
-    }
-
-    @GetMapping("/user/game/host")
-    public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(@AuthenticationPrincipal MyUserDetails myUserDetails) {
-        return gameService.getUserHostGames(myUserDetails.getUser());
-    }
-
-    @PreAuthorize("hasPermission(#gameId,'delete_game','DELETE')")
-    @DeleteMapping("/user/game/{gameId}/delete")
-    //todo 유저가 호스트 하는 게임이랑 유저가 참여하는 게임 프론트 엔드 완성
-    public void deleteGame(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Long gameId) {
-        gameService.deleteGame(gameId);
-    }
 
 
     @PreAuthorize("hasPermission(#gameId,'summit_game','CREATE')")

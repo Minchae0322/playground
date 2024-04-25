@@ -2,6 +2,8 @@ package com.example.playgroundmanage.controller;
 
 import com.example.playgroundmanage.exception.UserNotValidException;
 import com.example.playgroundmanage.login.dto.*;
+import com.example.playgroundmanage.login.service.UserHostGameService;
+import com.example.playgroundmanage.login.service.UserJoinGameService;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.login.service.UserService;
 import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
@@ -9,11 +11,15 @@ import com.example.playgroundmanage.login.vo.MyUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.example.playgroundmanage.date.MyDateTimeLocal.initMyDateTime;
 
 
 @RestController
@@ -23,6 +29,8 @@ public class UserController {
     private final UserService userService;
 
     private final UserDetailsServiceImpl userDetailsService;
+
+
 
     @GetMapping("/user/info")
     public UserResponseDto getUserInfo(@AuthenticationPrincipal MyUserDetails userDetails) {
@@ -69,6 +77,9 @@ public class UserController {
     }
 
 
+
+
+
     @GetMapping("/user/record/{userId}")
     public UserRecordResponse getUserRecord(@PathVariable Long userId) {
         return userService.getUserRecord(userId);
@@ -83,5 +94,7 @@ public class UserController {
     public List<UserRecordResponse> getUsersRanking() {
         return userService.getUsersRanking();
     }
+
+
 
 }
