@@ -79,7 +79,7 @@ public class User {
         this.userGameRecord = userGameRecord;
         this.gameRequests_host = new ArrayList<>();
         this.hostGames = new ArrayList<>();
-        this.teams = new ArrayList<>();
+        this.teams = teams;
         this.gameParticipants = new ArrayList<>();
         this.gameRequests = new ArrayList<>();
     }

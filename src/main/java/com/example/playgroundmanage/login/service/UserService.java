@@ -72,8 +72,11 @@ public class UserService {
 
     @Transactional
     public List<TeamDto.TeamResponseDto> getTeamsInfoUserBelongsTo(Long userId) {
-        User user = userRepository.findById(userId).orElseThrow(UserNotExistException::new);
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotExistException::new);
+
         List<Teaming> teams = user.getTeams();
+
         return teams.stream()
                 .map(t -> TeamDto.TeamResponseDto.builder()
                         .teamId(t.getTeam().getId())
@@ -111,15 +114,12 @@ public class UserService {
         return userDtoConverter.toUserInTeamResponseDto(user, role);
     }
 
-   /* public List<Game> getHostCreatedGamesNotStarted(User user) {
-        return gameRepository.findAllByHostAndGameStartDateTimeAfter(user, LocalDateTime.now());
-    }*/
-
     @Transactional
     public UserResponseDto changeNickname(UserRequestDto userRequestDto) {
         if (isValidUserNickname(userRequestDto.getUserNickname())) {
             throw new IllegalArgumentException("已经存在或不能使用的昵称");
         }
+
         User user = userRepository.findById(userRequestDto.getUserId())
                 .orElseThrow(UserNotExistException::new);
 

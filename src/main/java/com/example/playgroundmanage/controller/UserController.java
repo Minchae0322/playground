@@ -30,8 +30,6 @@ public class UserController {
 
     private final UserDetailsServiceImpl userDetailsService;
 
-
-
     @GetMapping("/user/info")
     public UserResponseDto getUserInfo(@AuthenticationPrincipal MyUserDetails userDetails) {
         return userService.getUserInfo(userDetails.getUser());
@@ -71,10 +69,10 @@ public class UserController {
         return userService.changeNickname(userRequestDto);
     }
 
-    @PostMapping("/user/signup")
+/*    @PostMapping("/user/signup")
     public void signup(@RequestBody UserSignupForm userSignupForm) {
         userService.signup(userSignupForm);
-    }
+    }*/
 
 
 
