@@ -1,12 +1,14 @@
 package com.example.playgroundmanage.login.service;
 
 import com.example.playgroundmanage.exception.GameNotExistException;
+import com.example.playgroundmanage.exception.UserNotParticipantGameException;
 import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.service.GameDtoConverter;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.login.dto.UsersGameDto;
+import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.util.GameFinder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -42,19 +44,18 @@ public class UserJoinGameService {
     }
 
     @Transactional
-    public void deleteGame(Long gameId) {
+    public void userOutOfGame(Long gameId, User user) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
 
-        game.getPlayground().getGames().remove(game);
+        GameParticipant gameParticipant = gameParticipantRepository.findByGameAndUser(game, user)
+                .orElseThrow(UserNotParticipantGameException::new);
 
-        //아마도 game 에서 CompetingGame -> SubTeam -> List<GameParticipant>
-        //이런식으로 먼저 삭제되어서 game -> List<GameParticipant> 를 못찾는듯
+        game.getGameParticipants().remove(gameParticipant);
 
-        List<GameParticipant> gameParticipants = game.getGameParticipants();
-        gameParticipants.forEach(GameParticipant::delete);
-        //gameParticipantRepository.deleteAll(gameParticipants);
+        gameParticipantRepository.delete(gameParticipant);
 
-        gameRepository.delete(game);
     }
+
+
 }

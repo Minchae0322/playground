@@ -33,8 +33,6 @@ public class GameController {
 
     private final GameService gameService;
 
-    private final SubTeamService subTeamService;
-
     private final PlaygroundService playgroundService;
 
     private final GameGeneratorFactory gameGeneratorFactory;
@@ -82,23 +80,6 @@ public class GameController {
         return ResponseEntity.ok(gameGenerator.generate(gameDto));
     }
 
-    @DeleteMapping("/game/{gameId}/{subTeamId}/out")
-    @Transactional
-    public ResponseEntity<String> userOutOfGame(@PathVariable Long gameId, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Long subTeamId) {
-        gameService.userOutOfGame(gameId, myUserDetails.getUser());
-        subTeamService.deleteSubTeamIfParticipantZero(subTeamId);
-        return ResponseEntity.ok("success");
-    }
-
-    @DeleteMapping("/game/{gameId}/friendly/out")
-    @Transactional
-    public ResponseEntity<String> userOutOfFriendlyGame(@PathVariable Long gameId, @AuthenticationPrincipal MyUserDetails myUserDetails) {
-        gameService.userOutOfGame(gameId, myUserDetails.getUser());
-        return ResponseEntity.ok("success");
-    }
-
-
-
 
     @PreAuthorize("hasPermission(#gameId,'summit_game','CREATE')")
     @PostMapping("/game/result/{gameId}/{gameType}")
@@ -110,4 +91,11 @@ public class GameController {
 
         return ResponseEntity.ok("success");
     }
+
+    @PreAuthorize("hasPermission(#gameId,'delete_game','DELETE')")
+    @DeleteMapping("/user/game/{gameId}/delete")
+    public void deleteGame(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Long gameId) {
+        gameService.deleteGame(gameId);
+    }
+
 }

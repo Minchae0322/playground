@@ -1,8 +1,10 @@
 package com.example.playgroundmanage.login.service;
 
+import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.service.GameDtoConverter;
 import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.login.dto.UsersGameDto;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.User;
@@ -50,4 +52,6 @@ public class UserHostGameService {
                 .map(gameDtoConverter::toUsersGameResponseDto)
                 .toList();
     }
+
+
 }

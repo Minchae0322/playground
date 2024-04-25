@@ -20,15 +20,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SchoolController {
 
-    private final PlaygroundService playgroundService;
-
     private final SchoolService schoolService;
 
     private final CampusService campusService;
 
 
     @GetMapping("/school/{schoolId}/campus/info")
-    public List<CampusResponseDto> getCampusInfo(@PathVariable Long schoolId) {
+    public List<CampusResponseDto> getCampusInfos(@PathVariable Long schoolId) {
         return schoolService.getCampusInfo(schoolId);
     }
 

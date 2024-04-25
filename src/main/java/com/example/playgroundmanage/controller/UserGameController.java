@@ -1,10 +1,13 @@
 package com.example.playgroundmanage.controller;
 
+import com.example.playgroundmanage.game.service.SubTeamService;
 import com.example.playgroundmanage.login.dto.UsersGameDto;
 import com.example.playgroundmanage.login.service.UserHostGameService;
 import com.example.playgroundmanage.login.service.UserJoinGameService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -25,6 +28,7 @@ public class UserGameController {
 
     private final UserJoinGameService userJoinGameService;
 
+    private final SubTeamService subTeamService;
 
     @GetMapping("/user/game/{year}/{month}")
     public List<UsersGameDto.UsersGameResponseDto> getMonthGamesInLatestOrder(@PathVariable Integer month, @PathVariable Integer year, @AuthenticationPrincipal MyUserDetails myUserDetails) {
@@ -37,14 +41,6 @@ public class UserGameController {
     }
 
 
-
-    @PreAuthorize("hasPermission(#gameId,'delete_game','DELETE')")
-    @DeleteMapping("/user/game/{gameId}/delete")
-    //todo 유저가 호스트 하는 게임이랑 유저가 참여하는 게임 프론트 엔드 완성
-    public void deleteGame(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Long gameId) {
-        userJoinGameService.deleteGame(gameId);
-    }
-
     @GetMapping("/user/game/host/{year}/{month}")
     public List<UsersGameDto.UsersGameResponseDto> getGamesUserHostByDate(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Integer year, @PathVariable Integer month) {
         return userHostGameService.getUserHostGamesInMonth(myUserDetails.getUser(), LocalDateTime.of(year, month, 1, 0, 0));
@@ -53,5 +49,20 @@ public class UserGameController {
     @GetMapping("/user/game/host")
     public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(@AuthenticationPrincipal MyUserDetails myUserDetails) {
         return userHostGameService.getUserHostGames(myUserDetails.getUser());
+    }
+
+    @DeleteMapping("/game/{gameId}/{subTeamId}/out")
+    @Transactional
+    public ResponseEntity<String> userOutOfGame(@PathVariable Long gameId, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Long subTeamId) {
+        userJoinGameService.userOutOfGame(gameId, myUserDetails.getUser());
+        subTeamService.deleteSubTeamIfParticipantZero(subTeamId);
+        return ResponseEntity.ok("success");
+    }
+
+    @DeleteMapping("/game/{gameId}/friendly/out")
+    @Transactional
+    public ResponseEntity<String> userOutOfFriendlyGame(@PathVariable Long gameId, @AuthenticationPrincipal MyUserDetails myUserDetails) {
+        userJoinGameService.userOutOfGame(gameId, myUserDetails.getUser());
+        return ResponseEntity.ok("success");
     }
 }

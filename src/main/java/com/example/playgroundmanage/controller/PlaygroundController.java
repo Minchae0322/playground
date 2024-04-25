@@ -25,6 +25,14 @@ public class PlaygroundController {
 
     private final PlaygroundService playgroundService;
 
+    @PostMapping(value = "/playground/add", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public void addPlayground(@RequestPart(value = "playgroundRequest") PlaygroundRequestDto playgroundRequestDto,  @RequestPart(value = "imageFile", required = false) MultipartFile multipartFile) {
+        playgroundRequestDto.setPlaygroundProfileImg(multipartFile);
+
+        playgroundService.addPlayground(playgroundRequestDto);
+    }
+
     @GetMapping("/playground/{playgroundId}/current")
     public ResponseEntity<GameResponseDto> getOngoingGame(@PathVariable Long playgroundId) {
         return ResponseEntity.ok(playgroundService.getOngoingGame(playgroundId));
@@ -54,11 +62,5 @@ public class PlaygroundController {
         return playgroundService.isValidGameStartTime(playgroundId, gameTimeDto);
     }
 
-    @PostMapping(value = "/playground/add", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
-    public void addPlayground(@RequestPart(value = "playgroundRequest") PlaygroundRequestDto playgroundRequestDto,  @RequestPart(value = "imageFile", required = false) MultipartFile multipartFile) {
-        playgroundRequestDto.setPlaygroundProfileImg(multipartFile);
 
-        playgroundService.addPlayground(playgroundRequestDto);
-    }
 }

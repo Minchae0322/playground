@@ -22,9 +22,7 @@ public class GameService {
 
     private final GameRepository gameRepository;
 
-    private final GameFinder gameFinder;
 
-    private final GameParticipantRepository gameParticipantRepository;
 
     private final GameDtoConverter gameDtoConverter;
 
@@ -37,24 +35,25 @@ public class GameService {
         return gameDtoConverter.toGameResponse(game);
     }
 
-
-
-
-
-
     @Transactional
-    public void userOutOfGame(Long gameId, User user) {
+    public void deleteGame(Long gameId) {
         Game game = gameRepository.findById(gameId)
                 .orElseThrow(GameNotExistException::new);
 
-        GameParticipant gameParticipant = gameParticipantRepository.findByGameAndUser(game, user)
-                .orElseThrow(UserNotParticipantGameException::new);
+        game.getPlayground().getGames().remove(game);
 
-        game.getGameParticipants().remove(gameParticipant);
+        //아마도 game 에서 CompetingGame -> SubTeam -> List<GameParticipant>
+        //이런식으로 먼저 삭제되어서 game -> List<GameParticipant> 를 못찾는듯
 
-        gameParticipantRepository.delete(gameParticipant);
+        List<GameParticipant> gameParticipants = game.getGameParticipants();
+        gameParticipants.forEach(GameParticipant::delete);
+        //gameParticipantRepository.deleteAll(gameParticipants);
 
+        gameRepository.delete(game);
     }
+
+
+
 
 
 
