@@ -78,15 +78,7 @@ public class CampusService {
                 .toList();
     }
 
-    @Transactional
-    public List<GameResponseDto> getUpcomingGamesBySportsEvent(Long schoolId, SportsEvent sportsEvent) {
-        School school = schoolRepository.findById(schoolId)
-                .orElseThrow(SchoolNotExistException::new);
 
-        return school.getCampus().stream()
-                .flatMap(campus -> getUpcomingGamesInCampusBySportsEvent(campus.getId(), sportsEvent).stream())
-                .toList();
-    }
 
     public List<CampusResponseDto> getCampusList(Long schoolId) {
         School school = schoolRepository.findById(schoolId)

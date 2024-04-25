@@ -6,7 +6,6 @@ import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.location.dto.CampusResponseDto;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.service.CampusService;
-import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.location.service.SchoolService;
 import com.example.playgroundmanage.type.SportsEvent;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +25,8 @@ public class SchoolController {
 
 
     @GetMapping("/school/{schoolId}/campus/info")
-    public List<CampusResponseDto> getCampusInfos(@PathVariable Long schoolId) {
-        return schoolService.getCampusInfo(schoolId);
+    public List<CampusResponseDto> getCampusList(@PathVariable Long schoolId) {
+        return schoolService.getCampusList(schoolId);
     }
 
     @GetMapping("/school/{schoolId}/playground/{sportsType}")
@@ -37,8 +36,7 @@ public class SchoolController {
 
     @GetMapping("/school/{schoolId}/upcoming/{sportsType}")
     public List<GameResponseDto> getUpcomingGamesBySportsEvent(@PathVariable String sportsType, @PathVariable Long schoolId) {
-
-        return campusService.getUpcomingGamesBySportsEvent(schoolId, SportsEvent.valueOf(sportsType));
+        return schoolService.getUpcomingGamesBySchoolAndSportsEvent(schoolId, SportsEvent.valueOf(sportsType));
     }
 
     @GetMapping("/school/{schoolId}/upcoming")
