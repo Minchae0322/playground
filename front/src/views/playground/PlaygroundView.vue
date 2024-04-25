@@ -54,7 +54,7 @@
                  @gameSelected="handleGameSelected"
                  @goBack="handleGoBack"></component>
     </div>
-    <GameBuilderModal v-if="isGameBuilderModalOpen" :playground-id="props.playgroundId"  @closeGameBuilder=closeModal></GameBuilderModal>
+    <GameBuilderModal class="modal" v-if="isGameBuilderModalOpen" :playground-id="props.playgroundId"  @closeGameBuilder=closeModal></GameBuilderModal>
   </div>
 </template>
 
@@ -514,7 +514,12 @@ a {
     margin-bottom: 50px;
   }
 
-
+  @media (max-width: 600px) {
+    .modal {
+      min-width: 400px;
+      width: 100%;
+    }
+  }
 
 }
 </style>

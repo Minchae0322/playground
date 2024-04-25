@@ -15,7 +15,7 @@
 
 
     <div class="team-history-teamInfo">
-      <h2>队伍介绍</h2>
+      <h2>团队介绍</h2>
       <p>{{ team.description === null ? '没有介绍' : team.description }}</p>
     </div>
     <div class="team-players-teamInfo">

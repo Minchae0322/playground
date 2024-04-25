@@ -11,6 +11,7 @@ import {from} from "node-vibrant";
 const app = createApp(App)
 
 
+//app.config.globalProperties.$apiBaseUrl = "https://hityundong.com/api";
 app.config.globalProperties.$apiBaseUrl = "http://localhost:8080";
 
 //app.provide('frontBaseUrl', 'https://hityundong.com/');

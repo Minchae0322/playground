@@ -69,7 +69,7 @@
           </div>
         </div>
 
-        <div class="justify-center item-center  margin-top" data-v0-t="card">
+        <div class="justify-center item-center margin-top" data-v0-t="card">
           <hr color="#e7e7e7">
           <div class="padding-20">
             <div class="text-title">占用的时隙</div>
@@ -440,6 +440,7 @@ hr {
   margin-top: 15px;
   margin-bottom: 10px;
 }
+
 @media (max-width: 600px) {
   .modal-overlay {
     min-width: 400px;

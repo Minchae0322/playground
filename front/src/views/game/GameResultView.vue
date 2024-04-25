@@ -190,6 +190,7 @@ const redirectToLogin = function () {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: black;
 }
 
 .result-details-container {
@@ -262,7 +263,6 @@ const redirectToLogin = function () {
 
 .score-group label {
   display: block;
-
   color: rgba(51, 51, 51, 0.6);
   font-size: 1.4rem;
 }
@@ -350,5 +350,45 @@ const redirectToLogin = function () {
   background-color: black;
 }
 
+@media (max-width: 600px) {
+  .modal-overlay {
+    min-width: 400px;
+    width: 100%;
+  }
 
+  .result-details-container {
+    min-width: 400px;
+    width: 90%;
+  }
+
+  .game-title-result {
+    font-size: 20px;
+  }
+  .game-type-result {
+    font-size: 16px;
+  }
+
+  .input-field {
+    width: 100px;
+    height: 100px;
+  }
+
+  .score-gameResult {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+  }
+
+  .score-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .add-score-button {
+    font-size: 10px;
+  }
+}
 </style>
