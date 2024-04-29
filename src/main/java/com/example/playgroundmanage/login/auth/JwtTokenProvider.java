@@ -2,9 +2,12 @@ package com.example.playgroundmanage.login.auth;
 
 
 
+import com.example.playgroundmanage.exception.UserNotExistException;
+import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.service.UserService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.login.vo.User;
+import com.example.playgroundmanage.type.UserRole;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
@@ -12,10 +15,12 @@ import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Component;
@@ -36,7 +41,7 @@ public class JwtTokenProvider {
     private final Key key;
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
@@ -55,13 +60,14 @@ public class JwtTokenProvider {
 
     private Claims generateTokenClaims(Authentication authentication) {
         Claims claims = Jwts.claims().setSubject(authentication.getName());
+        MyUserDetails userDetails = (MyUserDetails) authentication.getPrincipal();
 
         String authorization = authentication.getAuthorities().stream()
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.joining(","));
 
         claims.put("auth", authorization);
-
+        claims.put("id", userDetails.getUser().getId());
         String provider = determineProvider(authentication);
         claims.put("provider", provider);
 
@@ -107,21 +113,32 @@ public class JwtTokenProvider {
                         .collect(Collectors.toList());
 
         // UserDetails 객체를 만들어서 Authentication 리턴
-        User user = userService.getUser(claims.getSubject());
+        User user = User.builder()
+                .provider("oauth2")
+                .username(claims.getSubject())
+                .id(claims.get("id", Long.class))
+                .role(UserRole.USER)
+                .isEnable(true)
+                .isLoggedIn(true)
+                .build();
+        String provider = claims.get("provider").toString();
 
-        // Check the provider information and create the appropriate Authentication object
-        if ("own".equals(claims.get("provider"))) {
-            // Own provider (UsernamePasswordAuthenticationToken)
+        if ("own".equals(provider)) {
             return new UsernamePasswordAuthenticationToken(user, "", authorities);
-        } else if ("oauth".equals(claims.get("provider"))) {
-            // OAuth provider (OAuth2AuthenticationToken)
-            OAuth2User oauth2User = new MyUserDetails(user);      // Replace with the username attribute key
-
+        } else if ("oauth".equals(provider)) {
+            OAuth2User oauth2User = new MyUserDetails(user);
             return new OAuth2AuthenticationToken(oauth2User, authorities, "oauth-client");
         } else {
             throw new IllegalArgumentException("Unknown provider type in the token");
         }
     }
+
+    @Cacheable(value = "userDetails", key = "#username")
+    public User getUserDetails(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(UserNotExistException::new);
+    }
+
 
     public boolean validateToken(String token) {
         try {

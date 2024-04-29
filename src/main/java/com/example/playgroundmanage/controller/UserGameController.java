@@ -40,9 +40,15 @@ public class UserGameController {
         return userJoinGameService.getUserJoinGames(usersGameRequestDto);
     }
 
+    @GetMapping("/test")
+    public String test() {
+        return "test";
+    }
+
 
     @GetMapping("/user/game/host/{year}/{month}")
     public List<UsersGameDto.UsersGameResponseDto> getGamesUserHostByDate(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Integer year, @PathVariable Integer month) {
+
         return userHostGameService.getUserHostGamesInMonth(myUserDetails.getUser(), LocalDateTime.of(year, month, 1, 0, 0));
     }
 

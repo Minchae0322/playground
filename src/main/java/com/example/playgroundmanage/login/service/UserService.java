@@ -103,7 +103,10 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDto getUserInfo(User user) {
+    public UserResponseDto getUserInfo(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotExistException::new);
+
         return userDtoConverter.toUserResponseDto(user);
     }
 

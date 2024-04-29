@@ -32,7 +32,7 @@ public class UserController {
 
     @GetMapping("/user/info")
     public UserResponseDto getUserInfo(@AuthenticationPrincipal MyUserDetails userDetails) {
-        return userService.getUserInfo(userDetails.getUser());
+        return userService.getUserInfo(userDetails.getUser().getId());
     }
 
     @PostMapping(value = "/user/profile-img/update", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.MULTIPART_FORM_DATA_VALUE})

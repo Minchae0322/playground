@@ -113,7 +113,7 @@ public class CompetitionGameGenerator implements GameGenerator {
         return SubTeamDto.builder()
                 .subTeamId(subTeam.getId())
                 .users(subTeam.getGameParticipants().stream()
-                        .map(gameParticipant -> userService.getUserInfo(gameParticipant.getUser()))
+                        .map(gameParticipant -> userService.getUserInfo(gameParticipant.getUser().getId()))
                         .toList())
                 .build();
     }
