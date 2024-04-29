@@ -4,18 +4,18 @@ import com.example.playgroundmanage.game.dto.GameRequestDto;
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
-import com.example.playgroundmanage.login.dto.UserJoinGameParams;
+import com.example.playgroundmanage.login.dto.UserJoinGameRequest;
 import com.example.playgroundmanage.login.dto.UserJoinTeamParams;
 import com.example.playgroundmanage.dto.response.PendingGameRequest;
 import com.example.playgroundmanage.dto.response.PendingTeamRequest;
-import com.example.playgroundmanage.request.service.GameManagementService;
-import com.example.playgroundmanage.request.service.RequestManageService;
+import com.example.playgroundmanage.request.service.RequestProcessor;
 import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.request.RequestServiceFinder;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,15 +26,15 @@ public class RequestController {
 
     private final RequestServiceFinder requestServiceFinder;
 
-    private final GameManagementService gameManagementService;
+    private final RequestProcessor requestProcessor;
 
-    private final RequestManageService requestManageService;
+
 
     @PostMapping("/game/{gameId}/join/{requestType}")
-    public void generateJoinGameRequest(@RequestBody UserJoinGameParams userJoinGameParams, @AuthenticationPrincipal MyUserDetails userDetails, @PathVariable Long gameId, @PathVariable("requestType") String type) {
+    public void generateJoinGameRequest(@RequestBody @Validated UserJoinGameRequest userJoinGameRequest, @AuthenticationPrincipal MyUserDetails userDetails, @PathVariable Long gameId, @PathVariable("requestType") String type) {
         RequestService requestService = requestServiceFinder.find(type);
 
-        GameRequestDto gameRequestDto = userJoinGameParams.toJoinGameRequestDto(userDetails.getUser());
+        GameRequestDto gameRequestDto = userJoinGameRequest.toJoinGameRequestDto(userDetails.getUser());
         gameRequestDto.setGameId(gameId);
 
         requestService.generateRequest(gameRequestDto);
@@ -58,7 +58,7 @@ public class RequestController {
 
     @GetMapping("/user/pending/request/game")
     public List<PendingGameRequest> getAllPendingGameRequests(@AuthenticationPrincipal MyUserDetails myUserDetails) {
-        List<RequestInfoDto> pendingRequest = gameManagementService.getPendingGameRequests(myUserDetails.getUser());
+        List<RequestInfoDto> pendingRequest = requestProcessor.getPendingGameRequests(myUserDetails.getUser());
 
         return pendingRequest.stream()
                 .map(RequestInfoDto::toPendingGameRequest)

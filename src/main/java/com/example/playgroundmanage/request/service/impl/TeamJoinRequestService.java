@@ -8,7 +8,7 @@ import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
-import com.example.playgroundmanage.request.service.GameManagementService;
+import com.example.playgroundmanage.request.service.RequestProcessor;
 import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.team.service.TeamService;
@@ -33,7 +33,7 @@ public class TeamJoinRequestService implements RequestService {
 
     private final TeamRequestRepository teamRequestRepository;
 
-    private final GameManagementService gameManagementService;
+    private final RequestProcessor requestProcessor;
 
     private final TeamService teamService;
 
@@ -47,7 +47,7 @@ public class TeamJoinRequestService implements RequestService {
                 .orElseThrow(TeamNotExistException::new);
 
         validateJoinTeam(team, requestDto.getUser());
-        gameManagementService.deletePreviousTeamRequest(team, requestDto.getUser());
+        requestProcessor.deletePreviousTeamRequest(team, requestDto.getUser());
 
         return saveJoinRequest(team, teamJoinRequestDto);
     }

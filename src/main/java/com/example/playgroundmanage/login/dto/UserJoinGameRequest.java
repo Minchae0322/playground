@@ -10,20 +10,19 @@ import lombok.Data;
 import java.time.ZonedDateTime;
 
 
-@Data
-public class UserJoinGameParams {
 
+@Data
+public class UserJoinGameRequest {
 
     private Long subTeamId;
 
     private Long teamId;
 
-
     private String gameTeamSide;
 
 
     @Builder
-    public UserJoinGameParams(Long subTeamId, Long teamId, String gameTeamSide) {
+    public UserJoinGameRequest(Long subTeamId, Long teamId, String gameTeamSide) {
         this.subTeamId = subTeamId;
         this.teamId = teamId;
         this.gameTeamSide = gameTeamSide;

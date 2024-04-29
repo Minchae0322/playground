@@ -9,13 +9,12 @@ import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.repository.GameRequestRepository;
-import com.example.playgroundmanage.request.service.GameManagementService;
+import com.example.playgroundmanage.request.service.RequestProcessor;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.request.vo.impl.FriendlyGameJoinRequest;
-import com.example.playgroundmanage.store.FileHandler;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +32,7 @@ public class FriendlyGameJoinRequestService implements RequestService {
 
     private final GameRequestRepository gameRequestRepository;
 
-    private final GameManagementService gameManagementService;
+    private final RequestProcessor requestProcessor;
 
     private final GameParticipantRepository gameParticipantRepository;
 
@@ -45,11 +44,12 @@ public class FriendlyGameJoinRequestService implements RequestService {
     @Override
     public Long generateRequest(RequestDto requestDto) {
         GameRequestDto gameRequestDto = (GameRequestDto) requestDto;
+
         Game game = gameRepository.findById(gameRequestDto.getGameId())
                 .orElseThrow(GameNotExistException::new);
 
-        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(game), gameRequestDto.getUser());
-        gameManagementService.deletePreviousGameRequest(game, gameRequestDto.getUser());
+        validateDuplicateUserInGame(requestProcessor.findGameParticipantsInGame(game), gameRequestDto.getUser());
+        requestProcessor.deletePreviousGameRequest(game, gameRequestDto.getUser());
 
         return saveJoinRequest(game, gameRequestDto);
     }
@@ -73,7 +73,11 @@ public class FriendlyGameJoinRequestService implements RequestService {
 
     @Override
     public List<RequestInfoDto> getPendingRequests(PendingRequestParams pendingRequestParams) {
-        List<GameRequest> gameRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(pendingRequestParams.getHost(), LocalDateTime.now());
+        List<GameRequest> gameRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(
+                        pendingRequestParams.getHost(),
+                        LocalDateTime.now()
+                );
+
         List<FriendlyGameJoinRequest> friendlyGameJoinRequests = gameRequests.stream()
                 .filter(gameRequest -> gameRequest instanceof FriendlyGameJoinRequest)
                 .map(gameRequest -> (FriendlyGameJoinRequest) gameRequest)
@@ -89,8 +93,8 @@ public class FriendlyGameJoinRequestService implements RequestService {
         FriendlyGameJoinRequest friendlyGameJoinRequest = (FriendlyGameJoinRequest) gameRequestRepository.findById(requestId)
                 .orElseThrow(RequestNotExistException::new);
 
-        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(friendlyGameJoinRequest.getGame()), friendlyGameJoinRequest.getUser());
-        gameManagementService.deleteRequest(friendlyGameJoinRequest.getId());
+        validateDuplicateUserInGame(requestProcessor.findGameParticipantsInGame(friendlyGameJoinRequest.getGame()), friendlyGameJoinRequest.getUser());
+        requestProcessor.deleteRequest(friendlyGameJoinRequest.getId());
 
         return gameParticipantRepository.save(GameParticipant.builder()
                 .isAccepted(true)
@@ -101,6 +105,6 @@ public class FriendlyGameJoinRequestService implements RequestService {
 
     @Override
     public void declineRequest(Long requestId) {
-        gameManagementService.deleteRequest(requestId);
+        requestProcessor.deleteRequest(requestId);
     }
 }

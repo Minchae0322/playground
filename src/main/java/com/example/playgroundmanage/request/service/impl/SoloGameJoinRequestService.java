@@ -7,7 +7,7 @@ import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.game.repository.*;
-import com.example.playgroundmanage.request.service.GameManagementService;
+import com.example.playgroundmanage.request.service.RequestProcessor;
 import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.request.vo.impl.SoloGameJoinRequest;
@@ -35,7 +35,7 @@ public class SoloGameJoinRequestService implements RequestService {
     private final GameRequestRepository gameRequestRepository;
 
 
-    private final GameManagementService gameManagementService;
+    private final RequestProcessor requestProcessor;
 
     private final FileHandler fileHandler;
 
@@ -64,8 +64,8 @@ public class SoloGameJoinRequestService implements RequestService {
         Game game = gameRepository.findById(gameRequestDto.getGameId())
                 .orElseThrow(GameNotExistException::new);
 
-        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(game), gameRequestDto.getUser());
-        gameManagementService.deletePreviousGameRequest(game, gameRequestDto.getUser());
+        validateDuplicateUserInGame(requestProcessor.findGameParticipantsInGame(game), gameRequestDto.getUser());
+        requestProcessor.deletePreviousGameRequest(game, gameRequestDto.getUser());
 
         return saveJoinRequest(game, gameRequestDto);
 
@@ -95,8 +95,8 @@ public class SoloGameJoinRequestService implements RequestService {
 
         SubTeam soloTeam = getSoloTeam(soloGameJoinRequest.getGame(), soloGameJoinRequest.getGameTeamSide());
 
-        validateDuplicateUserInGame(gameManagementService.findGameParticipantsInGame(soloGameJoinRequest.getGame()), soloGameJoinRequest.getUser());
-        gameManagementService.deleteRequest(soloGameJoinRequest.getId());
+        validateDuplicateUserInGame(requestProcessor.findGameParticipantsInGame(soloGameJoinRequest.getGame()), soloGameJoinRequest.getUser());
+        requestProcessor.deleteRequest(soloGameJoinRequest.getId());
 
         return gameParticipantRepository.save(GameParticipant.builder()
                 .isAccepted(true)
@@ -108,7 +108,7 @@ public class SoloGameJoinRequestService implements RequestService {
 
     @Override
     public void declineRequest(Long requestId) {
-        gameManagementService.deleteRequest(requestId);
+        requestProcessor.deleteRequest(requestId);
     }
 
 

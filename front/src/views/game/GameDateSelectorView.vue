@@ -190,6 +190,7 @@ const pickDate = function () {
       }
   ).then(response => {
     occupiedTimeSlots.value = response.data;
+    timeValue.value = '';
   });
 }
 

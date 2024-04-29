@@ -2,12 +2,10 @@ package com.example.playgroundmanage.request.service;
 
 import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.game.repository.GameRequestRepository;
-import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.request.vo.GameRequest;
-import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.team.vo.Team;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +17,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class GameManagementService {
+public class RequestProcessor {
 
     private final GameRequestRepository gameRequestRepository;
 
@@ -46,7 +44,7 @@ public class GameManagementService {
                 .ifPresent(gameRequestRepository::delete);
     }
 
- @Transactional
+    @Transactional
     public List<RequestInfoDto> getPendingGameRequests(User host) {
         List<GameRequest> pendingRequests = gameRequestRepository.findAllByHostAndExpiredTimeAfter(host, LocalDateTime.now());
 
