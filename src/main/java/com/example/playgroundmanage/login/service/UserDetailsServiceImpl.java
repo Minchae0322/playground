@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.login.service;
 
+import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.login.dto.OAuth2UserProfile;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.repository.TokenRepository;
@@ -40,8 +41,10 @@ public class UserDetailsServiceImpl implements UserDetailsService, OAuth2UserSer
     }
 
     @Transactional
-    public void logout(User user) {
-        user.disable();
+    public void logout(Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserNotExistException::new);
+
         deleteRefreshToken(user.getUsername());
         userRepository.save(user);
     }

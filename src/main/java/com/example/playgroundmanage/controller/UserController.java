@@ -42,8 +42,8 @@ public class UserController {
 
     @GetMapping("/user/logout")
     public ResponseEntity<Boolean> logout(@AuthenticationPrincipal MyUserDetails myUserDetails) {
-        userDetailsService.logout(myUserDetails.getUser());
-
+        userDetailsService.logout(myUserDetails.getUser().getId());
+        System.out.println("nickname:::" + myUserDetails.getUser().getUsername());
         return ResponseEntity.ok(true);
     }
 

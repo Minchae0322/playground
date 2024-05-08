@@ -60,4 +60,6 @@ public class Athletics {
         this.host = host;
         this.gameParticipants = gameParticipants;
     }
+
+
 }

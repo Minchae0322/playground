@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.game.vo;
 
+import com.example.playgroundmanage.refactoring.AthleticsSide;
 import com.example.playgroundmanage.team.vo.Team;
 import jakarta.persistence.*;
 import lombok.*;
@@ -18,6 +19,9 @@ public class SubTeam {
 
     @ManyToOne(cascade = CascadeType.MERGE)
     private CompetingTeam competingTeam;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private AthleticsSide athleticsSide;
 
     @ManyToOne
     private Team team;

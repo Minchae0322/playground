@@ -22,12 +22,15 @@ import java.util.List;
 public class RankAthletics extends Athletics {
 
     @OneToMany
-    private List<CompetingTeam> competingTeams;
-
+    private List<AthleticsSide> athleticsSides;
 
     @Builder
-    public RankAthletics(Long id, String gameName, SportsEvent sportsEvent, GameType gameType, LocalDateTime gameStartDateTime, Integer runningTime, Playground playground, User host, List<GameParticipant> gameParticipants, List<CompetingTeam> competingTeams) {
+    public RankAthletics(Long id, String gameName, SportsEvent sportsEvent, GameType gameType, LocalDateTime gameStartDateTime, Integer runningTime, Playground playground, User host, List<GameParticipant> gameParticipants, List<AthleticsSide> athleticsSides) {
         super(id, gameName, sportsEvent, gameType, gameStartDateTime, runningTime, playground, host, gameParticipants);
-        this.competingTeams = competingTeams;
+        this.athleticsSides = athleticsSides;
+    }
+
+    public void addAthleticsSides(AthleticsSide athleticsSide) {
+        this.athleticsSides.add(athleticsSide);
     }
 }

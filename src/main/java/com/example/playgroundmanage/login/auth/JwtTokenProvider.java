@@ -114,13 +114,14 @@ public class JwtTokenProvider {
 
         // UserDetails 객체를 만들어서 Authentication 리턴
         User user = User.builder()
-                .provider("oauth2")
+                .provider(claims.get("provider", String.class))
                 .username(claims.getSubject())
                 .id(claims.get("id", Long.class))
                 .role(UserRole.USER)
                 .isEnable(true)
                 .isLoggedIn(true)
                 .build();
+
         String provider = claims.get("provider").toString();
 
         if ("own".equals(provider)) {
