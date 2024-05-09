@@ -9,11 +9,9 @@ import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
 
 public record GameGenerationRequest(
-        Long gameId,
         Long playgroundId,
-        User host,
+        Long hostId,
         GameType gameType,
-        Playground playground,
         String gameName,
         Integer participantNum,
         DateTime startDateTime,
@@ -30,8 +28,6 @@ public record GameGenerationRequest(
     public Athletics toEntity() {
         return RankAthletics.builder()
                 .gameName(gameName)
-                .host(host)
-                .playground(playground)
                 .gameType(GameType.COMPETITION)
                 .gameStartDateTime(startDateTime.getLocalDateTime())
                 .sportsEvent(sportsEvent)
