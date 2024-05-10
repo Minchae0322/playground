@@ -2,20 +2,24 @@ package com.example.playgroundmanage.refactoring;
 
 import com.example.playgroundmanage.date.DateTime;
 import com.example.playgroundmanage.game.dto.GameTimeDto;
-import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.location.vo.Playground;
-import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 public record GameGenerationRequest(
+        @NotBlank(message = "Input Playground ID")
         Long playgroundId,
-        Long hostId,
+        @NotBlank(message = "Input Game Type")
         GameType gameType,
+        @NotBlank(message = "Input Game Name")
+        @Size(max = 12, message = "Max game title 12 length")
         String gameName,
-        Integer participantNum,
+        @NotBlank(message = "Input Game Start Time")
         DateTime startDateTime,
+        @NotBlank(message = "Input Sports Event")
         SportsEvent sportsEvent,
+        @NotBlank(message = "Input Running Time")
         Integer runningTime) {
 
     public GameTimeDto toGameTimeDto() {

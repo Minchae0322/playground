@@ -33,6 +33,7 @@ dependencies {
     implementation 'org.springframework.session:spring-session-core'
     implementation "com.querydsl:querydsl-core:5.0.0"
     implementation "com.querydsl:querydsl-collections"
+    implementation 'jakarta.validation:jakarta.validation-api:3.0.0'
     implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
     implementation("com.querydsl:querydsl-jpa:5.0.0:jakarta")
     implementation group: 'org.imgscalr', name: 'imgscalr-lib', version: '4.2'

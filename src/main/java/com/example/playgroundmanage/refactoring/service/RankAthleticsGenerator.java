@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.refactoring.service;
 
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
+import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.game.vo.CompetingTeam;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.location.service.PlaygroundService;
@@ -38,15 +39,25 @@ public class RankAthleticsGenerator implements AthleticsGenerator{
     private final UserRepository userRepository;
 
     @Transactional
-    public void generate(GameGenerationRequest gameGenerationRequest) {
+    public void generate(final Long hostId, final GameGenerationRequest gameGenerationRequest) {
         Playground playground = playgroundRepository.findById(gameGenerationRequest.playgroundId())
                 .orElseThrow(PlaygroundNotExistException::new);
 
         gameValidation.validateOverlappingGames(playground.getGames(), gameGenerationRequest.toGameTimeDto());
 
-        RankAthletics athletics = (RankAthletics) gameGenerationRequest.toEntity();
-        athleticsRepository.save(athletics);
+        User host = userRepository.findById(hostId)
+                .orElseThrow(UserNotExistException::new);
 
+        final RankAthletics athletics = RankAthletics.of(
+                host,
+                gameGenerationRequest.gameName(),
+                gameGenerationRequest.sportsEvent(),
+                gameGenerationRequest.startDateTime().getLocalDateTime(),
+                gameGenerationRequest.runningTime(),
+                playground
+        );
+
+        athleticsRepository.save(athletics);
         generateCompetingTeams(athletics);
     }
 
@@ -58,22 +69,8 @@ public class RankAthleticsGenerator implements AthleticsGenerator{
                             .athletics(athletics)
                             .build();
                     athleticsSideRepository.save(athleticsSide);
-                    athletics.addAthleticsSides(athleticsSide);
+                    athletics.addAthleticsSide(athleticsSide);
                 });
     }
-
-    private Athletics toEntity(GameGenerationRequest gameGenerationRequest, User host, Playground playground) {
-        return RankAthletics.builder()
-                .gameName(gameGenerationRequest.gameName())
-                .host(host)
-                .playground(playground)
-                .gameType(GameType.COMPETITION)
-                .gameStartDateTime(gameGenerationRequest.startDateTime().getLocalDateTime())
-                .sportsEvent(gameGenerationRequest.sportsEvent())
-                .runningTime(gameGenerationRequest.runningTime())
-                .build();
-    }
-
-
 
 }
