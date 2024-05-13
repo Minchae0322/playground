@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.game;
 
 import com.example.playgroundmanage.game.service.GameGenerator;
+import com.example.playgroundmanage.refactoring.service.AthleticsGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

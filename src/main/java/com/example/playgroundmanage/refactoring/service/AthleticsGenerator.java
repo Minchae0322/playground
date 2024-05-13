@@ -4,6 +4,8 @@ import com.example.playgroundmanage.refactoring.GameGenerationRequest;
 
 public interface AthleticsGenerator {
 
-    void generate(final Long hostId, final GameGenerationRequest gameGenerationRequest);
+    String getType();
+
+    Long generate(final Long hostId, final GameGenerationRequest gameGenerationRequest);
 
 }

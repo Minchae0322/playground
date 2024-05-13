@@ -38,12 +38,14 @@ public class FriendlyAthletics extends Athletics {
     }
 
     public static FriendlyAthletics of(final User host, final String gameName, final SportsEvent sportsEvent,
-                                       final LocalDateTime gameStartDateTime, final Integer runningTime, final Playground playground) {
+                                       final LocalDateTime gameStartDateTime, final Integer runningTime, final Playground playground,
+                                       final GameType gameType) {
 
         return FriendlyAthletics.builder()
                 .id(null)
                 .host(host)
                 .gameName(gameName)
+                .gameType(gameType)
                 .sportsEvent(sportsEvent)
                 .gameStartDateTime(gameStartDateTime)
                 .runningTime(runningTime)

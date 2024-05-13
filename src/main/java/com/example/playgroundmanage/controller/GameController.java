@@ -12,10 +12,14 @@ import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.game.service.SubTeamService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.location.service.PlaygroundService;
+import com.example.playgroundmanage.refactoring.AthleticsGeneratorFactory;
+import com.example.playgroundmanage.refactoring.GameGenerationRequest;
+import com.example.playgroundmanage.refactoring.service.AthleticsGenerator;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -39,6 +43,8 @@ public class GameController {
 
     private final GameResultManagerFactory gameResultManagerFactory;
 
+    private final AthleticsGeneratorFactory athleticsGeneratorFactory;
+
 
     @GetMapping("/game/{gameId}/{gameType}/{gameTeamSide}")
     public GameTeamResponseDto getGameTeam(@PathVariable Long gameId, @PathVariable String gameType, @PathVariable String gameTeamSide) {
@@ -58,26 +64,17 @@ public class GameController {
     }
 
     @PostMapping("/game/generate")
-    public ResponseEntity<Long> generateGame(@RequestBody GameRegistration gameRegistration, @AuthenticationPrincipal MyUserDetails userDetails) {
-        GameDto gameDto = GameDto.builder()
-                .startDateTime(MyDateTime.initMyDateTime(gameRegistration.getGameStartDateTime()))
-                .host(userDetails.getUser())
-                .playgroundId(gameRegistration.getPlaygroundId())
-                .gameType(GameType.fromString(gameRegistration.getGameType()))
-                .gameName(gameRegistration.getGameName())
-                .runningTime(gameRegistration.getRunningTime())
-                .sportsEvent(SportsEvent.fromString(gameRegistration.getSportsEvent()))
-                .build();
+    public ResponseEntity<Long> generateGame(@RequestBody @Valid GameGenerationRequest gameRegistration, @AuthenticationPrincipal MyUserDetails userDetails) {
 
         GameTimeDto gameTimeDto = GameTimeDto.builder()
-                .runningTime(gameDto.getRunningTime())
-                .startDateTime(gameDto.getStartDateTime())
+                .runningTime(gameRegistration.runningTime())
+                .startDateTime(gameRegistration.gameStartDateTime())
                 .build();
 
-        playgroundService.isValidGameStartTime(gameDto.getPlaygroundId(), gameTimeDto);
-        GameGenerator gameGenerator = gameGeneratorFactory.find(gameRegistration.getGameType());
+        playgroundService.isValidGameStartTime(gameRegistration.playgroundId(), gameTimeDto);
+        AthleticsGenerator gameGenerator = athleticsGeneratorFactory.find(gameRegistration.gameType());
 
-        return ResponseEntity.ok(gameGenerator.generate(gameDto));
+        return ResponseEntity.ok(gameGenerator.generate(userDetails.getUser().getId(), gameRegistration));
     }
 
 

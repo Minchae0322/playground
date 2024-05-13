@@ -5,15 +5,17 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @RequiredArgsConstructor
 public class GameTimeDto {
-    private DateTime startDateTime;
+    private LocalDateTime startDateTime;
 
     private Integer runningTime;
 
     @Builder
-    public GameTimeDto(DateTime startDateTime, Integer runningTime) {
+    public GameTimeDto(LocalDateTime startDateTime, Integer runningTime) {
         this.startDateTime = startDateTime;
         this.runningTime = runningTime;
     }

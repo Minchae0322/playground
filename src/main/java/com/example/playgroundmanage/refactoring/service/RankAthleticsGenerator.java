@@ -17,6 +17,7 @@ import com.example.playgroundmanage.refactoring.repo.AthleticsSideRepository;
 import com.example.playgroundmanage.refactoring.repo.RankAthleticsRepository;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;
+import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.util.GameValidation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -38,8 +39,13 @@ public class RankAthleticsGenerator implements AthleticsGenerator{
 
     private final UserRepository userRepository;
 
+    @Override
+    public String getType() {
+        return "Competition";
+    }
+
     @Transactional
-    public void generate(final Long hostId, final GameGenerationRequest gameGenerationRequest) {
+    public Long generate(final Long hostId, final GameGenerationRequest gameGenerationRequest) {
         Playground playground = playgroundRepository.findById(gameGenerationRequest.playgroundId())
                 .orElseThrow(PlaygroundNotExistException::new);
 
@@ -51,16 +57,18 @@ public class RankAthleticsGenerator implements AthleticsGenerator{
         final RankAthletics athletics = RankAthletics.of(
                 host,
                 gameGenerationRequest.gameName(),
-                gameGenerationRequest.sportsEvent(),
-                gameGenerationRequest.startDateTime().getLocalDateTime(),
+                SportsEvent.fromString(gameGenerationRequest.sportsEvent()),
+                gameGenerationRequest.gameStartDateTime(),
                 gameGenerationRequest.runningTime(),
-                playground
+                playground,
+                GameType.COMPETITION
         );
 
-        athleticsRepository.save(athletics);
+        final RankAthletics rankAthletics = athleticsRepository.save(athletics);
         generateCompetingTeams(athletics);
-    }
 
+        return rankAthletics.getId();
+    }
     private void generateCompetingTeams(RankAthletics athletics) {
         Arrays.stream(GameTeamSide.values())
                 .forEach(gameTeamSide -> {

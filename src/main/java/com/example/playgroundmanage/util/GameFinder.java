@@ -23,11 +23,11 @@ public class GameFinder {
 
     private final DateFormat dateFormat;
 
-    public List<Game> getGamesForSelectedDate(List<Game> games, DateTime myDateTime) {
+    public List<Game> getGamesForSelectedDate(List<Game> games, LocalDateTime myDateTime) {
         return Optional.ofNullable(games)
                 .orElse(Collections.emptyList()) // 빈 리스트 반환으로 NullPointException 방지
                 .stream()
-                .filter(g -> isGameOnDate(g, myDateTime.getLocalDateTime()))
+                .filter(g -> isGameOnDate(g, myDateTime))
                 .toList();
     }
 

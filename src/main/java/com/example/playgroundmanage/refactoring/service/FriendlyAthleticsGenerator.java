@@ -9,6 +9,8 @@ import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.refactoring.FriendlyAthletics;
 import com.example.playgroundmanage.refactoring.GameGenerationRequest;
 import com.example.playgroundmanage.refactoring.repo.AthleticsRepository;
+import com.example.playgroundmanage.type.GameType;
+import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.util.GameValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -27,7 +29,12 @@ public class FriendlyAthleticsGenerator implements AthleticsGenerator {
 
 
     @Override
-    public void generate(final Long hostId, final GameGenerationRequest gameGenerationRequest) {
+    public String getType() {
+        return "Friendly";
+    }
+
+    @Override
+    public Long generate(final Long hostId, final GameGenerationRequest gameGenerationRequest) {
         final Playground playground = playgroundRepository.findById(gameGenerationRequest.playgroundId())
                 .orElseThrow(PlaygroundNotExistException::new);
 
@@ -39,15 +46,15 @@ public class FriendlyAthleticsGenerator implements AthleticsGenerator {
         final FriendlyAthletics athletics = FriendlyAthletics.of(
                 host,
                 gameGenerationRequest.gameName(),
-                gameGenerationRequest.sportsEvent(),
-                gameGenerationRequest.startDateTime().getLocalDateTime(),
+                SportsEvent.fromString(gameGenerationRequest.sportsEvent()),
+                gameGenerationRequest.gameStartDateTime(),
                 gameGenerationRequest.runningTime(),
-                playground
+                playground,
+                GameType.FRIENDLY
         );
 
-        athleticsRepository.save(athletics);
+        return athleticsRepository.save(athletics).getId();
     }
-
 
 
 }

@@ -20,7 +20,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED) // 상속 전략 설정
 @DiscriminatorColumn(name = "type") // 상속받는 클래스를 구분하는 컬럼
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Athletics extends BaseEntity{
+public class Athletics {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,6 +60,8 @@ public class Athletics extends BaseEntity{
         this.host = host;
         this.gameParticipants = gameParticipants;
     }
+
+
 
 
 }

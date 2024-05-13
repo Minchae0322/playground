@@ -21,7 +21,7 @@ public final class GameValidation {
 
     public void validateOverlappingGames(List<Game> games, GameTimeDto gameTimeDto) {
         boolean isOverlapping = games.stream()
-                .anyMatch(game -> gameFinder.isDateTimeRangeOverlapping(game, gameTimeDto.getStartDateTime().getLocalDateTime(), gameTimeDto.getRunningTime()));
+                .anyMatch(game -> gameFinder.isDateTimeRangeOverlapping(game, gameTimeDto.getStartDateTime(), gameTimeDto.getRunningTime()));
 
         if (isOverlapping) {
             throw new TimeOverlappingException(localDateToYearMonthDateTimeString(LocalDateTime.now()));
@@ -29,7 +29,7 @@ public final class GameValidation {
     }
 
     public static void validateStartTimeAfterPresent(GameTimeDto gameTimeDto) {
-        if (gameTimeDto.getStartDateTime().getLocalDateTime().isBefore(LocalDateTime.now().plusMinutes(1))) {
+        if (gameTimeDto.getStartDateTime().isBefore(LocalDateTime.now().plusMinutes(1))) {
             throw new RuntimeException("您不能提前于当前时间 + 1 分钟开始 。 当前时间 : " + localDateToYearMonthDateTimeString(LocalDateTime.now()));
         }
     }

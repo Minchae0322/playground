@@ -99,7 +99,7 @@ public class GameDto {
     public GameTimeDto toGameDateDto() {
         return GameTimeDto.builder()
                 .runningTime(runningTime)
-                .startDateTime(startDateTime)
+                .startDateTime(startDateTime.getLocalDateTime())
                 .build();
     }
 

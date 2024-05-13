@@ -43,11 +43,12 @@ public class RankAthletics extends Athletics {
 
     public static RankAthletics of(final User host, final String gameName,
                                    final SportsEvent sportsEvent, final LocalDateTime gameStartDateTime,
-                                   final Integer runningTime,
-                                   final Playground playground) {
+                                   final Integer runningTime, final Playground playground,
+                                   final GameType gameType) {
         return RankAthletics.builder()
                 .id(null)
                 .host(host)
+                .gameType(gameType)
                 .gameName(gameName)
                 .sportsEvent(sportsEvent)
                 .gameStartDateTime(gameStartDateTime)

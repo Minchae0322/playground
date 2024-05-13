@@ -35,5 +35,4 @@ public class CampusController {
     public List<CampusResponseDto> getCampusList(@PathVariable Long schoolId) {
         return campusService.getCampusList(schoolId);
     }
-
 }
