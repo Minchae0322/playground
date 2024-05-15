@@ -1,7 +1,5 @@
-package com.example.playgroundmanage.refactoring;
+package com.example.playgroundmanage.althlectis.vo;
 
-import com.example.playgroundmanage.game.vo.CompetingTeam;
-import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.type.GameType;
@@ -11,7 +9,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.OneToMany;
 import lombok.Builder;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

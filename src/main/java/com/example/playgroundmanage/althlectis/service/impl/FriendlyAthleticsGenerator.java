@@ -1,14 +1,15 @@
-package com.example.playgroundmanage.refactoring.service;
+package com.example.playgroundmanage.althlectis.service.impl;
 
+import com.example.playgroundmanage.althlectis.service.AthleticsGenerator;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.User;
-import com.example.playgroundmanage.refactoring.FriendlyAthletics;
-import com.example.playgroundmanage.refactoring.GameGenerationRequest;
-import com.example.playgroundmanage.refactoring.repo.AthleticsRepository;
+import com.example.playgroundmanage.althlectis.vo.FriendlyAthletics;
+import com.example.playgroundmanage.althlectis.dto.GameGenerationRequest;
+import com.example.playgroundmanage.althlectis.repo.AthleticsRepository;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.util.GameValidation;
@@ -47,7 +48,7 @@ public class FriendlyAthleticsGenerator implements AthleticsGenerator {
                 host,
                 gameGenerationRequest.gameName(),
                 SportsEvent.fromString(gameGenerationRequest.sportsEvent()),
-                gameGenerationRequest.gameStartDateTime(),
+                gameGenerationRequest.gameStartDateTime().toLocalDateTime(),
                 gameGenerationRequest.runningTime(),
                 playground,
                 GameType.FRIENDLY

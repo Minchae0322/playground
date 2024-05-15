@@ -1,6 +1,6 @@
-package com.example.playgroundmanage.refactoring.service;
+package com.example.playgroundmanage.althlectis.service;
 
-import com.example.playgroundmanage.refactoring.GameGenerationRequest;
+import com.example.playgroundmanage.althlectis.dto.GameGenerationRequest;
 
 public interface AthleticsGenerator {
 

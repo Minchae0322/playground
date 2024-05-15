@@ -1,6 +1,6 @@
-package com.example.playgroundmanage.refactoring.repo;
+package com.example.playgroundmanage.althlectis.repo;
 
-import com.example.playgroundmanage.refactoring.RankAthletics;
+import com.example.playgroundmanage.althlectis.vo.RankAthletics;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RankAthleticsRepository extends JpaRepository<RankAthletics, Long> {

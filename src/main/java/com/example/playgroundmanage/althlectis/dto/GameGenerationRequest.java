@@ -1,13 +1,12 @@
-package com.example.playgroundmanage.refactoring;
+package com.example.playgroundmanage.althlectis.dto;
 
-import com.example.playgroundmanage.date.DateTime;
+import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.game.dto.GameTimeDto;
-import com.example.playgroundmanage.type.GameType;
-import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 
 public record GameGenerationRequest(
         @NotBlank(message = "Input Playground ID")
@@ -18,7 +17,7 @@ public record GameGenerationRequest(
         @Size(max = 12, message = "Max game title 12 length")
         String gameName,
         @NotBlank(message = "Input Game Start Time")
-        LocalDateTime gameStartDateTime,
+        ZonedDateTime gameStartDateTime,
         @NotBlank(message = "Input Sports Event")
         String sportsEvent,
         @NotBlank(message = "Input Running Time")
@@ -27,7 +26,7 @@ public record GameGenerationRequest(
     public GameTimeDto toGameTimeDto() {
         return GameTimeDto.builder()
                 .runningTime(runningTime)
-                .startDateTime(gameStartDateTime)
+                .startDateTime(MyDateTime.initMyDateTime(gameStartDateTime).getLocalDateTime())
                 .build();
     }
 

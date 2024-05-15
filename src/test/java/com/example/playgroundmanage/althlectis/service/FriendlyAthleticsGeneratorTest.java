@@ -1,12 +1,13 @@
-package com.example.playgroundmanage.refactoring.service;
+package com.example.playgroundmanage.althlectis.service;
 
+import com.example.playgroundmanage.althlectis.service.impl.FriendlyAthleticsGenerator;
 import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.location.vo.Campus;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.User;
-import com.example.playgroundmanage.refactoring.GameGenerationRequest;
+import com.example.playgroundmanage.althlectis.dto.GameGenerationRequest;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;

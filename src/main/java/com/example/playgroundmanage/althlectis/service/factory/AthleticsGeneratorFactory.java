@@ -1,6 +1,6 @@
-package com.example.playgroundmanage.refactoring;
+package com.example.playgroundmanage.althlectis.service.factory;
 
-import com.example.playgroundmanage.refactoring.service.AthleticsGenerator;
+import com.example.playgroundmanage.althlectis.service.AthleticsGenerator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

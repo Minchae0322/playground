@@ -1,7 +1,7 @@
-package com.example.playgroundmanage.refactoring;
+package com.example.playgroundmanage.althlectis.vo;
 
 
-import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.game.vo.SubTeam;
 import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.persistence.*;
