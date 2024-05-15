@@ -22,8 +22,6 @@ public class GameService {
 
     private final GameRepository gameRepository;
 
-
-
     private final GameDtoConverter gameDtoConverter;
 
 

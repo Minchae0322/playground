@@ -28,7 +28,7 @@ public class GameTimeInfo {
 
     public GameTimeDto toGameTimeDto() {
         return GameTimeDto.builder()
-                .startDateTime(gameStartDateTime.toLocalDateTime())
+                .startDateTime(MyDateTime.initMyDateTime(gameStartDateTime).getLocalDateTime())
                 .runningTime(runningTime)
                 .build();
     }

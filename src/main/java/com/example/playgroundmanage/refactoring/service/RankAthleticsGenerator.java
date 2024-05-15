@@ -64,7 +64,7 @@ public class RankAthleticsGenerator implements AthleticsGenerator{
                 GameType.COMPETITION
         );
 
-        final RankAthletics rankAthletics = athleticsRepository.save(athletics);
+        RankAthletics rankAthletics = athleticsRepository.save(athletics);
         generateCompetingTeams(athletics);
 
         return rankAthletics.getId();
