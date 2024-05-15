@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.althlectis.service;
 
 import com.example.playgroundmanage.althlectis.service.impl.FriendlyAthleticsGenerator;
+import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.location.vo.Campus;
@@ -17,6 +18,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -41,10 +44,11 @@ class FriendlyAthleticsGeneratorTest {
         //given
         GameGenerationRequest gameGenerationRequest = new GameGenerationRequest(
                 1L,
-                GameType.FRIENDLY,
+                GameType.FRIENDLY.getValue_cn(),
                 "test Game",
-                MyDateTimeLocal.initMyDateTime(LocalDateTime.of(9999, 1, 1, 1, 1)),
-                SportsEvent.SOCCER,
+                ZonedDateTime.of( LocalDateTime.of(9999, 1, 1, 1, 1),
+                                ZoneId.of("Asia/Shanghai")),
+                SportsEvent.SOCCER.getValue_cn(),
                 60);
 
         Playground playground = Playground.builder()
