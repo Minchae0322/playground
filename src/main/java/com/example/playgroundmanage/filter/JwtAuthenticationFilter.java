@@ -35,7 +35,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        //토큰이 존재하지 않으면 403 Exception
         String accessToken = resolveAccessToken(request);
 
         if (jwtTokenProvider.validateToken(accessToken)) {
