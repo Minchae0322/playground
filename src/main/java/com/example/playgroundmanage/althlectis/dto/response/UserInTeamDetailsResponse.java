@@ -21,13 +21,5 @@ public record UserInTeamDetailsResponse(
                 gameParticipant.getUser().getUserProfileImg().getFileUrl()
         );
     }
-    public static UserInTeamDetailsResponse of(AthleticsParticipant gameParticipant, GameTeamSide gameTeamSide) {
-        return new UserInTeamDetailsResponse(
-                gameParticipant.getId(),
-                gameParticipant.getUser().getNickname(),
-                gameParticipant.getUser().getRole().getValue(),
-                false,
-                gameParticipant.getUser().getUserProfileImg().getFileUrl()
-        );
-    }
+
 }

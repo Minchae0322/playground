@@ -29,14 +29,14 @@ public class AthleticsParticipant {
     private Athletics athletics;
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    private SubTeam subTeam;
+    private AthleticsSubTeam subTeam;
     @Enumerated
     private GameRecord gameRecord;
 
     private boolean isAccepted;
 
     @Builder
-    public AthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, Athletics athletics, SubTeam subTeam, GameRecord gameRecord, boolean isAccepted) {
+    public AthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, Athletics athletics, AthleticsSubTeam subTeam, GameRecord gameRecord, boolean isAccepted) {
         this.id = id;
         this.gameTeamSide = gameTeamSide;
         this.user = user;

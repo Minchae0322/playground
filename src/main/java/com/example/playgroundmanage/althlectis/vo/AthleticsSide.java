@@ -28,7 +28,7 @@ public class AthleticsSide {
     private GameTeamSide gameTeamSide;
 
     @OneToMany(mappedBy = "athleticsSide", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private final List<SubTeam> subTeams = new ArrayList<>();
+    private final List<AthleticsSubTeam> subTeams = new ArrayList<>();
 
 
     @Builder
