@@ -47,9 +47,9 @@ public class Athletics extends BaseEntity {
     private User host;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<GameParticipant> gameParticipants;
+    private List<AthleticsParticipant> athleticsParticipants;
 
-    public Athletics(Long id, String gameName, SportsEvent sportsEvent, GameType gameType, LocalDateTime gameStartDateTime, Integer runningTime, Playground playground, User host, List<GameParticipant> gameParticipants) {
+    public Athletics(Long id, String gameName, SportsEvent sportsEvent, GameType gameType, LocalDateTime gameStartDateTime, Integer runningTime, Playground playground, User host, List<AthleticsParticipant> athleticsParticipants) {
         this.id = id;
         this.gameName = gameName;
         this.sportsEvent = sportsEvent;
@@ -58,7 +58,7 @@ public class Athletics extends BaseEntity {
         this.runningTime = runningTime;
         this.playground = playground;
         this.host = host;
-        this.gameParticipants = gameParticipants;
+        this.athleticsParticipants = athleticsParticipants;
     }
 
 

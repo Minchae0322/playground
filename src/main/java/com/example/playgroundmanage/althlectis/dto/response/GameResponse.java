@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.althlectis.dto;
+package com.example.playgroundmanage.althlectis.dto.response;
 
 import com.example.playgroundmanage.althlectis.vo.Athletics;
 

@@ -1,8 +1,5 @@
 package com.example.playgroundmanage.controller;
 
-import com.example.playgroundmanage.althlectis.dto.GameGenerationRequest;
-import com.example.playgroundmanage.althlectis.dto.GameResponse;
-import com.example.playgroundmanage.althlectis.service.AthleticsGenerator;
 import com.example.playgroundmanage.althlectis.service.AthleticsService;
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.dto.reqeust.GameRegistration;
@@ -18,7 +15,6 @@ import com.example.playgroundmanage.althlectis.service.factory.AthleticsGenerato
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

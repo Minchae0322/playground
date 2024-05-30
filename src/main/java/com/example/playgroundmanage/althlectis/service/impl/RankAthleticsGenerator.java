@@ -8,7 +8,7 @@ import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.althlectis.vo.AthleticsSide;
-import com.example.playgroundmanage.althlectis.dto.GameGenerationRequest;
+import com.example.playgroundmanage.althlectis.dto.request.GameGenerationRequest;
 import com.example.playgroundmanage.althlectis.vo.RankAthletics;
 import com.example.playgroundmanage.althlectis.repo.AthleticsRepository;
 import com.example.playgroundmanage.althlectis.repo.AthleticsSideRepository;

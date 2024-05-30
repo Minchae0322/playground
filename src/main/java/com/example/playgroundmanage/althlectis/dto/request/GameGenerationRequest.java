@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.althlectis.dto;
+package com.example.playgroundmanage.althlectis.dto.request;
 
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.game.dto.GameTimeDto;

@@ -25,14 +25,15 @@ public class RankAthletics extends Athletics {
     private List<AthleticsSide> athleticsSides;
 
     @Builder
-    public RankAthletics(Long id,
-                         String gameName,
-                         SportsEvent sportsEvent,
-                         GameType gameType,
-                         LocalDateTime gameStartDateTime,
-                         Integer runningTime,
-                         Playground playground,
-                         User host
+    public RankAthletics(
+            Long id,
+            String gameName,
+            SportsEvent sportsEvent,
+            GameType gameType,
+            LocalDateTime gameStartDateTime,
+            Integer runningTime,
+            Playground playground,
+            User host
     ) {
         super(id, gameName, sportsEvent, gameType, gameStartDateTime, runningTime, playground, host, new ArrayList<>());
         this.athleticsSides = new ArrayList<>();
