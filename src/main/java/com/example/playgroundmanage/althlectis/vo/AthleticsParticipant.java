@@ -8,14 +8,14 @@ import com.example.playgroundmanage.type.GameRecord;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 
 @Entity
 @Getter
-@RequiredArgsConstructor
-public class AthleticsParticipant {
+@Inheritance(strategy = InheritanceType.JOINED) // 상속 전략 설정
+@DiscriminatorColumn(name = "type") // 상속받는 클래스를 구분하는 컬럼
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+public abstract class AthleticsParticipant {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,20 +28,18 @@ public class AthleticsParticipant {
     @ManyToOne(cascade = CascadeType.MERGE)
     private Athletics athletics;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    private AthleticsSubTeam subTeam;
+
     @Enumerated
     private GameRecord gameRecord;
 
     private boolean isAccepted;
 
-    @Builder
-    public AthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, Athletics athletics, AthleticsSubTeam subTeam, GameRecord gameRecord, boolean isAccepted) {
+
+    public AthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, Athletics athletics, GameRecord gameRecord, boolean isAccepted) {
         this.id = id;
         this.gameTeamSide = gameTeamSide;
         this.user = user;
         this.athletics = athletics;
-        this.subTeam = subTeam;
         this.gameRecord = gameRecord;
         this.isAccepted = isAccepted;
     }

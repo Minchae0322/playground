@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.althlectis.vo;
 
+import com.example.playgroundmanage.althlectis.vo.impl.TeamAthleticsParticipant;
 import com.example.playgroundmanage.game.vo.CompetingTeam;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.team.vo.Team;
@@ -28,14 +29,14 @@ public class AthleticsSubTeam {
     private Team team;
 
     @OneToMany(mappedBy = "subTeam", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<AthleticsParticipant> gameParticipants;
+    private List<TeamAthleticsParticipant> gameParticipants;
 
     private boolean isSoloTeam;
 
     private boolean isAccept;
 
     @Builder
-    public AthleticsSubTeam(Long id, CompetingTeam competingTeam, AthleticsSide athleticsSide, Team team, List<AthleticsParticipant> gameParticipants, boolean isSoloTeam, boolean isAccept) {
+    public AthleticsSubTeam(Long id, CompetingTeam competingTeam, AthleticsSide athleticsSide, Team team, List<TeamAthleticsParticipant> gameParticipants, boolean isSoloTeam, boolean isAccept) {
         this.id = id;
         this.competingTeam = competingTeam;
         this.athleticsSide = athleticsSide;
