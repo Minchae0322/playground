@@ -2,8 +2,9 @@ package com.example.playgroundmanage.althlectis.vo.impl;
 
 import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.althlectis.vo.AthleticsParticipant;
-import com.example.playgroundmanage.althlectis.vo.AthleticsSubTeam;
+import com.example.playgroundmanage.althlectis.vo.AthleticsSide;
 import com.example.playgroundmanage.login.vo.User;
+import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.type.GameRecord;
 import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.persistence.CascadeType;
@@ -19,11 +20,15 @@ import lombok.NoArgsConstructor;
 @Getter
 public class TeamAthleticsParticipant extends AthleticsParticipant {
     @ManyToOne(cascade = CascadeType.MERGE)
-    private AthleticsSubTeam subTeam;
+    private AthleticsSide athleticsSide;
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Team team;
 
     @Builder
-    public TeamAthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, Athletics athletics, GameRecord gameRecord, boolean isAccepted, AthleticsSubTeam subTeam) {
-        super(id, gameTeamSide, user, athletics, gameRecord, isAccepted);
-        this.subTeam = subTeam;
+    public TeamAthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, GameRecord gameRecord, boolean isAccepted, AthleticsSide athleticsSide, Team team) {
+        super(id, gameTeamSide, user, gameRecord, isAccepted);
+        this.athleticsSide = athleticsSide;
+        this.team = team;
     }
 }

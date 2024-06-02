@@ -1,9 +1,5 @@
 package com.example.playgroundmanage.althlectis.dto.response;
 
-import com.example.playgroundmanage.althlectis.vo.AthleticsSubTeam;
-import com.example.playgroundmanage.game.vo.SubTeam;
-import com.example.playgroundmanage.login.dto.UserResponseDto;
-
 import java.util.List;
 
 public record SubTeamResponse(
@@ -18,7 +14,7 @@ public record SubTeamResponse(
 
         List<UserInTeamDetailsResponse>users
 ) {
-    public static SubTeamResponse of(AthleticsSubTeam subTeam) {
+  /*  public static SubTeamResponse of(AthleticsSubTeam subTeam) {
         return new SubTeamResponse(
                 subTeam.getTeam().getId(),
                 subTeam.getTeam().getTeamName(),
@@ -29,5 +25,5 @@ public record SubTeamResponse(
                         .map(UserInTeamDetailsResponse::of)
                         .toList()
         );
-    }
+    }*/
 }

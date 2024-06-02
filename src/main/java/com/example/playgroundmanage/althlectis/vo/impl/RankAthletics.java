@@ -1,5 +1,7 @@
-package com.example.playgroundmanage.althlectis.vo;
+package com.example.playgroundmanage.althlectis.vo.impl;
 
+import com.example.playgroundmanage.althlectis.vo.Athletics;
+import com.example.playgroundmanage.althlectis.vo.AthleticsSide;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.type.GameType;
@@ -33,10 +35,11 @@ public class RankAthletics extends Athletics {
             LocalDateTime gameStartDateTime,
             Integer runningTime,
             Playground playground,
-            User host
+            User host,
+            List<AthleticsSide> athleticsSide
     ) {
-        super(id, gameName, sportsEvent, gameType, gameStartDateTime, runningTime, playground, host, new ArrayList<>());
-        this.athleticsSides = new ArrayList<>();
+        super(id, gameName, sportsEvent, gameType, gameStartDateTime, runningTime, playground, host);
+        this.athleticsSides = athleticsSide;
     }
 
     public static RankAthletics of(final User host, final String gameName,
@@ -52,6 +55,7 @@ public class RankAthletics extends Athletics {
                 .gameStartDateTime(gameStartDateTime)
                 .runningTime(runningTime)
                 .playground(playground)
+                .athleticsSide(new ArrayList<>())
                 .build();
     }
 

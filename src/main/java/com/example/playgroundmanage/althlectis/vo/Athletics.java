@@ -20,7 +20,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED) // 상속 전략 설정
 @DiscriminatorColumn(name = "type") // 상속받는 클래스를 구분하는 컬럼
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Athletics extends BaseEntity {
+public abstract class Athletics extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,10 +46,8 @@ public class Athletics extends BaseEntity {
     @ManyToOne(cascade = CascadeType.MERGE)
     private User host;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<AthleticsParticipant> athleticsParticipants;
 
-    public Athletics(Long id, String gameName, SportsEvent sportsEvent, GameType gameType, LocalDateTime gameStartDateTime, Integer runningTime, Playground playground, User host, List<AthleticsParticipant> athleticsParticipants) {
+    public Athletics(Long id, String gameName, SportsEvent sportsEvent, GameType gameType, LocalDateTime gameStartDateTime, Integer runningTime, Playground playground, User host) {
         this.id = id;
         this.gameName = gameName;
         this.sportsEvent = sportsEvent;
@@ -58,10 +56,5 @@ public class Athletics extends BaseEntity {
         this.runningTime = runningTime;
         this.playground = playground;
         this.host = host;
-        this.athleticsParticipants = athleticsParticipants;
     }
-
-
-
-
 }

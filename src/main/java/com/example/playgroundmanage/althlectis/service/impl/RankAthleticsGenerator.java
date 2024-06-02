@@ -9,7 +9,7 @@ import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.althlectis.vo.AthleticsSide;
 import com.example.playgroundmanage.althlectis.dto.request.GameGenerationRequest;
-import com.example.playgroundmanage.althlectis.vo.RankAthletics;
+import com.example.playgroundmanage.althlectis.vo.impl.RankAthletics;
 import com.example.playgroundmanage.althlectis.repo.AthleticsRepository;
 import com.example.playgroundmanage.althlectis.repo.AthleticsSideRepository;
 import com.example.playgroundmanage.type.GameTeamSide;
@@ -62,11 +62,11 @@ public class RankAthleticsGenerator implements AthleticsGenerator {
         );
 
         RankAthletics rankAthletics = athleticsRepository.save(athletics);
-        generateCompetingTeams(athletics);
+        generateAthleticsSide(athletics);
 
         return rankAthletics.getId();
     }
-    private void generateCompetingTeams(RankAthletics athletics) {
+    private void generateAthleticsSide(RankAthletics athletics) {
         Arrays.stream(GameTeamSide.values())
                 .forEach(gameTeamSide -> {
                     AthleticsSide athleticsSide = AthleticsSide.builder()

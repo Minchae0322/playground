@@ -1,20 +1,24 @@
-package com.example.playgroundmanage.controller;
+package com.example.playgroundmanage.althlectis.api;
 
+import com.example.playgroundmanage.althlectis.dto.request.GameGenerationRequest;
+import com.example.playgroundmanage.althlectis.dto.response.GameResponse;
+import com.example.playgroundmanage.althlectis.service.AthleticsGenerator;
 import com.example.playgroundmanage.althlectis.service.AthleticsService;
+import com.example.playgroundmanage.althlectis.service.factory.AthleticsGeneratorFactory;
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.dto.reqeust.GameRegistration;
-import com.example.playgroundmanage.game.dto.*;
-import com.example.playgroundmanage.game.service.GameGenerator;
 import com.example.playgroundmanage.game.GameGeneratorFactory;
 import com.example.playgroundmanage.game.GameResultManagerFactory;
 import com.example.playgroundmanage.game.GameResultManger;
+import com.example.playgroundmanage.game.dto.*;
+import com.example.playgroundmanage.game.service.GameGenerator;
 import com.example.playgroundmanage.game.service.GameService;
-import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.location.service.PlaygroundService;
-import com.example.playgroundmanage.althlectis.service.factory.AthleticsGeneratorFactory;
+import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +27,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-public class GameController {
+public class AthleticsController {
 
     private final GameService gameService;
 
@@ -50,25 +54,25 @@ public class GameController {
         return gameGenerator.getGameTeamInfos(gameTeamRequestDto);
     }
 
-   /* @GetMapping("/game/{gameId}/info")
+    @GetMapping("/game/{gameId}/info")
     public GameResponse getGameInfo(@PathVariable Long gameId) {
         return athleticsService.getGameInfo(gameId);
-    }*/
-
-    @GetMapping("/game/{gameId}/info")
-    public GameResponseDto getGameInfo(@PathVariable Long gameId) {
-        return gameService.getGameInfo(gameId);
     }
 
-   /* @PostMapping("/game/generate")
+   /* @GetMapping("/game/{gameId}/info")
+    public GameResponseDto getGameInfo(@PathVariable Long gameId) {
+        return gameService.getGameInfo(gameId);
+    }*/
+
+    @PostMapping("/game/generate")
     public ResponseEntity<Long> generateGame(@RequestBody @Valid GameGenerationRequest gameRegistration, @AuthenticationPrincipal MyUserDetails userDetails) {
         playgroundService.isValidGameStartTime(gameRegistration.playgroundId(), gameRegistration.toGameTimeDto());
         AthleticsGenerator gameGenerator = athleticsGeneratorFactory.find(gameRegistration.gameType());
 
         return ResponseEntity.ok(gameGenerator.generate(userDetails.getUser().getId(), gameRegistration));
-    }*/
+    }
 
-    @PostMapping("/game/generate")
+   /* @PostMapping("/game/generate")
     public ResponseEntity<Long> generateGame(@RequestBody GameRegistration gameRegistration, @AuthenticationPrincipal MyUserDetails userDetails) {
         GameDto gameDto = GameDto.builder()
                 .startDateTime(MyDateTime.initMyDateTime(gameRegistration.getGameStartDateTime()))
@@ -89,7 +93,7 @@ public class GameController {
         GameGenerator gameGenerator = gameGeneratorFactory.find(gameRegistration.getGameType());
 
         return ResponseEntity.ok(gameGenerator.generate(gameDto));
-    }
+    }*/
 
 
 
