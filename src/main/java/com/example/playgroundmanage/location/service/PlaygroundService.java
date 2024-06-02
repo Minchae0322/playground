@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.location.service;
 
+import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.game.dto.GameResponseDto;
@@ -12,6 +13,7 @@ import com.example.playgroundmanage.exception.SchoolNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.service.GameDtoConverter;
 import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.location.dto.AthleticsThumbnailResponse;
 import com.example.playgroundmanage.location.dto.PlaygroundRequestDto;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
@@ -53,6 +55,19 @@ public class PlaygroundService {
     private final CampusRepository campusRepository;
 
     private final FileHandler fileHandler;
+
+    private final TimeValidation timeValidation;
+
+    @Transactional
+    public List<AthleticsThumbnailResponse> getUpcomingAthletics(Long playgroundId) {
+        Playground playground = playgroundRepository.findById(playgroundId)
+                .orElseThrow(PlaygroundNotExistException::new);
+
+        return playground.getAthletics().stream()
+                .filter(athletics -> timeValidation.isAfterFromNow(athletics.getGameStartDateTime()))
+                .map(AthleticsThumbnailResponse::of)
+                .toList();
+    }
 
 
     @Transactional

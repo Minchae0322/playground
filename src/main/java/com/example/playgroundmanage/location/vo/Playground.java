@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.location.vo;
 
+import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.dto.PlaygroundDto;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.store.vo.UploadFile;
@@ -36,16 +37,22 @@ public class Playground {
     @OneToMany(mappedBy = "playground", fetch = FetchType.EAGER)
     private List<Game> games = new ArrayList<>();
 
+    @OneToMany(mappedBy = "playground", fetch = FetchType.EAGER)
+    private List<Athletics> athletics = new ArrayList<>();
 
     @Builder
-    public Playground(Long id, String name, UploadFile img, Campus campus, SportsEvent sportsEvent, List<Game> games) {
+    public Playground(Long id, String name, UploadFile img, Campus campus, SportsEvent sportsEvent, List<Game> games, List<Athletics> athletics) {
         this.id = id;
         this.name = name;
         this.img = img;
         this.campus = campus;
         this.sportsEvent = sportsEvent;
         this.games = games;
+        this.athletics = athletics;
     }
+
+
+
 
     public List<Game> getUpcomingGamesOrderedByStartDateTime() {
         return this.getGames().stream()

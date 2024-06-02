@@ -6,6 +6,7 @@ import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.dto.GameTimeDto;
 import com.example.playgroundmanage.dto.response.OccupiedTime;
+import com.example.playgroundmanage.location.dto.AthleticsThumbnailResponse;
 import com.example.playgroundmanage.location.dto.PlaygroundRequestDto;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.login.service.UserService;
@@ -39,8 +40,8 @@ public class PlaygroundController {
     }
 
     @GetMapping("/playground/{playgroundId}/upComing")
-    public List<GameResponseDto> getUpcomingGames(@PathVariable Long playgroundId) {
-        return playgroundService.getUpcomingGames(playgroundId);
+    public List<AthleticsThumbnailResponse> getUpcomingGames(@PathVariable Long playgroundId) {
+        return playgroundService.getUpcomingAthletics(playgroundId);
     }
 
     @GetMapping("/playground/{playgroundId}/info")
