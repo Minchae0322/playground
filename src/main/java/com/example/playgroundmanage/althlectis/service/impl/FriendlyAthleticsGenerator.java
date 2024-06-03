@@ -4,6 +4,7 @@ import com.example.playgroundmanage.althlectis.service.AthleticsGenerator;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
+import com.example.playgroundmanage.location.service.TimeValidation;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.User;
@@ -24,6 +25,8 @@ public class FriendlyAthleticsGenerator implements AthleticsGenerator {
 
     private final GameValidation gameValidation;
 
+    private final TimeValidation timeValidation;
+
     private final AthleticsRepository athleticsRepository;
 
     private final UserRepository userRepository;
@@ -39,7 +42,7 @@ public class FriendlyAthleticsGenerator implements AthleticsGenerator {
         final Playground playground = playgroundRepository.findById(gameGenerationRequest.playgroundId())
                 .orElseThrow(PlaygroundNotExistException::new);
 
-        gameValidation.validateOverlappingGames(playground.getGames(), gameGenerationRequest.toGameTimeDto());
+        timeValidation.validateOverlappingGames(playground.getAthletics(), gameGenerationRequest.toGameTimeDto());
 
         final User host = userRepository.findById(hostId)
                 .orElseThrow(UserNotExistException::new);
@@ -48,7 +51,7 @@ public class FriendlyAthleticsGenerator implements AthleticsGenerator {
                 host,
                 gameGenerationRequest.gameName(),
                 SportsEvent.fromString(gameGenerationRequest.sportsEvent()),
-                gameGenerationRequest.gameStartDateTime().toLocalDateTime(),
+                gameGenerationRequest.toGameTimeDto().getStartDateTime(),
                 gameGenerationRequest.runningTime(),
                 playground,
                 GameType.FRIENDLY

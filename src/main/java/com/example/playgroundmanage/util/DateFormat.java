@@ -1,11 +1,13 @@
 package com.example.playgroundmanage.util;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Component
+
 public class DateFormat {
 
     public static String dateFormatYYYYMMDDHHMM(LocalDateTime localDateTime) {
