@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -20,7 +21,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED) // 상속 전략 설정
 @DiscriminatorColumn(name = "type") // 상속받는 클래스를 구분하는 컬럼
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class Athletics extends BaseEntity {
+public abstract class Athletics extends BaseEntity  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -57,4 +58,6 @@ public abstract class Athletics extends BaseEntity {
         this.playground = playground;
         this.host = host;
     }
+
+
 }

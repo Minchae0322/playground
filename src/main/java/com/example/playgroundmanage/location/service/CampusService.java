@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.location.service;
 
 
+import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.game.dto.GameDto;
@@ -10,6 +11,7 @@ import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.service.GameDtoConverter;
 import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.location.dto.AthleticsThumbnailResponse;
 import com.example.playgroundmanage.location.dto.CampusResponseDto;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
@@ -27,6 +29,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,25 +43,29 @@ public class CampusService {
 
     private final PlaygroundFinder playgroundFinder;
 
-    private final GameFinder gameFinder;
-
-    private final GameSorting gameSorting;
-
-    private final GameDtoConverter gameDtoConverter;
+    private final TimeValidation timeValidation;
 
 
     @Transactional
-    public List<GameResponseDto> getUpcomingGamesInCampusBySportsEvent(Long campusId, SportsEvent sportsEvent) {
+    public List<AthleticsThumbnailResponse> getUpcomingGamesInCampusBySportsEvent(Long campusId, SportsEvent sportsEvent) {
         Campus campus = campusRepository.findById(campusId)
                 .orElseThrow(CampusNotExistException::new);
 
         List<Playground> playgrounds = playgroundFinder.getPlaygroundsBySportsEvent(campus.getPlaygrounds(), sportsEvent);
 
-        List<Game> games = gameSorting.sortGamesByEarliest(getUpcomingGames(playgrounds));
+        List<Athletics> athletics = playgrounds.stream()
+                .flatMap(playground -> getUpcomingAthletics(playground.getAthletics()).stream())
+                .sorted(Comparator.comparing(Athletics::getGameStartDateTime))
+                .toList();
 
-        return games.stream()
-                .limit(4)
-                .map(gameDtoConverter::toGameResponse)
+        return athletics.stream()
+                .map(AthleticsThumbnailResponse::of)
+                .toList();
+    }
+
+    private List<Athletics> getUpcomingAthletics(List<Athletics> athletics) {
+        return athletics.stream()
+                .filter(athletics1 -> timeValidation.isAfterFromNow(athletics1.getGameStartDateTime()))
                 .toList();
     }
 
@@ -92,13 +99,7 @@ public class CampusService {
                 .toList();
     }
 
-    private List<Game> getUpcomingGames(List<Playground> playgrounds) {
-        LocalDateTime now = LocalDateTime.now();
-        return playgrounds.stream()
-                .flatMap(playground -> gameFinder.getUpcomingGames(playground.getGames(), playground.getGames().size(), MyDateTimeLocal.initMyDateTime(now))
-                        .stream().limit(4))
-                .collect(Collectors.toList());
-    }
+
 
     private PlaygroundResponseDto toPlaygroundResponseDto(Playground playground) {
         return PlaygroundResponseDto.builder()
