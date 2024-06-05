@@ -1,23 +1,19 @@
 package com.example.playgroundmanage.location.service;
 
 import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.dto.GameTimeDto;
-import com.example.playgroundmanage.dto.PlaygroundDto;
-import com.example.playgroundmanage.dto.response.*;
 import com.example.playgroundmanage.exception.CampusNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
-import com.example.playgroundmanage.exception.SchoolNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.service.GameDtoConverter;
 import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.location.dto.AthleticsThumbnailResponse;
 import com.example.playgroundmanage.location.dto.PlaygroundRequestDto;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
+import com.example.playgroundmanage.location.dto.response.OccupiedTimeResponse;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
-import com.example.playgroundmanage.location.repository.SchoolRepository;
 import com.example.playgroundmanage.location.vo.Playground;
-import com.example.playgroundmanage.location.vo.School;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.type.SportsEvent;
@@ -27,7 +23,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 
@@ -37,22 +32,46 @@ import static com.example.playgroundmanage.util.GameValidation.validateStartTime
 @Service
 @RequiredArgsConstructor
 public class PlaygroundService {
-
     private final PlaygroundRepository playgroundRepository;
-
-    private final GameFinder gameFinder;
 
     private final GameDtoConverter gameDtoConverter;
 
-    private final GameValidation gameValidation;
-
     private final PlaygroundDtoConverter playgroundDtoConverter;
 
-    private final GameSorting gameSorting;
 
     private final CampusRepository campusRepository;
 
     private final FileHandler fileHandler;
+
+    private final TimeValidation timeValidation;
+
+    @Transactional
+    public List<AthleticsThumbnailResponse> getUpcomingAthletics(Long playgroundId) {
+        Playground playground = playgroundRepository.findById(playgroundId)
+                .orElseThrow(PlaygroundNotExistException::new);
+
+        return playground.getAthletics().stream()
+                .filter(athletics -> timeValidation.isAfterFromNow(athletics.getGameStartDateTime()))
+                .map(AthleticsThumbnailResponse::of)
+                .toList();
+    }
+
+    @Transactional
+    public List<OccupiedTimeResponse> getPlaygroundOccupiedTimeLines(Long playgroundId, GameTimeDto gameTimeDto) {
+        Playground playground = playgroundRepository.findById(playgroundId)
+                .orElseThrow(PlaygroundNotExistException::new);
+
+        return playground.getAthletics().stream()
+                .filter(athletics -> timeValidation.isAthleticsOnDate(athletics, gameTimeDto.getStartDateTime()))
+                .sorted()
+                .map(athletics ->
+                        OccupiedTimeResponse.of(
+                                athletics.getGameStartDateTime(),
+                                athletics.getGameStartDateTime().plusMinutes(athletics.getRunningTime())
+                        )
+                )
+                .toList();
+    }
 
 
     @Transactional
@@ -71,7 +90,16 @@ public class PlaygroundService {
                 .build();
 
         playgroundRepository.save(playground);
+    }
 
+    @Transactional
+    public GameResponseDto getOngoingGame(Long playgroundId) {
+        Playground playground = playgroundRepository.findById(playgroundId)
+                .orElseThrow(PlaygroundNotExistException::new);
+
+        Game onGoingGame = GameFinder.findOngoingGame(playground.getGames(), MyDateTime.initMyDateTime(ZonedDateTime.now()));
+
+        return gameDtoConverter.toGameResponse(onGoingGame);
     }
 
     @Transactional
@@ -80,12 +108,22 @@ public class PlaygroundService {
                 .orElseThrow(PlaygroundNotExistException::new);
 
         validateStartTimeAfterPresent(gameTimeDto);
-        gameValidation.validateOverlappingGames(playground.getGames(), gameTimeDto);
+        timeValidation.validateOverlappingGames(playground.getAthletics(), gameTimeDto);
 
         return true;
     }
 
     @Transactional
+    public PlaygroundResponseDto getPlaygroundInfo(Long playgroundId) {
+        Playground playground = playgroundRepository.findById(playgroundId)
+                .orElseThrow(PlaygroundNotExistException::new);
+
+        return playgroundDtoConverter.toPlaygroundResponseInfoDto(playground);
+    }
+
+
+
+  /*  @Transactional
     public List<OccupiedTime> getPlaygroundOccupiedTimeLines(Long playgroundId, GameTimeDto gameTimeDto) {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
@@ -102,19 +140,11 @@ public class PlaygroundService {
                         .build())
                 .toList();
     }
+*/
 
 
-    @Transactional
-    public GameResponseDto getOngoingGame(Long playgroundId) {
-        Playground playground = playgroundRepository.findById(playgroundId)
-                .orElseThrow(PlaygroundNotExistException::new);
 
-        Game onGoingGame = GameFinder.findOngoingGame(playground.getGames(), MyDateTime.initMyDateTime(ZonedDateTime.now()));
-
-        return gameDtoConverter.toGameResponse(onGoingGame);
-    }
-
-    @Transactional
+  /*  @Transactional
     public List<GameResponseDto> getUpcomingGames(Long playgroundId) {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
@@ -124,16 +154,8 @@ public class PlaygroundService {
         return upcomingGames.stream()
                 .map(gameDtoConverter::toGameResponse)
                 .toList();
-    }
+    }*/
 
-
-    @Transactional
-    public PlaygroundResponseDto getPlaygroundInfo(Long playgroundId) {
-        Playground playground = playgroundRepository.findById(playgroundId)
-                .orElseThrow(PlaygroundNotExistException::new);
-
-        return playgroundDtoConverter.toPlaygroundResponseInfoDto(playground);
-    }
 
 
 

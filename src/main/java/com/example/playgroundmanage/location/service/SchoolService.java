@@ -5,6 +5,7 @@ import com.example.playgroundmanage.exception.SchoolNotExistException;
 import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.location.dto.AthleticsThumbnailResponse;
 import com.example.playgroundmanage.location.dto.CampusResponseDto;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.repository.SchoolRepository;
@@ -76,7 +77,7 @@ public class SchoolService {
                 .toList();
     }
     @Transactional
-    public List<GameResponseDto> getUpcomingGamesBySchoolAndSportsEvent(Long schoolId, SportsEvent sportsEvent) {
+    public List<AthleticsThumbnailResponse> getUpcomingGamesBySchoolAndSportsEvent(Long schoolId, SportsEvent sportsEvent) {
         School school = schoolRepository.findById(schoolId)
                 .orElseThrow(SchoolNotExistException::new);
 

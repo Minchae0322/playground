@@ -66,7 +66,7 @@
 
         <img
 
-            src="../assets/icon-kakao.png"
+            src="../assets/icons8-wechat-48.png"
             alt="Your Image Alt Text"
             class="image-margin"
             width="50"

@@ -3,6 +3,7 @@ package com.example.playgroundmanage.controller;
 import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.game.dto.GameResponseDto;
+import com.example.playgroundmanage.location.dto.AthleticsThumbnailResponse;
 import com.example.playgroundmanage.location.dto.CampusResponseDto;
 import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.service.CampusService;
@@ -35,7 +36,7 @@ public class SchoolController {
     }
 
     @GetMapping("/school/{schoolId}/upcoming/{sportsType}")
-    public List<GameResponseDto> getUpcomingGamesBySportsEvent(@PathVariable String sportsType, @PathVariable Long schoolId) {
+    public List<AthleticsThumbnailResponse> getUpcomingGamesBySportsEvent(@PathVariable String sportsType, @PathVariable Long schoolId) {
         return schoolService.getUpcomingGamesBySchoolAndSportsEvent(schoolId, SportsEvent.valueOf(sportsType));
     }
 

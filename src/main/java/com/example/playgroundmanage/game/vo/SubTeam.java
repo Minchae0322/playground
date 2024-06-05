@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.game.vo;
 
-import com.example.playgroundmanage.refactoring.AthleticsSide;
+import com.example.playgroundmanage.althlectis.vo.AthleticsSide;
 import com.example.playgroundmanage.team.vo.Team;
 import jakarta.persistence.*;
 import lombok.*;
