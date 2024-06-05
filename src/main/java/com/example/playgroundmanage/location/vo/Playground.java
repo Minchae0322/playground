@@ -54,22 +54,13 @@ public class Playground {
 
 
 
-    public List<Game> getUpcomingGamesOrderedByStartDateTime() {
-        return this.getGames().stream()
+    public List<Athletics> getUpcomingGamesOrderedByStartDateTime() {
+        return this.getAthletics().stream()
                 .filter(game -> game.getGameStartDateTime().isAfter(LocalDateTime.now()))
-                .sorted(Comparator.comparing(Game::getGameStartDateTime).reversed())
+                .sorted(Comparator.comparing(Athletics::getGameStartDateTime).reversed())
                 .toList();
     }
 
-    public PlaygroundDto toPlaygroundDto() {
-        return PlaygroundDto.builder()
-                .playgroundId(id)
-                .campusName(campus.getCampusName())
-                .playgroundName(name)
-                .schoolName(campus.getSchool().getSchoolName())
-                .sportsEvent(sportsEvent)
-                .build();
-    }
 
 
 

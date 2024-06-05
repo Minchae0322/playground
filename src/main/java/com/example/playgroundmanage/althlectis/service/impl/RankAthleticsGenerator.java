@@ -1,7 +1,6 @@
 package com.example.playgroundmanage.althlectis.service.impl;
 
 import com.example.playgroundmanage.althlectis.service.AthleticsGenerator;
-import com.example.playgroundmanage.althlectis.service.AthleticsValidation;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
@@ -17,7 +16,6 @@ import com.example.playgroundmanage.althlectis.repo.AthleticsSideRepository;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
-import com.example.playgroundmanage.util.GameValidation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
