@@ -168,6 +168,8 @@ const sendFriendlyGameJoinRequest = async () => {
   try {
     const response = await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/friendlyGameJoin`, {
           gameTeamSide: 'NONE',
+          athleticsId: props.game.gameId,
+          gameType: 'friendlyAthleticsJoin'
         },
         {
           headers: {

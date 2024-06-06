@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.request.service.impl;
 
+import com.example.playgroundmanage.althlectis.repo.AthleticsRepository;
 import com.example.playgroundmanage.game.dto.GameRequestDto;
 import com.example.playgroundmanage.dto.RequestDto;
 import com.example.playgroundmanage.dto.RequestInfoDto;
@@ -9,10 +10,13 @@ import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.game.repository.GameParticipantRepository;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.repository.GameRequestRepository;
+import com.example.playgroundmanage.request.dto.AthleticsJoinRequest;
+import com.example.playgroundmanage.request.repository.AthleticsRequestRepository;
 import com.example.playgroundmanage.request.service.RequestProcessor;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.request.service.RequestService;
+import com.example.playgroundmanage.request.vo.AthleticsRequest;
 import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.request.vo.impl.FriendlyGameJoinRequest;
 import jakarta.transaction.Transactional;
@@ -29,6 +33,8 @@ import static com.example.playgroundmanage.util.GameValidation.validateDuplicate
 public class FriendlyGameJoinRequestService implements RequestService {
 
     private final GameRepository gameRepository;
+
+
 
     private final GameRequestRepository gameRequestRepository;
 
@@ -53,6 +59,8 @@ public class FriendlyGameJoinRequestService implements RequestService {
 
         return saveJoinRequest(game, gameRequestDto);
     }
+
+
 
     @Transactional
     private Long saveJoinRequest(Game game, GameRequestDto gameRequestDto) {

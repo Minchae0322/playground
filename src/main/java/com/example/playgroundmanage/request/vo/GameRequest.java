@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.JOINED) // 상속 전략 설정
 @DiscriminatorColumn(name = "type") // 상속받는 클래스를 구분하는 컬럼
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class GameRequest extends Request {
+public abstract class GameRequest implements Request {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

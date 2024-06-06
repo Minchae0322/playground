@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.althlectis.service.impl;
 
 import com.example.playgroundmanage.althlectis.service.AthleticsGenerator;
-import com.example.playgroundmanage.althlectis.service.AthleticsValidation;
+
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;

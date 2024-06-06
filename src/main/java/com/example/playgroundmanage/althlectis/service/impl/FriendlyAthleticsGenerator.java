@@ -23,8 +23,6 @@ public class FriendlyAthleticsGenerator implements AthleticsGenerator {
 
     private final PlaygroundRepository playgroundRepository;
 
-    private final GameValidation gameValidation;
-
     private final TimeValidation timeValidation;
 
     private final AthleticsRepository athleticsRepository;

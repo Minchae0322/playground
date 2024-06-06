@@ -8,6 +8,8 @@ import com.example.playgroundmanage.login.dto.UserJoinGameRequest;
 import com.example.playgroundmanage.login.dto.UserJoinTeamParams;
 import com.example.playgroundmanage.dto.response.PendingGameRequest;
 import com.example.playgroundmanage.dto.response.PendingTeamRequest;
+import com.example.playgroundmanage.request.dto.AthleticsJoinRequest;
+import com.example.playgroundmanage.request.service.AthleticsRequestService;
 import com.example.playgroundmanage.request.service.RequestProcessor;
 import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.request.RequestServiceFinder;
@@ -31,16 +33,13 @@ public class RequestController {
 
 
     @PostMapping("/game/{gameId}/join/{requestType}")
-    public void generateJoinGameRequest(@RequestBody @Validated UserJoinGameRequest userJoinGameRequest, @AuthenticationPrincipal MyUserDetails userDetails, @PathVariable Long gameId, @PathVariable("requestType") String type) {
-        RequestService requestService = requestServiceFinder.find(type);
+    public void generateJoinGameRequest(@RequestBody @Validated AthleticsJoinRequest athleticsJoinRequest, @AuthenticationPrincipal MyUserDetails userDetails, @PathVariable Long gameId, @PathVariable("requestType") String type) {
+        AthleticsRequestService requestService = requestServiceFinder.find(type);
 
-        GameRequestDto gameRequestDto = userJoinGameRequest.toJoinGameRequestDto(userDetails.getUser());
-        gameRequestDto.setGameId(gameId);
-
-        requestService.generateRequest(gameRequestDto);
+        requestService.generateRequest(userDetails.getUser().getId(), athleticsJoinRequest);
     }
 
-    @PreAuthorize("hasPermission(#requestId,'requestAccept_game','UPDATE')")
+    /*@PreAuthorize("hasPermission(#requestId,'requestAccept_game','UPDATE')")
     @PatchMapping("/game/accept/{requestId}/{requestType}")
     public void acceptGameRequest(@PathVariable Long requestId, @PathVariable("requestType") String type) {
         RequestService requestService = requestServiceFinder.find(type);
@@ -112,5 +111,5 @@ public class RequestController {
         RequestService requestService = requestServiceFinder.find(type);
 
         requestService.declineRequest(requestId);
-    }
+    }*/
 }
