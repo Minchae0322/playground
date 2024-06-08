@@ -30,12 +30,16 @@ public abstract class AthleticsParticipant {
 
     private boolean isAccepted;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    private Athletics athletics;
 
-    public AthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, GameRecord gameRecord, boolean isAccepted) {
+
+    public AthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, GameRecord gameRecord, boolean isAccepted, Athletics athletics) {
         this.id = id;
         this.gameTeamSide = gameTeamSide;
         this.user = user;
         this.gameRecord = gameRecord;
         this.isAccepted = isAccepted;
+        this.athletics = athletics;
     }
 }

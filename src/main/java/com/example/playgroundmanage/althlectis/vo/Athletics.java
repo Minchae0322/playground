@@ -51,7 +51,10 @@ public abstract class Athletics extends BaseEntity  {
     @OneToMany(mappedBy = "athletics", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<AthleticsRequest> athleticsRequests = new ArrayList<>();
 
-    public Athletics(Long id, String gameName, SportsEvent sportsEvent, GameType gameType, LocalDateTime gameStartDateTime, Integer runningTime, Playground playground, User host) {
+    @OneToMany(mappedBy = "athletics", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<AthleticsParticipant> athleticsParticipants = new ArrayList<>();
+
+    public Athletics(Long id, String gameName, SportsEvent sportsEvent, GameType gameType, LocalDateTime gameStartDateTime, Integer runningTime, Playground playground, User host, List<AthleticsRequest> athleticsRequests, List<AthleticsParticipant> athleticsParticipants) {
         this.id = id;
         this.gameName = gameName;
         this.sportsEvent = sportsEvent;
@@ -60,7 +63,7 @@ public abstract class Athletics extends BaseEntity  {
         this.runningTime = runningTime;
         this.playground = playground;
         this.host = host;
-        this.athleticsRequests = new ArrayList<>();
-
+        this.athleticsRequests = athleticsRequests;
+        this.athleticsParticipants = athleticsParticipants;
     }
 }

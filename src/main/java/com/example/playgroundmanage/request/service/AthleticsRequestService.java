@@ -7,4 +7,6 @@ public interface AthleticsRequestService {
     Long generateRequest(Long userId, AthleticsJoinRequest athleticsJoinRequest);
 
     String getRequestType();
+
+    Long acceptRequest(Long requestId);
 }

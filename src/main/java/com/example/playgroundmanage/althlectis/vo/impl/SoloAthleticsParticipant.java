@@ -20,13 +20,28 @@ public class SoloAthleticsParticipant extends AthleticsParticipant {
     @ManyToOne(cascade = CascadeType.MERGE)
     private AthleticsSide athleticsSide;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    private FriendlyAthletics friendlyAthletics;
+
 
     @Builder
-    public SoloAthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, GameRecord gameRecord, boolean isAccepted, AthleticsSide athleticsSide, FriendlyAthletics friendlyAthletics) {
-        super(id, gameTeamSide, user, gameRecord, isAccepted);
+    public SoloAthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, GameRecord gameRecord, boolean isAccepted, Athletics athletics, AthleticsSide athleticsSide) {
+        super(id, gameTeamSide, user, gameRecord, isAccepted, athletics);
         this.athleticsSide = athleticsSide;
-        this.friendlyAthletics = friendlyAthletics;
     }
+
+    public static SoloAthleticsParticipant of(
+            AthleticsSide athleticsSide
+    ) {
+        return SoloAthleticsParticipant.builder()
+                .athleticsSide(athleticsSide)
+                .build();
+    }
+
+    public static SoloAthleticsParticipant of(
+            FriendlyAthletics friendlyAthletics
+    ) {
+        return SoloAthleticsParticipant.builder()
+                .athletics(friendlyAthletics)
+                .build();
+    }
+
 }

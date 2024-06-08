@@ -34,8 +34,6 @@ public class FriendlyGameJoinRequestService implements RequestService {
 
     private final GameRepository gameRepository;
 
-
-
     private final GameRequestRepository gameRequestRepository;
 
     private final RequestProcessor requestProcessor;

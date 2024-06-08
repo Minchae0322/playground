@@ -1,10 +1,14 @@
 package com.example.playgroundmanage.request.service.impl;
 
+import com.example.playgroundmanage.althlectis.repo.AthleticsParticipantRepository;
 import com.example.playgroundmanage.althlectis.repo.AthleticsRepository;
 import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.althlectis.vo.AthleticsParticipant;
+import com.example.playgroundmanage.althlectis.vo.AthleticsSide;
 import com.example.playgroundmanage.althlectis.vo.impl.FriendlyAthletics;
+import com.example.playgroundmanage.althlectis.vo.impl.SoloAthleticsParticipant;
 import com.example.playgroundmanage.exception.GameNotExistException;
+import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.exception.UserNotValidException;
 import com.example.playgroundmanage.login.repository.UserRepository;
@@ -14,6 +18,7 @@ import com.example.playgroundmanage.request.repository.AthleticsRequestRepositor
 import com.example.playgroundmanage.request.service.AthleticsRequestService;
 import com.example.playgroundmanage.request.vo.AthleticsRequest;
 import com.example.playgroundmanage.request.vo.impl.athletics.FriendlyAthleticsJoinRequest;
+import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.RequestState;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -32,10 +37,14 @@ public class FriendlyAthleticsJoinAthleticsRequestService implements AthleticsRe
 
     private final UserRepository userRepository;
 
+    private final AthleticsParticipantRepository athleticsParticipantRepository;
+
     @Override
     public String getRequestType() {
         return "friendlyGameJoin";
     }
+
+
     @Override
     @Transactional
     public Long generateRequest(Long userId, AthleticsJoinRequest athleticsJoinRequest) {
@@ -49,7 +58,7 @@ public class FriendlyAthleticsJoinAthleticsRequestService implements AthleticsRe
             throw new UserNotValidException();
         }
 
-        FriendlyAthleticsJoinRequest friendlyAthleticsJoinRequest = (FriendlyAthleticsJoinRequest) findPreviousRequest(requestUser, athletics)
+        AthleticsRequest friendlyAthleticsJoinRequest = findPreviousRequest(requestUser, athletics)
                 .orElse(FriendlyAthleticsJoinRequest.of(
                         athletics,
                         requestUser,
@@ -60,7 +69,26 @@ public class FriendlyAthleticsJoinAthleticsRequestService implements AthleticsRe
         return athleticsRequestRepository.save(friendlyAthleticsJoinRequest).getId();
     }
 
+    @Override
+    public Long acceptRequest(Long requestId) {
+        FriendlyAthleticsJoinRequest friendlyAthleticsJoinRequest = (FriendlyAthleticsJoinRequest) athleticsRequestRepository.findById(requestId)
+                .orElseThrow(RequestNotExistException::new);
 
+        if (isUserParticipatedAthletics(
+                friendlyAthleticsJoinRequest.getFriendlyAthletics().getAthleticsParticipants(),
+                friendlyAthleticsJoinRequest.getUser())) {
+            throw new UserNotValidException();
+        }
+
+        friendlyAthleticsJoinRequest.setRequestState(RequestState.ACCEPTED);
+
+
+        return athleticsParticipantRepository.save(
+                SoloAthleticsParticipant.of(
+                        friendlyAthleticsJoinRequest.getFriendlyAthletics()
+                )
+        ).getId();
+    }
 
     private Optional<AthleticsRequest> findPreviousRequest(User user, Athletics athletics) {
         return athleticsRequestRepository.findByUserAndAthletics(user, athletics);
@@ -68,6 +96,7 @@ public class FriendlyAthleticsJoinAthleticsRequestService implements AthleticsRe
 
     private RequestState getRequestState(User requestUser, User host) {
         if (requestUser.equals(host)) {
+
             return RequestState.ACCEPTED;
         }
         return RequestState.PENDING;

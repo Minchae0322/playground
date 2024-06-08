@@ -25,9 +25,10 @@ public class TeamAthleticsParticipant extends AthleticsParticipant {
     @ManyToOne(cascade = CascadeType.MERGE)
     private Team team;
 
+
     @Builder
-    public TeamAthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, GameRecord gameRecord, boolean isAccepted, AthleticsSide athleticsSide, Team team) {
-        super(id, gameTeamSide, user, gameRecord, isAccepted);
+    public TeamAthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, GameRecord gameRecord, boolean isAccepted, Athletics athletics, AthleticsSide athleticsSide, Team team) {
+        super(id, gameTeamSide, user, gameRecord, isAccepted, athletics);
         this.athleticsSide = athleticsSide;
         this.team = team;
     }

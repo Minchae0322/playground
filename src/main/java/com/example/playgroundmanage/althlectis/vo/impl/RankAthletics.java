@@ -1,9 +1,11 @@
 package com.example.playgroundmanage.althlectis.vo.impl;
 
 import com.example.playgroundmanage.althlectis.vo.Athletics;
+import com.example.playgroundmanage.althlectis.vo.AthleticsParticipant;
 import com.example.playgroundmanage.althlectis.vo.AthleticsSide;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.login.vo.User;
+import com.example.playgroundmanage.request.vo.AthleticsRequest;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.persistence.CascadeType;
@@ -36,11 +38,14 @@ public class RankAthletics extends Athletics {
             Integer runningTime,
             Playground playground,
             User host,
+            List<AthleticsRequest> athleticsRequests,
+            List<AthleticsParticipant> athleticsParticipants,
             List<AthleticsSide> athleticsSide
     ) {
-        super(id, gameName, sportsEvent, gameType, gameStartDateTime, runningTime, playground, host);
+        super(id, gameName, sportsEvent, gameType, gameStartDateTime, runningTime, playground, host, athleticsRequests, athleticsParticipants);
         this.athleticsSides = athleticsSide;
     }
+
 
     public static RankAthletics of(final User host, final String gameName,
                                    final SportsEvent sportsEvent, final LocalDateTime gameStartDateTime,

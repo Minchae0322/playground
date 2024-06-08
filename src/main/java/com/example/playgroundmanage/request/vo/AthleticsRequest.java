@@ -2,7 +2,6 @@ package com.example.playgroundmanage.request.vo;
 
 
 import com.example.playgroundmanage.althlectis.vo.Athletics;
-import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.global.BaseEntity;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.type.GameTeamSide;
@@ -11,8 +10,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
@@ -25,9 +22,6 @@ public abstract class AthleticsRequest extends BaseEntity implements Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private Athletics athletics;
-
     @ManyToOne
     private User user;
 
@@ -39,13 +33,19 @@ public abstract class AthleticsRequest extends BaseEntity implements Request {
 
     @Enumerated(EnumType.STRING)
     private GameTeamSide gameTeamSide;
+    @ManyToOne
+    private Athletics athletics;
 
-    public AthleticsRequest(Long id, Athletics athletics, User user, User host, RequestState requestState, GameTeamSide gameTeamSide) {
+    public AthleticsRequest(Long id, User user, User host, RequestState requestState, GameTeamSide gameTeamSide, Athletics athletics) {
         this.id = id;
-        this.athletics = athletics;
         this.user = user;
         this.host = host;
         this.requestState = requestState;
         this.gameTeamSide = gameTeamSide;
+        this.athletics = athletics;
+    }
+
+    public void setRequestState(final RequestState requestState) {
+        this.requestState = requestState;
     }
 }

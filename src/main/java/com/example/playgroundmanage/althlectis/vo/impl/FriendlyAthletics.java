@@ -2,8 +2,11 @@ package com.example.playgroundmanage.althlectis.vo.impl;
 
 
 import com.example.playgroundmanage.althlectis.vo.Athletics;
+import com.example.playgroundmanage.althlectis.vo.AthleticsParticipant;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.login.vo.User;
+import com.example.playgroundmanage.request.vo.AthleticsRequest;
+import com.example.playgroundmanage.request.vo.impl.athletics.FriendlyAthleticsJoinRequest;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.persistence.CascadeType;
@@ -24,23 +27,9 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class FriendlyAthletics extends Athletics {
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<SoloAthleticsParticipant> athleticsParticipants;
-
     @Builder
-    public FriendlyAthletics(
-            Long id,
-            User host,
-            String gameName,
-            SportsEvent sportsEvent,
-            GameType gameType,
-            LocalDateTime gameStartDateTime,
-            Integer runningTime,
-            Playground playground,
-            List<SoloAthleticsParticipant> athleticsParticipants
-    ) {
-        super(id, gameName, sportsEvent, gameType, gameStartDateTime, runningTime, playground, host);
-        this.athleticsParticipants = athleticsParticipants;
+    public FriendlyAthletics(Long id, String gameName, SportsEvent sportsEvent, GameType gameType, LocalDateTime gameStartDateTime, Integer runningTime, Playground playground, User host, List<AthleticsRequest> athleticsRequests, List<AthleticsParticipant> athleticsParticipants) {
+        super(id, gameName, sportsEvent, gameType, gameStartDateTime, runningTime, playground, host, athleticsRequests, athleticsParticipants);
     }
 
     public static FriendlyAthletics of(
@@ -57,9 +46,9 @@ public class FriendlyAthletics extends Athletics {
                 .sportsEvent(sportsEvent)
                 .gameStartDateTime(gameStartDateTime)
                 .runningTime(runningTime)
-                .playground(playground)
                 .athleticsParticipants(new ArrayList<>())
+                .athleticsRequests(new ArrayList<>())
+                .playground(playground)
                 .build();
     }
-
 }
