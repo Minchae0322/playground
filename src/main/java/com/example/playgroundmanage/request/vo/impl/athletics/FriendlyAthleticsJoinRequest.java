@@ -20,12 +20,9 @@ import lombok.NoArgsConstructor;
 @Getter
 public class FriendlyAthleticsJoinRequest extends AthleticsRequest {
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
-    private FriendlyAthletics friendlyAthletics;
     @Builder
     public FriendlyAthleticsJoinRequest(Long id, User user, User host, RequestState requestState, GameTeamSide gameTeamSide, FriendlyAthletics friendlyAthletics) {
         super(id, user, host, requestState, gameTeamSide, friendlyAthletics);
-        this.friendlyAthletics = friendlyAthletics;
     }
 
     public static FriendlyAthleticsJoinRequest of(

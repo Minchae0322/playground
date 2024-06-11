@@ -9,11 +9,13 @@ import com.example.playgroundmanage.login.dto.UserJoinTeamParams;
 import com.example.playgroundmanage.dto.response.PendingGameRequest;
 import com.example.playgroundmanage.dto.response.PendingTeamRequest;
 import com.example.playgroundmanage.request.dto.AthleticsJoinRequest;
+import com.example.playgroundmanage.request.dto.PendingRequestResponse;
 import com.example.playgroundmanage.request.service.AthleticsRequestService;
 import com.example.playgroundmanage.request.service.RequestProcessor;
 import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.request.RequestServiceFinder;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
+import com.example.playgroundmanage.request.service.impl.FriendlyAthleticsJoinAthleticsRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -28,15 +30,27 @@ public class RequestController {
 
     private final RequestServiceFinder requestServiceFinder;
 
-    private final RequestProcessor requestProcessor;
 
 
+    private final FriendlyAthleticsJoinAthleticsRequestService friendlyAthleticsJoinAthleticsRequestService;
 
     @PostMapping("/game/{gameId}/join/{requestType}")
     public void generateJoinGameRequest(@RequestBody @Validated AthleticsJoinRequest athleticsJoinRequest, @AuthenticationPrincipal MyUserDetails userDetails, @PathVariable Long gameId, @PathVariable("requestType") String type) {
         AthleticsRequestService requestService = requestServiceFinder.find(type);
 
         requestService.generateRequest(userDetails.getUser().getId(), athleticsJoinRequest);
+    }
+
+    @GetMapping("/user/pending/request/game")
+    public List<PendingRequestResponse> getAllPendingGameRequests(@AuthenticationPrincipal MyUserDetails myUserDetails) {
+        return friendlyAthleticsJoinAthleticsRequestService.getPendingRequests(myUserDetails.getUser().getId());
+    }
+
+    @PatchMapping("/game/accept/{requestId}/{requestType}")
+    public void acceptGameRequest(@PathVariable Long requestId, @PathVariable("requestType") String type) {
+        AthleticsRequestService requestService = requestServiceFinder.find(type);
+
+        requestService.acceptRequest(requestId);
     }
 
     /*@PreAuthorize("hasPermission(#requestId,'requestAccept_game','UPDATE')")

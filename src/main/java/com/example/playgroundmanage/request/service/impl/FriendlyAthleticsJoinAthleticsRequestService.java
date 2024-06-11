@@ -7,6 +7,7 @@ import com.example.playgroundmanage.althlectis.vo.AthleticsParticipant;
 import com.example.playgroundmanage.althlectis.vo.AthleticsSide;
 import com.example.playgroundmanage.althlectis.vo.impl.FriendlyAthletics;
 import com.example.playgroundmanage.althlectis.vo.impl.SoloAthleticsParticipant;
+import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.exception.UserNotExistException;
@@ -14,6 +15,7 @@ import com.example.playgroundmanage.exception.UserNotValidException;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.request.dto.AthleticsJoinRequest;
+import com.example.playgroundmanage.request.dto.PendingRequestResponse;
 import com.example.playgroundmanage.request.repository.AthleticsRequestRepository;
 import com.example.playgroundmanage.request.service.AthleticsRequestService;
 import com.example.playgroundmanage.request.vo.AthleticsRequest;
@@ -75,7 +77,7 @@ public class FriendlyAthleticsJoinAthleticsRequestService implements AthleticsRe
                 .orElseThrow(RequestNotExistException::new);
 
         if (isUserParticipatedAthletics(
-                friendlyAthleticsJoinRequest.getFriendlyAthletics().getAthleticsParticipants(),
+                friendlyAthleticsJoinRequest.getAthletics().getAthleticsParticipants(),
                 friendlyAthleticsJoinRequest.getUser())) {
             throw new UserNotValidException();
         }
@@ -85,9 +87,22 @@ public class FriendlyAthleticsJoinAthleticsRequestService implements AthleticsRe
 
         return athleticsParticipantRepository.save(
                 SoloAthleticsParticipant.of(
-                        friendlyAthleticsJoinRequest.getFriendlyAthletics()
+                        (FriendlyAthletics) friendlyAthleticsJoinRequest.getAthletics()
                 )
         ).getId();
+    }
+
+    @Override
+    public List<PendingRequestResponse> getPendingRequests(Long hostId) {
+        User host = userRepository.findById(hostId)
+                .orElseThrow(UserNotExistException::new);
+
+        List<FriendlyAthleticsJoinRequest> athleticsRequests = athleticsRequestRepository.findAllByHostAndRequestState(host, RequestState.PENDING);
+
+        return athleticsRequests.stream()
+                .map(PendingRequestResponse::of)
+                .toList();
+
     }
 
     private Optional<AthleticsRequest> findPreviousRequest(User user, Athletics athletics) {
