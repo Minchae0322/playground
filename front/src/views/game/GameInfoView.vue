@@ -1,5 +1,5 @@
 <script setup>
-import {getCurrentInstance, inject, onMounted, onUpdated, ref} from "vue";
+import {getCurrentInstance, inject, onMounted,  ref} from "vue";
 import axios from "axios";
 import {defineEmits} from 'vue';
 import {useRouter} from "vue-router";

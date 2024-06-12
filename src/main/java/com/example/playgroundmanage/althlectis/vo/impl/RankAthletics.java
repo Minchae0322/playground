@@ -25,9 +25,6 @@ import java.util.List;
 @NoArgsConstructor
 public class RankAthletics extends Athletics {
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<AthleticsSide> athleticsSides;
-
     @Builder
     public RankAthletics(
             Long id,
@@ -39,11 +36,9 @@ public class RankAthletics extends Athletics {
             Playground playground,
             User host,
             List<AthleticsRequest> athleticsRequests,
-            List<AthleticsParticipant> athleticsParticipants,
-            List<AthleticsSide> athleticsSide
+            List<AthleticsParticipant> athleticsParticipants
     ) {
         super(id, gameName, sportsEvent, gameType, gameStartDateTime, runningTime, playground, host, athleticsRequests, athleticsParticipants);
-        this.athleticsSides = athleticsSide;
     }
 
 
@@ -60,12 +55,7 @@ public class RankAthletics extends Athletics {
                 .gameStartDateTime(gameStartDateTime)
                 .runningTime(runningTime)
                 .playground(playground)
-                .athleticsSide(new ArrayList<>())
                 .build();
-    }
-
-    public void addAthleticsSide(AthleticsSide athleticsSide) {
-        this.athleticsSides.add(athleticsSide);
     }
 
 }

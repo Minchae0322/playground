@@ -25,21 +25,11 @@ public class AthleticsSide {
     @ManyToOne(cascade = CascadeType.MERGE)
     private Athletics athletics;
 
-    @Enumerated
-    private GameTeamSide gameTeamSide;
 
-    @OneToMany(mappedBy = "athleticsSide", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<TeamAthleticsParticipant> teamAthleticsParticipants = new ArrayList<>();
-
-    @OneToMany(mappedBy = "athleticsSide", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<SoloAthleticsParticipant> soloAthleticsParticipants = new ArrayList<>();
 
     @Builder
     public AthleticsSide(Long id, Athletics athletics, GameTeamSide gameTeamSide, List<TeamAthleticsParticipant> teamAthleticsParticipants, List<SoloAthleticsParticipant> soloAthleticsParticipants) {
         this.id = id;
         this.athletics = athletics;
-        this.gameTeamSide = gameTeamSide;
-        this.teamAthleticsParticipants = teamAthleticsParticipants;
-        this.soloAthleticsParticipants = soloAthleticsParticipants;
     }
 }

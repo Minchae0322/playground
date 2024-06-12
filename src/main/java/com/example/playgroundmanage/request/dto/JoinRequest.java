@@ -2,8 +2,7 @@ package com.example.playgroundmanage.request.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record AthleticsJoinRequest (
-
+public record JoinRequest(
         @NotBlank(message = "Input Playground ID")
         Long athleticsId,
 
@@ -11,9 +10,7 @@ public record AthleticsJoinRequest (
         String gameTeamSide,
 
         @NotBlank(message = "Input Playground ID")
-        String gameType,
-
-        Long teamId
-
+        String gameType
 ) {
+    
 }

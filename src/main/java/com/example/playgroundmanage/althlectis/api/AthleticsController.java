@@ -1,12 +1,10 @@
 package com.example.playgroundmanage.althlectis.api;
 
 import com.example.playgroundmanage.althlectis.dto.request.GameGenerationRequest;
-import com.example.playgroundmanage.althlectis.dto.response.GameResponse;
+import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
 import com.example.playgroundmanage.althlectis.service.AthleticsGenerator;
 import com.example.playgroundmanage.althlectis.service.AthleticsService;
 import com.example.playgroundmanage.althlectis.service.factory.AthleticsGeneratorFactory;
-import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.dto.reqeust.GameRegistration;
 import com.example.playgroundmanage.game.GameGeneratorFactory;
 import com.example.playgroundmanage.game.GameResultManagerFactory;
 import com.example.playgroundmanage.game.GameResultManger;
@@ -16,8 +14,6 @@ import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.type.GameTeamSide;
-import com.example.playgroundmanage.type.GameType;
-import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -55,7 +51,7 @@ public class AthleticsController {
     }
 
     @GetMapping("/game/{gameId}/info")
-    public GameResponse getGameInfo(@PathVariable Long gameId) {
+    public AthleticsResponse getGameInfo(@PathVariable Long gameId) {
         return athleticsService.getGameInfo(gameId);
     }
 

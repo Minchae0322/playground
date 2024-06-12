@@ -1,12 +1,11 @@
 package com.example.playgroundmanage.althlectis.vo.impl;
 
+import com.example.playgroundmanage.althlectis.service.impl.RankAthleticsGenerator;
 import com.example.playgroundmanage.althlectis.vo.*;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.type.GameRecord;
 import com.example.playgroundmanage.type.GameTeamSide;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,25 +16,22 @@ import lombok.NoArgsConstructor;
 @Getter
 public class SoloAthleticsParticipant extends AthleticsParticipant {
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    private AthleticsSide athleticsSide;
-
     @Builder
-    public SoloAthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, GameRecord gameRecord, boolean isAccepted, Athletics athletics, AthleticsSide athleticsSide) {
+    public SoloAthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, GameRecord gameRecord, boolean isAccepted, Athletics athletics) {
         super(id, gameTeamSide, user, gameRecord, isAccepted, athletics);
-        this.athleticsSide = athleticsSide;
+
     }
 
     public static SoloAthleticsParticipant of(
             GameTeamSide gameTeamSide,
             User user,
-            AthleticsSide athleticsSide
+            RankAthletics rankAthletics
     ) {
         return SoloAthleticsParticipant.builder()
                 .user(user)
+                .athletics(rankAthletics)
                 .gameTeamSide(gameTeamSide)
                 .isAccepted(true)
-                .athleticsSide(athleticsSide)
                 .build();
     }
 

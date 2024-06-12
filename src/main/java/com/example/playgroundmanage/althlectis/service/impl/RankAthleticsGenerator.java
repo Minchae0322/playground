@@ -76,7 +76,6 @@ public class RankAthleticsGenerator implements AthleticsGenerator {
                             .athletics(athletics)
                             .build();
                     athleticsSideRepository.save(athleticsSide);
-                    athletics.addAthleticsSide(athleticsSide);
                 });
     }
 

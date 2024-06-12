@@ -4,7 +4,7 @@ import com.example.playgroundmanage.althlectis.vo.Athletics;
 
 import static com.example.playgroundmanage.util.Util.localDateToYearMonthDateTimeString;
 
-public record GameResponse(
+public record AthleticsResponse(
         Long gameId,
         Long playgroundId,
         String hostName,
@@ -18,8 +18,8 @@ public record GameResponse(
         String campusName
 ) {
 
-    public static GameResponse of(Athletics athletics) {
-        return new GameResponse(
+    public static AthleticsResponse of(Athletics athletics) {
+        return new AthleticsResponse(
                 athletics.getId(),
                 athletics.getPlayground().getId(),
                 athletics.getHost().getNickname(),

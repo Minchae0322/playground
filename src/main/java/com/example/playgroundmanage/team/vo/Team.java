@@ -3,6 +3,7 @@ package com.example.playgroundmanage.team.vo;
 import com.example.playgroundmanage.game.vo.SubTeam;
 import com.example.playgroundmanage.request.vo.TeamRequest;
 import com.example.playgroundmanage.login.vo.User;
+import com.example.playgroundmanage.request.vo.impl.athletics.RankAthleticsJoinRequest;
 import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.persistence.*;
@@ -45,6 +46,9 @@ public class Team {
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TeamRequest> teamRequests = new ArrayList<>();
+
+    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<RankAthleticsJoinRequest> rankAthleticsJoinRequests = new ArrayList<>();
 
 
     @Builder
