@@ -20,8 +20,6 @@ public class SoloAthleticsParticipant extends AthleticsParticipant {
     @ManyToOne(cascade = CascadeType.MERGE)
     private AthleticsSide athleticsSide;
 
-
-
     @Builder
     public SoloAthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, GameRecord gameRecord, boolean isAccepted, Athletics athletics, AthleticsSide athleticsSide) {
         super(id, gameTeamSide, user, gameRecord, isAccepted, athletics);
@@ -29,18 +27,27 @@ public class SoloAthleticsParticipant extends AthleticsParticipant {
     }
 
     public static SoloAthleticsParticipant of(
+            GameTeamSide gameTeamSide,
+            User user,
             AthleticsSide athleticsSide
     ) {
         return SoloAthleticsParticipant.builder()
+                .user(user)
+                .gameTeamSide(gameTeamSide)
+                .isAccepted(true)
                 .athleticsSide(athleticsSide)
                 .build();
     }
 
     public static SoloAthleticsParticipant of(
+            User user,
             FriendlyAthletics friendlyAthletics
     ) {
         return SoloAthleticsParticipant.builder()
+                .user(user)
+                .gameTeamSide(GameTeamSide.NONE)
                 .athletics(friendlyAthletics)
+                .isAccepted(true)
                 .build();
     }
 

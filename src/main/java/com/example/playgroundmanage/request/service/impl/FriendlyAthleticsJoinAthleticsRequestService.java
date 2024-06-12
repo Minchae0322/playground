@@ -4,10 +4,8 @@ import com.example.playgroundmanage.althlectis.repo.AthleticsParticipantReposito
 import com.example.playgroundmanage.althlectis.repo.AthleticsRepository;
 import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.althlectis.vo.AthleticsParticipant;
-import com.example.playgroundmanage.althlectis.vo.AthleticsSide;
 import com.example.playgroundmanage.althlectis.vo.impl.FriendlyAthletics;
 import com.example.playgroundmanage.althlectis.vo.impl.SoloAthleticsParticipant;
-import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.exception.UserNotExistException;
@@ -20,7 +18,6 @@ import com.example.playgroundmanage.request.repository.AthleticsRequestRepositor
 import com.example.playgroundmanage.request.service.AthleticsRequestService;
 import com.example.playgroundmanage.request.vo.AthleticsRequest;
 import com.example.playgroundmanage.request.vo.impl.athletics.FriendlyAthleticsJoinRequest;
-import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.RequestState;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -60,6 +57,10 @@ public class FriendlyAthleticsJoinAthleticsRequestService implements AthleticsRe
             throw new UserNotValidException();
         }
 
+        if (isHostRequest(requestUser, athletics.getHost())) {
+            participateInAthletics(requestUser, athletics);
+        }
+
         AthleticsRequest friendlyAthleticsJoinRequest = findPreviousRequest(requestUser, athletics)
                 .orElse(FriendlyAthleticsJoinRequest.of(
                         athletics,
@@ -78,18 +79,31 @@ public class FriendlyAthleticsJoinAthleticsRequestService implements AthleticsRe
 
         if (isUserParticipatedAthletics(
                 friendlyAthleticsJoinRequest.getAthletics().getAthleticsParticipants(),
-                friendlyAthleticsJoinRequest.getUser())) {
+                friendlyAthleticsJoinRequest.getUser())
+        ) {
             throw new UserNotValidException();
         }
 
         friendlyAthleticsJoinRequest.setRequestState(RequestState.ACCEPTED);
 
+        return participateInAthletics(
+                friendlyAthleticsJoinRequest.getUser(),
+                (FriendlyAthletics) friendlyAthleticsJoinRequest.getAthletics()
+        );
 
+    }
+
+    private Long participateInAthletics(User user, FriendlyAthletics friendlyAthletics) {
         return athleticsParticipantRepository.save(
                 SoloAthleticsParticipant.of(
-                        (FriendlyAthletics) friendlyAthleticsJoinRequest.getAthletics()
+                        user,
+                        friendlyAthletics
                 )
         ).getId();
+    }
+
+    private boolean isHostRequest(User requestUser, User host) {
+        return requestUser.equals(host);
     }
 
     @Override

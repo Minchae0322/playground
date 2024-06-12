@@ -2,6 +2,7 @@ package com.example.playgroundmanage.login.vo;
 
 
 
+import com.example.playgroundmanage.althlectis.vo.AthleticsParticipant;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.login.dto.UserEdit;
@@ -56,11 +57,16 @@ public class User {
     @OneToMany(mappedBy = "host", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Game> hostGames;
 
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<AthleticsParticipant> athleticsParticipants;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Teaming> teams;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     private List<GameParticipant> gameParticipants;
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<GameRequest> gameRequests;
@@ -82,6 +88,7 @@ public class User {
         this.teams = teams;
         this.gameParticipants = new ArrayList<>();
         this.gameRequests = new ArrayList<>();
+        this.athleticsParticipants = new ArrayList<>();
     }
 
 
