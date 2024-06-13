@@ -1,6 +1,8 @@
 package com.example.playgroundmanage.althlectis.api;
 
+import com.example.playgroundmanage.althlectis.dto.request.AthleticsDetailsRequest;
 import com.example.playgroundmanage.althlectis.dto.request.GameGenerationRequest;
+import com.example.playgroundmanage.althlectis.dto.response.AthleticsDetailsResponse;
 import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
 import com.example.playgroundmanage.althlectis.service.AthleticsGenerator;
 import com.example.playgroundmanage.althlectis.service.AthleticsService;
@@ -38,7 +40,7 @@ public class AthleticsController {
     private final AthleticsGeneratorFactory athleticsGeneratorFactory;
 
 
-    @GetMapping("/game/{gameId}/{gameType}/{gameTeamSide}")
+   /* @GetMapping("/game/{gameId}/{gameType}/{gameTeamSide}")
     public GameTeamResponseDto getGameTeam(@PathVariable Long gameId, @PathVariable String gameType, @PathVariable String gameTeamSide) {
         GameGenerator gameGenerator = gameGeneratorFactory.find(gameType);
 
@@ -48,10 +50,20 @@ public class AthleticsController {
                 .build();
 
         return gameGenerator.getGameTeamInfos(gameTeamRequestDto);
+    }*/
+
+    @GetMapping("/game/{gameId}/Friendly/NONE")
+    public AthleticsDetailsResponse getFriendlyAthleticsTeam(@PathVariable Long gameId) {
+        return athleticsService.getFriendlyAthleticsDetails(new AthleticsDetailsRequest(gameId, "NONE"));
+    }
+
+    @GetMapping("/game/{gameId}/Competition/{gameTeamSide}")
+    public AthleticsDetailsResponse getFriendlyAthleticsTeam(@PathVariable Long gameId, @PathVariable String gameTeamSide) {
+        return athleticsService.getRankAthleticsDetails(new AthleticsDetailsRequest(gameId, gameTeamSide));
     }
 
     @GetMapping("/game/{gameId}/info")
-    public AthleticsResponse getGameInfo(@PathVariable Long gameId) {
+    public AthleticsResponse getAthleticsInfo(@PathVariable Long gameId) {
         return athleticsService.getGameInfo(gameId);
     }
 

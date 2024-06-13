@@ -6,6 +6,7 @@ import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.althlectis.vo.AthleticsParticipant;
 import com.example.playgroundmanage.althlectis.vo.impl.FriendlyAthletics;
 import com.example.playgroundmanage.althlectis.vo.impl.RankAthletics;
+import com.example.playgroundmanage.althlectis.vo.impl.SoloAthleticsParticipant;
 import com.example.playgroundmanage.althlectis.vo.impl.TeamAthleticsParticipant;
 import com.example.playgroundmanage.exception.*;
 import com.example.playgroundmanage.location.respository.TeamRepository;
@@ -19,6 +20,7 @@ import com.example.playgroundmanage.request.vo.AthleticsRequest;
 import com.example.playgroundmanage.request.vo.impl.athletics.FriendlyAthleticsJoinRequest;
 import com.example.playgroundmanage.request.vo.impl.athletics.RankAthleticsJoinRequest;
 import com.example.playgroundmanage.team.vo.Team;
+import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.RequestState;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -57,6 +59,10 @@ public class RankAthleticsJoinRequestService implements AthleticsRequestService 
             throw new UserNotValidException();
         }
 
+        if (isHostRequest(requestUser, athletics.getHost())) {
+            participateInAthletics(requestUser, athletics, athleticsJoinRequest);
+        }
+
         AthleticsRequest rankAthleticsJoinRequest = makeRequest(requestUser, athletics, athleticsJoinRequest);
 
         return athleticsRequestRepository.save(rankAthleticsJoinRequest).getId();
@@ -73,7 +79,8 @@ public class RankAthleticsJoinRequestService implements AthleticsRequestService 
                             user,
                             athletics.getHost(),
                             getRequestState(user, athletics.getHost()),
-                            team
+                            team,
+                            GameTeamSide.valueOf(athleticsJoinRequest.gameTeamSide())
                     ));
 
         }
@@ -87,6 +94,29 @@ public class RankAthleticsJoinRequestService implements AthleticsRequestService 
                 ));
     }
 
+    private Long participateInAthletics(User user, RankAthletics rankAthletics, AthleticsJoinRequest athleticsJoinRequest) {
+        if (athleticsJoinRequest.teamId() != null) {
+            Team team = teamRepository.findById(athleticsJoinRequest.teamId())
+                    .orElseThrow(TeamNotExistException::new);
+            return athleticsParticipantRepository.save(
+                    TeamAthleticsParticipant.of(
+                            GameTeamSide.valueOf(athleticsJoinRequest.gameTeamSide()),
+                            user,
+                            rankAthletics,
+                            team
+                    )
+            ).getId();
+        }
+
+        return athleticsParticipantRepository.save(
+                SoloAthleticsParticipant.of(
+                        GameTeamSide.valueOf(athleticsJoinRequest.gameTeamSide()),
+                        user,
+                        rankAthletics
+                )
+        ).getId();
+
+    }
     private boolean isUserParticipatedAthletics(List<? extends AthleticsParticipant> participants, User user) {
         return participants.stream()
                 .anyMatch(gp -> gp.getUser().equals(user));
@@ -104,7 +134,9 @@ public class RankAthleticsJoinRequestService implements AthleticsRequestService 
         return RequestState.PENDING;
     }
 
-
+    private boolean isHostRequest(User requestUser, User host) {
+        return requestUser.equals(host);
+    }
 
     @Override
     public Long acceptRequest(Long requestId) {

@@ -12,7 +12,7 @@ const apiBaseUrl = internalInstance.appContext.config.globalProperties.$apiBaseU
 
 const router = useRouter();
 const homeTeams = ref({
-  matchTeamSide: "HOME",
+  gameTeamSide: "HOME",
   subTeams: [{
     teamProfileImg: '',
     users: [{
@@ -26,7 +26,7 @@ const homeTeams = ref({
   }
 })
 const awayTeams = ref({
-  matchTeamSide: "AWAY",
+  gameTeamSide: "AWAY",
   subTeams: [{
     teamProfileImg: '',
     users: [{
@@ -40,6 +40,7 @@ const awayTeams = ref({
   }
 })
 const homeAndAwayTeams = ref({
+
   matchTeamSide: "HOME",
 });
 
@@ -105,7 +106,7 @@ const getLoggedUserId = async () => {
           }
         });
     loggedInUserId.value = response.data.userId;
-    // 서버에서 성공 응답을 받았을 때의 처리를 이곳에 추가할 수 있습니다.
+
   } catch (error) {
     showErrorMessage(error)
   }
@@ -157,7 +158,7 @@ const sendSoloGameJoinRequest = async () => {
   }
   await validateAccessToken();
   try {
-    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/soloGameJoin`, {
+    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameJoin`, {
           gameTeamSide: homeAndAwayTeams.value.matchTeamSide,
         },
         {
@@ -187,9 +188,11 @@ const sendTeamRegistrationRequest = async () => {
   await validateAccessToken();
 
   try {
-    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameRegistration`, {
+    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameJoin`, {
+      athleticsId: props.game.gameId,
       teamId: selectedTeam.value.teamId,
-      gameTeamSide: homeAndAwayTeams.value.matchTeamSide
+      gameTeamSide: 'HOME',
+      gameType: 'teamGameJoin'
     }, {
       headers: {
         'Authorization': getAccessToken()
@@ -210,9 +213,9 @@ const sendTeamJoinRequest = async (subTeamId, teamId) => {
   try {
     await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameJoin`,
         {
-          subTeamId: subTeamId,
           teamId: teamId,
-          gameTeamSide: homeAndAwayTeams.value.matchTeamSide
+          gameTeamSide: homeAndAwayTeams.value.matchTeamSide,
+          gameType: 'teamGameJoin'
         }, {
           headers: {
             'Authorization': getAccessToken()
@@ -241,7 +244,6 @@ const clickTeamRegistration = () => {
 const clickHomeTeam = () => {
   activeName.value = 'first'
   homeAndAwayTeams.value = homeTeams.value;
-
 };
 
 const clickAwayTeam = () => {
@@ -250,13 +252,13 @@ const clickAwayTeam = () => {
 
 };
 
-const toggleJoinMenu = async function () {
+const toggleJoinMenu = function () {
   menuVisible.value = !menuVisible.value;
   buttonText.value = menuVisible.value ? "-" : "+"
 };
 
-const clickScroll = async () => {
-  await toggleJoinMenu()
+const clickScroll = () => {
+   toggleJoinMenu()
 };
 
 const toggleUserTeamDropdown = () => {
@@ -424,6 +426,7 @@ const redirectToLogin = function () {
       <div class="team">
         <div>
           <div class="team-details" v-for="(team, index) in homeAndAwayTeams.subTeams" :key="index">
+            <div v-if="team.teamId">
             <router-link :to="{ name:'teamInfo', params: { teamId: team.teamId } }" class="team-info-container">
               <img class="team-image" :src="getImageUrl(team.teamProfileImg) || defaultImage">
               <div class="team-header-info-teamInfo">
@@ -431,6 +434,7 @@ const redirectToLogin = function () {
                 <div class="team-more"> ></div>
               </div>
             </router-link>
+            </div>
             <div class="line"></div>
             <div class="participants-num">参与人数 {{ team.users.length }}</div>
             <div class="team-member-container">

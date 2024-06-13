@@ -35,7 +35,8 @@ public class RankAthleticsJoinRequest extends AthleticsRequest {
             final User user,
             final User host,
             final RequestState requestState,
-            final Team team
+            final Team team,
+            final GameTeamSide gameTeamSide
     ) {
 
         return RankAthleticsJoinRequest.builder()
@@ -43,7 +44,7 @@ public class RankAthleticsJoinRequest extends AthleticsRequest {
                 .host(host)
                 .rankAthletics(rankAthletics)
                 .requestState(requestState)
-                .gameTeamSide(GameTeamSide.NONE)
+                .gameTeamSide(gameTeamSide)
                 .team(team)
                 .build();
     }

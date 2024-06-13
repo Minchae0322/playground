@@ -9,6 +9,7 @@ import com.example.playgroundmanage.althlectis.vo.impl.FriendlyAthletics;
 import com.example.playgroundmanage.althlectis.vo.impl.RankAthletics;
 import com.example.playgroundmanage.exception.GameNotExistException;
 
+import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,23 @@ public class AthleticsService {
 
         return AthleticsResponse.of(athletics);
     }
+
+    public AthleticsDetailsResponse getFriendlyAthleticsDetails(AthleticsDetailsRequest athleticsDetailsRequest) {
+        FriendlyAthletics athletics = (FriendlyAthletics) athleticsRepository.findById(athleticsDetailsRequest.gameId())
+                .orElseThrow(GameNotExistException::new);
+
+        return AthleticsDetailsResponse.of(athletics);
+    }
+
+    public AthleticsDetailsResponse getRankAthleticsDetails(AthleticsDetailsRequest athleticsDetailsRequest) {
+        RankAthletics athletics = (RankAthletics) athleticsRepository.findById(athleticsDetailsRequest.gameId())
+                .orElseThrow(GameNotExistException::new);
+
+        return AthleticsDetailsResponse.of(athletics, GameTeamSide.valueOf(athleticsDetailsRequest.gameTeamSide()));
+    }
+
+
+
 
     public AthleticsDetailsResponse getAthleticsDetails(AthleticsDetailsRequest athleticsDetailsRequest) {
         Athletics athletics = athleticsRepository.findById(athleticsDetailsRequest.gameId())

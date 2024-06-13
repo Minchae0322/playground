@@ -16,6 +16,7 @@ import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.request.RequestServiceFinder;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import com.example.playgroundmanage.request.service.impl.FriendlyAthleticsJoinAthleticsRequestService;
+import com.example.playgroundmanage.request.service.impl.RankAthleticsJoinRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -30,7 +31,7 @@ public class RequestController {
 
     private final RequestServiceFinder requestServiceFinder;
 
-
+    private final RankAthleticsJoinRequestService rankAthleticsJoinRequestService;
 
     private final FriendlyAthleticsJoinAthleticsRequestService friendlyAthleticsJoinAthleticsRequestService;
 
@@ -43,7 +44,7 @@ public class RequestController {
 
     @GetMapping("/user/pending/request/game")
     public List<PendingRequestResponse> getAllPendingGameRequests(@AuthenticationPrincipal MyUserDetails myUserDetails) {
-        return friendlyAthleticsJoinAthleticsRequestService.getPendingRequests(myUserDetails.getUser().getId());
+        return rankAthleticsJoinRequestService.getPendingRequests(myUserDetails.getUser().getId());
     }
 
     @PatchMapping("/game/accept/{requestId}/{requestType}")

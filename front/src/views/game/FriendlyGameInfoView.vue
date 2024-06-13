@@ -72,8 +72,6 @@ const props = defineProps({
     type: Object,
     required: true
   },
-
-
 });
 
 const buttonText = ref("参加")
