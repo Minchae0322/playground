@@ -6,17 +6,13 @@ import com.example.playgroundmanage.althlectis.vo.AthleticsParticipant;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.login.dto.UserEdit;
-import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.team.vo.Teaming;
 import com.example.playgroundmanage.type.UserRole;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
-import org.springframework.boot.context.properties.bind.DefaultValue;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -51,8 +47,6 @@ public class User {
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private UserGameRecord userGameRecord;
 
-    @OneToMany(mappedBy = "host", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<GameRequest> gameRequests_host;
 
     @OneToMany(mappedBy = "host", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Game> hostGames;
@@ -68,11 +62,10 @@ public class User {
     private List<GameParticipant> gameParticipants;
 
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<GameRequest> gameRequests;
+
 
     @Builder
-    public User(Long id, String username, String nickname, String provider, String password, boolean isEnable, boolean isLoggedIn, UserRole role, UploadFile userProfileImg, UserGameRecord userGameRecord, List<GameRequest> gameRequests_host, List<Game> hostGames, List<Teaming> teams, List<GameParticipant> gameParticipants, List<GameRequest> gameRequests) {
+    public User(Long id, String username, String nickname, String provider, String password, boolean isEnable, boolean isLoggedIn, UserRole role, UploadFile userProfileImg, UserGameRecord userGameRecord, List<Teaming> teams, List<GameParticipant> gameParticipants) {
         this.id = id;
         this.username = username;
         this.nickname = nickname;
@@ -83,11 +76,9 @@ public class User {
         this.role = role;
         this.userProfileImg = userProfileImg;
         this.userGameRecord = userGameRecord;
-        this.gameRequests_host = new ArrayList<>();
         this.hostGames = new ArrayList<>();
         this.teams = teams;
         this.gameParticipants = new ArrayList<>();
-        this.gameRequests = new ArrayList<>();
         this.athleticsParticipants = new ArrayList<>();
     }
 

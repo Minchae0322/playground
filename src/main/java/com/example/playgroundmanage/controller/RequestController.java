@@ -24,6 +24,8 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @RestController
 @RequiredArgsConstructor
@@ -44,7 +46,10 @@ public class RequestController {
 
     @GetMapping("/user/pending/request/game")
     public List<PendingRequestResponse> getAllPendingGameRequests(@AuthenticationPrincipal MyUserDetails myUserDetails) {
-        return rankAthleticsJoinRequestService.getPendingRequests(myUserDetails.getUser().getId());
+        return Stream.concat(
+                friendlyAthleticsJoinAthleticsRequestService.getPendingRequests(myUserDetails.getUser().getId()).stream(),
+                rankAthleticsJoinRequestService.getPendingRequests(myUserDetails.getUser().getId()).stream()
+        ).collect(Collectors.toList());
     }
 
     @PatchMapping("/game/accept/{requestId}/{requestType}")
@@ -63,43 +68,7 @@ public class RequestController {
         requestService.rejectRequest(requestId);
     }
 
-    /*@PreAuthorize("hasPermission(#requestId,'requestAccept_game','UPDATE')")
-    @PatchMapping("/game/accept/{requestId}/{requestType}")
-    public void acceptGameRequest(@PathVariable Long requestId, @PathVariable("requestType") String type) {
-        RequestService requestService = requestServiceFinder.find(type);
-
-        requestService.acceptRequest(requestId);
-    }
-
-    @PreAuthorize("hasPermission(#requestId,'requestAccept_game','DELETE')")
-    @DeleteMapping("/game/reject/{requestId}/{requestType}")
-    public void declineGameRequest(@PathVariable Long requestId, @PathVariable("requestType") String type) {
-        RequestService requestService = requestServiceFinder.find(type);
-
-        requestService.declineRequest(requestId);
-    }
-
-    @GetMapping("/user/pending/request/game")
-    public List<PendingGameRequest> getAllPendingGameRequests(@AuthenticationPrincipal MyUserDetails myUserDetails) {
-        List<RequestInfoDto> pendingRequest = requestProcessor.getPendingGameRequests(myUserDetails.getUser());
-
-        return pendingRequest.stream()
-                .map(RequestInfoDto::toPendingGameRequest)
-                .toList();
-    }
-
-    @PostMapping("/user/pending/request/game/{requestType}")
-    public List<PendingGameRequest> getAllPendingGameRequestsByRequestType(@RequestBody PendingRequestParams pendingRequestParams, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable String requestType) {
-        RequestService requestService = requestServiceFinder.find(requestType);
-
-        pendingRequestParams.setHost(myUserDetails.getUser());
-        List<RequestInfoDto> pendingRequest = requestService.getPendingRequests(pendingRequestParams);
-
-        return pendingRequest.stream()
-                .map(RequestInfoDto::toPendingGameRequest)
-                .toList();
-    }
-
+    /*
     @PostMapping("/user/pending/request/team/{requestType}")
     public List<PendingTeamRequest> getPendingTeamRequests(@RequestBody PendingRequestParams pendingRequestParams, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable String requestType) {
 

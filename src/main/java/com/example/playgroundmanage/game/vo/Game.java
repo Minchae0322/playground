@@ -3,7 +3,6 @@ package com.example.playgroundmanage.game.vo;
 import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.login.vo.User;
-import com.example.playgroundmanage.request.vo.GameRequest;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
@@ -51,8 +50,7 @@ public class Game {
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<CompetingTeam> competingTeams = new ArrayList<>();
 
-    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<GameRequest> gameRequests = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<GameParticipant> gameParticipants;
