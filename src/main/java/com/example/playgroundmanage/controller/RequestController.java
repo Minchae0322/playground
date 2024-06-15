@@ -54,6 +54,15 @@ public class RequestController {
         requestService.acceptRequest(requestId);
     }
 
+
+    @PreAuthorize("hasPermission(#requestId,'requestAccept_game','DELETE')")
+    @DeleteMapping("/game/reject/{requestId}/{requestType}")
+    public void declineGameRequest(@PathVariable Long requestId, @PathVariable("requestType") String type) {
+        AthleticsRequestService requestService = requestServiceFinder.find(type);
+
+        requestService.rejectRequest(requestId);
+    }
+
     /*@PreAuthorize("hasPermission(#requestId,'requestAccept_game','UPDATE')")
     @PatchMapping("/game/accept/{requestId}/{requestType}")
     public void acceptGameRequest(@PathVariable Long requestId, @PathVariable("requestType") String type) {

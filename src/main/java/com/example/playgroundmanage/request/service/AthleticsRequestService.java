@@ -17,4 +17,6 @@ public interface AthleticsRequestService {
     Long acceptRequest(Long requestId);
 
     List<PendingRequestResponse> getPendingRequests(Long hostId);
+
+    void rejectRequest(Long requestId);
 }

@@ -174,4 +174,10 @@ public class RankAthleticsJoinRequestService implements AthleticsRequestService 
                 .toList();
     }
 
+    @Override
+    public void rejectRequest(Long requestId) {
+        athleticsRequestRepository.findById(requestId)
+                .ifPresent(athleticsRequestRepository::delete);
+    }
+
 }

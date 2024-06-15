@@ -82,12 +82,8 @@ const fetchPendingRequests = async () => {
 const updateRequestType = (request, type) => {
   if (type === 'friendlyGameJoin') {
     request.requestType_cn = '友谊赛';
-  } else if (type === 'soloGameJoin') {
-    request.requestType_cn = '竞争赛个人';
-  } else if(type === 'teamGameRegistration') {
-    request.requestType_cn = '竞争赛组队';
   } else if(type === 'teamGameJoin') {
-    request.requestType_cn = '竞争赛加入团队';
+    request.requestType_cn = '竞争赛';
   }
 };
 

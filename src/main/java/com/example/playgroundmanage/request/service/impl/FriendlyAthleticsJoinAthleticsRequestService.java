@@ -119,6 +119,12 @@ public class FriendlyAthleticsJoinAthleticsRequestService implements AthleticsRe
 
     }
 
+    @Override
+    public void rejectRequest(Long requestId) {
+        athleticsRequestRepository.findById(requestId)
+                .ifPresent(athleticsRequestRepository::delete);
+    }
+
     private Optional<AthleticsRequest> findPreviousRequest(User user, Athletics athletics) {
         return athleticsRequestRepository.findByUserAndAthletics(user, athletics);
     }

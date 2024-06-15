@@ -39,27 +39,10 @@ public class AthleticsService {
         RankAthletics athletics = (RankAthletics) athleticsRepository.findById(athleticsDetailsRequest.gameId())
                 .orElseThrow(GameNotExistException::new);
 
-        return AthleticsDetailsResponse.of(athletics, GameTeamSide.valueOf(athleticsDetailsRequest.gameTeamSide()));
+        return AthleticsDetailsResponse.of(
+                athletics,
+                GameTeamSide.valueOf(athleticsDetailsRequest.gameTeamSide())
+        );
     }
 
-
-
-
-    public AthleticsDetailsResponse getAthleticsDetails(AthleticsDetailsRequest athleticsDetailsRequest) {
-        Athletics athletics = athleticsRepository.findById(athleticsDetailsRequest.gameId())
-                .orElseThrow(GameNotExistException::new);
-        /*if (athletics instanceof RankAthletics) {
-            return AthleticsDetailsResponse.of(((RankAthletics) athletics).getAthleticsSides().stream()
-                    .filter(athleticsSide -> athleticsSide.getGameTeamSide().equals(GameTeamSide.fromString(athleticsDetailsRequest.gameTeamSide())))
-                    .findFirst().orElseThrow());
-        }*/
-            return AthleticsDetailsResponse.of((FriendlyAthletics) athletics);
-    }
-
-    private Athletics getAthleticsByType(Athletics athletics) {
-        if (athletics instanceof RankAthletics) {
-            return (RankAthletics) athletics;
-        }
-        return (FriendlyAthletics) athletics;
-    }
 }
