@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.controller;
+package com.example.playgroundmanage.login.api;
 
 import com.example.playgroundmanage.exception.UserNotValidException;
 import com.example.playgroundmanage.login.dto.*;

@@ -15,8 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 class RequestServiceTest {
-    @Autowired
-    public SoloGameJoinRequestService soloJoinGameRequestService;
+
+
 
     @Autowired
     private GameParticipantRepository gameParticipantRepository;
@@ -30,8 +30,6 @@ class RequestServiceTest {
     @Autowired
     private GameService gameService;
 
-    @Autowired
-    private GameRequestRepository gameRequestRepository;
 
 
 
@@ -48,7 +46,7 @@ class RequestServiceTest {
 
     @BeforeEach
     void before() {
-        gameRequestRepository.deleteAll();
+
         teamRepository.deleteAll();
         userRepository.deleteAll();
         testUser = User.builder()

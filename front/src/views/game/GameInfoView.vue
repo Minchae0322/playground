@@ -19,11 +19,10 @@ const homeTeams = ref({
       userProfileImg: ''
     }]
   }],
-  soloTeam: {
-    users: [{
-      userProfileImg: ''
-    }]
-  }
+  participants: [{
+    userId: '',
+    userProfileImg: '',
+  }]
 })
 const awayTeams = ref({
   gameTeamSide: "AWAY",
@@ -33,14 +32,13 @@ const awayTeams = ref({
       userProfileImg: ''
     }]
   }],
-  soloTeam: {
-    users: [{
-      userProfileImg: ''
-    }]
-  }
+  participants: [{
+    userId: '',
+    userProfileImg: '',
+  }]
 })
 const homeAndAwayTeams = ref({
-
+  teamId: 1,
   matchTeamSide: "HOME",
 });
 
@@ -130,19 +128,19 @@ const getTeamData = async (matchTeamSide, gameType) => {
         users: transformUsers(subTeam.users)
       }));
 
-      const transformedSoloTeamUsers = transformUsers(response.data.soloTeam.users);
+      const transformedSoloTeamUsers = transformUsers(response.data.participants);
 
       if (matchTeamSide === 'HOME') {
         homeTeams.value = {
           ...homeTeams.value,
           subTeams: transformedSubTeams,
-          soloTeam: {users: transformedSoloTeamUsers}
+          participants: transformedSoloTeamUsers
         };
       } else if (matchTeamSide === 'AWAY') {
         awayTeams.value = {
           ...awayTeams.value,
           subTeams: transformedSubTeams,
-          soloTeam: {users: transformedSoloTeamUsers}
+          participants: transformedSoloTeamUsers
         };
       }
     }
@@ -244,6 +242,7 @@ const clickTeamRegistration = () => {
 const clickHomeTeam = () => {
   activeName.value = 'first'
   homeAndAwayTeams.value = homeTeams.value;
+  console.log(homeAndAwayTeams.value)
 };
 
 const clickAwayTeam = () => {

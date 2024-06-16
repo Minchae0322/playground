@@ -1,13 +1,5 @@
-package com.example.playgroundmanage.controller;
+package com.example.playgroundmanage.request.api;
 
-import com.example.playgroundmanage.game.dto.GameRequestDto;
-import com.example.playgroundmanage.dto.RequestInfoDto;
-import com.example.playgroundmanage.dto.TeamJoinRequestDto;
-import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
-import com.example.playgroundmanage.login.dto.UserJoinGameRequest;
-import com.example.playgroundmanage.login.dto.UserJoinTeamParams;
-import com.example.playgroundmanage.dto.response.PendingGameRequest;
-import com.example.playgroundmanage.dto.response.PendingTeamRequest;
 import com.example.playgroundmanage.request.dto.AthleticsJoinRequest;
 import com.example.playgroundmanage.request.dto.PendingRequestResponse;
 import com.example.playgroundmanage.request.service.AthleticsRequestService;
