@@ -4,6 +4,7 @@ import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.SubTeam;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.request.vo.AthleticsRequest;
+import com.example.playgroundmanage.request.vo.impl.TeamJoinRequest;
 import com.example.playgroundmanage.request.vo.impl.athletics.FriendlyAthleticsJoinRequest;
 import com.example.playgroundmanage.request.vo.impl.athletics.RankAthleticsJoinRequest;
 import com.example.playgroundmanage.team.vo.Team;
@@ -25,6 +26,24 @@ public record PendingRequestResponse (
         String requestType,
         String gameTeamSide
 ) {
+
+    public static PendingRequestResponse of(TeamJoinRequest teamJoinRequest) {
+        return new PendingRequestResponse(
+                teamJoinRequest.getId(),
+                teamJoinRequest.getModifiedAt(),
+                teamJoinRequest.getUser().getUserProfileImg().getFileUrl(),
+                null,
+                null,
+                teamJoinRequest.getTeam().getId(),
+                teamJoinRequest.getTeam().getTeamName(),
+                teamJoinRequest.getTeam().getTeamProfileImg().getFileUrl(),
+                teamJoinRequest.getUser().getId(),
+                teamJoinRequest.getUser().getNickname(),
+                "teamJoin",
+                null
+                );
+    }
+
     public static PendingRequestResponse of(FriendlyAthleticsJoinRequest athleticsRequest) {
         return new PendingRequestResponse(
                 athleticsRequest.getId(),
@@ -58,4 +77,6 @@ public record PendingRequestResponse (
                 athleticsRequest.getGameTeamSide().getValue()
         );
     }
+
+
 }

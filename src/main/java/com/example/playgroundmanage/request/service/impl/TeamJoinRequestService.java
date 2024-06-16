@@ -1,35 +1,31 @@
 package com.example.playgroundmanage.request.service.impl;
 
-import com.example.playgroundmanage.dto.RequestInfoDto;
-import com.example.playgroundmanage.dto.RequestDto;
-import com.example.playgroundmanage.dto.TeamJoinRequestDto;
-import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
 import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.exception.TeamNotExistException;
+import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.location.respository.TeamRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
+import com.example.playgroundmanage.login.repository.UserRepository;
+import com.example.playgroundmanage.login.vo.User;
+import com.example.playgroundmanage.request.dto.PendingRequestResponse;
+import com.example.playgroundmanage.request.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.request.service.RequestProcessor;
-import com.example.playgroundmanage.request.service.RequestService;
-import com.example.playgroundmanage.store.FileHandler;
-import com.example.playgroundmanage.team.service.TeamService;
-import com.example.playgroundmanage.team.vo.Team;
+import com.example.playgroundmanage.request.service.TeamRequestService;
 import com.example.playgroundmanage.request.vo.TeamRequest;
 import com.example.playgroundmanage.request.vo.impl.TeamJoinRequest;
-import jakarta.persistence.Version;
-import jakarta.transaction.Transactional;
+import com.example.playgroundmanage.team.service.TeamService;
+import com.example.playgroundmanage.team.vo.Team;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
-import static com.example.playgroundmanage.team.TeamValidation.validateJoinTeam;
+import java.util.Optional;
 
 
 @RequiredArgsConstructor
 @Service
-public class TeamJoinRequestService implements RequestService {
+public class TeamJoinRequestService implements TeamRequestService {
 
-    private final TeamRepository teamRepository;
 
     private final TeamRequestRepository teamRequestRepository;
 
@@ -37,9 +33,65 @@ public class TeamJoinRequestService implements RequestService {
 
     private final TeamService teamService;
 
-    private final FileHandler fileHandler;
+    private final TeamRepository teamRepository;
+
+    private final UserRepository userRepository;
 
     @Override
+    public String getRequestType() {
+        return "teamJoin";
+    }
+
+    @Override
+    public Long generateRequest(Long userId, TeamJoinRequestDto teamJoinRequestDto) {
+        User requestUser = userRepository.findById(userId)
+                .orElseThrow(UserNotExistException::new);
+
+        Team team = teamRepository.findById(teamJoinRequestDto.teamId())
+                .orElseThrow(TeamNotExistException::new);
+
+        TeamRequest teamJoinRequest = findPreviousRequest(requestUser, team)
+                .orElse(TeamJoinRequest.of(
+                        requestUser,
+                        team.getLeader(),
+                        team,
+                        teamJoinRequestDto.introduction()
+                )).update(teamJoinRequestDto.introduction());
+        
+        return teamRequestRepository.save(teamJoinRequest).getId();
+    }
+
+    private Optional<TeamRequest> findPreviousRequest(User requestUser, Team team) {
+        return teamRequestRepository.findByTeamAndUser(team, requestUser);
+    }
+
+    @Override
+    public Long acceptRequest(Long requestId) {
+        TeamJoinRequest teamJoinRequest = (TeamJoinRequest) teamRequestRepository.findById(requestId)
+                .orElseThrow(RequestNotExistException::new);
+
+        return teamService.joinTeam(teamJoinRequest.getTeam().getId(), teamJoinRequest.getUser());
+    }
+
+    @Override
+    public List<PendingRequestResponse> getPendingRequests(Long hostId) {
+        User leader = userRepository.findById(hostId)
+                .orElseThrow(UserNotExistException::new);
+
+        List<TeamJoinRequest> teamJoinRequests = teamRequestRepository.findAllByLeader(leader);
+        return teamJoinRequests.stream()
+                .map(PendingRequestResponse::of)
+                .toList();
+    }
+
+    @Override
+    public void rejectRequest(Long requestId) {
+        teamRequestRepository.findById(requestId)
+                .ifPresent(teamRequestRepository::delete);
+    }
+
+
+/*    @Override
     @Transactional
     public Long generateRequest(RequestDto requestDto) {
         TeamJoinRequestDto teamJoinRequestDto = (TeamJoinRequestDto) requestDto;
@@ -96,7 +148,7 @@ public class TeamJoinRequestService implements RequestService {
     @Transactional
     public void declineRequest(Long requestId) {
         teamRequestRepository.findById(requestId).ifPresent(teamRequestRepository::delete);
-    }
+    }*/
 
 
 }

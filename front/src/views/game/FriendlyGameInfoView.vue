@@ -164,7 +164,7 @@ const sendFriendlyGameJoinRequest = async () => {
   }
   await validateAccessToken();
   try {
-    const response = await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/friendlyGameJoin`, {
+    const response = await axios.post(`${apiBaseUrl}/game/join/friendlyGameJoin`, {
           gameTeamSide: 'NONE',
           athleticsId: props.game.gameId,
           gameType: 'friendlyAthleticsJoin'

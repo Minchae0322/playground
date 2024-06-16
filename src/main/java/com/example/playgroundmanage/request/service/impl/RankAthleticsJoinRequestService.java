@@ -81,7 +81,7 @@ public class RankAthleticsJoinRequestService implements AthleticsRequestService 
                             getRequestState(user, athletics.getHost()),
                             team,
                             GameTeamSide.valueOf(athleticsJoinRequest.gameTeamSide())
-                    ));
+                    ).updateRankRequest(team));
 
         }
 

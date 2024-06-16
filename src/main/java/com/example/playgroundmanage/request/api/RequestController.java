@@ -2,13 +2,14 @@ package com.example.playgroundmanage.request.api;
 
 import com.example.playgroundmanage.request.dto.AthleticsJoinRequest;
 import com.example.playgroundmanage.request.dto.PendingRequestResponse;
+import com.example.playgroundmanage.request.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.request.service.AthleticsRequestService;
-import com.example.playgroundmanage.request.service.RequestProcessor;
-import com.example.playgroundmanage.request.service.RequestService;
 import com.example.playgroundmanage.request.RequestServiceFinder;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
+import com.example.playgroundmanage.request.service.TeamRequestService;
 import com.example.playgroundmanage.request.service.impl.FriendlyAthleticsJoinAthleticsRequestService;
 import com.example.playgroundmanage.request.service.impl.RankAthleticsJoinRequestService;
+import com.example.playgroundmanage.request.service.impl.TeamJoinRequestService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,17 +24,28 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class RequestController {
 
+    private final TeamJoinRequestService teamJoinRequestService;
+
     private final RequestServiceFinder requestServiceFinder;
 
     private final RankAthleticsJoinRequestService rankAthleticsJoinRequestService;
 
     private final FriendlyAthleticsJoinAthleticsRequestService friendlyAthleticsJoinAthleticsRequestService;
 
-    @PostMapping("/game/{gameId}/join/{requestType}")
-    public void generateJoinGameRequest(@RequestBody @Validated AthleticsJoinRequest athleticsJoinRequest, @AuthenticationPrincipal MyUserDetails userDetails, @PathVariable Long gameId, @PathVariable("requestType") String type) {
+    @PostMapping("/game/join/{requestType}")
+    public void generateJoinGameRequest(@RequestBody @Validated AthleticsJoinRequest athleticsJoinRequest,
+                                        @AuthenticationPrincipal MyUserDetails userDetails,
+                                        @PathVariable("requestType") String type) {
         AthleticsRequestService requestService = requestServiceFinder.find(type);
 
         requestService.generateRequest(userDetails.getUser().getId(), athleticsJoinRequest);
+    }
+
+    @PostMapping("/team/join/{requestType}")
+    public void generateTeamJoinRequest(@RequestBody @Validated TeamJoinRequestDto teamJoinRequestDto,
+                                        @PathVariable("requestType") String type,
+                                        @AuthenticationPrincipal MyUserDetails myUserDetails) {
+        teamJoinRequestService.generateRequest(myUserDetails.getUser().getId(), teamJoinRequestDto);
     }
 
     @GetMapping("/user/pending/request/game")

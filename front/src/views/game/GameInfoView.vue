@@ -146,7 +146,6 @@ const getTeamData = async (matchTeamSide, gameType) => {
     }
   } catch (error) {
     console.error(`Failed to fetch ${matchTeamSide} teams data:`, error);
-    // 에러 처리 로직을 추가할 수 있습니다.
   }
 };
 const sendSoloGameJoinRequest = async () => {
@@ -156,8 +155,9 @@ const sendSoloGameJoinRequest = async () => {
   }
   await validateAccessToken();
   try {
-    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameJoin`, {
+    await axios.post(`${apiBaseUrl}/game/join/teamGameJoin`, {
           gameTeamSide: homeAndAwayTeams.value.matchTeamSide,
+          athleticsId: props.game.gameId,
         },
         {
           headers: {
@@ -186,7 +186,7 @@ const sendTeamRegistrationRequest = async () => {
   await validateAccessToken();
 
   try {
-    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameJoin`, {
+    await axios.post(`${apiBaseUrl}/game/join/teamGameJoin`, {
       athleticsId: props.game.gameId,
       teamId: selectedTeam.value.teamId,
       gameTeamSide: 'HOME',
@@ -209,8 +209,9 @@ const sendTeamJoinRequest = async (subTeamId, teamId) => {
   }
   await validateAccessToken();
   try {
-    await axios.post(`${apiBaseUrl}/game/${props.game.gameId}/join/teamGameJoin`,
+    await axios.post(`${apiBaseUrl}/game/join/teamGameJoin`,
         {
+          athleticsId: props.game.gameId,
           teamId: teamId,
           gameTeamSide: homeAndAwayTeams.value.matchTeamSide,
           gameType: 'teamGameJoin'

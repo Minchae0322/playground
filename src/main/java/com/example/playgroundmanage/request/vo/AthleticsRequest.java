@@ -4,6 +4,7 @@ package com.example.playgroundmanage.request.vo;
 import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.global.BaseEntity;
 import com.example.playgroundmanage.login.vo.User;
+import com.example.playgroundmanage.request.vo.impl.athletics.RankAthleticsJoinRequest;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.RequestState;
 import jakarta.persistence.*;
@@ -22,10 +23,10 @@ public abstract class AthleticsRequest extends BaseEntity implements Request {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private User host;
 
     @Enumerated(EnumType.STRING)
@@ -48,4 +49,6 @@ public abstract class AthleticsRequest extends BaseEntity implements Request {
     public void setRequestState(final RequestState requestState) {
         this.requestState = requestState;
     }
+
+
 }

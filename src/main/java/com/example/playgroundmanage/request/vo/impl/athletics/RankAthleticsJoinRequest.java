@@ -64,4 +64,9 @@ public class RankAthleticsJoinRequest extends AthleticsRequest {
                 .gameTeamSide(GameTeamSide.NONE)
                 .build();
     }
+
+    public RankAthleticsJoinRequest updateRankRequest(Team team) {
+        this.team = team;
+        return this;
+    }
 }
