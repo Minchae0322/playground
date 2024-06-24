@@ -1,26 +1,22 @@
 package com.example.playgroundmanage.team.service;
 
 import com.example.playgroundmanage.dto.TeamRequestDto;
-import com.example.playgroundmanage.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.dto.response.TeamMemberDto;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.service.SubTeamService;
-import com.example.playgroundmanage.location.repository.TeamingRepository;
+import com.example.playgroundmanage.team.repository.TeamingRepository;
 import com.example.playgroundmanage.team.TeamMemberFinder;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.team.vo.Teaming;
 import com.example.playgroundmanage.login.vo.User;
-import com.example.playgroundmanage.location.respository.TeamRepository;
+import com.example.playgroundmanage.team.repository.TeamRepository;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.vo.UploadFile;
-import com.example.playgroundmanage.team.finder.TeamFinder;
-import com.example.playgroundmanage.team.finder.TeamFinderFactory;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 

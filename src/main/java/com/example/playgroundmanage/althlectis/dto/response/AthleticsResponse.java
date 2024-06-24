@@ -16,6 +16,8 @@ public record AthleticsResponse(
         String sportsEvent,
         Integer runningTime,
         String campusName
+
+
 ) {
 
     public static AthleticsResponse of(Athletics athletics) {

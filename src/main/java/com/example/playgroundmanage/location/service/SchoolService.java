@@ -1,13 +1,12 @@
 package com.example.playgroundmanage.location.service;
 
+import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
 import com.example.playgroundmanage.date.MyDateTimeLocal;
 import com.example.playgroundmanage.exception.SchoolNotExistException;
 import com.example.playgroundmanage.game.dto.GameDto;
-import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.location.dto.AthleticsThumbnailResponse;
 import com.example.playgroundmanage.location.dto.CampusResponseDto;
-import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
+import com.example.playgroundmanage.location.dto.response.PlaygroundInfoResponse;
 import com.example.playgroundmanage.location.repository.SchoolRepository;
 import com.example.playgroundmanage.location.vo.Campus;
 import com.example.playgroundmanage.location.vo.Playground;
@@ -66,7 +65,7 @@ public class SchoolService {
                 .toList();
     }
 
-    public List<PlaygroundResponseDto> getPlaygroundBySchoolAndSportsType(Long schoolId, SportsEvent valueOf) {
+    public List<PlaygroundInfoResponse> getPlaygroundBySchoolAndSportsType(Long schoolId, SportsEvent valueOf) {
         School school = findSchoolById(schoolId);
 
         return school.getCampus().stream()
@@ -77,7 +76,7 @@ public class SchoolService {
                 .toList();
     }
     @Transactional
-    public List<AthleticsThumbnailResponse> getUpcomingGamesBySchoolAndSportsEvent(Long schoolId, SportsEvent sportsEvent) {
+    public List<AthleticsResponse> getUpcomingGamesBySchoolAndSportsEvent(Long schoolId, SportsEvent sportsEvent) {
         School school = schoolRepository.findById(schoolId)
                 .orElseThrow(SchoolNotExistException::new);
 

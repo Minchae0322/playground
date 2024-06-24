@@ -3,13 +3,12 @@ package com.example.playgroundmanage.request.service.impl;
 import com.example.playgroundmanage.exception.RequestNotExistException;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.exception.UserNotExistException;
-import com.example.playgroundmanage.location.respository.TeamRepository;
+import com.example.playgroundmanage.team.repository.TeamRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.request.dto.PendingRequestResponse;
 import com.example.playgroundmanage.request.dto.TeamJoinRequestDto;
-import com.example.playgroundmanage.request.service.RequestProcessor;
 import com.example.playgroundmanage.request.service.TeamRequestService;
 import com.example.playgroundmanage.request.vo.TeamRequest;
 import com.example.playgroundmanage.request.vo.impl.TeamJoinRequest;
@@ -26,10 +25,7 @@ import java.util.Optional;
 @Service
 public class TeamJoinRequestService implements TeamRequestService {
 
-
     private final TeamRequestRepository teamRequestRepository;
-
-    private final RequestProcessor requestProcessor;
 
     private final TeamService teamService;
 
@@ -57,7 +53,7 @@ public class TeamJoinRequestService implements TeamRequestService {
                         team,
                         teamJoinRequestDto.introduction()
                 )).update(teamJoinRequestDto.introduction());
-        
+
         return teamRequestRepository.save(teamJoinRequest).getId();
     }
 

@@ -1,11 +1,10 @@
-package com.example.playgroundmanage.controller;
+package com.example.playgroundmanage.location.api;
 
+import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
 import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.dto.response.GameThumbnail;
-import com.example.playgroundmanage.game.dto.GameResponseDto;
-import com.example.playgroundmanage.location.dto.AthleticsThumbnailResponse;
 import com.example.playgroundmanage.location.dto.CampusResponseDto;
-import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
+import com.example.playgroundmanage.location.dto.response.PlaygroundInfoResponse;
 import com.example.playgroundmanage.location.service.CampusService;
 import com.example.playgroundmanage.location.service.SchoolService;
 import com.example.playgroundmanage.type.SportsEvent;
@@ -31,12 +30,12 @@ public class SchoolController {
     }
 
     @GetMapping("/school/{schoolId}/playground/{sportsType}")
-    public List<PlaygroundResponseDto> getPlaygroundsBySportsType(@PathVariable String sportsType, @PathVariable Long schoolId) {
+    public List<PlaygroundInfoResponse> getPlaygroundsBySportsType(@PathVariable String sportsType, @PathVariable Long schoolId) {
         return schoolService.getPlaygroundBySchoolAndSportsType(schoolId, SportsEvent.valueOf(sportsType));
     }
 
     @GetMapping("/school/{schoolId}/upcoming/{sportsType}")
-    public List<AthleticsThumbnailResponse> getUpcomingGamesBySportsEvent(@PathVariable String sportsType, @PathVariable Long schoolId) {
+    public List<AthleticsResponse> getUpcomingGamesBySportsEvent(@PathVariable String sportsType, @PathVariable Long schoolId) {
         return schoolService.getUpcomingGamesBySchoolAndSportsEvent(schoolId, SportsEvent.valueOf(sportsType));
     }
 

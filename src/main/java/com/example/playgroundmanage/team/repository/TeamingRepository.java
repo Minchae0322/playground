@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.location.repository;
+package com.example.playgroundmanage.team.repository;
 
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.team.vo.Teaming;

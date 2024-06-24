@@ -5,7 +5,7 @@ import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.repository.TeamRequestRepository;
 import com.example.playgroundmanage.game.vo.*;
-import com.example.playgroundmanage.location.respository.TeamRepository;
+import com.example.playgroundmanage.team.repository.TeamRepository;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.request.vo.TeamRequest;
 import com.example.playgroundmanage.team.vo.Team;

@@ -1,37 +1,26 @@
 package com.example.playgroundmanage.location.service;
 
 
+import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
 import com.example.playgroundmanage.althlectis.vo.Athletics;
-import com.example.playgroundmanage.date.MyDateTimeLocal;
-import com.example.playgroundmanage.exception.PlaygroundNotExistException;
-import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.exception.CampusNotExistException;
 import com.example.playgroundmanage.exception.SchoolNotExistException;
-import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.repository.CampusRepository;
-import com.example.playgroundmanage.game.service.GameDtoConverter;
-import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.location.dto.AthleticsThumbnailResponse;
 import com.example.playgroundmanage.location.dto.CampusResponseDto;
-import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
-import com.example.playgroundmanage.location.repository.PlaygroundRepository;
+import com.example.playgroundmanage.location.dto.response.PlaygroundInfoResponse;
 import com.example.playgroundmanage.location.repository.SchoolRepository;
 import com.example.playgroundmanage.location.vo.Campus;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.location.vo.School;
 import com.example.playgroundmanage.type.SportsEvent;
-import com.example.playgroundmanage.util.GameFinder;
-import com.example.playgroundmanage.util.GameSorting;
 import com.example.playgroundmanage.util.PlaygroundFinder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -41,17 +30,15 @@ public class CampusService {
 
     private final SchoolRepository schoolRepository;
 
-    private final PlaygroundFinder playgroundFinder;
-
     private final TimeValidation timeValidation;
 
 
     @Transactional
-    public List<AthleticsThumbnailResponse> getUpcomingGamesInCampusBySportsEvent(Long campusId, SportsEvent sportsEvent) {
+    public List<AthleticsResponse> getUpcomingGamesInCampusBySportsEvent(Long campusId, SportsEvent sportsEvent) {
         Campus campus = campusRepository.findById(campusId)
                 .orElseThrow(CampusNotExistException::new);
 
-        List<Playground> playgrounds = playgroundFinder.getPlaygroundsBySportsEvent(campus.getPlaygrounds(), sportsEvent);
+        List<Playground> playgrounds = getPlaygroundsBySportsEvent(campus.getPlaygrounds(), sportsEvent);
 
         List<Athletics> athletics = playgrounds.stream()
                 .flatMap(playground -> getUpcomingAthletics(playground.getAthletics()).stream())
@@ -59,7 +46,7 @@ public class CampusService {
                 .toList();
 
         return athletics.stream()
-                .map(AthleticsThumbnailResponse::of)
+                .map(AthleticsResponse::of)
                 .toList();
     }
 
@@ -70,18 +57,20 @@ public class CampusService {
     }
 
     @Transactional
-    public List<PlaygroundResponseDto> getPlaygroundByCampusAndSportsType(Long campusId, SportsEvent valueOf) {
+    public List<PlaygroundInfoResponse> getPlaygroundByCampusAndSportsType(Long campusId, SportsEvent valueOf) {
         Campus campus = campusRepository.findById(campusId)
                 .orElseThrow(CampusNotExistException::new);
 
-        List<Playground> playgrounds = playgroundFinder.getPlaygroundsBySportsEvent(campus.getPlaygrounds(), valueOf);
-
-        if (playgrounds.size() == 0) {
-            return new ArrayList<>();
-        }
+        List<Playground> playgrounds = getPlaygroundsBySportsEvent(campus.getPlaygrounds(), valueOf);
 
         return playgrounds.stream()
-                .map(this::toPlaygroundResponseDto)
+                .map(PlaygroundInfoResponse::of)
+                .toList();
+    }
+
+    private List<Playground> getPlaygroundsBySportsEvent(List<Playground> playgrounds, SportsEvent sportsEvent) {
+        return playgrounds.stream()
+                .filter(playground -> playground.getSportsEvent().equals(sportsEvent))
                 .toList();
     }
 
@@ -101,16 +90,5 @@ public class CampusService {
 
 
 
-    private PlaygroundResponseDto toPlaygroundResponseDto(Playground playground) {
-        return PlaygroundResponseDto.builder()
-                .playgroundId(playground.getId())
-                .playgroundName(playground.getName())
-                .upcomingGameNum(playground.getUpcomingGamesOrderedByStartDateTime().size())
-                .sportsEvent(playground.getSportsEvent().getValue_cn())
-                .playgroundProfileImg(playground.getImg().getFileUrl())
-                .campusName(playground.getCampus().getCampusName())
-                .schoolName(playground.getCampus().getSchool().getSchoolName())
-                .build();
-    }
 
 }

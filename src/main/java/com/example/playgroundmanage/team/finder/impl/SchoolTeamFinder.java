@@ -2,7 +2,7 @@ package com.example.playgroundmanage.team.finder.impl;
 
 import com.example.playgroundmanage.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.team.dto.TeamDto;
-import com.example.playgroundmanage.location.respository.TeamRepository;
+import com.example.playgroundmanage.team.repository.TeamRepository;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.team.finder.TeamFinder;
 import lombok.RequiredArgsConstructor;

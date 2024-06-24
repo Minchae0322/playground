@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.location.service;
 
+import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
 import com.example.playgroundmanage.date.MyDateTime;
 import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.dto.GameTimeDto;
@@ -8,10 +9,9 @@ import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.game.repository.CampusRepository;
 import com.example.playgroundmanage.game.service.GameDtoConverter;
 import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.location.dto.AthleticsThumbnailResponse;
 import com.example.playgroundmanage.location.dto.PlaygroundRequestDto;
-import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
 import com.example.playgroundmanage.location.dto.response.OccupiedTimeResponse;
+import com.example.playgroundmanage.location.dto.response.PlaygroundInfoResponse;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.store.FileHandler;
@@ -46,13 +46,13 @@ public class PlaygroundService {
     private final TimeValidation timeValidation;
 
     @Transactional
-    public List<AthleticsThumbnailResponse> getUpcomingAthletics(Long playgroundId) {
+    public List<AthleticsResponse> getUpcomingAthletics(Long playgroundId) {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
 
         return playground.getAthletics().stream()
                 .filter(athletics -> timeValidation.isAfterFromNow(athletics.getGameStartDateTime()))
-                .map(AthleticsThumbnailResponse::of)
+                .map(AthleticsResponse::of)
                 .toList();
     }
 
@@ -114,11 +114,11 @@ public class PlaygroundService {
     }
 
     @Transactional
-    public PlaygroundResponseDto getPlaygroundInfo(Long playgroundId) {
+    public PlaygroundInfoResponse getPlaygroundInfo(Long playgroundId) {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
 
-        return playgroundDtoConverter.toPlaygroundResponseInfoDto(playground);
+        return PlaygroundInfoResponse.of(playground);
     }
 
 

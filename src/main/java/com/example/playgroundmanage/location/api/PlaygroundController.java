@@ -1,12 +1,12 @@
-package com.example.playgroundmanage.controller;
+package com.example.playgroundmanage.location.api;
 
+import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
 import com.example.playgroundmanage.dto.reqeust.GameTimeInfo;
 import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.dto.GameTimeDto;
 import com.example.playgroundmanage.location.dto.response.OccupiedTimeResponse;
-import com.example.playgroundmanage.location.dto.AthleticsThumbnailResponse;
 import com.example.playgroundmanage.location.dto.PlaygroundRequestDto;
-import com.example.playgroundmanage.location.dto.PlaygroundResponseDto;
+import com.example.playgroundmanage.location.dto.response.PlaygroundInfoResponse;
 import com.example.playgroundmanage.location.service.PlaygroundService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -37,12 +37,12 @@ public class PlaygroundController {
     }
 
     @GetMapping("/playground/{playgroundId}/upComing")
-    public List<AthleticsThumbnailResponse> getUpcomingGames(@PathVariable Long playgroundId) {
+    public List<AthleticsResponse> getUpcomingGames(@PathVariable Long playgroundId) {
         return playgroundService.getUpcomingAthletics(playgroundId);
     }
 
     @GetMapping("/playground/{playgroundId}/info")
-    public PlaygroundResponseDto getPlaygroundInfo(@PathVariable Long playgroundId) {
+    public PlaygroundInfoResponse getPlaygroundInfo(@PathVariable Long playgroundId) {
         return playgroundService.getPlaygroundInfo(playgroundId);
     }
 

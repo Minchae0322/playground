@@ -4,7 +4,7 @@ import com.example.playgroundmanage.game.repository.*;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.login.repository.UserRepository;
 
-import com.example.playgroundmanage.location.respository.TeamRepository;
+import com.example.playgroundmanage.team.repository.TeamRepository;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.type.UserRole;
 import com.example.playgroundmanage.team.vo.Team;

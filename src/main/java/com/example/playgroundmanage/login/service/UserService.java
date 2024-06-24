@@ -8,7 +8,7 @@ import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.login.vo.UserGameRecord;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.exception.UserNotExistException;
-import com.example.playgroundmanage.location.repository.TeamingRepository;
+import com.example.playgroundmanage.team.repository.TeamingRepository;
 import com.example.playgroundmanage.game.vo.*;
 import com.example.playgroundmanage.exception.ExistUserException;
 import com.example.playgroundmanage.login.repository.UserRepository;

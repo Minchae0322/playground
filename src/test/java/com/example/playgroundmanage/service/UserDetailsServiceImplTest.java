@@ -5,7 +5,7 @@ import com.example.playgroundmanage.login.dto.UserSignupForm;
 import com.example.playgroundmanage.exception.FormatException;
 import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
 import com.example.playgroundmanage.game.repository.GameRepository;
-import com.example.playgroundmanage.location.respository.TeamRepository;
+import com.example.playgroundmanage.team.repository.TeamRepository;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
