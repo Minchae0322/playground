@@ -1,10 +1,8 @@
 package com.example.playgroundmanage.location.service;
 
 import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
-import com.example.playgroundmanage.date.MyDateTimeLocal;
+import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.exception.SchoolNotExistException;
-import com.example.playgroundmanage.game.dto.GameDto;
-import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.location.dto.CampusResponseDto;
 import com.example.playgroundmanage.location.dto.response.PlaygroundInfoResponse;
 import com.example.playgroundmanage.location.repository.SchoolRepository;
@@ -47,11 +45,11 @@ public class SchoolService {
     }
 
     @Transactional
-    public List<GameDto> getUpcomingGamesBySchool(Long schoolId) {
+    public List<AthleticsResponse> getUpcomingGamesBySchool(Long schoolId) {
         School school = schoolRepository.findById(schoolId)
                 .orElseThrow(SchoolNotExistException::new);
 
-        List<Game> upcomingGames = new ArrayList<>();
+        List<Athletics> upcomingGames = new ArrayList<>();
 
         for (SportsEvent event : SportsEvent.values()) {
             List<Playground> playgrounds = school.getCampus().stream()
@@ -61,7 +59,7 @@ public class SchoolService {
         }
 
         return upcomingGames.stream()
-                .map(Game::toGameDto)
+                .map(AthleticsResponse::of)
                 .toList();
     }
 
@@ -75,6 +73,7 @@ public class SchoolService {
                 )
                 .toList();
     }
+
     @Transactional
     public List<AthleticsResponse> getUpcomingGamesBySchoolAndSportsEvent(Long schoolId, SportsEvent sportsEvent) {
         School school = schoolRepository.findById(schoolId)
@@ -86,11 +85,13 @@ public class SchoolService {
     }
 
 
-    private List<Game> getUpcomingGames(List<Playground> playgrounds) {
-        LocalDateTime now = LocalDateTime.now();
+    private List<Athletics> getUpcomingGames(List<Playground> playgrounds) {
         return playgrounds.stream()
-                .flatMap(playground -> gameFinder.getUpcomingGames(playground.getGames(), playground.getGames().size(), MyDateTimeLocal.initMyDateTime(now))
-                        .stream().limit(4))
+                .flatMap(playground -> playground.getAthletics()
+                        .stream()
+                        .filter(athletics -> athletics.getGameStartDateTime().isAfter(LocalDateTime.now())
+                        )
+                )
                 .collect(Collectors.toList());
     }
 

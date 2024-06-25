@@ -1,6 +1,5 @@
 package com.example.playgroundmanage.login.handler;
 
-import com.example.playgroundmanage.Instance;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.login.auth.JwtTokenProvider;
@@ -20,7 +19,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.io.IOException;
 import java.net.URI;
 
-import static com.example.playgroundmanage.Instance.*;
+import static com.example.playgroundmanage.Constant.*;
 
 
 @RequiredArgsConstructor

@@ -1,13 +1,14 @@
 package com.example.playgroundmanage.location.api;
 
 import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
-import com.example.playgroundmanage.dto.reqeust.GameTimeInfo;
+import com.example.playgroundmanage.althlectis.dto.request.AthleticsTimeInfo;
 import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.dto.GameTimeDto;
 import com.example.playgroundmanage.location.dto.response.OccupiedTimeResponse;
 import com.example.playgroundmanage.location.dto.PlaygroundRequestDto;
 import com.example.playgroundmanage.location.dto.response.PlaygroundInfoResponse;
 import com.example.playgroundmanage.location.service.PlaygroundService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,15 +48,15 @@ public class PlaygroundController {
     }
 
     @PostMapping("/playground/{playgroundId}/occupiedTime")
-    public List<OccupiedTimeResponse> getOccupiedTimeLines(@PathVariable Long playgroundId, @RequestBody GameTimeInfo gameTimeInfo) {
-        GameTimeDto gameTimeDto = gameTimeInfo.toGameTimeDto();
+    public List<OccupiedTimeResponse> getOccupiedTimeLines(@PathVariable Long playgroundId, @RequestBody @Valid AthleticsTimeInfo athleticsTimeInfo) {
+        GameTimeDto gameTimeDto = AthleticsTimeInfo.toGameTimeDto(athleticsTimeInfo);
 
         return playgroundService.getPlaygroundOccupiedTimeLines(playgroundId, gameTimeDto);
     }
 
     @PostMapping("/playground/{playgroundId}/valid-start")
-    public boolean validateGameStartTime(@PathVariable Long playgroundId, @RequestBody GameTimeInfo gameTimeInfo) {
-        GameTimeDto gameTimeDto = gameTimeInfo.toGameTimeDto();
+    public boolean validateGameStartTime(@PathVariable Long playgroundId, @RequestBody @Valid AthleticsTimeInfo athleticsTimeInfo) {
+        GameTimeDto gameTimeDto = AthleticsTimeInfo.toGameTimeDto(athleticsTimeInfo);
 
         return playgroundService.isValidGameStartTime(playgroundId, gameTimeDto);
     }

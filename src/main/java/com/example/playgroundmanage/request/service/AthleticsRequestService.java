@@ -1,8 +1,5 @@
 package com.example.playgroundmanage.request.service;
 
-import com.example.playgroundmanage.dto.RequestInfoDto;
-import com.example.playgroundmanage.dto.reqeust.PendingRequestParams;
-import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.request.dto.AthleticsJoinRequest;
 import com.example.playgroundmanage.request.dto.PendingRequestResponse;
 

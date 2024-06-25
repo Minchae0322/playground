@@ -11,11 +11,9 @@ import com.example.playgroundmanage.althlectis.service.factory.AthleticsGenerato
 import com.example.playgroundmanage.game.GameResultManagerFactory;
 import com.example.playgroundmanage.game.GameResultManger;
 import com.example.playgroundmanage.game.dto.*;
-import com.example.playgroundmanage.game.service.GameGenerator;
 import com.example.playgroundmanage.game.service.GameService;
 import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
-import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

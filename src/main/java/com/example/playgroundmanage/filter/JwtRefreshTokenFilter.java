@@ -15,8 +15,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.List;
 
-import static com.example.playgroundmanage.Instance.ACCESS_TOKEN_HEADER_NAME;
-import static com.example.playgroundmanage.Instance.ACCESS_TOKEN_REFRESH_URL;
+import static com.example.playgroundmanage.Constant.ACCESS_TOKEN_HEADER_NAME;
+import static com.example.playgroundmanage.Constant.ACCESS_TOKEN_REFRESH_URL;
 import static com.example.playgroundmanage.login.auth.JwtTokenProvider.ACCESS_TOKEN_EXPIRATION;
 
 @RequiredArgsConstructor

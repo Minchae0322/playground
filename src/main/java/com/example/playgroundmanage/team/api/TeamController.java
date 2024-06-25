@@ -1,10 +1,10 @@
-package com.example.playgroundmanage.controller;
+package com.example.playgroundmanage.team.api;
 
 import com.example.playgroundmanage.dto.TeamRequestDto;
 import com.example.playgroundmanage.request.dto.TeamRegistrationRequest;
 import com.example.playgroundmanage.dto.TeamJoinRequestDto;
 import com.example.playgroundmanage.team.dto.TeamDto;
-import com.example.playgroundmanage.dto.response.TeamMemberDto;
+import com.example.playgroundmanage.team.dto.TeamMemberDto;
 import com.example.playgroundmanage.team.finder.TeamFinder;
 import com.example.playgroundmanage.team.finder.TeamFinderFactory;
 import com.example.playgroundmanage.team.service.TeamService;

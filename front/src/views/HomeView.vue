@@ -23,9 +23,9 @@
             <router-link
                 :to="{ name: 'playground' , params : { playgroundId: game.playgroundId, receivedGameId: game.gameId}}">
               <div class="game-card-mini-title">{{ game.gameName }}
-                <div :style="{ color: getDayColor(game.gameStart) }">&nbsp;{{ getChineseDayOfWeek(game.gameStart) }}</div>
+                <div :style="{ color: getDayColor(game.gameStartDateTime) }">&nbsp;{{ getChineseDayOfWeek(game.gameStartDateTime) }}</div>
               </div>
-              <div class="game-card-mini-title">[{{ game.gameStart }}]</div>
+              <div class="game-card-mini-title">[{{ game.gameStartDateTime }}]</div>
               <div class="game-card-mini-info-container">
                 <div class="game-card-mini-campus-name">地点 : {{ game.playgroundName }} , {{ game.campusName }}</div>
                 <div class="game-card-mini-info">主持人: {{ game.hostName }}</div>
@@ -67,31 +67,31 @@ const sports = ref([
     name: '足球',
     eventType: 'SOCCER',
     icon: soccerImage,
-    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'SOCCER'))
+    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === '足球'))
   },
   {
     name: '篮球',
     eventType: 'BASKETBALL',
     icon: basketBallImage,
-    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'BASKETBALL'))
+    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === '篮球'))
   },
   {
     name: '羽毛球',
     eventType: 'BADMINTON',
     icon: badmintonBallImage,
-    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'BADMINTON'))
+    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === '羽毛球'))
   },
   {
     name: '乒乓球',
     eventType: 'TABLE_TENNIS',
     icon: tableTennisBall,
-    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'TABLE_TENNIS'))
+    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === '台球'))
   },
   {
     name: '网球',
     eventType: 'TENNIS',
     icon: tennisBallImage,
-    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === 'TENNIS'))
+    games: computed(() => upcomingGames.value.filter(game => game.sportsEvent === '网球'))
   },
 ]);
 

@@ -1,6 +1,5 @@
 package com.example.playgroundmanage.game.service;
 
-import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.login.dto.UsersGameDto;

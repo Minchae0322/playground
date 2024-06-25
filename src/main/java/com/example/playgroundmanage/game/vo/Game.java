@@ -1,7 +1,6 @@
 package com.example.playgroundmanage.game.vo;
 
 import com.example.playgroundmanage.date.MyDateTimeLocal;
-import com.example.playgroundmanage.game.dto.GameDto;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.type.GameTeamSide;
 import com.example.playgroundmanage.type.GameType;
@@ -87,19 +86,6 @@ public class Game {
     }
 
 
-    public GameDto toGameDto() {
-        return GameDto.builder()
-                .host(host)
-                .playground(playground)
-                .gameName(gameName)
-                .gameId(id)
-                .participantNum(gameParticipants.size())
-                .startDateTime(MyDateTimeLocal.initMyDateTime(gameStartDateTime))
-                .gameType(gameType)
-                .runningTime(runningTime)
-                .sportsEvent(sportsEvent)
-                .build();
-    }
 
     public Optional<CompetingTeam> getCompetingTeamBySide(GameTeamSide gameTeamSide) {
         return competingTeams.stream()

@@ -1,19 +1,15 @@
 package com.example.playgroundmanage.request.vo;
 
 
-import com.example.playgroundmanage.dto.RequestInfoDto;
 import com.example.playgroundmanage.global.BaseEntity;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.request.vo.impl.TeamJoinRequest;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.type.RequestState;
-import com.fasterxml.jackson.databind.ser.Serializers;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Entity
 @Getter

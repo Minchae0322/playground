@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.controller;
+package com.example.playgroundmanage.global;
 
 import com.example.playgroundmanage.exception.TimeOverlappingException;
 import com.example.playgroundmanage.exception.TokenNotValidException;

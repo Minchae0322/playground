@@ -2,7 +2,7 @@ package com.example.playgroundmanage.team.service;
 
 import com.example.playgroundmanage.dto.TeamRequestDto;
 import com.example.playgroundmanage.team.dto.TeamDto;
-import com.example.playgroundmanage.dto.response.TeamMemberDto;
+import com.example.playgroundmanage.team.dto.TeamMemberDto;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.service.SubTeamService;
 import com.example.playgroundmanage.team.repository.TeamingRepository;

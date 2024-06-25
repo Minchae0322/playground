@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.location.vo;
 
 import com.example.playgroundmanage.althlectis.vo.Athletics;
-import com.example.playgroundmanage.dto.PlaygroundDto;
+
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.type.SportsEvent;
@@ -61,15 +61,7 @@ public class Playground {
                 .toList();
     }
 
-    public PlaygroundDto toPlaygroundDto() {
-        return PlaygroundDto.builder()
-                .playgroundId(id)
-                .campusName(campus.getCampusName())
-                .playgroundName(name)
-                .schoolName(campus.getSchool().getSchoolName())
-                .sportsEvent(sportsEvent)
-                .build();
-    }
+
 
 
 

@@ -1,8 +1,6 @@
 package com.example.playgroundmanage.location.api;
 
 import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
-import com.example.playgroundmanage.game.dto.GameDto;
-import com.example.playgroundmanage.dto.response.GameThumbnail;
 import com.example.playgroundmanage.location.dto.CampusResponseDto;
 import com.example.playgroundmanage.location.dto.response.PlaygroundInfoResponse;
 import com.example.playgroundmanage.location.service.CampusService;
@@ -40,12 +38,10 @@ public class SchoolController {
     }
 
     @GetMapping("/school/{schoolId}/upcoming")
-    public List<GameThumbnail> getUpcomingGamesBySchool( @PathVariable Long schoolId) {
-        List<GameDto> upcomingGames = schoolService.getUpcomingGamesBySchool(schoolId);
+    public List<AthleticsResponse> getUpcomingGamesBySchool( @PathVariable Long schoolId) {
+        return schoolService.getUpcomingGamesBySchool(schoolId);
 
-        return upcomingGames.stream()
-                .map(GameDto::toGameThumbnail)
-                .toList();
+
     }
 
 }

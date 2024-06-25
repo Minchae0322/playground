@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.config;
 
 
-import com.example.playgroundmanage.Instance;
+import com.example.playgroundmanage.Constant;
 import com.example.playgroundmanage.filter.JwtAuthenticationFilter;
 import com.example.playgroundmanage.filter.JwtRefreshTokenFilter;
 import com.example.playgroundmanage.login.auth.JwtTokenProvider;
@@ -31,8 +31,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import static com.example.playgroundmanage.Instance.ACCESS_TOKEN_HEADER_NAME;
-import static com.example.playgroundmanage.Instance.SERVER_URL;
+import static com.example.playgroundmanage.Constant.ACCESS_TOKEN_HEADER_NAME;
+import static com.example.playgroundmanage.Constant.SERVER_URL;
 
 
 @Configuration
@@ -107,9 +107,9 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin(Instance.HTTP_HTTPS + "://localhost:5173");
-        configuration.addAllowedOrigin(Instance.HTTP_HTTPS + "://" + SERVER_URL);
-        configuration.addAllowedOrigin(Instance.HTTP_HTTPS +"://localhost:8080");
+        configuration.addAllowedOrigin(Constant.HTTP_HTTPS + "://localhost:5173");
+        configuration.addAllowedOrigin(Constant.HTTP_HTTPS + "://" + SERVER_URL);
+        configuration.addAllowedOrigin(Constant.HTTP_HTTPS +"://localhost:8080");
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         configuration.addExposedHeader(ACCESS_TOKEN_HEADER_NAME);

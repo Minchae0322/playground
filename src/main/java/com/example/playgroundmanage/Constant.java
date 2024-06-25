@@ -1,6 +1,6 @@
 package com.example.playgroundmanage;
 
-public final class Instance {
+public final class Constant {
     public final static Integer FRONT_END_PORT_NUM = 5173;
 
     public final static String HTTP_HTTPS = "http";
