@@ -51,4 +51,11 @@ public class FriendlyAthletics extends Athletics {
                 .playground(playground)
                 .build();
     }
+
+
+
+    @Override
+    public int compareTo(Athletics athletics) {
+        return athletics.getGameStartDateTime().compareTo(this.getGameStartDateTime());
+    }
 }

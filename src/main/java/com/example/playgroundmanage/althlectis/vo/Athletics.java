@@ -14,6 +14,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -21,7 +22,7 @@ import java.util.List;
 @Inheritance(strategy = InheritanceType.JOINED) // 상속 전략 설정
 @DiscriminatorColumn(name = "type") // 상속받는 클래스를 구분하는 컬럼
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public abstract class Athletics extends BaseEntity  {
+public abstract class Athletics extends BaseEntity implements Comparable<Athletics> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -48,7 +49,6 @@ public abstract class Athletics extends BaseEntity  {
 
     @OneToOne(mappedBy = "athletics", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private AthleticsResult athleticsResult;
-
 
     @OneToMany(mappedBy = "athletics", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<AthleticsRequest> athleticsRequests = new ArrayList<>();

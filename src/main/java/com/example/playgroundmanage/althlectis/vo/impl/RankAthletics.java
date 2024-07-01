@@ -58,4 +58,8 @@ public class RankAthletics extends Athletics {
                 .build();
     }
 
+    @Override
+    public int compareTo(Athletics athletics) {
+        return athletics.getGameStartDateTime().compareTo(this.getGameStartDateTime());
+    }
 }

@@ -8,7 +8,7 @@ public record UserInTeamDetailsResponse(
         Long userId,
         String userNickname,
         String userRole,
-        boolean isMine,
+
         String userProfileImg
 ) {
 
@@ -17,7 +17,6 @@ public record UserInTeamDetailsResponse(
                 gameParticipant.getId(),
                 gameParticipant.getUser().getNickname(),
                 gameParticipant.getUser().getRole().getValue(),
-                false,
                 gameParticipant.getUser().getUserProfileImg().getFileUrl()
         );
     }

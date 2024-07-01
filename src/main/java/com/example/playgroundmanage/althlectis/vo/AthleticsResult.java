@@ -21,7 +21,6 @@ public class AthleticsResult {
     @OneToOne
     private Athletics athletics;
 
-
     boolean isFinished;
     @Builder
     public AthleticsResult(Long id, int homeScore, int awayScore, Athletics athletics) {

@@ -65,7 +65,7 @@
             </svg>
 
             {{ formatDate(game.gameStart) }}
-            <div v-if="game.resulted" class="game-has-result">已提交</div>
+            <div v-if="game.isResulted" class="game-has-result">已提交</div>
           </div>
 
           <div class="game-description">
