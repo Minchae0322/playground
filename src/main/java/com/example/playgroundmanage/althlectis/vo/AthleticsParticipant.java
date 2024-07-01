@@ -42,4 +42,8 @@ public abstract class AthleticsParticipant {
         this.isAccepted = isAccepted;
         this.athletics = athletics;
     }
+
+    public void updateAthleticsRecord(GameRecord gameRecord) {
+        this.gameRecord = gameRecord;
+    }
 }

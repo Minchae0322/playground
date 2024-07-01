@@ -16,7 +16,7 @@ public class GameDtoConverter {
         return UsersGameDto.UsersGameResponseDto.builder()
                 .gameId(game.getId())
                 .playgroundId(game.getPlayground().getId())
-                .location(getLocation(game))
+
                 .gameType(game.getGameType().getValue_cn())
                 .isResulted(game.getGameResult() != null)
                 .gameType_en(game.getGameType().getValue())

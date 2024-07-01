@@ -2,9 +2,11 @@ package com.example.playgroundmanage.althlectis.api;
 
 import com.example.playgroundmanage.althlectis.dto.request.AthleticsDetailsRequest;
 import com.example.playgroundmanage.althlectis.dto.request.GameGenerationRequest;
+import com.example.playgroundmanage.althlectis.dto.request.GameResultRequest;
 import com.example.playgroundmanage.althlectis.dto.response.AthleticsDetailsResponse;
 import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
 import com.example.playgroundmanage.althlectis.service.AthleticsGenerator;
+import com.example.playgroundmanage.althlectis.service.AthleticsResultService;
 import com.example.playgroundmanage.althlectis.service.AthleticsService;
 import com.example.playgroundmanage.althlectis.service.factory.AthleticsGeneratorFactory;
 
@@ -35,6 +37,8 @@ public class AthleticsController {
 
     private final AthleticsGeneratorFactory athleticsGeneratorFactory;
 
+    private final AthleticsResultService athleticsResultService;
+
 
     @GetMapping("/game/{gameId}/Friendly/NONE")
     public AthleticsDetailsResponse getFriendlyAthleticsTeam(@PathVariable Long gameId) {
@@ -60,12 +64,10 @@ public class AthleticsController {
     }
 
     @PreAuthorize("hasPermission(#gameId,'summit_game','CREATE')")
-    @PostMapping("/game/result/{gameId}/{gameType}")
-    public ResponseEntity<String> summitGameResult(@RequestBody GameResultDto.GameResultRequestDto gameResultRequestDto, @PathVariable String gameType,
-                                 @PathVariable Long gameId) {
-        GameResultManger gameResultManger = gameResultManagerFactory.find(gameType);
-
-        gameResultManger.submitGameResult(gameResultRequestDto);
+    @PostMapping("/game/result/{gameId}")
+    public ResponseEntity<String> summitGameResult(@RequestBody @Valid GameResultRequest gameResultRequest,
+                                                   @PathVariable Long gameId) {
+        athleticsResultService.updateAthleticsResult(gameResultRequest);
 
         return ResponseEntity.ok("success");
     }

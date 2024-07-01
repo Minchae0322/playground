@@ -1,5 +1,7 @@
 package com.example.playgroundmanage.config;
 
+import com.example.playgroundmanage.althlectis.repo.AthleticsRepository;
+import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.TeamNotExistException;
 import com.example.playgroundmanage.game.repository.GameRepository;
@@ -24,7 +26,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
     private final TeamRequestRepository teamRequestRepository;
 
-    private final GameRepository gameRepository;
+    private final AthleticsRepository athleticsRepository;
 
     private final TeamRepository teamRepository;
 
@@ -45,14 +47,14 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
         if (targetType.equals("delete_game")) {
             User user = (User) authentication.getPrincipal();
-            Game game = gameRepository.findById((Long) targetId).orElseThrow(GameNotExistException::new);
-            return Objects.equals(user.getId(), game.getHost().getId());
+            Athletics athletics = athleticsRepository.findById((Long) targetId).orElseThrow(GameNotExistException::new);
+            return Objects.equals(user.getId(), athletics.getHost().getId());
         }
 
         if (targetType.equals("summit_game")) {
             User user = (User) authentication.getPrincipal();
-            Game game = gameRepository.findById((Long) targetId).orElseThrow(GameNotExistException::new);
-            return Objects.equals(user.getId(), game.getHost().getId());
+            Athletics athletics = athleticsRepository.findById((Long) targetId).orElseThrow(GameNotExistException::new);
+            return Objects.equals(user.getId(), athletics.getHost().getId());
         }
 
         if (targetType.equals("delete_team")) {

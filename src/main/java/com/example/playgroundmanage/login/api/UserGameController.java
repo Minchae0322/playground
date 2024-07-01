@@ -1,6 +1,7 @@
 package com.example.playgroundmanage.login.api;
 
 import com.example.playgroundmanage.game.service.SubTeamService;
+import com.example.playgroundmanage.login.dto.UserGameInfoResponse;
 import com.example.playgroundmanage.login.dto.UsersGameDto;
 import com.example.playgroundmanage.login.service.UserHostGameService;
 import com.example.playgroundmanage.login.service.UserJoinGameService;
@@ -47,13 +48,13 @@ public class UserGameController {
 
 
     @GetMapping("/user/game/host/{year}/{month}")
-    public List<UsersGameDto.UsersGameResponseDto> getGamesUserHostByDate(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Integer year, @PathVariable Integer month) {
+    public List<UserGameInfoResponse> getGamesUserHostByDate(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Integer year, @PathVariable Integer month) {
 
         return userHostGameService.getUserHostGamesInMonth(myUserDetails.getUser(), LocalDateTime.of(year, month, 1, 0, 0));
     }
 
     @GetMapping("/user/game/host")
-    public List<UsersGameDto.UsersGameResponseDto> getGamesUserHost(@AuthenticationPrincipal MyUserDetails myUserDetails) {
+    public List<UserGameInfoResponse> getGamesUserHost(@AuthenticationPrincipal MyUserDetails myUserDetails) {
         return userHostGameService.getUserHostGames(myUserDetails.getUser());
     }
 

@@ -1,10 +1,13 @@
 package com.example.playgroundmanage.login.service;
 
+import com.example.playgroundmanage.althlectis.repo.AthleticsRepository;
+import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.game.repository.GameRepository;
 import com.example.playgroundmanage.game.service.GameDtoConverter;
 import com.example.playgroundmanage.game.vo.Game;
 import com.example.playgroundmanage.game.vo.GameParticipant;
+import com.example.playgroundmanage.login.dto.UserGameInfoResponse;
 import com.example.playgroundmanage.login.dto.UsersGameDto;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.User;
@@ -21,36 +24,35 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserHostGameService {
 
-    private final GameRepository gameRepository;
-
-    private final GameSorting gameSorting;
-
-    private final GameFinder gameFinder;
-
-    private final GameDtoConverter gameDtoConverter;
+    private final AthleticsRepository athleticsRepository;
 
     @Transactional
-    public List<UsersGameDto.UsersGameResponseDto> getUserHostGames(User user) {
-        List<Game> games = gameRepository.findAllByHost(user);
+    public List<UserGameInfoResponse> getUserHostGames(User user) {
+        List<Athletics> athletics = athleticsRepository.findAllByHost(user);
 
-        List<Game> gamesOrderedByLatest = gameSorting.sortGamesByOldest(games);
-
-        return gamesOrderedByLatest.stream()
-                .map(gameDtoConverter::toUsersGameResponseDto)
+        return athletics.stream()
+                .sorted()
+                .map(UserGameInfoResponse::of)
                 .toList();
     }
 
     @Transactional
-    public List<UsersGameDto.UsersGameResponseDto> getUserHostGamesInMonth(User user, LocalDateTime localDateTime) {
-        List<Game> games = gameRepository.findAllByHost(user);
+    public List<UserGameInfoResponse> getUserHostGamesInMonth(User user, LocalDateTime localDateTime) {
+        List<Athletics> athletics = athleticsRepository.findAllByHost(user);
 
-        List<Game> gamesInSameYearMonth = gameFinder.getGamesForYearMonth(games, localDateTime);
 
-        List<Game> gamesOrderedByLatest = gameSorting.sortGamesByOldest(gamesInSameYearMonth);
-
-        return gamesOrderedByLatest.stream()
-                .map(gameDtoConverter::toUsersGameResponseDto)
+        return athletics.stream()
+                .filter(athletics1 -> isGameOnYearMonth(athletics1, localDateTime))
+                .sorted()
+                .map(UserGameInfoResponse::of)
                 .toList();
+    }
+
+    private boolean isGameOnYearMonth(Athletics athletics, LocalDateTime localDateTime) {
+        int targetYear = localDateTime.getYear();
+        int targetMonth = localDateTime.getMonthValue();
+
+        return athletics.getGameStartDateTime().getYear() == targetYear && athletics.getGameStartDateTime().getMonthValue() == targetMonth;
     }
 
 

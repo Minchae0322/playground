@@ -1,6 +1,5 @@
 package com.example.playgroundmanage.althlectis.vo;
 
-import com.example.playgroundmanage.game.vo.GameParticipant;
 import com.example.playgroundmanage.global.BaseEntity;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.login.vo.User;
@@ -15,7 +14,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 
 @Entity
@@ -48,6 +46,10 @@ public abstract class Athletics extends BaseEntity  {
     @ManyToOne(cascade = CascadeType.MERGE)
     private User host;
 
+    @OneToOne(mappedBy = "athletics", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    private AthleticsResult athleticsResult;
+
+
     @OneToMany(mappedBy = "athletics", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<AthleticsRequest> athleticsRequests = new ArrayList<>();
 
@@ -65,5 +67,10 @@ public abstract class Athletics extends BaseEntity  {
         this.host = host;
         this.athleticsRequests = athleticsRequests;
         this.athleticsParticipants = athleticsParticipants;
+        this.athleticsResult = AthleticsResult.builder()
+                .homeScore(0)
+                .awayScore(0)
+                .athletics(this)
+                .build();
     }
 }

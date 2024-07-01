@@ -117,7 +117,7 @@ const summitResult = async () => {
   await validateAccessToken()
 
   try {
-    await axios.post(`${apiBaseUrl}/game/result/${props.gameId}/${props.gameType}`, {
+    await axios.post(`${apiBaseUrl}/game/result/${props.gameId}`, {
       gameId: props.gameId,
       homeScore: homeScore.value,
       awayScore: awayScore.value,

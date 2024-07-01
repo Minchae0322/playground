@@ -5,5 +5,7 @@ public enum GameRecord {
     LOSE,
     DRAW,
     NONE,
+    ;
+
 
 }
