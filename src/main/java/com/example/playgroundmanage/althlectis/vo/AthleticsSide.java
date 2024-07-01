@@ -4,7 +4,7 @@ package com.example.playgroundmanage.althlectis.vo;
 import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.althlectis.vo.impl.SoloAthleticsParticipant;
 import com.example.playgroundmanage.althlectis.vo.impl.TeamAthleticsParticipant;
-import com.example.playgroundmanage.game.vo.SubTeam;
+
 import com.example.playgroundmanage.type.GameTeamSide;
 import jakarta.persistence.*;
 import lombok.Builder;

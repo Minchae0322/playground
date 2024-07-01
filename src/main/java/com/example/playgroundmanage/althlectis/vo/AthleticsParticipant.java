@@ -1,8 +1,6 @@
 package com.example.playgroundmanage.althlectis.vo;
 
-import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.game.vo.SubTeam;
-import com.example.playgroundmanage.login.dto.UserResponseDto;
+
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.type.GameRecord;
 import com.example.playgroundmanage.type.GameTeamSide;

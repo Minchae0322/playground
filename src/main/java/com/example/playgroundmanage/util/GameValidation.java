@@ -2,8 +2,7 @@ package com.example.playgroundmanage.util;
 
 import com.example.playgroundmanage.game.dto.GameTimeDto;
 import com.example.playgroundmanage.exception.TimeOverlappingException;
-import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.game.vo.GameParticipant;
+
 import com.example.playgroundmanage.login.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -17,16 +16,8 @@ import static com.example.playgroundmanage.util.Util.localDateToYearMonthDateTim
 @RequiredArgsConstructor
 @Component
 public final class GameValidation {
-    private final GameFinder gameFinder;
 
-    public void validateOverlappingGames(List<Game> games, GameTimeDto gameTimeDto) {
-        boolean isOverlapping = games.stream()
-                .anyMatch(game -> gameFinder.isDateTimeRangeOverlapping(game, gameTimeDto.getStartDateTime(), gameTimeDto.getRunningTime()));
 
-        if (isOverlapping) {
-            throw new TimeOverlappingException(localDateToYearMonthDateTimeString(LocalDateTime.now()));
-        }
-    }
 
     public static void validateStartTimeAfterPresent(GameTimeDto gameTimeDto) {
         if (gameTimeDto.getStartDateTime().isBefore(LocalDateTime.now().plusMinutes(1))) {
@@ -34,14 +25,7 @@ public final class GameValidation {
         }
     }
 
-    public static void validateDuplicateUserInGame(List<GameParticipant> gameParticipants, User user) {
-        boolean isAlreadyParticipant = gameParticipants.stream()
-                .anyMatch(gp -> gp.getUser().equals(user));
 
-        if (isAlreadyParticipant) {
-            throw new IllegalArgumentException("已经参与比赛的用户: ");
-        }
-    }
 
 
 }

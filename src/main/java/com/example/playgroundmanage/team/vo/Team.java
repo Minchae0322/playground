@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.team.vo;
 
-import com.example.playgroundmanage.game.vo.SubTeam;
+
 import com.example.playgroundmanage.request.vo.TeamRequest;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.request.vo.impl.athletics.RankAthleticsJoinRequest;
@@ -38,8 +38,6 @@ public class Team {
     @Enumerated
     private SportsEvent sportsEvent;
 
-    @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private List<SubTeam> subTeams = new ArrayList<>();
 
     @OneToMany(mappedBy = "team", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Teaming> members = new ArrayList<>();
@@ -52,7 +50,7 @@ public class Team {
 
 
     @Builder
-    public Team(Long id, String teamName, UploadFile teamProfileImg, User leader, String description, SportsEvent sportsEvent, List<SubTeam> subTeams, List<Teaming> members) {
+    public Team(Long id, String teamName, UploadFile teamProfileImg, User leader, String description, SportsEvent sportsEvent, List<Teaming> members) {
         validate(teamName, description);
         this.id = id;
         this.teamName = teamName;
@@ -60,7 +58,7 @@ public class Team {
         this.leader = leader;
         this.description = description;
         this.sportsEvent = sportsEvent;
-        this.subTeams = subTeams;
+
         this.members = members;
     }
 

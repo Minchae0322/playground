@@ -4,7 +4,6 @@ import com.example.playgroundmanage.dto.TeamRequestDto;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.team.dto.TeamMemberDto;
 import com.example.playgroundmanage.exception.TeamNotExistException;
-import com.example.playgroundmanage.game.service.SubTeamService;
 import com.example.playgroundmanage.team.repository.TeamingRepository;
 import com.example.playgroundmanage.team.TeamMemberFinder;
 import com.example.playgroundmanage.team.vo.Team;
@@ -30,7 +29,7 @@ public class TeamService {
 
     private final TeamingService teamingService;
 
-    private final SubTeamService subTeamService;
+
 
     private final FileHandler fileHandler;
 
@@ -142,7 +141,7 @@ public class TeamService {
         Team team = teamRepository.findById(teamId)
                 .orElseThrow(TeamNotExistException::new);
 
-        team.getSubTeams().forEach(subTeamService::deleteSubTeam);
+
 
         teamRepository.delete(team);
     }

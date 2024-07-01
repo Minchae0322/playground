@@ -1,14 +1,11 @@
 package com.example.playgroundmanage.location.service;
 
 import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
-import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.game.dto.GameResponseDto;
 import com.example.playgroundmanage.game.dto.GameTimeDto;
 import com.example.playgroundmanage.exception.CampusNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
-import com.example.playgroundmanage.game.repository.CampusRepository;
-import com.example.playgroundmanage.game.service.GameDtoConverter;
-import com.example.playgroundmanage.game.vo.Game;
+import com.example.playgroundmanage.location.repository.CampusRepository;
+
 import com.example.playgroundmanage.location.dto.PlaygroundRequestDto;
 import com.example.playgroundmanage.location.dto.response.OccupiedTimeResponse;
 import com.example.playgroundmanage.location.dto.response.PlaygroundInfoResponse;
@@ -17,13 +14,11 @@ import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.store.FileHandler;
 import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.type.SportsEvent;
-import com.example.playgroundmanage.util.*;
 import com.example.playgroundmanage.location.vo.Campus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
 import java.util.List;
 
 
@@ -34,7 +29,7 @@ import static com.example.playgroundmanage.util.GameValidation.validateStartTime
 public class PlaygroundService {
     private final PlaygroundRepository playgroundRepository;
 
-    private final GameDtoConverter gameDtoConverter;
+
 
     private final PlaygroundDtoConverter playgroundDtoConverter;
 
@@ -92,7 +87,8 @@ public class PlaygroundService {
         playgroundRepository.save(playground);
     }
 
-    @Transactional
+    //todo
+   /* @Transactional
     public GameResponseDto getOngoingGame(Long playgroundId) {
         Playground playground = playgroundRepository.findById(playgroundId)
                 .orElseThrow(PlaygroundNotExistException::new);
@@ -100,7 +96,7 @@ public class PlaygroundService {
         Game onGoingGame = GameFinder.findOngoingGame(playground.getGames(), MyDateTime.initMyDateTime(ZonedDateTime.now()));
 
         return gameDtoConverter.toGameResponse(onGoingGame);
-    }
+    }*/
 
     @Transactional
     public boolean isValidGameStartTime(Long playgroundId, GameTimeDto gameTimeDto) {

@@ -1,4 +1,4 @@
-package com.example.playgroundmanage.game.repository;
+package com.example.playgroundmanage.location.repository;
 
 import com.example.playgroundmanage.location.vo.Campus;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -10,10 +10,7 @@ import com.example.playgroundmanage.althlectis.service.AthleticsResultService;
 import com.example.playgroundmanage.althlectis.service.AthleticsService;
 import com.example.playgroundmanage.althlectis.service.factory.AthleticsGeneratorFactory;
 
-import com.example.playgroundmanage.game.GameResultManagerFactory;
-import com.example.playgroundmanage.game.GameResultManger;
-import com.example.playgroundmanage.game.dto.*;
-import com.example.playgroundmanage.game.service.GameService;
+
 import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
 import jakarta.validation.Valid;
@@ -27,13 +24,13 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AthleticsController {
 
-    private final GameService gameService;
+
 
     private final AthleticsService athleticsService;
 
     private final PlaygroundService playgroundService;
 
-    private final GameResultManagerFactory gameResultManagerFactory;
+
 
     private final AthleticsGeneratorFactory athleticsGeneratorFactory;
 
@@ -72,10 +69,10 @@ public class AthleticsController {
         return ResponseEntity.ok("success");
     }
 
-    @PreAuthorize("hasPermission(#gameId,'delete_game','DELETE')")
+    /*@PreAuthorize("hasPermission(#gameId,'delete_game','DELETE')")
     @DeleteMapping("/user/game/{gameId}/delete")
     public void deleteGame(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Long gameId) {
         gameService.deleteGame(gameId);
-    }
+    }*/
 
 }

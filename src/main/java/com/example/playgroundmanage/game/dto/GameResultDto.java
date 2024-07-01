@@ -1,7 +1,6 @@
 package com.example.playgroundmanage.game.dto;
 
-import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.game.vo.GameResult;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -25,13 +24,6 @@ public class GameResultDto {
             this.awayScore = awayScore;
         }
 
-        public GameResult toGameResult(Game game) {
-            return GameResult.builder()
-                    .game(game)
-                    .homeScore(homeScore)
-                    .awayScore(awayScore)
-                    .build();
-        }
 
     }
 
@@ -51,13 +43,7 @@ public class GameResultDto {
             this.awayScore = awayScore;
         }
 
-        public GameResult toGameResult(Game game) {
-            return GameResult.builder()
-                    .game(game)
-                    .homeScore(homeScore)
-                    .awayScore(awayScore)
-                    .build();
-        }
+
 
     }
 }

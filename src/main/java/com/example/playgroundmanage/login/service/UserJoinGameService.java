@@ -2,18 +2,10 @@ package com.example.playgroundmanage.login.service;
 
 import com.example.playgroundmanage.althlectis.repo.AthleticsParticipantRepository;
 import com.example.playgroundmanage.althlectis.repo.AthleticsRepository;
-import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.althlectis.vo.AthleticsParticipant;
-import com.example.playgroundmanage.exception.GameNotExistException;
-import com.example.playgroundmanage.exception.UserNotParticipantGameException;
-import com.example.playgroundmanage.game.repository.GameParticipantRepository;
-import com.example.playgroundmanage.game.repository.GameRepository;
-import com.example.playgroundmanage.game.service.GameDtoConverter;
-import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.game.vo.GameParticipant;
+
 import com.example.playgroundmanage.login.dto.UserGameInfoResponse;
 import com.example.playgroundmanage.login.dto.UsersGameDto;
-import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.util.GameFinder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -30,9 +22,8 @@ public class UserJoinGameService {
 
     private final AthleticsParticipantRepository athleticsParticipantRepository;
 
-    private final GameFinder gameFinder;
 
-    private final GameDtoConverter gameDtoConverter;
+
 
     private final AthleticsRepository athleticsRepository;
 

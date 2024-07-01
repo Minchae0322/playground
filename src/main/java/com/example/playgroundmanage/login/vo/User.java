@@ -3,8 +3,7 @@ package com.example.playgroundmanage.login.vo;
 
 
 import com.example.playgroundmanage.althlectis.vo.AthleticsParticipant;
-import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.game.vo.GameParticipant;
+
 import com.example.playgroundmanage.login.dto.UserEdit;
 import com.example.playgroundmanage.store.vo.UploadFile;
 import com.example.playgroundmanage.team.vo.Teaming;
@@ -48,8 +47,7 @@ public class User {
     private UserGameRecord userGameRecord;
 
 
-    @OneToMany(mappedBy = "host", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Game> hostGames;
+
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
@@ -58,14 +56,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Teaming> teams;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
-    private List<GameParticipant> gameParticipants;
+
 
 
 
 
     @Builder
-    public User(Long id, String username, String nickname, String provider, String password, boolean isEnable, boolean isLoggedIn, UserRole role, UploadFile userProfileImg, UserGameRecord userGameRecord, List<Teaming> teams, List<GameParticipant> gameParticipants) {
+    public User(Long id, String username, String nickname, String provider, String password, boolean isEnable, boolean isLoggedIn, UserRole role, UploadFile userProfileImg, UserGameRecord userGameRecord, List<Teaming> teams) {
         this.id = id;
         this.username = username;
         this.nickname = nickname;
@@ -76,9 +73,9 @@ public class User {
         this.role = role;
         this.userProfileImg = userProfileImg;
         this.userGameRecord = userGameRecord;
-        this.hostGames = new ArrayList<>();
+
         this.teams = teams;
-        this.gameParticipants = new ArrayList<>();
+
         this.athleticsParticipants = new ArrayList<>();
     }
 

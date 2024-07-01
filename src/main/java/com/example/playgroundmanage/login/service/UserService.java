@@ -2,14 +2,14 @@ package com.example.playgroundmanage.login.service;
 
 import com.example.playgroundmanage.login.dto.*;
 import com.example.playgroundmanage.exception.TooManyRequestException;
-import com.example.playgroundmanage.game.repository.GameParticipantRepository;
+
 import com.example.playgroundmanage.login.repository.UserGameRecordRepository;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.login.vo.UserGameRecord;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.team.repository.TeamingRepository;
-import com.example.playgroundmanage.game.vo.*;
+
 import com.example.playgroundmanage.exception.ExistUserException;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.store.FileHandler;
@@ -40,7 +40,7 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final GameParticipantRepository gameParticipantRepository;
+
 
     private final FileHandler fileHandler;
 
@@ -165,7 +165,8 @@ public class UserService {
                 .build();
     }
 
-    @Transactional
+    //todo
+    /*@Transactional
     public UserRecordResponse updateUserGameRecord(User user) {
         UserGameRecord userGameRecord = findUserGameRecordByUser(user);
 
@@ -173,7 +174,7 @@ public class UserService {
             throw new TooManyRequestException();
         }
 
-        List<GameParticipant> gameParticipants = gameParticipantRepository.findAllByUser(user);
+
 
         int win = gameParticipants.stream()
                 .filter(gameParticipant -> gameParticipant.getGameRecord().equals(GameRecord.WIN))
@@ -189,7 +190,7 @@ public class UserService {
                 .win(win)
                 .lose(lose)
                 .build();
-    }
+    }*/
 
 
     @Transactional

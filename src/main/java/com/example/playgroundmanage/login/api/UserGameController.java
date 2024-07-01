@@ -1,17 +1,12 @@
 package com.example.playgroundmanage.login.api;
 
-import com.example.playgroundmanage.game.service.SubTeamService;
 import com.example.playgroundmanage.login.dto.UserGameInfoResponse;
 import com.example.playgroundmanage.login.dto.UsersGameDto;
 import com.example.playgroundmanage.login.service.UserHostGameService;
 import com.example.playgroundmanage.login.service.UserJoinGameService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,7 +24,7 @@ public class UserGameController {
 
     private final UserJoinGameService userJoinGameService;
 
-    private final SubTeamService subTeamService;
+
 
     @GetMapping("/user/game/{year}/{month}")
     public List<UserGameInfoResponse> getMonthGamesInLatestOrder(@PathVariable Integer month, @PathVariable Integer year, @AuthenticationPrincipal MyUserDetails myUserDetails) {

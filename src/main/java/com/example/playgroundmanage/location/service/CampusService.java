@@ -5,7 +5,7 @@ import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
 import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.exception.CampusNotExistException;
 import com.example.playgroundmanage.exception.SchoolNotExistException;
-import com.example.playgroundmanage.game.repository.CampusRepository;
+import com.example.playgroundmanage.location.repository.CampusRepository;
 import com.example.playgroundmanage.location.dto.CampusResponseDto;
 import com.example.playgroundmanage.location.dto.response.PlaygroundInfoResponse;
 import com.example.playgroundmanage.location.repository.SchoolRepository;
@@ -13,12 +13,10 @@ import com.example.playgroundmanage.location.vo.Campus;
 import com.example.playgroundmanage.location.vo.Playground;
 import com.example.playgroundmanage.location.vo.School;
 import com.example.playgroundmanage.type.SportsEvent;
-import com.example.playgroundmanage.util.PlaygroundFinder;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 

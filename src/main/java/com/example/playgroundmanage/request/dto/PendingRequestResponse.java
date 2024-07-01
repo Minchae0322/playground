@@ -1,7 +1,6 @@
 package com.example.playgroundmanage.request.dto;
 
-import com.example.playgroundmanage.game.vo.Game;
-import com.example.playgroundmanage.game.vo.SubTeam;
+
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.request.vo.AthleticsRequest;
 import com.example.playgroundmanage.request.vo.impl.TeamJoinRequest;

@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.util;
 
 import com.example.playgroundmanage.althlectis.vo.Athletics;
-import com.example.playgroundmanage.game.vo.Game;
+
 import org.springframework.stereotype.Component;
 
 @Component

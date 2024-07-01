@@ -83,10 +83,11 @@ public class UserController {
         return userService.getUserRecord(userId);
     }
 
-    @GetMapping("/user/record/update")
+    //todo
+    /*@GetMapping("/user/record/update")
     public UserRecordResponse updateUserRecord(@AuthenticationPrincipal MyUserDetails myUserDetails) {
         return userService.updateUserGameRecord(myUserDetails.getUser());
-    }
+    }*/
 
     @GetMapping("/user/ranking")
     public List<UserRecordResponse> getUsersRanking() {

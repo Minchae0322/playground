@@ -32,10 +32,11 @@ public class PlaygroundController {
         playgroundService.addPlayground(playgroundRequestDto);
     }
 
-    @GetMapping("/playground/{playgroundId}/current")
+    //todo
+   /* @GetMapping("/playground/{playgroundId}/current")
     public ResponseEntity<GameResponseDto> getOngoingGame(@PathVariable Long playgroundId) {
         return ResponseEntity.ok(playgroundService.getOngoingGame(playgroundId));
-    }
+    }*/
 
     @GetMapping("/playground/{playgroundId}/upComing")
     public List<AthleticsResponse> getUpcomingGames(@PathVariable Long playgroundId) {

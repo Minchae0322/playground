@@ -4,9 +4,8 @@ import com.example.playgroundmanage.althlectis.repo.AthleticsRepository;
 import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.exception.GameNotExistException;
 import com.example.playgroundmanage.exception.TeamNotExistException;
-import com.example.playgroundmanage.game.repository.GameRepository;
-import com.example.playgroundmanage.game.repository.TeamRequestRepository;
-import com.example.playgroundmanage.game.vo.*;
+
+
 import com.example.playgroundmanage.team.repository.TeamRepository;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.request.vo.TeamRequest;
@@ -24,7 +23,7 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
 
 
-    private final TeamRequestRepository teamRequestRepository;
+
 
     private final AthleticsRepository athleticsRepository;
 
@@ -40,9 +39,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 
         if (targetType.equals("requestAccept_team")) {
             User user = (User) authentication.getPrincipal();
-            TeamRequest teamRequest = teamRequestRepository.findById((Long) targetId)
-                    .orElseThrow();
-            return Objects.equals(user.getId(), teamRequest.getLeader().getId());
+
+            return true;//todo
         }
 
         if (targetType.equals("delete_game")) {
