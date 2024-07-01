@@ -32,7 +32,7 @@ public class UserGameController {
     private final SubTeamService subTeamService;
 
     @GetMapping("/user/game/{year}/{month}")
-    public List<UsersGameDto.UsersGameResponseDto> getMonthGamesInLatestOrder(@PathVariable Integer month, @PathVariable Integer year, @AuthenticationPrincipal MyUserDetails myUserDetails) {
+    public List<UserGameInfoResponse> getMonthGamesInLatestOrder(@PathVariable Integer month, @PathVariable Integer year, @AuthenticationPrincipal MyUserDetails myUserDetails) {
         UsersGameDto.UsersGameRequestDto usersGameRequestDto = UsersGameDto.UsersGameRequestDto.builder()
                 .myDateTime(initMyDateTime(LocalDateTime.of(year, month, 1, 0, 0)))
                 .user(myUserDetails.getUser())
@@ -58,7 +58,7 @@ public class UserGameController {
         return userHostGameService.getUserHostGames(myUserDetails.getUser());
     }
 
-    @DeleteMapping("/game/{gameId}/{subTeamId}/out")
+  /*  @DeleteMapping("/game/{gameId}/{subTeamId}/out")
     @Transactional
     public ResponseEntity<String> userOutOfGame(@PathVariable Long gameId, @AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Long subTeamId) {
         userJoinGameService.userOutOfGame(gameId, myUserDetails.getUser());
@@ -71,5 +71,5 @@ public class UserGameController {
     public ResponseEntity<String> userOutOfFriendlyGame(@PathVariable Long gameId, @AuthenticationPrincipal MyUserDetails myUserDetails) {
         userJoinGameService.userOutOfGame(gameId, myUserDetails.getUser());
         return ResponseEntity.ok("success");
-    }
+    }*/
 }

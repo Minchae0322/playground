@@ -10,6 +10,8 @@ import com.example.playgroundmanage.type.GameType;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Inheritance(strategy = InheritanceType.JOINED) // 상속 전략 설정
@@ -33,6 +35,7 @@ public abstract class AthleticsParticipant {
     @ManyToOne(cascade = CascadeType.MERGE)
     private Athletics athletics;
 
+    private LocalDateTime gameStartDateTime;
 
     public AthleticsParticipant(Long id, GameTeamSide gameTeamSide, User user, GameRecord gameRecord, boolean isAccepted, Athletics athletics) {
         this.id = id;
@@ -41,9 +44,14 @@ public abstract class AthleticsParticipant {
         this.gameRecord = gameRecord;
         this.isAccepted = isAccepted;
         this.athletics = athletics;
+        this.gameStartDateTime = athletics.getGameStartDateTime();
     }
 
     public void updateAthleticsRecord(GameRecord gameRecord) {
         this.gameRecord = gameRecord;
+    }
+
+    public void updateGameStartDate(LocalDateTime localDateTime) {
+        this.gameStartDateTime = localDateTime;
     }
 }
