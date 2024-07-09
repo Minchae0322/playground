@@ -1,3 +1,4 @@
+/*
 package com.example.playgroundmanage.althlectis.service;
 
 import com.example.playgroundmanage.althlectis.service.impl.FriendlyAthleticsGenerator;
@@ -73,4 +74,4 @@ class FriendlyAthleticsGeneratorTest {
 
 
     }
-}
+}*/

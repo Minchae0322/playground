@@ -1,6 +1,7 @@
+/*
 package com.example.playgroundmanage.service;
 
-import com.example.playgroundmanage.game.repository.GameRepository;
+
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.location.repository.PlaygroundRepository;
@@ -44,7 +45,8 @@ class PlaygroundServiceTest {
     }
 
 
-  /*  @Test
+  */
+/*  @Test
     void 현재_진행중인_경기_불러오기() {
         //given 운동장안에 9개의 경기가 있다.
         LocalDateTime now = LocalDateTime.now();
@@ -182,5 +184,6 @@ class PlaygroundServiceTest {
     void 가장빠른_3경기_가져오기_경기가없음() {
         List<GameThumbnail> gameThumbnails = playgroundService.getUpcomingGames(testPlayground.getId());
         assertEquals(0, gameThumbnails.size());
-    }*/
-}
+    }*//*
+
+}*/

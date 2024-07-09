@@ -23,7 +23,7 @@
 
 ## ssl https 적용
 *  apt-get install python3-certbot-nginx
-* certbot certonly --nginx -d example.com
+* certbot certonly --nginx -d hityundong.com
   server {
   listen 443 ssl http2;
   server_name example.com;

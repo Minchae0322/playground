@@ -1,6 +1,6 @@
 package com.example.playgroundmanage.service;
 
-import com.example.playgroundmanage.game.repository.*;
+
 import com.example.playgroundmanage.login.repository.UserRepository;
 
 import com.example.playgroundmanage.team.repository.TeamRepository;
@@ -17,17 +17,11 @@ class RequestServiceTest {
 
 
 
-    @Autowired
-    private GameParticipantRepository gameParticipantRepository;
 
-    @Autowired
-    private GameRepository gameRepository;
 
     @Autowired
     private TeamRepository teamRepository;
 
-    @Autowired
-    private GameService gameService;
 
 
 

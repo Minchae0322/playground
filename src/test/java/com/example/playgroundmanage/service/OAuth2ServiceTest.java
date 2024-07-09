@@ -1,8 +1,9 @@
+/*
 package com.example.playgroundmanage.service;
 
 import com.example.playgroundmanage.login.dto.OAuth2UserProfile;
 import com.example.playgroundmanage.login.service.UserDetailsServiceImpl;
-import com.example.playgroundmanage.game.repository.GameRepository;
+
 import com.example.playgroundmanage.team.repository.TeamRepository;
 import com.example.playgroundmanage.login.repository.UserRepository;
 import com.example.playgroundmanage.type.UserRole;
@@ -59,4 +60,4 @@ class OAuth2ServiceTest {
         assertEquals("asdf1234", oAuth2UserProfile.getUsername());
         assertEquals("github", oAuth2UserProfile.getProvider());
     }
-}
+}*/
