@@ -2,8 +2,8 @@ package com.example.playgroundmanage.location.api;
 
 import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
 import com.example.playgroundmanage.althlectis.dto.request.AthleticsTimeInfo;
-import com.example.playgroundmanage.game.dto.GameResponseDto;
-import com.example.playgroundmanage.game.dto.GameTimeDto;
+
+import com.example.playgroundmanage.althlectis.dto.GameTimeDto;
 import com.example.playgroundmanage.location.dto.response.OccupiedTimeResponse;
 import com.example.playgroundmanage.location.dto.PlaygroundRequestDto;
 import com.example.playgroundmanage.location.dto.response.PlaygroundInfoResponse;
@@ -11,7 +11,6 @@ import com.example.playgroundmanage.location.service.PlaygroundService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

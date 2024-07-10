@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class AthleticsController {
 
-
-
     private final AthleticsService athleticsService;
 
     private final PlaygroundService playgroundService;

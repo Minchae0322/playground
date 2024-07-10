@@ -1,11 +1,10 @@
 package com.example.playgroundmanage.althlectis.dto.request;
 
 import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.game.dto.GameTimeDto;
+import com.example.playgroundmanage.althlectis.dto.GameTimeDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
-import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 
 public record GameGenerationRequest(

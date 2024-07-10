@@ -1,6 +1,5 @@
 package com.example.playgroundmanage.althlectis.dto.response;
 
-import com.example.playgroundmanage.althlectis.vo.AthleticsSide;
 import com.example.playgroundmanage.althlectis.vo.impl.FriendlyAthletics;
 import com.example.playgroundmanage.althlectis.vo.impl.RankAthletics;
 import com.example.playgroundmanage.althlectis.vo.impl.SoloAthleticsParticipant;

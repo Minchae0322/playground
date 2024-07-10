@@ -1,14 +1,10 @@
 package com.example.playgroundmanage.althlectis.dto.request;
 
 import com.example.playgroundmanage.date.MyDateTime;
-import com.example.playgroundmanage.game.dto.GameTimeDto;
+import com.example.playgroundmanage.althlectis.dto.GameTimeDto;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 
 import java.time.ZonedDateTime;
 

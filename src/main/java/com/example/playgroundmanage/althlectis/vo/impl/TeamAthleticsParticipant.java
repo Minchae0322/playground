@@ -2,7 +2,6 @@ package com.example.playgroundmanage.althlectis.vo.impl;
 
 import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.althlectis.vo.AthleticsParticipant;
-import com.example.playgroundmanage.althlectis.vo.AthleticsSide;
 import com.example.playgroundmanage.login.vo.User;
 import com.example.playgroundmanage.team.vo.Team;
 import com.example.playgroundmanage.type.GameRecord;

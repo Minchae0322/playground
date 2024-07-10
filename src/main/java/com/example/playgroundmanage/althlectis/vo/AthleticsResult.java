@@ -22,6 +22,7 @@ public class AthleticsResult {
     private Athletics athletics;
 
     boolean isFinished;
+
     @Builder
     public AthleticsResult(Long id, int homeScore, int awayScore, Athletics athletics) {
         this.id = id;

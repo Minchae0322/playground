@@ -1,14 +1,11 @@
 package com.example.playgroundmanage.util;
 
-import com.example.playgroundmanage.game.dto.GameTimeDto;
-import com.example.playgroundmanage.exception.TimeOverlappingException;
+import com.example.playgroundmanage.althlectis.dto.GameTimeDto;
 
-import com.example.playgroundmanage.login.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import static com.example.playgroundmanage.util.Util.localDateToYearMonthDateTimeString;
 

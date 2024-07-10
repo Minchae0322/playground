@@ -2,7 +2,7 @@ package com.example.playgroundmanage.location.service;
 
 import com.example.playgroundmanage.althlectis.vo.Athletics;
 import com.example.playgroundmanage.exception.TimeOverlappingException;
-import com.example.playgroundmanage.game.dto.GameTimeDto;
+import com.example.playgroundmanage.althlectis.dto.GameTimeDto;
 
 import com.example.playgroundmanage.util.DateFormat;
 import lombok.RequiredArgsConstructor;

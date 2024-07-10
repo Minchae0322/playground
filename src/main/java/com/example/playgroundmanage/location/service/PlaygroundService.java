@@ -1,7 +1,7 @@
 package com.example.playgroundmanage.location.service;
 
 import com.example.playgroundmanage.althlectis.dto.response.AthleticsResponse;
-import com.example.playgroundmanage.game.dto.GameTimeDto;
+import com.example.playgroundmanage.althlectis.dto.GameTimeDto;
 import com.example.playgroundmanage.exception.CampusNotExistException;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.location.repository.CampusRepository;
