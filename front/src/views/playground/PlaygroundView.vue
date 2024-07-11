@@ -212,7 +212,7 @@ const closeModal = () => {
 
 function handleGameSelected(game) {
   selectedGame.value = game; // 선택된 게임 업데이트
-  if (game.gameType === 'Competition') {
+  if (game.gameType === '竞争') {
     currentView.value = GameInfoView; // 뷰를 GameInfoView로 변경
   } else {
     currentView.value = FriendlyGameInfoView; // 뷰를 GameInfoView로 변경

@@ -27,9 +27,7 @@ public class AthleticsController {
     private final AthleticsService athleticsService;
 
     private final PlaygroundService playgroundService;
-
-
-
+    
     private final AthleticsGeneratorFactory athleticsGeneratorFactory;
 
     private final AthleticsResultService athleticsResultService;

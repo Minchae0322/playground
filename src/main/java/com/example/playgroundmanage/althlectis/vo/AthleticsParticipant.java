@@ -39,7 +39,7 @@ public abstract class AthleticsParticipant {
         this.id = id;
         this.gameTeamSide = gameTeamSide;
         this.user = user;
-        this.gameRecord = gameRecord;
+        this.gameRecord = GameRecord.NONE;
         this.isAccepted = isAccepted;
         this.athletics = athletics;
         this.gameStartDateTime = athletics.getGameStartDateTime();

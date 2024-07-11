@@ -7,7 +7,7 @@
           <div v-if="game.gameId">
             <div class="game-card">
               <div class="game-type-container">
-                <img v-if="game.gameType === 'Competition'" :src="rankingIcon">
+                <img v-if="game.gameType === '竞争'" :src="rankingIcon">
                 <img v-else :src="friendlyIcon">
                 <p class="game-type">{{ game.gameType }}</p>
               </div>
@@ -67,7 +67,7 @@ onMounted(async () => {
 });
 
 function handleGameClick(game) {
-  // 게임이 클릭되었을 때 부모 컴포넌트에 알림
+
   emits('gameSelected', game);
 }
 

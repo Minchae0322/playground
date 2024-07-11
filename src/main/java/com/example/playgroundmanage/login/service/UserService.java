@@ -1,11 +1,12 @@
 package com.example.playgroundmanage.login.service;
 
+import com.example.playgroundmanage.althlectis.repo.AthleticsParticipantRepository;
+import com.example.playgroundmanage.althlectis.vo.AthleticsParticipant;
 import com.example.playgroundmanage.login.dto.*;
-import com.example.playgroundmanage.exception.TooManyRequestException;
 
-import com.example.playgroundmanage.login.repository.UserGameRecordRepository;
+import com.example.playgroundmanage.login.repository.UserAthleticsRecordRepository;
 import com.example.playgroundmanage.login.vo.User;
-import com.example.playgroundmanage.login.vo.UserGameRecord;
+import com.example.playgroundmanage.login.vo.UserAthleticsRecord;
 import com.example.playgroundmanage.team.dto.TeamDto;
 import com.example.playgroundmanage.exception.UserNotExistException;
 import com.example.playgroundmanage.team.repository.TeamingRepository;
@@ -27,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 import static com.example.playgroundmanage.validator.UserValidator.validateUser;
@@ -40,11 +42,11 @@ public class UserService {
 
     private final PasswordEncoder passwordEncoder;
 
-
+    private final AthleticsParticipantRepository athleticsParticipantRepository;
 
     private final FileHandler fileHandler;
 
-    private final UserGameRecordRepository userGameRecordRepository;
+    private final UserAthleticsRecordRepository userAthleticsRecordRepository;
 
     private final UserDtoConverter userDtoConverter;
 
@@ -138,88 +140,31 @@ public class UserService {
     }
 
 
-    @Transactional
-    public UserGameRecord findUserGameRecordByUser(User user) {
-        return userGameRecordRepository.findUserGameRecordByUser(user)
-                .orElseGet(() -> userGameRecordRepository.save(
-                        UserGameRecord.builder()
-                                .win(0)
-                                .lose(0)
-                                .draw(0)
-                                .user(user)
-                                .lastUpdateTime(LocalDateTime.now().minusMinutes(15L))
-                                .build()
-                ));
-    }
+
 
     @Transactional
     public UserRecordResponse getUserRecord(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(UserNotExistException::new);
 
-        UserGameRecord userGameRecord = findUserGameRecordByUser(user);
+        UserAthleticsRecord userAthleticsRecord = userAthleticsRecordRepository.findByUser(user)
+                .orElseThrow();
 
-        return UserRecordResponse.builder()
-                .win(userGameRecord.getWin())
-                .lose(userGameRecord.getLose())
-                .build();
+        return UserRecordResponse.from(userAthleticsRecord);
     }
 
-    //todo
-    /*@Transactional
-    public UserRecordResponse updateUserGameRecord(User user) {
-        UserGameRecord userGameRecord = findUserGameRecordByUser(user);
-
-        if (userGameRecord.getLastUpdateTime().isAfter(LocalDateTime.now().minusMinutes(10))) {
-            throw new TooManyRequestException();
-        }
-
-
-
-        int win = gameParticipants.stream()
-                .filter(gameParticipant -> gameParticipant.getGameRecord().equals(GameRecord.WIN))
-                .toList().size();
-
-        int lose = gameParticipants.stream()
-                .filter(gameParticipant -> gameParticipant.getGameRecord().equals(GameRecord.LOSE))
-                .toList().size();
-
-        userGameRecordRepository.save(userGameRecord.update(win, lose));
-
-        return UserRecordResponse.builder()
-                .win(win)
-                .lose(lose)
-                .build();
-    }*/
-
-
-    @Transactional
-    private UserGameRecord findUserGameRecord(User user) {
-        return userGameRecordRepository.findUserGameRecordByUser(user)
-                .orElse(userGameRecordRepository.save(UserGameRecord.builder()
-                        .win(0)
-                        .draw(0)
-                        .lose(0)
-                        .none(0)
-                        .build()));
-    }
 
 
     public List<UserRecordResponse> getUsersRanking() {
-        List<UserGameRecord> userRankingDes = userGameRecordRepository.findAll().stream()
-                .sorted(Comparator.comparing(UserGameRecord::getWin).reversed()
-                        .thenComparing(UserGameRecord::getLose))
+        List<UserAthleticsRecord> userRankingDes = userAthleticsRecordRepository.findAll().stream()
+                .sorted(Comparator.comparing(UserAthleticsRecord::getWin).reversed()
+                        .thenComparing(UserAthleticsRecord::getLose))
                 .toList();
 
         return IntStream.range(0, userRankingDes.size())
-                .mapToObj(index -> UserRecordResponse.builder()
-                        .ranking(index + 1)
-                        .win(userRankingDes.get(index).getWin())
-                        .lose(userRankingDes.get(index).getLose())
-                        .userProfileImg(userRankingDes.get(index).getUser().getUserProfileImg().getFileUrl())
-                        .userNickname(userRankingDes.get(index).getUser().getNickname())
-                        .build()
+                .mapToObj(index -> UserRecordResponse.from(userRankingDes.get(index), index)
                 )
                 .toList();
     }
+
 }

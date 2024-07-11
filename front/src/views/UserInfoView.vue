@@ -15,7 +15,7 @@
       <div class="user-record-container-userInfo">
         <div class="user-record">{{userRecord.win }}胜  </div>
         <div class="user-record">{{userRecord.lose }}败</div>
-        <button class="button-user-record-update" @click="updateUserRecord">更新</button>
+
       </div>
       <div class="nickname-container-userInfo" v-if="!isEditing">
         <div class="nickname-container-nickname-userInfo">{{ user.userNickname }}</div>

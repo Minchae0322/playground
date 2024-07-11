@@ -1,28 +1,45 @@
 package com.example.playgroundmanage.login.dto;
 
+import com.example.playgroundmanage.login.vo.UserAthleticsRecord;
 import lombok.Builder;
 import lombok.Data;
 
-@Data
-public class UserRecordResponse {
 
-    private String userNickname;
+public record UserRecordResponse(
 
-    private String userProfileImg;
+        String userNickname,
 
-    private int ranking;
+        String userProfileImg,
 
-    private int win;
-    private int draw;
-    private int lose;
+        int ranking,
 
-    @Builder
-    public UserRecordResponse(String userNickname, String userProfileImg, int ranking, int win, int draw, int lose) {
-        this.userNickname = userNickname;
-        this.userProfileImg = userProfileImg;
-        this.ranking = ranking;
-        this.win = win;
-        this.draw = draw;
-        this.lose = lose;
+        int win,
+
+        int draw,
+
+        int lose
+
+) {
+    public static UserRecordResponse from(UserAthleticsRecord userAthleticsRecord) {
+        return new UserRecordResponse(
+                userAthleticsRecord.getUser().getNickname(),
+                userAthleticsRecord.getUser().getUserProfileImg().getFileUrl(),
+                0,
+                userAthleticsRecord.getWin(),
+                userAthleticsRecord.getDraw(),
+                userAthleticsRecord.getLose()
+        );
     }
+
+    public static UserRecordResponse from(UserAthleticsRecord userAthleticsRecord, int ranking) {
+        return new UserRecordResponse(
+                userAthleticsRecord.getUser().getNickname(),
+                userAthleticsRecord.getUser().getUserProfileImg().getFileUrl(),
+                ranking,
+                userAthleticsRecord.getWin(),
+                userAthleticsRecord.getDraw(),
+                userAthleticsRecord.getLose()
+        );
+    }
+
 }

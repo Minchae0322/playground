@@ -69,15 +69,6 @@ public class UserController {
         return userService.changeNickname(userRequestDto);
     }
 
-/*    @PostMapping("/user/signup")
-    public void signup(@RequestBody UserSignupForm userSignupForm) {
-        userService.signup(userSignupForm);
-    }*/
-
-
-
-
-
     @GetMapping("/user/record/{userId}")
     public UserRecordResponse getUserRecord(@PathVariable Long userId) {
         return userService.getUserRecord(userId);

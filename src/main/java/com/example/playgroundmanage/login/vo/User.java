@@ -44,11 +44,7 @@ public class User {
     private UploadFile userProfileImg;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
-    private UserGameRecord userGameRecord;
-
-
-
-
+    private UserAthleticsRecord userAthleticsRecord;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<AthleticsParticipant> athleticsParticipants;
@@ -62,7 +58,7 @@ public class User {
 
 
     @Builder
-    public User(Long id, String username, String nickname, String provider, String password, boolean isEnable, boolean isLoggedIn, UserRole role, UploadFile userProfileImg, UserGameRecord userGameRecord, List<Teaming> teams) {
+    public User(Long id, String username, String nickname, String provider, String password, boolean isEnable, boolean isLoggedIn, UserRole role, UploadFile userProfileImg, UserAthleticsRecord userAthleticsRecord, List<Teaming> teams) {
         this.id = id;
         this.username = username;
         this.nickname = nickname;
@@ -72,10 +68,8 @@ public class User {
         this.isLoggedIn = isLoggedIn;
         this.role = role;
         this.userProfileImg = userProfileImg;
-        this.userGameRecord = userGameRecord;
-
+        this.userAthleticsRecord = userAthleticsRecord;
         this.teams = teams;
-
         this.athleticsParticipants = new ArrayList<>();
     }
 

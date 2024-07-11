@@ -1,6 +1,5 @@
 package com.example.playgroundmanage.type;
 
-import com.example.playgroundmanage.game.vo.Game;
 
 public enum GameType {
     COMPETITION("Competition", "竞争"),
