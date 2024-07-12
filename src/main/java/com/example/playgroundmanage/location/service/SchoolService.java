@@ -59,6 +59,7 @@ public class SchoolService {
         }
 
         return upcomingGames.stream()
+                .limit(6)
                 .map(AthleticsResponse::of)
                 .toList();
     }

@@ -39,7 +39,13 @@ const awayTeams = ref({
 })
 const homeAndAwayTeams = ref({
   teamId: 1,
-  matchTeamSide: "HOME",
+  gameTeamSide: "HOME",
+  participants: [{
+    userId: '',
+    userProfileImg: '',
+
+  }],
+
 });
 
 const isTeamRegistrationModalVisible = ref(false);
@@ -155,8 +161,8 @@ const sendSoloGameJoinRequest = async () => {
   }
   await validateAccessToken();
   try {
-    await axios.post(`${apiBaseUrl}/game/join/teamGameJoin`, {
-          gameTeamSide: homeAndAwayTeams.value.matchTeamSide,
+    await axios.post(`${apiBaseUrl}/game/join/rankGameSoloJoin`, {
+          gameTeamSide: homeAndAwayTeams.value.gameTeamSide,
           athleticsId: props.game.gameId,
         },
         {
@@ -186,11 +192,11 @@ const sendTeamRegistrationRequest = async () => {
   await validateAccessToken();
 
   try {
-    await axios.post(`${apiBaseUrl}/game/join/teamGameJoin`, {
+    await axios.post(`${apiBaseUrl}/game/join/rankGameSoloJoin`, {
       athleticsId: props.game.gameId,
       teamId: selectedTeam.value.teamId,
       gameTeamSide: 'HOME',
-      gameType: 'teamGameJoin'
+      gameType: 'rankGameSoloJoin'
     }, {
       headers: {
         'Authorization': getAccessToken()
@@ -209,12 +215,12 @@ const sendTeamJoinRequest = async (subTeamId, teamId) => {
   }
   await validateAccessToken();
   try {
-    await axios.post(`${apiBaseUrl}/game/join/teamGameJoin`,
+    await axios.post(`${apiBaseUrl}/game/join/rankGameSoloJoin`,
         {
           athleticsId: props.game.gameId,
           teamId: teamId,
           gameTeamSide: homeAndAwayTeams.value.matchTeamSide,
-          gameType: 'teamGameJoin'
+          gameType: 'rankGameSoloJoin'
         }, {
           headers: {
             'Authorization': getAccessToken()
@@ -451,10 +457,10 @@ const redirectToLogin = function () {
           </div>
         </div>
 
-        <div v-if="homeAndAwayTeams.soloTeam">
+        <div v-if="homeAndAwayTeams.participants">
           <div class="title-soloTeam">个人参加</div>
-          <div v-if="homeAndAwayTeams.soloTeam.users && homeAndAwayTeams.soloTeam.users.length > 0">
-          <div class="team-details" v-for="(participant, index) in homeAndAwayTeams.soloTeam.users" :key="index">
+          <div v-if="homeAndAwayTeams.participants && homeAndAwayTeams.participants.length > 0">
+          <div class="team-details" v-for="(participant, index) in homeAndAwayTeams.participants" :key="index">
             <div class="team-member">
               <div v-if="participant.userId === loggedInUserId" class="close-marker" @click="clickOutOfGame">X</div>
               <img class="team-member-photo" :src="getImageUrl(participant.userProfileImg) || defaultImage">

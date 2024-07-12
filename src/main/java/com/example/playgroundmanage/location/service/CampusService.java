@@ -44,6 +44,7 @@ public class CampusService {
                 .toList();
 
         return athletics.stream()
+                .limit(6)
                 .map(AthleticsResponse::of)
                 .toList();
     }

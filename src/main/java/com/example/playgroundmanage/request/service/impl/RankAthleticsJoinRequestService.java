@@ -42,7 +42,7 @@ public class RankAthleticsJoinRequestService implements AthleticsRequestService 
 
     @Override
     public String getRequestType() {
-        return "teamGameJoin";
+        return "rankGameSoloJoin";
     }
 
     @Override

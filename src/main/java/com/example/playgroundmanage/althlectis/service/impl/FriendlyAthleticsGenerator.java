@@ -14,7 +14,9 @@ import com.example.playgroundmanage.althlectis.repo.AthleticsRepository;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
 import com.example.playgroundmanage.util.GameValidation;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -36,6 +38,7 @@ public class FriendlyAthleticsGenerator implements AthleticsGenerator {
     }
 
     @Override
+    @Transactional
     public Long generate(final Long hostId, final GameGenerationRequest gameGenerationRequest) {
         final Playground playground = playgroundRepository.findById(gameGenerationRequest.playgroundId())
                 .orElseThrow(PlaygroundNotExistException::new);

@@ -14,9 +14,13 @@ import com.example.playgroundmanage.althlectis.vo.impl.RankAthletics;
 import com.example.playgroundmanage.althlectis.repo.AthleticsRepository;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
+import jakarta.persistence.LockModeType;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.repository.Lock;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Isolation;
 
 @Component
 @RequiredArgsConstructor
@@ -28,8 +32,6 @@ public class RankAthleticsGenerator implements AthleticsGenerator {
 
     private final PlaygroundRepository playgroundRepository;
 
-
-
     private final UserRepository userRepository;
 
     @Override
@@ -37,30 +39,30 @@ public class RankAthleticsGenerator implements AthleticsGenerator {
         return "Competition";
     }
 
-    @Transactional
-    public Long generate(final Long hostId, final GameGenerationRequest gameGenerationRequest) {
-        Playground playground = playgroundRepository.findById(gameGenerationRequest.playgroundId())
-                .orElseThrow(PlaygroundNotExistException::new);
+    public Long generate(final Long hostId, final GameGenerationRequest gameGenerationRequest)  {
 
-        timeValidation.validateOverlappingGames(playground.getAthletics(), gameGenerationRequest.toGameTimeDto());
+            Playground playground = playgroundRepository.findById(gameGenerationRequest.playgroundId())
+                    .orElseThrow(PlaygroundNotExistException::new);
 
-        User host = userRepository.findById(hostId)
-                .orElseThrow(UserNotExistException::new);
+            timeValidation.validateOverlappingGames(playground.getAthletics(), gameGenerationRequest.toGameTimeDto());
 
-        final RankAthletics athletics = RankAthletics.of(
-                host,
-                gameGenerationRequest.gameName(),
-                SportsEvent.fromString(gameGenerationRequest.sportsEvent()),
-                gameGenerationRequest.toGameTimeDto().getStartDateTime(),
-                gameGenerationRequest.runningTime(),
-                playground,
-                GameType.COMPETITION
-        );
+            User host = userRepository.findById(hostId)
+                    .orElseThrow(UserNotExistException::new);
 
-        RankAthletics rankAthletics = athleticsRepository.save(athletics);
+            final RankAthletics athletics = RankAthletics.of(
+                    host,
+                    gameGenerationRequest.gameName(),
+                    SportsEvent.fromString(gameGenerationRequest.sportsEvent()),
+                    gameGenerationRequest.toGameTimeDto().getStartDateTime(),
+                    gameGenerationRequest.runningTime(),
+                    playground,
+                    GameType.COMPETITION
+            );
 
+            RankAthletics rankAthletics = athleticsRepository.save(athletics);
 
-        return rankAthletics.getId();
+            return rankAthletics.getId();
+
     }
 
 

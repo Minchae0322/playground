@@ -24,6 +24,9 @@ public class Playground {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Version
+    private Long version;
+
     private String name;
 
     @OneToOne
@@ -44,7 +47,6 @@ public class Playground {
         this.img = img;
         this.campus = campus;
         this.sportsEvent = sportsEvent;
-
         this.athletics = athletics;
     }
 
