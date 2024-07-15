@@ -36,8 +36,6 @@ public class RankAthleticsJoinRequestService implements AthleticsRequestService 
 
     private final AthleticsRequestRepository athleticsRequestRepository;
 
-    private final TeamRepository teamRepository;
-
     private final AthleticsParticipantRepository athleticsParticipantRepository;
 
     @Override
@@ -61,28 +59,12 @@ public class RankAthleticsJoinRequestService implements AthleticsRequestService 
             participateInAthletics(requestUser, athletics, athleticsJoinRequest);
         }
 
-        AthleticsRequest rankAthleticsJoinRequest = makeRequest(requestUser, athletics, athleticsJoinRequest);
+        AthleticsRequest rankAthleticsJoinRequest = makeRequest(requestUser, athletics);
 
         return athleticsRequestRepository.save(rankAthleticsJoinRequest).getId();
     }
 
-    private AthleticsRequest makeRequest(User user, RankAthletics athletics, AthleticsJoinRequest athleticsJoinRequest) {
-        if (athleticsJoinRequest.teamId() != null) {
-            Team team = teamRepository.findById(athleticsJoinRequest.teamId())
-                    .orElseThrow(TeamNotExistException::new);
-
-            return findPreviousRequest(user, athletics)
-                    .orElse(RankAthleticsJoinRequest.of(
-                            athletics,
-                            user,
-                            athletics.getHost(),
-                            getRequestState(user, athletics.getHost()),
-                            team,
-                            GameTeamSide.valueOf(athleticsJoinRequest.gameTeamSide())
-                    ).updateRankRequest(team));
-
-        }
-
+    private AthleticsRequest makeRequest(User user, RankAthletics athletics) {
         return findPreviousRequest(user, athletics)
                 .orElse(RankAthleticsJoinRequest.of(
                         athletics,
@@ -92,29 +74,16 @@ public class RankAthleticsJoinRequestService implements AthleticsRequestService 
                 ));
     }
 
-    private Long participateInAthletics(User user, RankAthletics rankAthletics, AthleticsJoinRequest athleticsJoinRequest) {
-        if (athleticsJoinRequest.teamId() != null) {
-            Team team = teamRepository.findById(athleticsJoinRequest.teamId())
-                    .orElseThrow(TeamNotExistException::new);
-            return athleticsParticipantRepository.save(
-                    TeamAthleticsParticipant.of(
-                            GameTeamSide.valueOf(athleticsJoinRequest.gameTeamSide()),
-                            user,
-                            rankAthletics,
-                            team
-                    )
-            ).getId();
-        }
-
-        return athleticsParticipantRepository.save(
+    private void participateInAthletics(User user, RankAthletics rankAthletics, AthleticsJoinRequest athleticsJoinRequest) {
+        athleticsParticipantRepository.save(
                 SoloAthleticsParticipant.of(
                         GameTeamSide.valueOf(athleticsJoinRequest.gameTeamSide()),
                         user,
                         rankAthletics
                 )
-        ).getId();
-
+        );
     }
+
     private boolean isUserParticipatedAthletics(List<? extends AthleticsParticipant> participants, User user) {
         return participants.stream()
                 .anyMatch(gp -> gp.getUser().equals(user));

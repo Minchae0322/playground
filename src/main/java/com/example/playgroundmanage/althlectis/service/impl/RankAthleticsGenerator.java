@@ -39,6 +39,9 @@ public class RankAthleticsGenerator implements AthleticsGenerator {
         return "Competition";
     }
 
+
+    @Transactional
+    @Override
     public Long generate(final Long hostId, final GameGenerationRequest gameGenerationRequest)  {
 
             Playground playground = playgroundRepository.findById(gameGenerationRequest.playgroundId())

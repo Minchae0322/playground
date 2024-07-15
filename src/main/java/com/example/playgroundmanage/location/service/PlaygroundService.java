@@ -19,6 +19,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -47,6 +48,7 @@ public class PlaygroundService {
 
         return playground.getAthletics().stream()
                 .filter(athletics -> timeValidation.isAfterFromNow(athletics.getGameStartDateTime()))
+                .sorted(Comparator.reverseOrder())
                 .map(AthleticsResponse::of)
                 .toList();
     }

@@ -192,11 +192,11 @@ const sendTeamRegistrationRequest = async () => {
   await validateAccessToken();
 
   try {
-    await axios.post(`${apiBaseUrl}/game/join/rankGameSoloJoin`, {
+    await axios.post(`${apiBaseUrl}/game/join/rankGameTeamJoin`, {
       athleticsId: props.game.gameId,
       teamId: selectedTeam.value.teamId,
-      gameTeamSide: 'HOME',
-      gameType: 'rankGameSoloJoin'
+      gameTeamSide: homeAndAwayTeams.value.gameTeamSide,
+      gameType: 'rankGameTeamJoin'
     }, {
       headers: {
         'Authorization': getAccessToken()
@@ -215,12 +215,12 @@ const sendTeamJoinRequest = async (subTeamId, teamId) => {
   }
   await validateAccessToken();
   try {
-    await axios.post(`${apiBaseUrl}/game/join/rankGameSoloJoin`,
+    await axios.post(`${apiBaseUrl}/game/join/rankGameTeamJoin`,
         {
           athleticsId: props.game.gameId,
           teamId: teamId,
           gameTeamSide: homeAndAwayTeams.value.matchTeamSide,
-          gameType: 'rankGameSoloJoin'
+          gameType: 'rankGameTeamJoin'
         }, {
           headers: {
             'Authorization': getAccessToken()
@@ -453,7 +453,7 @@ const redirectToLogin = function () {
                 <p class="user-role">{{ participant.userRole }}</p>
               </div>
             </div>
-            <button class="add-button" @click="sendTeamJoinRequest(team.subTeamId, team.teamId)"> 组队参加</button>
+            <button class="add-button" @click="sendTeamJoinRequest(team.subTeamId, team.teamId)"> 加入该团队参加</button>
           </div>
         </div>
 
