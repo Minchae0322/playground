@@ -16,6 +16,8 @@ import com.example.playgroundmanage.althlectis.repo.AthleticsRepository;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.persistence.LockModeType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +41,9 @@ public class RankAthleticsGenerator implements AthleticsGenerator {
 
     private final UserRepository userRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(RankAthleticsGenerator.class);
+
+
     @Override
     public String getType() {
         return "Competition";
@@ -53,7 +58,7 @@ public class RankAthleticsGenerator implements AthleticsGenerator {
 
         List<GameTimeDto> playgroundTimeTable = playgroundRepository.getPlaygroundTimeTable(gameGenerationRequest.playgroundId());
 
-        timeValidation.validateOverlappingGamese(playgroundTimeTable, gameGenerationRequest.toGameTimeDto());
+        timeValidation.validateOverlappingGames(playgroundTimeTable, gameGenerationRequest.toGameTimeDto());
 
         User host = userRepository.findById(hostId)
                 .orElseThrow(UserNotExistException::new);

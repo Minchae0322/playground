@@ -29,26 +29,8 @@ public class TimeValidation {
         return dateFormat.dateFormatYYYYMMDD(athletics.getGameStartDateTime()).equals(dateFormat.dateFormatYYYYMMDD(targetDate));
     }
 
-    public void validateOverlappingGames(List<Athletics> athletics, GameTimeDto gameTimeDto) {
-        boolean isOverlapping = athletics.stream()
-                .anyMatch(athletic -> isDateTimeRangeOverlapping(athletic, gameTimeDto.getStartDateTime(), gameTimeDto.getRunningTime()));
 
-        if (isOverlapping) {
-            throw new TimeOverlappingException(localDateToYearMonthDateTimeString(LocalDateTime.now()));
-        }
-    }
-
-    private boolean isDateTimeRangeOverlapping(Athletics game, LocalDateTime localDateTime, Integer gameRunningTime) {
-        LocalDateTime startDateTime = dateFormat.dateFormatWith0Second(localDateTime);
-        LocalDateTime endDateTime = dateFormat.dateFormatWith0Second(localDateTime).plusMinutes(gameRunningTime);
-
-        LocalDateTime gameStartDateTime = game.getGameStartDateTime();
-        LocalDateTime gameEndDateTime = gameStartDateTime.plusMinutes(game.getRunningTime());
-
-        return !(gameEndDateTime.isBefore(startDateTime) || gameStartDateTime.isAfter(endDateTime));
-    }
-
-    public void validateOverlappingGamese(List<GameTimeDto> playgroundTimetable, GameTimeDto gameTimeDto) {
+    public void validateOverlappingGames(List<GameTimeDto> playgroundTimetable, GameTimeDto gameTimeDto) {
         boolean isOverlapping = playgroundTimetable.stream()
                 .anyMatch(timetable -> isDateTimeRangeOverlapping(timetable, gameTimeDto.getStartDateTime(), gameTimeDto.getRunningTime()));
 

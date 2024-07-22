@@ -102,11 +102,11 @@ public class PlaygroundService {
 
     @Transactional
     public boolean isValidGameStartTime(Long playgroundId, GameTimeDto gameTimeDto) {
-        Playground playground = playgroundRepository.findById(playgroundId)
-                .orElseThrow(PlaygroundNotExistException::new);
-
         validateStartTimeAfterPresent(gameTimeDto);
-        timeValidation.validateOverlappingGames(playground.getAthletics(), gameTimeDto);
+        List<GameTimeDto> playgroundTimeTable = playgroundRepository.getPlaygroundTimeTable(playgroundId);
+
+        timeValidation.validateOverlappingGames(playgroundTimeTable, gameTimeDto);
+
 
         return true;
     }

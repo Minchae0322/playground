@@ -1,5 +1,6 @@
 package com.example.playgroundmanage.althlectis.service.impl;
 
+import com.example.playgroundmanage.althlectis.dto.GameTimeDto;
 import com.example.playgroundmanage.althlectis.service.AthleticsGenerator;
 import com.example.playgroundmanage.exception.PlaygroundNotExistException;
 import com.example.playgroundmanage.exception.UserNotExistException;
@@ -18,6 +19,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -43,7 +46,10 @@ public class FriendlyAthleticsGenerator implements AthleticsGenerator {
         final Playground playground = playgroundRepository.findById(gameGenerationRequest.playgroundId())
                 .orElseThrow(PlaygroundNotExistException::new);
 
-        timeValidation.validateOverlappingGames(playground.getAthletics(), gameGenerationRequest.toGameTimeDto());
+        List<GameTimeDto> playgroundTimeTable = playgroundRepository.getPlaygroundTimeTable(gameGenerationRequest.playgroundId());
+
+        timeValidation.validateOverlappingGames(playgroundTimeTable, gameGenerationRequest.toGameTimeDto());
+
 
         final User host = userRepository.findById(hostId)
                 .orElseThrow(UserNotExistException::new);
