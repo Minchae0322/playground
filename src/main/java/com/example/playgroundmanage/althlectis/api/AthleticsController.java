@@ -30,8 +30,6 @@ import static com.example.playgroundmanage.util.GameValidation.validateStartTime
 public class AthleticsController {
 
     private final AthleticsService athleticsService;
-
-    private final PlaygroundService playgroundService;
     
     private final AthleticsGeneratorFactory athleticsGeneratorFactory;
 
@@ -70,10 +68,5 @@ public class AthleticsController {
         return ResponseEntity.ok("success");
     }
 
-    /*@PreAuthorize("hasPermission(#gameId,'delete_game','DELETE')")
-    @DeleteMapping("/user/game/{gameId}/delete")
-    public void deleteGame(@AuthenticationPrincipal MyUserDetails myUserDetails, @PathVariable Long gameId) {
-        gameService.deleteGame(gameId);
-    }*/
-
+    //todo delete
 }

@@ -29,8 +29,6 @@ public class TeamService {
 
     private final TeamingService teamingService;
 
-
-
     private final FileHandler fileHandler;
 
     private final TeamingRepository teamingRepository;

@@ -50,7 +50,6 @@ public class FriendlyAthleticsGenerator implements AthleticsGenerator {
 
         timeValidation.validateOverlappingGames(playgroundTimeTable, gameGenerationRequest.toGameTimeDto());
 
-
         final User host = userRepository.findById(hostId)
                 .orElseThrow(UserNotExistException::new);
 

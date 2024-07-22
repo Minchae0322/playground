@@ -20,11 +20,6 @@ import java.util.Objects;
 
 @RequiredArgsConstructor
 public class CustomPermissionEvaluator implements PermissionEvaluator {
-
-
-
-
-
     private final AthleticsRepository athleticsRepository;
 
     private final TeamRepository teamRepository;
@@ -60,8 +55,6 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
             Team team = teamRepository.findById((Long) targetId).orElseThrow(TeamNotExistException::new);
             return Objects.equals(user.getId(), team.getLeader().getId());
         }
-
-
 
         return false;
     }

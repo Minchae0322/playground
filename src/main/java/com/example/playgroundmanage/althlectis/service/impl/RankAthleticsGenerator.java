@@ -41,8 +41,6 @@ public class RankAthleticsGenerator implements AthleticsGenerator {
 
     private final UserRepository userRepository;
 
-    private static final Logger logger = LoggerFactory.getLogger(RankAthleticsGenerator.class);
-
 
     @Override
     public String getType() {
@@ -57,7 +55,7 @@ public class RankAthleticsGenerator implements AthleticsGenerator {
                 .orElseThrow(PlaygroundNotExistException::new);
 
         List<GameTimeDto> playgroundTimeTable = playgroundRepository.getPlaygroundTimeTable(gameGenerationRequest.playgroundId());
-
+        System.out.println("num" + playgroundTimeTable.size());
         timeValidation.validateOverlappingGames(playgroundTimeTable, gameGenerationRequest.toGameTimeDto());
 
         User host = userRepository.findById(hostId)
