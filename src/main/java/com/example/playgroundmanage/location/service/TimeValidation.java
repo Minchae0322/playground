@@ -7,6 +7,9 @@ import com.example.playgroundmanage.althlectis.dto.GameTimeDto;
 import com.example.playgroundmanage.util.DateFormat;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.time.LocalDateTime;
 import java.util.List;
 

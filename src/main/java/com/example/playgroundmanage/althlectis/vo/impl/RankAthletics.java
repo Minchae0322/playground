@@ -8,6 +8,7 @@ import com.example.playgroundmanage.request.vo.AthleticsRequest;
 import com.example.playgroundmanage.type.GameType;
 import com.example.playgroundmanage.type.SportsEvent;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Version;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

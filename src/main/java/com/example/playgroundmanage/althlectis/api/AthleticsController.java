@@ -13,12 +13,17 @@ import com.example.playgroundmanage.althlectis.service.factory.AthleticsGenerato
 
 import com.example.playgroundmanage.location.service.PlaygroundService;
 import com.example.playgroundmanage.login.vo.MyUserDetails;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import static com.example.playgroundmanage.util.GameValidation.validateStartTimeAfterPresent;
 
 @RestController
 @RequiredArgsConstructor
@@ -50,7 +55,7 @@ public class AthleticsController {
 
     @PostMapping("/game/generate")
     public ResponseEntity<Long> generateGame(@RequestBody @Valid GameGenerationRequest gameRegistration, @AuthenticationPrincipal MyUserDetails userDetails) {
-        playgroundService.isValidGameStartTime(gameRegistration.playgroundId(), gameRegistration.toGameTimeDto());
+        validateStartTimeAfterPresent(gameRegistration.toGameTimeDto());
         AthleticsGenerator gameGenerator = athleticsGeneratorFactory.find(gameRegistration.gameType());
 
         return ResponseEntity.ok(gameGenerator.generate(userDetails.getUser().getId(), gameRegistration));
