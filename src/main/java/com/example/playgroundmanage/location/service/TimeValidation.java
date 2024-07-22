@@ -47,4 +47,23 @@ public class TimeValidation {
 
         return !(gameEndDateTime.isBefore(startDateTime) || gameStartDateTime.isAfter(endDateTime));
     }
+
+    public void validateOverlappingGamese(List<GameTimeDto> playgroundTimetable, GameTimeDto gameTimeDto) {
+        boolean isOverlapping = playgroundTimetable.stream()
+                .anyMatch(timetable -> isDateTimeRangeOverlapping(timetable, gameTimeDto.getStartDateTime(), gameTimeDto.getRunningTime()));
+
+        if (isOverlapping) {
+            throw new TimeOverlappingException(localDateToYearMonthDateTimeString(LocalDateTime.now()));
+        }
+    }
+
+    private boolean isDateTimeRangeOverlapping(GameTimeDto playgroundTimetable, LocalDateTime localDateTime, Integer gameRunningTime) {
+        LocalDateTime startDateTime = dateFormat.dateFormatWith0Second(localDateTime);
+        LocalDateTime endDateTime = dateFormat.dateFormatWith0Second(localDateTime).plusMinutes(gameRunningTime);
+
+        LocalDateTime gameStartDateTime = playgroundTimetable.getStartDateTime();
+        LocalDateTime gameEndDateTime = gameStartDateTime.plusMinutes(playgroundTimetable.getRunningTime());
+
+        return !(gameEndDateTime.isBefore(startDateTime) || gameStartDateTime.isAfter(endDateTime));
+    }
 }

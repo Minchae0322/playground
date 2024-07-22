@@ -37,7 +37,7 @@ public class Playground {
 
     private SportsEvent sportsEvent;
 
-    @OneToMany(mappedBy = "playground", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "playground", fetch = FetchType.LAZY)
     private List<Athletics> athletics = new ArrayList<>();
 
     @Builder
