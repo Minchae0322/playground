@@ -47,7 +47,6 @@ public class RankAthleticsGenerator implements AthleticsGenerator {
         return "Competition";
     }
 
-
     @Override
     @Transactional
     public Long generate(final Long hostId, final GameGenerationRequest gameGenerationRequest) {
@@ -55,7 +54,7 @@ public class RankAthleticsGenerator implements AthleticsGenerator {
                 .orElseThrow(PlaygroundNotExistException::new);
 
         List<GameTimeDto> playgroundTimeTable = playgroundRepository.getPlaygroundTimeTable(gameGenerationRequest.playgroundId());
-        System.out.println("num" + playgroundTimeTable.size());
+
         timeValidation.validateOverlappingGames(playgroundTimeTable, gameGenerationRequest.toGameTimeDto());
 
         User host = userRepository.findById(hostId)

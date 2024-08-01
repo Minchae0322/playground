@@ -54,6 +54,16 @@
             height="50"
             @click="login_google"
         />
+
+        <img
+
+            src="../assets/icon-kakao.png"
+            alt="Your Image Alt Text"
+            class="image-margin"
+            width="50"
+            height="50"
+            @click="login_kakao"
+        />
         <img
 
             src="../assets/icon-qq.png"
@@ -61,7 +71,7 @@
             class="image-margin"
             width="50"
             height="50"
-            @click="login_naver"
+            @click="login_qq"
         />
 
         <img
@@ -71,16 +81,17 @@
             class="image-margin"
             width="50"
             height="50"
-            @click="login_kakao"
+            @click="login_wechat"
         />
-<!--        <img
+        <img
             src="../assets/logo_naver.png"
             alt="Your Image Alt Text"
             class="image-margin"
             width="50"
             height="50"
             @click="login_naver"
-        />-->
+        />
+
 
         <img
             src="../assets/icon-github.png"
@@ -122,12 +133,13 @@ const login_naver = function () {
 }
 
 const login_wechat = function () {
-  try {
+  alert("正在准备中")
+  /*try {
     window.location.href = `${apiBaseUrl}/oauth2/authorization/wechat`;
   } catch (error) {
-    console.error('Error during Naver login:', error);
+    console.error('Error during Wechat login:', error);
     router.replace('/login'); // Redirect to /login in case of an error
-  }
+  }*/
 }
 
 const login_qq = function () {
