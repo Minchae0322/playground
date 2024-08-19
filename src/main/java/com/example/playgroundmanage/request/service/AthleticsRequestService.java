@@ -5,11 +5,10 @@ import com.example.playgroundmanage.request.dto.PendingRequestResponse;
 
 import java.util.List;
 
-public interface AthleticsRequestService {
+public interface AthleticsRequestService extends RequestService{
 
     Long generateRequest(Long userId, AthleticsJoinRequest athleticsJoinRequest);
 
-    String getRequestType();
 
     Long acceptRequest(Long requestId);
 

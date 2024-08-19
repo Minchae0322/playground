@@ -24,6 +24,9 @@ import java.util.stream.Stream;
 @RequiredArgsConstructor
 public class RequestController {
 
+    private final static String GAME_SERVICE_TYPE = "game";
+    private final static String TEAM_SERVICE_TYPE = "team";
+
     private final TeamJoinRequestService teamJoinRequestService;
 
     private final RequestServiceFinder requestServiceFinder;
@@ -36,7 +39,7 @@ public class RequestController {
     public void generateJoinGameRequest(@RequestBody @Validated AthleticsJoinRequest athleticsJoinRequest,
                                         @AuthenticationPrincipal MyUserDetails userDetails,
                                         @PathVariable("requestType") String type) {
-        AthleticsRequestService requestService = requestServiceFinder.find(type);
+        AthleticsRequestService requestService = (AthleticsRequestService) requestServiceFinder.find(GAME_SERVICE_TYPE, type);
 
         requestService.generateRequest(userDetails.getUser().getId(), athleticsJoinRequest);
     }
@@ -51,14 +54,21 @@ public class RequestController {
     @GetMapping("/user/pending/request/game")
     public List<PendingRequestResponse> getAllPendingGameRequests(@AuthenticationPrincipal MyUserDetails myUserDetails) {
         return Stream.concat(
-                friendlyAthleticsJoinAthleticsRequestService.getPendingRequests(myUserDetails.getUser().getId()).stream(),
-                rankAthleticsJoinRequestService.getPendingRequests(myUserDetails.getUser().getId()).stream()
-        ).collect(Collectors.toList());
+                        friendlyAthleticsJoinAthleticsRequestService.getPendingRequests(myUserDetails.getUser().getId()).stream(),
+                        rankAthleticsJoinRequestService.getPendingRequests(myUserDetails.getUser().getId()).stream()
+                )
+                .collect(Collectors.toList());
+    }
+
+    @GetMapping("/user/pending/request/team")
+    public List<PendingRequestResponse> getAllPendingTeamRequests(@AuthenticationPrincipal MyUserDetails myUserDetails) {
+        TeamRequestService requestService = (TeamRequestService) requestServiceFinder.find(TEAM_SERVICE_TYPE, "teamJoin");
+        return requestService.getPendingRequests(myUserDetails.getUser().getId());
     }
 
     @PatchMapping("/game/accept/{requestId}/{requestType}")
     public void acceptGameRequest(@PathVariable Long requestId, @PathVariable("requestType") String type) {
-        AthleticsRequestService requestService = requestServiceFinder.find(type);
+        AthleticsRequestService requestService = (AthleticsRequestService) requestServiceFinder.find(GAME_SERVICE_TYPE, type);
 
         requestService.acceptRequest(requestId);
     }
@@ -67,10 +77,11 @@ public class RequestController {
     @PreAuthorize("hasPermission(#requestId,'requestAccept_game','DELETE')")
     @DeleteMapping("/game/reject/{requestId}/{requestType}")
     public void declineGameRequest(@PathVariable Long requestId, @PathVariable("requestType") String type) {
-        AthleticsRequestService requestService = requestServiceFinder.find(type);
+        AthleticsRequestService requestService = (AthleticsRequestService) requestServiceFinder.find(GAME_SERVICE_TYPE,type);
 
         requestService.rejectRequest(requestId);
     }
+
 
     /*
     @PostMapping("/user/pending/request/team/{requestType}")
@@ -85,6 +96,7 @@ public class RequestController {
                 .map(RequestInfoDto::toPendingTeamRequest)
                 .toList();
     }
+
     @PostMapping("/team/join/{requestType}")
     public void createTeamJoinRequest(@RequestBody UserJoinTeamParams userJoinTeamParams, @PathVariable("requestType") String type,
                                       @AuthenticationPrincipal MyUserDetails myUserDetails) {

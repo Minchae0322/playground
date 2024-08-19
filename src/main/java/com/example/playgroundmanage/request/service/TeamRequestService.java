@@ -5,11 +5,10 @@ import com.example.playgroundmanage.request.dto.TeamJoinRequestDto;
 
 import java.util.List;
 
-public interface TeamRequestService {
+public interface TeamRequestService extends RequestService{
 
     Long generateRequest(Long userId, TeamJoinRequestDto teamJoinRequestDto);
 
-    String getRequestType();
 
     Long acceptRequest(Long requestId);
 
