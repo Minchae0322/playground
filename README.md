@@ -19,10 +19,6 @@ Github: https://github.com/Minchae0322/playground
 
 BACKEND - Spring boot, Spring security, OAuth2, JPA, MySQL, JWT
 
-<p align="center">
-  <img src="[이미지URL](https://private-user-images.githubusercontent.com/101935807/384687484-81b8c278-3bf5-4622-8741-fc72488e8632.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3MzEyNDE0ODIsIm5iZiI6MTczMTI0MTE4MiwicGF0aCI6Ii8xMDE5MzU4MDcvMzg0Njg3NDg0LTgxYjhjMjc4LTNiZjUtNDYyMi04NzQxLWZjNzI0ODhlODYzMi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjQxMTEwJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI0MTExMFQxMjE5NDJaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0wY2YwMWRkMmRhMWJkMzRmYmIwZWZlODRhYzJiOTQ3NDAyNzUxMTJlOTcyZjAwNDYwMThjZTc2ZWUwODUwMDM1JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.wYnV-sgwLDERSuZksnibvLe8D-rBAt6pe5EKjGD2vKg)">
-</p>
-
 ![Untitled](Untitled.png)
 
 - **Spring boot, JPA, MySQL 을 이용**하여 프로젝트의 전반적인 기능을 구현하였습니다.
