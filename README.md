@@ -1,6 +1,6 @@
 # “HIT 운동장” 운동장 스포츠 관리 및 예약 시스템
 
-https://successful-mandevilla-ead.notion.site/HIT-38a9d3a232784c88bc2002da1cbfb8a8?pvs=74
+노션 ------------ https://successful-mandevilla-ead.notion.site/HIT-38a9d3a232784c88bc2002da1cbfb8a8?pvs=74
 
 작업 영역: 1인프로젝트, 중국어, 최근프로젝트, 풀스택
 작업기간: 2023년 11월 30일 → 2024년 3월 1일
